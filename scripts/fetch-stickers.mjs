@@ -290,12 +290,33 @@ async function downloadImage(product) {
   }
 }
 
+function getPageNumber(url) {
+  try {
+    const page = Number(new URL(url).searchParams.get("page"));
+    return Number.isFinite(page) && page > 0 ? page : 1;
+  } catch {
+    return 1;
+  }
+}
+
+function sortPaginationUrls(urls) {
+  return [...urls].sort((a, b) => getPageNumber(a) - getPageNumber(b));
+}
+
 async function collectAllProducts() {
   const allProducts = [];
   const knownIds = new Set();
+  const visitedUrls = new Set();
+  const queuedUrls = new Set([AUTHOR_URL]);
+  const queue = [AUTHOR_URL];
 
-  for (let page = 1; page <= MAX_PAGES; page++) {
-    const url = page === 1 ? AUTHOR_URL : `${AUTHOR_URL}?page=${page}`;
+  while (queue.length > 0 && visitedUrls.size < MAX_PAGES) {
+    const url = queue.shift();
+
+    if (visitedUrls.has(url)) continue;
+    visitedUrls.add(url);
+
+    const page = getPageNumber(url);
 
     console.log(`ページ ${page} を取得中...`);
     console.log(`  ${url}`);
@@ -306,7 +327,7 @@ async function collectAllProducts() {
       html = await getHtml(url);
     } catch (error) {
       console.log(`  → 取得失敗: ${error.message}`);
-      break;
+      continue;
     }
 
     const products = extractProducts(html);
@@ -314,14 +335,30 @@ async function collectAllProducts() {
 
     console.log(`  → ${products.length}作品（新規 ${newProducts.length}作品）`);
 
-    if (newProducts.length === 0) {
-      console.log("  → 新しい作品がないため、ページ取得を終了します。");
-      break;
-    }
-
     for (const product of newProducts) {
       knownIds.add(product.id);
       allProducts.push(product);
+    }
+
+    // LINE STORE自身が出しているページ送りリンクを優先して使います。
+    // ?page=2 をこちらで決め打ちするより、現在のサイト仕様に追従できます。
+    const paginationUrls = sortPaginationUrls(extractPaginationUrls(html));
+    console.log(`  → ページ送りリンク ${paginationUrls.length}件`);
+
+    for (const nextUrl of paginationUrls) {
+      if (!visitedUrls.has(nextUrl) && !queuedUrls.has(nextUrl)) {
+        queuedUrls.add(nextUrl);
+        queue.push(nextUrl);
+      }
+    }
+
+    // ページ送りリンクがHTMLから取得できない場合だけ、従来方式を予備として使います。
+    if (page === 1 && paginationUrls.length === 0) {
+      const fallbackUrl = `${AUTHOR_URL}?page=2`;
+      if (!visitedUrls.has(fallbackUrl) && !queuedUrls.has(fallbackUrl)) {
+        queuedUrls.add(fallbackUrl);
+        queue.push(fallbackUrl);
+      }
     }
 
     await sleep(500);
