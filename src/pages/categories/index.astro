@@ -1,0 +1,50 @@
+---
+import stickers from "../../data/stickers.json";
+import { CATEGORY_DEFINITIONS, getCategory, SITE_URL } from "../../lib/stickers";
+
+const counts = new Map(CATEGORY_DEFINITIONS.map((category) => [category.name, 0]));
+for (const sticker of stickers) {
+  const category = getCategory(sticker);
+  counts.set(category, (counts.get(category) || 0) + 1);
+}
+
+const pageTitle = "LINEスタンプのカテゴリー一覧 | STAMP MOKE";
+const description = "猫・犬などの動物、かわいい、面白い、仕事、方言など、STAMP MOKEのLINEスタンプをカテゴリー別に探せます。";
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={`${SITE_URL}/categories/`} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`${SITE_URL}/categories/`} />
+  </head>
+  <body style="margin:0;background:#f7f6f2;color:#161616;font-family:Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif;">
+    <main style="max-width:1100px;margin:0 auto;padding:60px 24px 100px;">
+      <nav style="font-size:12px;color:#777;margin-bottom:35px;"><a href="/">STAMP MOKE</a> / カテゴリー</nav>
+      <header style="margin-bottom:45px;">
+        <p style="font-size:11px;letter-spacing:.18em;color:#777;">CATEGORY INDEX</p>
+        <h1 style="font-size:clamp(38px,6vw,70px);line-height:1.05;margin:0 0 20px;font-weight:900;">LINEスタンプを<br />カテゴリーから探す</h1>
+        <p style="max-width:700px;color:#666;line-height:2;">STAMP MOKEに掲載しているスタンプをテーマ別に整理しています。気になるカテゴリーから作品を探せます。</p>
+      </header>
+
+      <section aria-label="カテゴリー一覧" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+        {CATEGORY_DEFINITIONS.map((category) => (
+          <a href={`/categories/${category.slug}/1`} style="display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #e2e0da;border-radius:18px;padding:25px;">
+            <div style="font-size:11px;color:#888;letter-spacing:.12em;">CATEGORY</div>
+            <h2 style="font-size:24px;margin:8px 0;">{category.name}</h2>
+            <div style="font-size:13px;color:#777;">{counts.get(category.name) || 0} STICKERS →</div>
+          </a>
+        ))}
+      </section>
+
+      <p style="margin-top:50px;font-size:13px;"><a href="/">← スタンプ一覧へ戻る</a></p>
+    </main>
+  </body>
+</html>
