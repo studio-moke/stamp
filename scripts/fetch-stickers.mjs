@@ -291,17 +291,13 @@ async function downloadImage(product) {
 }
 
 async function collectAllProducts() {
-  const queue = [AUTHOR_URL];
-  const visited = new Set();
   const allProducts = [];
+  const knownIds = new Set();
 
-  while (queue.length > 0 && visited.size < MAX_PAGES) {
-    const url = queue.shift();
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const url = page === 1 ? AUTHOR_URL : `${AUTHOR_URL}?page=${page}`;
 
-    if (visited.has(url)) continue;
-    visited.add(url);
-
-    console.log(`ページ ${visited.size} を取得中...`);
+    console.log(`ページ ${page} を取得中...`);
     console.log(`  ${url}`);
 
     let html;
@@ -310,22 +306,22 @@ async function collectAllProducts() {
       html = await getHtml(url);
     } catch (error) {
       console.log(`  → 取得失敗: ${error.message}`);
-      continue;
+      break;
     }
 
     const products = extractProducts(html);
-    console.log(`  → ${products.length}作品`);
+    const newProducts = products.filter((product) => !knownIds.has(product.id));
 
-    for (const product of products) {
-      if (!allProducts.some((item) => item.id === product.id)) {
-        allProducts.push(product);
-      }
+    console.log(`  → ${products.length}作品（新規 ${newProducts.length}作品）`);
+
+    if (newProducts.length === 0) {
+      console.log("  → 新しい作品がないため、ページ取得を終了します。");
+      break;
     }
 
-    for (const pageUrl of extractPaginationUrls(html)) {
-      if (!visited.has(pageUrl) && !queue.includes(pageUrl)) {
-        queue.push(pageUrl);
-      }
+    for (const product of newProducts) {
+      knownIds.add(product.id);
+      allProducts.push(product);
     }
 
     await sleep(500);
