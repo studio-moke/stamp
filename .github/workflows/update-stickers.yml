@@ -28,8 +28,8 @@ jobs:
         run: |
           COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('src/data/stickers.json','utf8')); console.log(data.length)")
           echo "Fetched sticker count: $COUNT"
-          if [ "$COUNT" -lt 80 ]; then
-            echo "ERROR: Sticker count dropped below safety threshold. Keeping previous data."
+          if [ "$COUNT" -lt 100 ]; then
+            echo "WARNING: Sticker count dropped below 100. Keeping previous data."
             git checkout -- src/data/stickers.json public/images/stickers
           fi
 
