@@ -4,1100 +4,499 @@ import stickers from "../data/stickers.json";
 const siteTitle = "STAMP MOKE｜LINEスタンプ専門メディア";
 const siteDescription =
   "かわいい、おもしろい、毎日使えるLINEスタンプを紹介。お気に入りのスタンプを見つけて、詳しい紹介ページからLINE STOREへ。";
+
+function getCategory(sticker) {
+  const text = `${sticker.title || ""} ${sticker.description || ""}`;
+
+  if (/博多|福岡|筑後|方言|関西弁|九州弁/.test(text)) return "方言";
+  if (/猫|ねこ|ネコ|犬|いぬ|イヌ|柴犬|コーギー|ポメラニアン|うさぎ|ウサギ|兎|くま|クマ|パンダ|鳥|すずめ|ペンギン|アザラシ|猿|サル|タヌキ|たぬき|ねずみ|動物/.test(text)) return "動物";
+  if (/ハート|恋|恋愛|カップル|彼氏|彼女|好き|愛/.test(text)) return "恋愛";
+  if (/仕事|ビジネス|敬語|丁寧|会社|職場|マーケター|バイト|働く/.test(text)) return "仕事";
+  if (/食べ物|料理|ごはん|肉まん|ビール|お酒|ジョッキ|パン|ケーキ|お菓子/.test(text)) return "食べ物";
+  if (/面白|おもしろ|ネタ|シュール|ギャグ|ツッコミ|あるある|ウザい|正論|本音/.test(text)) return "おもしろ";
+  if (/挨拶|ありがとう|おはよう|こんにちは|こんばんは|おやすみ|よろしく|おつかれ/.test(text)) return "あいさつ";
+  if (/かわいい|可愛い|キュート|癒し|ほんわか|ゆるかわ|もふもふ/.test(text)) return "かわいい";
+  if (/日常|毎日|返信|返事|会話|リアクション|気持ち/.test(text)) return "日常";
+  return "その他";
+}
+
+const categorizedStickers = stickers.map((sticker) => ({
+  ...sticker,
+  category: getCategory(sticker),
+}));
 ---
 
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-
-    <title>{siteTitle}</title>
-
-    <meta
-      name="description"
-      content={siteDescription}
-    />
-
-    <meta
-      property="og:title"
-      content={siteTitle}
-    />
-
-    <meta
-      property="og:description"
-      content={siteDescription}
-    />
-
-    <meta
-      property="og:type"
-      content="website"
-    />
-
-    <style>
-
-      /* =========================================
-         BASE
-      ========================================= */
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        background: #f7f6f2;
-        color: #161616;
-
-        font-family:
-          Arial,
-          "Hiragino Kaku Gothic ProN",
-          "Hiragino Sans",
-          "Yu Gothic",
-          Meiryo,
-          sans-serif;
-
-        -webkit-font-smoothing: antialiased;
-      }
-
-      a {
-        color: inherit;
-      }
-
-
-      /* =========================================
-         HEADER
-      ========================================= */
-
-      .header {
-        height: 86px;
-
-        background: rgba(255, 255, 255, 0.96);
-
-        border-bottom: 1px solid #e4e3df;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 5vw;
-
-        position: sticky;
-        top: 0;
-
-        z-index: 20;
-
-        backdrop-filter: blur(12px);
-      }
-
-      .brand {
-        text-decoration: none;
-      }
-
-      .brand-title {
-        font-size: 21px;
-        font-weight: 900;
-
-        letter-spacing: 0.1em;
-
-        line-height: 1;
-      }
-
-      .brand-sub {
-        margin-top: 7px;
-
-        font-size: 11px;
-
-        color: #777;
-
-        letter-spacing: 0.05em;
-      }
-
-      .header-link {
-        text-decoration: none;
-
-        border: 1px solid #d9d8d4;
-
-        background: #fff;
-
-        padding: 13px 22px;
-
-        border-radius: 999px;
-
-        font-size: 13px;
-        font-weight: 700;
-
-        transition: 0.2s ease;
-      }
-
-      .header-link:hover {
-        background: #161616;
-        color: #fff;
-
-        transform: translateY(-1px);
-      }
-
-
-      /* =========================================
-         MAIN
-      ========================================= */
-
-      .main {
-        max-width: 1180px;
-
-        margin: 0 auto;
-
-        padding:
-          45px 5vw
-          110px;
-      }
-
-
-      /* =========================================
-         HERO
-      ========================================= */
-
-      .hero {
-        padding:
-          55px 0
-          65px;
-      }
-
-      .eyebrow {
-        font-size: 11px;
-
-        letter-spacing: 0.2em;
-
-        color: #777;
-
-        margin-bottom: 18px;
-      }
-
-      .hero-title {
-        margin: 0;
-
-        max-width: 850px;
-
-        font-size: clamp(42px, 6vw, 82px);
-
-        line-height: 0.98;
-
-        letter-spacing: -0.045em;
-
-        font-weight: 900;
-      }
-
-      .hero-title span {
-        display: block;
-
-        color: #777;
-      }
-
-      .hero-text {
-        max-width: 620px;
-
-        margin-top: 28px;
-
-        font-size: 15px;
-
-        line-height: 2;
-
-        color: #666;
-      }
-
-
-      /* =========================================
-         SECTION HEADER
-      ========================================= */
-
-      .section-header {
-        display: flex;
-
-        align-items: flex-end;
-        justify-content: space-between;
-
-        gap: 30px;
-
-        margin-bottom: 30px;
-
-        padding-bottom: 18px;
-
-        border-bottom: 1px solid #dddcd8;
-      }
-
-      .section-label {
-        font-size: 11px;
-
-        letter-spacing: 0.18em;
-
-        color: #777;
-
-        margin-bottom: 8px;
-      }
-
-      .section-title {
-        margin: 0;
-
-        font-size: 38px;
-
-        line-height: 1;
-
-        letter-spacing: -0.03em;
-
-        font-weight: 900;
-      }
-
-      .section-count {
-        color: #777;
-
-        font-size: 13px;
-
-        white-space: nowrap;
-      }
-
-
-      /* =========================================
-         STICKER GRID
-      ========================================= */
-
-      .sticker-grid {
-        display: grid;
-
-        grid-template-columns:
-          repeat(4, minmax(0, 1fr));
-
-        gap: 22px;
-      }
-
-
-      /* =========================================
-         STICKER CARD
-      ========================================= */
-
-      .sticker-card {
-        display: block;
-
-        text-decoration: none;
-
-        background: #fff;
-
-        border: 1px solid #e3e2de;
-
-        border-radius: 18px;
-
-        overflow: hidden;
-
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease,
-          border-color 0.25s ease;
-      }
-
-      .sticker-card:hover {
-        transform: translateY(-5px);
-
-        border-color: #d1d0cb;
-
-        box-shadow:
-          0 16px 40px
-          rgba(0, 0, 0, 0.08);
-      }
-
-
-      /* =========================================
-         IMAGE
-      ========================================= */
-
-      .sticker-image-wrap {
-        position: relative;
-
-        aspect-ratio: 1 / 1;
-
-        background: #f3f2ee;
-
-        overflow: hidden;
-      }
-
-      .sticker-image {
-        width: 100%;
-        height: 100%;
-
-        display: block;
-
-        object-fit: contain;
-
-        padding: 18px;
-
-        transition:
-          transform 0.35s ease;
-      }
-
-      .sticker-card:hover .sticker-image {
-        transform: scale(1.045);
-      }
-
-
-      /* =========================================
-         CARD CONTENT
-      ========================================= */
-
-      .sticker-content {
-        padding: 18px 18px 20px;
-      }
-
-      .sticker-number {
-        font-size: 10px;
-
-        letter-spacing: 0.15em;
-
-        color: #aaa;
-
-        margin-bottom: 9px;
-      }
-
-      .sticker-title {
-        margin: 0;
-
-        font-size: 17px;
-
-        line-height: 1.45;
-
-        font-weight: 800;
-
-        display: -webkit-box;
-
-        -webkit-line-clamp: 2;
-
-        -webkit-box-orient: vertical;
-
-        overflow: hidden;
-      }
-
-      .sticker-description {
-        margin: 11px 0 0;
-
-        font-size: 12px;
-
-        line-height: 1.8;
-
-        color: #777;
-
-        display: -webkit-box;
-
-        -webkit-line-clamp: 3;
-
-        -webkit-box-orient: vertical;
-
-        overflow: hidden;
-      }
-
-
-      /* =========================================
-         CARD FOOTER
-      ========================================= */
-
-      .sticker-meta {
-        display: flex;
-
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 15px;
-
-        margin-top: 17px;
-
-        padding-top: 14px;
-
-        border-top: 1px solid #eeeeeb;
-      }
-
-      .price {
-        font-size: 15px;
-
-        font-weight: 800;
-      }
-
-      .detail-link {
-        font-size: 11px;
-
-        font-weight: 700;
-
-        color: #168b52;
-
-        white-space: nowrap;
-      }
-
-
-      /* =========================================
-         INTRO
-      ========================================= */
-
-      .intro {
-        margin-top: 120px;
-
-        background: #202020;
-
-        color: #fff;
-
-        border-radius: 24px;
-
-        padding: 70px;
-      }
-
-      .intro-label {
-        font-size: 11px;
-
-        letter-spacing: 0.18em;
-
-        color: #aaa;
-
-        margin-bottom: 20px;
-      }
-
-      .intro-title {
-        margin: 0;
-
-        max-width: 700px;
-
-        font-size: clamp(38px, 5vw, 66px);
-
-        line-height: 1.05;
-
-        letter-spacing: -0.04em;
-
-        font-weight: 900;
-      }
-
-      .intro-text {
-        max-width: 650px;
-
-        margin-top: 28px;
-
-        color: #bdbdbd;
-
-        font-size: 14px;
-
-        line-height: 2;
-      }
-
-
-      /* =========================================
-         FOOTER
-      ========================================= */
-
-      .footer {
-        background: #181818;
-
-        color: #fff;
-
-        padding: 70px 5vw 35px;
-      }
-
-      .footer-inner {
-        max-width: 1180px;
-
-        margin: 0 auto;
-      }
-
-      .footer-grid {
-        display: grid;
-
-        grid-template-columns:
-          2fr 1fr 1fr;
-
-        gap: 50px;
-
-        padding-bottom: 55px;
-
-        border-bottom: 1px solid #333;
-      }
-
-      .footer-brand {
-        font-size: 21px;
-
-        font-weight: 900;
-
-        letter-spacing: 0.1em;
-      }
-
-      .footer-copy {
-        margin-top: 18px;
-
-        color: #999;
-
-        font-size: 12px;
-
-        line-height: 1.9;
-      }
-
-      .footer-heading {
-        font-size: 11px;
-
-        color: #777;
-
-        letter-spacing: 0.15em;
-
-        margin-bottom: 18px;
-      }
-
-      .footer-link {
-        display: block;
-
-        color: #ccc;
-
-        text-decoration: none;
-
-        font-size: 13px;
-
-        margin-bottom: 12px;
-
-        transition: color 0.2s ease;
-      }
-
-      .footer-link:hover {
-        color: #fff;
-      }
-
-      .copyright {
-        padding-top: 25px;
-
-        display: flex;
-
-        justify-content: space-between;
-
-        color: #666;
-
-        font-size: 10px;
-
-        letter-spacing: 0.05em;
-      }
-
-
-      /* =========================================
-         TABLET
-      ========================================= */
-
-      @media (max-width: 900px) {
-
-        .sticker-grid {
-          grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-
-          gap: 18px;
-        }
-
-        .intro {
-          padding: 50px 40px;
-        }
-
-      }
-
-
-      /* =========================================
-         MOBILE
-      ========================================= */
-
-      @media (max-width: 640px) {
-
-        .header {
-          height: 72px;
-
-          padding:
-            0 20px;
-        }
-
-        .brand-title {
-          font-size: 17px;
-        }
-
-        .brand-sub {
-          font-size: 9px;
-
-          margin-top: 5px;
-        }
-
-        .header-link {
-          padding:
-            10px 14px;
-
-          font-size: 11px;
-        }
-
-
-        .main {
-          padding:
-            25px 18px
-            70px;
-        }
-
-
-        .hero {
-          padding:
-            45px 0
-            50px;
-        }
-
-        .hero-title {
-          font-size: 43px;
-
-          line-height: 1.02;
-        }
-
-        .hero-text {
-          font-size: 13px;
-
-          line-height: 1.9;
-        }
-
-
-        .section-header {
-          display: block;
-
-          margin-bottom: 20px;
-        }
-
-        .section-title {
-          font-size: 31px;
-        }
-
-        .section-count {
-          display: block;
-
-          margin-top: 10px;
-        }
-
-
-        .sticker-grid {
-          grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-          gap: 12px;
-        }
-
-        .sticker-card {
-          border-radius: 13px;
-        }
-
-        .sticker-image {
-          padding: 9px;
-        }
-
-        .sticker-content {
-          padding:
-            12px 12px 14px;
-        }
-
-        .sticker-number {
-          font-size: 8px;
-
-          margin-bottom: 6px;
-        }
-
-        .sticker-title {
-          font-size: 13px;
-
-          line-height: 1.4;
-        }
-
-        .sticker-description {
-          font-size: 10px;
-
-          line-height: 1.6;
-
-          margin-top: 7px;
-
-          -webkit-line-clamp: 2;
-        }
-
-        .sticker-meta {
-          margin-top: 11px;
-
-          padding-top: 10px;
-        }
-
-        .price {
-          font-size: 12px;
-        }
-
-        .detail-link {
-          font-size: 9px;
-        }
-
-
-        .intro {
-          margin-top: 75px;
-
-          padding:
-            45px 25px;
-
-          border-radius: 18px;
-        }
-
-        .intro-title {
-          font-size: 39px;
-        }
-
-        .intro-text {
-          font-size: 12px;
-        }
-
-
-        .footer {
-          padding:
-            55px 20px
-            30px;
-        }
-
-        .footer-grid {
-          grid-template-columns: 1fr;
-
-          gap: 30px;
-        }
-
-        .copyright {
-          display: block;
-
-          line-height: 2;
-        }
-
-      }
-
-    </style>
-  </head>
-
-
-  <body>
-
-    <!-- =====================================
-         HEADER
-    ====================================== -->
-
-    <header class="header">
-
-      <a
-        href="/"
-        class="brand"
-      >
-        <div class="brand-title">
-          STAMP MOKE
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{siteTitle}</title>
+  <meta name="description" content={siteDescription} />
+  <meta property="og:title" content={siteTitle} />
+  <meta property="og:description" content={siteDescription} />
+  <meta property="og:type" content="website" />
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: #f7f6f2;
+      color: #161616;
+      font-family: Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    .header {
+      height: 86px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid #e4e3df;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+    }
+    .brand { text-decoration: none; }
+    .brand-title { font-size: 21px; font-weight: 900; letter-spacing: .1em; line-height: 1; }
+    .brand-sub { margin-top: 7px; font-size: 11px; color: #777; letter-spacing: .05em; }
+    .header-link {
+      text-decoration: none;
+      border: 1px solid #d9d8d4;
+      background: #fff;
+      padding: 13px 22px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .main { max-width: 1180px; margin: 0 auto; padding: 45px 5vw 110px; }
+    .hero { padding: 55px 0 65px; }
+    .eyebrow { font-size: 11px; letter-spacing: .2em; color: #777; margin-bottom: 18px; }
+    .hero-title {
+      margin: 0;
+      max-width: 850px;
+      font-size: clamp(42px, 6vw, 82px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      font-weight: 900;
+    }
+    .hero-title span { display: block; color: #777; }
+    .hero-text { max-width: 620px; margin-top: 28px; font-size: 15px; line-height: 2; color: #666; }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #dddcd8;
+    }
+    .section-label { font-size: 11px; letter-spacing: .18em; color: #777; margin-bottom: 8px; }
+    .section-title { margin: 0; font-size: 38px; line-height: 1; letter-spacing: -.03em; font-weight: 900; }
+    .section-count { color: #777; font-size: 13px; white-space: nowrap; }
+
+    .controls { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 28px; }
+    .category-button {
+      appearance: none;
+      border: 1px solid #d8d7d2;
+      background: #fff;
+      color: #555;
+      border-radius: 999px;
+      padding: 9px 15px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .category-button.is-active { background: #161616; color: #fff; border-color: #161616; }
+    .category-count { opacity: .6; margin-left: 3px; }
+
+    .sticker-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+    }
+    .sticker-card {
+      display: block;
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid #e3e2de;
+      border-radius: 18px;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .sticker-card[hidden] { display: none; }
+    .sticker-card:hover {
+      transform: translateY(-5px);
+      border-color: #d1d0cb;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+    }
+    .sticker-image-wrap { position: relative; aspect-ratio: 1 / 1; background: #f3f2ee; overflow: hidden; }
+    .sticker-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      padding: 18px;
+      transition: transform .35s ease;
+    }
+    .sticker-card:hover .sticker-image { transform: scale(1.045); }
+    .sticker-content { padding: 18px 18px 20px; }
+    .sticker-number { font-size: 10px; letter-spacing: .15em; color: #aaa; margin-bottom: 9px; }
+    .sticker-title {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.45;
+      font-weight: 800;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sticker-description {
+      margin: 11px 0 0;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #777;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sticker-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 17px;
+      padding-top: 14px;
+      border-top: 1px solid #eeeeeb;
+    }
+    .price { font-size: 15px; font-weight: 800; }
+    .detail-link { font-size: 11px; font-weight: 700; color: #168b52; white-space: nowrap; }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 38px;
+    }
+    .page-button {
+      min-width: 40px;
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid #d8d7d2;
+      border-radius: 10px;
+      background: #fff;
+      color: #333;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .page-button.is-active { background: #161616; color: #fff; border-color: #161616; }
+    .page-button:disabled { opacity: .35; cursor: default; }
+    .page-gap { color: #999; padding: 0 2px; }
+
+    .empty-state {
+      display: none;
+      padding: 60px 20px;
+      text-align: center;
+      color: #777;
+      background: #fff;
+      border: 1px solid #e3e2de;
+      border-radius: 18px;
+    }
+
+    .intro {
+      margin-top: 120px;
+      background: #202020;
+      color: #fff;
+      border-radius: 24px;
+      padding: 70px;
+    }
+    .intro-label { font-size: 11px; letter-spacing: .18em; color: #aaa; margin-bottom: 20px; }
+    .intro-title { margin: 0; max-width: 700px; font-size: clamp(38px, 5vw, 66px); line-height: 1.05; letter-spacing: -.04em; font-weight: 900; }
+    .intro-text { max-width: 650px; margin-top: 28px; color: #bdbdbd; font-size: 14px; line-height: 2; }
+
+    .footer { background: #181818; color: #fff; padding: 70px 5vw 35px; }
+    .footer-inner { max-width: 1180px; margin: 0 auto; }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 50px;
+      padding-bottom: 55px;
+      border-bottom: 1px solid #333;
+    }
+    .footer-brand { font-size: 21px; font-weight: 900; letter-spacing: .1em; }
+    .footer-copy { margin-top: 18px; color: #999; font-size: 12px; line-height: 1.9; }
+    .footer-heading { font-size: 11px; color: #777; letter-spacing: .15em; margin-bottom: 18px; }
+    .footer-link { display: block; color: #ccc; text-decoration: none; font-size: 13px; margin-bottom: 12px; }
+    .copyright { padding-top: 25px; display: flex; justify-content: space-between; color: #666; font-size: 10px; letter-spacing: .05em; }
+
+    @media (max-width: 900px) {
+      .sticker-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+      .intro { padding: 50px 40px; }
+    }
+    @media (max-width: 640px) {
+      .header { height: 72px; padding: 0 20px; }
+      .brand-title { font-size: 17px; }
+      .brand-sub { font-size: 9px; margin-top: 5px; }
+      .header-link { padding: 10px 14px; font-size: 11px; }
+      .main { padding: 25px 18px 70px; }
+      .hero { padding: 45px 0 50px; }
+      .hero-title { font-size: 43px; line-height: 1.02; }
+      .hero-text { font-size: 13px; line-height: 1.9; }
+      .section-header { display: block; margin-bottom: 18px; }
+      .section-title { font-size: 31px; }
+      .section-count { display: block; margin-top: 10px; }
+      .controls { gap: 7px; }
+      .category-button { padding: 8px 12px; font-size: 11px; }
+      .sticker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .sticker-card { border-radius: 13px; }
+      .sticker-image { padding: 9px; }
+      .sticker-content { padding: 12px 12px 14px; }
+      .sticker-number { font-size: 8px; margin-bottom: 6px; }
+      .sticker-title { font-size: 13px; line-height: 1.4; }
+      .sticker-description { font-size: 10px; line-height: 1.6; margin-top: 7px; -webkit-line-clamp: 2; }
+      .sticker-meta { margin-top: 11px; padding-top: 10px; }
+      .price { font-size: 12px; }
+      .detail-link { font-size: 9px; }
+      .page-button { min-width: 36px; height: 36px; padding: 0 9px; }
+      .intro { margin-top: 75px; padding: 45px 25px; border-radius: 18px; }
+      .intro-title { font-size: 39px; }
+      .intro-text { font-size: 12px; }
+      .footer { padding: 55px 20px 30px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+      .copyright { display: block; line-height: 2; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <a href="/" class="brand">
+      <div class="brand-title">STAMP MOKE</div>
+      <div class="brand-sub">LINEスタンプ専門メディア</div>
+    </a>
+    <a href="#stickers" class="header-link">スタンプを見る ↓</a>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">LINE STICKERS / STAMP MOKE</div>
+      <h1 class="hero-title">
+        毎日のひとことを、
+        <span>ちょっと楽しく。</span>
+      </h1>
+      <p class="hero-text">
+        かわいい、おもしろい、毎日使える。STAMP MOKEでは、LINEで使いたくなるスタンプを紹介しています。
+        気になるスタンプを見つけたら、詳しい紹介ページからチェックしてみてください。
+      </p>
+    </section>
+
+    <section id="stickers">
+      <div class="section-header">
+        <div>
+          <div class="section-label">STICKER COLLECTION</div>
+          <h2 class="section-title">STICKERS</h2>
         </div>
-
-        <div class="brand-sub">
-          LINEスタンプ専門メディア
-        </div>
-      </a>
-
-
-      <a
-        href="#stickers"
-        class="header-link"
-      >
-        スタンプを見る ↓
-      </a>
-
-    </header>
-
-
-
-    <!-- =====================================
-         MAIN
-    ====================================== -->
-
-    <main class="main">
-
-
-      <!-- HERO -->
-
-      <section class="hero">
-
-        <div class="eyebrow">
-          LINE STICKERS / STAMP MOKE
-        </div>
-
-
-        <h1 class="hero-title">
-
-          毎日のひとことを、
-
-          <span>
-            ちょっと楽しく。
-          </span>
-
-        </h1>
-
-
-        <p class="hero-text">
-
-          かわいい、おもしろい、毎日使える。
-          STAMP MOKEでは、LINEで使いたくなる
-          スタンプを紹介しています。
-          気になるスタンプを見つけたら、
-          詳しい紹介ページからチェックしてみてください。
-
-        </p>
-
-      </section>
-
-
-
-      <!-- =====================================
-           STICKERS
-      ====================================== -->
-
-      <section id="stickers">
-
-
-        <div class="section-header">
-
-          <div>
-
-            <div class="section-label">
-              NEW COLLECTION
-            </div>
-
-            <h2 class="section-title">
-              NEW STICKERS
-            </h2>
-
-          </div>
-
-
-          <div class="section-count">
-            {stickers.length} STICKERS
-          </div>
-
-        </div>
-
-
-
-        <div class="sticker-grid">
-
-
-          {
-            stickers.map((sticker, index) => (
-
-              <a
-                href={`/stickers/${sticker.id}`}
-                class="sticker-card"
-              >
-
-
-                <!-- IMAGE -->
-
-                <div class="sticker-image-wrap">
-
-                  <img
-                    class="sticker-image"
-                    src={sticker.image}
-                    alt={sticker.title}
-                    loading={index < 8 ? "eager" : "lazy"}
-                  />
-
-                </div>
-
-
-
-                <!-- CONTENT -->
-
-                <div class="sticker-content">
-
-
-                  <div class="sticker-number">
-                    {String(index + 1).padStart(3, "0")}
-                  </div>
-
-
-                  <h3 class="sticker-title">
-                    {sticker.title}
-                  </h3>
-
-
-                  {
-                    sticker.description && (
-
-                      <p class="sticker-description">
-                        {sticker.description}
-                      </p>
-
-                    )
-                  }
-
-
-
-                  <div class="sticker-meta">
-
-
-                    <div class="price">
-                      {sticker.price}
-                    </div>
-
-
-                    <div class="detail-link">
-                      詳しく見る →
-                    </div>
-
-
-                  </div>
-
-                </div>
-
-              </a>
-
-            ))
-          }
-
-
-        </div>
-
-      </section>
-
-
-
-      <!-- =====================================
-           INTRO
-      ====================================== -->
-
-      <section class="intro">
-
-
-        <div class="intro-label">
-          ABOUT STAMP MOKE
-        </div>
-
-
-        <h2 class="intro-title">
-
-          毎日のひとことを、<br />
-          ちょっと楽しく。
-
-        </h2>
-
-
-        <p class="intro-text">
-
-          STAMP MOKEは、毎日の会話で使いたくなる
-          LINEスタンプを紹介するメディアです。
-
-          <br /><br />
-
-          かわいいスタンプ、
-          ちょっと笑えるスタンプ、
-          気持ちを代わりに伝えてくれるスタンプ。
-
-          <br /><br />
-
-          あなたの日常にぴったりの
-          スタンプを見つけてください。
-
-        </p>
-
-
-      </section>
-
-
-    </main>
-
-
-
-    <!-- =====================================
-         FOOTER
-    ====================================== -->
-
-    <footer class="footer">
-
-      <div class="footer-inner">
-
-
-        <div class="footer-grid">
-
-
-          <div>
-
-            <div class="footer-brand">
-              STAMP MOKE
-            </div>
-
-            <div class="footer-copy">
-
-              みんなの日常を、<br />
-              スタンプでもっと楽しく。<br />
-              あなたのお気に入りがきっと見つかる。
-
-            </div>
-
-          </div>
-
-
-
-          <div>
-
-            <div class="footer-heading">
-              MENU
-            </div>
-
-            <a
-              href="/"
-              class="footer-link"
-            >
-              ホーム
-            </a>
-
-            <a
-              href="#stickers"
-              class="footer-link"
-            >
-              スタンプ一覧
-            </a>
-
-          </div>
-
-
-
-          <div>
-
-            <div class="footer-heading">
-              INFORMATION
-            </div>
-
-            <a
-              href="#stickers"
-              class="footer-link"
-            >
-              NEW STICKERS
-            </a>
-
-          </div>
-
-
-        </div>
-
-
-
-        <div class="copyright">
-
-          <span>
-            © {new Date().getFullYear()} STAMP MOKE
-          </span>
-
-          <span>
-            LINE STICKERS
-          </span>
-
-        </div>
-
-
+        <div class="section-count" id="sticker-count">{stickers.length} STICKERS</div>
       </div>
 
-    </footer>
+      <div class="controls" id="category-controls" aria-label="カテゴリー">
+        <button class="category-button is-active" type="button" data-category="すべて">すべて</button>
+      </div>
 
+      <div class="sticker-grid" id="sticker-grid">
+        {
+          categorizedStickers.map((sticker, index) => (
+            <a
+              href={`/stickers/${sticker.id}`}
+              class="sticker-card"
+              data-category={sticker.category}
+              data-index={index}
+            >
+              <div class="sticker-image-wrap">
+                <img
+                  class="sticker-image"
+                  src={sticker.image}
+                  alt={sticker.title}
+                  loading={index < 8 ? "eager" : "lazy"}
+                />
+              </div>
+              <div class="sticker-content">
+                <div class="sticker-number">{String(index + 1).padStart(3, "0")}</div>
+                <h3 class="sticker-title">{sticker.title}</h3>
+                {
+                  sticker.description && (
+                    <p class="sticker-description">{sticker.description}</p>
+                  )
+                }
+                <div class="sticker-meta">
+                  <div class="price">{sticker.price}</div>
+                  <div class="detail-link">詳しく見る →</div>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
 
-  </body>
+      <div class="empty-state" id="empty-state">該当するスタンプがありません。</div>
+      <nav class="pagination" id="pagination" aria-label="ページ"></nav>
+    </section>
 
+    <section class="intro">
+      <div class="intro-label">ABOUT STAMP MOKE</div>
+      <h2 class="intro-title">毎日のひとことを、<br />ちょっと楽しく。</h2>
+      <p class="intro-text">
+        STAMP MOKEは、LINEで使いやすいスタンプを見つけるためのメディアです。
+        スタンプが増えても探しやすいように、カテゴリーとページ送りで整理していきます。
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">STAMP MOKE</div>
+          <div class="footer-copy">LINEスタンプ専門メディア<br />お気に入りのスタンプを見つけよう。</div>
+        </div>
+        <div>
+          <div class="footer-heading">NAVIGATION</div>
+          <a class="footer-link" href="#stickers">スタンプ一覧</a>
+          <a class="footer-link" href="/">トップへ戻る</a>
+        </div>
+        <div>
+          <div class="footer-heading">LINK</div>
+          <a class="footer-link" href="https://store.line.me/" target="_blank" rel="noreferrer">LINE STORE</a>
+        </div>
+      </div>
+      <div class="copyright">
+        <span>© STAMP MOKE</span>
+        <span>LINE STICKERS / STAMP MOKE</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const PAGE_SIZE = 24;
+    const cards = Array.from(document.querySelectorAll(".sticker-card"));
+    const controls = document.getElementById("category-controls");
+    const pagination = document.getElementById("pagination");
+    const emptyState = document.getElementById("empty-state");
+    const countLabel = document.getElementById("sticker-count");
+
+    const categories = [
+      "すべて",
+      ...new Set(cards.map((card) => card.dataset.category).filter(Boolean)),
+    ];
+
+    function makeButton(label, count, active) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `category-button${active ? " is-active" : ""}`;
+      button.dataset.category = label;
+      button.innerHTML = `${label}<span class="category-count">(${count})</span>`;
+      return button;
+    }
+
+    function filteredCards(category) {
+      return category === "すべて"
+        ? cards
+        : cards.filter((card) => card.dataset.category === category);
+    }
+
+    function renderPagination(totalPages, currentPage, onChange) {
+      pagination.replaceChildren();
+
+      const add = (label, page, disabled = false, active = false) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `page-button${active ? " is-active" : ""}`;
+        button.textContent = label;
+        button.disabled = disabled;
+        button.addEventListener("click", () => onChange(page));
+        pagination.appendChild(button);
+      };
+
+      add("‹", currentPage - 1, currentPage === 1);
+
+      const pages = [];
+      if (totalPages <= 7) {
+        for (let page = 1; page <= totalPages; page++) pages.push(page);
+      } else {
+        pages.push(1);
+        if (currentPage > 4) pages.push("…");
+        const start = Math.max(2, currentPage - 1);
+        const end = Math.min(totalPages - 1, currentPage + 1);
+        for (let page = start; page <= end; page++) pages.push(page);
+        if (currentPage < totalPages - 3) pages.push("…");
+        pages.push(totalPages);
+      }
+
+      pages.forEach((page) => {
+        if (page === "…") {
+          const span = document.createElement("span");
+          span.className = "page-gap";
+          span.textContent = "…";
+          pagination.appendChild(span);
+        } else {
+          add(String(page), page, false, page === currentPage);
+        }
+      });
+
+      add("›", currentPage + 1, currentPage === totalPages);
+    }
+
+    function render(category = "すべて", page = 1) {
+      const visible = filteredCards(category);
+      const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+      const safePage = Math.min(Math.max(page, 1), totalPages);
+      const start = (safePage - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const visibleSet = new Set(visible.slice(start, end));
+
+      cards.forEach((card) => {
+        card.hidden = !visibleSet.has(card);
+      });
+
+      emptyState.style.display = visible.length === 0 ? "block" : "none";
+      countLabel.textContent = `${visible.length} STICKERS`;
+      renderPagination(totalPages, safePage, (nextPage) => {
+        render(category, nextPage);
+        document.getElementById("stickers").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      controls.querySelectorAll(".category-button").forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.category === category);
+      });
+    }
+
+    categories.forEach((category) => {
+      const count = category === "すべて"
+        ? cards.length
+        : cards.filter((card) => card.dataset.category === category).length;
+      controls.appendChild(makeButton(category, count, category === "すべて"));
+    });
+
+    controls.addEventListener("click", (event) => {
+      const button = event.target.closest(".category-button");
+      if (!button) return;
+      render(button.dataset.category, 1);
+    });
+
+    render();
+  </script>
+</body>
 </html>
