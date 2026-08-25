@@ -1,0 +1,1103 @@
+---
+import stickers from "../data/stickers.json";
+
+const siteTitle = "STAMP MOKE｜LINEスタンプ専門メディア";
+const siteDescription =
+  "かわいい、おもしろい、毎日使えるLINEスタンプを紹介。お気に入りのスタンプを見つけて、詳しい紹介ページからLINE STOREへ。";
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>{siteTitle}</title>
+
+    <meta
+      name="description"
+      content={siteDescription}
+    />
+
+    <meta
+      property="og:title"
+      content={siteTitle}
+    />
+
+    <meta
+      property="og:description"
+      content={siteDescription}
+    />
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <style>
+
+      /* =========================================
+         BASE
+      ========================================= */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: #f7f6f2;
+        color: #161616;
+
+        font-family:
+          Arial,
+          "Hiragino Kaku Gothic ProN",
+          "Hiragino Sans",
+          "Yu Gothic",
+          Meiryo,
+          sans-serif;
+
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+      }
+
+
+      /* =========================================
+         HEADER
+      ========================================= */
+
+      .header {
+        height: 86px;
+
+        background: rgba(255, 255, 255, 0.96);
+
+        border-bottom: 1px solid #e4e3df;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 5vw;
+
+        position: sticky;
+        top: 0;
+
+        z-index: 20;
+
+        backdrop-filter: blur(12px);
+      }
+
+      .brand {
+        text-decoration: none;
+      }
+
+      .brand-title {
+        font-size: 21px;
+        font-weight: 900;
+
+        letter-spacing: 0.1em;
+
+        line-height: 1;
+      }
+
+      .brand-sub {
+        margin-top: 7px;
+
+        font-size: 11px;
+
+        color: #777;
+
+        letter-spacing: 0.05em;
+      }
+
+      .header-link {
+        text-decoration: none;
+
+        border: 1px solid #d9d8d4;
+
+        background: #fff;
+
+        padding: 13px 22px;
+
+        border-radius: 999px;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition: 0.2s ease;
+      }
+
+      .header-link:hover {
+        background: #161616;
+        color: #fff;
+
+        transform: translateY(-1px);
+      }
+
+
+      /* =========================================
+         MAIN
+      ========================================= */
+
+      .main {
+        max-width: 1180px;
+
+        margin: 0 auto;
+
+        padding:
+          45px 5vw
+          110px;
+      }
+
+
+      /* =========================================
+         HERO
+      ========================================= */
+
+      .hero {
+        padding:
+          55px 0
+          65px;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+
+        letter-spacing: 0.2em;
+
+        color: #777;
+
+        margin-bottom: 18px;
+      }
+
+      .hero-title {
+        margin: 0;
+
+        max-width: 850px;
+
+        font-size: clamp(42px, 6vw, 82px);
+
+        line-height: 0.98;
+
+        letter-spacing: -0.045em;
+
+        font-weight: 900;
+      }
+
+      .hero-title span {
+        display: block;
+
+        color: #777;
+      }
+
+      .hero-text {
+        max-width: 620px;
+
+        margin-top: 28px;
+
+        font-size: 15px;
+
+        line-height: 2;
+
+        color: #666;
+      }
+
+
+      /* =========================================
+         SECTION HEADER
+      ========================================= */
+
+      .section-header {
+        display: flex;
+
+        align-items: flex-end;
+        justify-content: space-between;
+
+        gap: 30px;
+
+        margin-bottom: 30px;
+
+        padding-bottom: 18px;
+
+        border-bottom: 1px solid #dddcd8;
+      }
+
+      .section-label {
+        font-size: 11px;
+
+        letter-spacing: 0.18em;
+
+        color: #777;
+
+        margin-bottom: 8px;
+      }
+
+      .section-title {
+        margin: 0;
+
+        font-size: 38px;
+
+        line-height: 1;
+
+        letter-spacing: -0.03em;
+
+        font-weight: 900;
+      }
+
+      .section-count {
+        color: #777;
+
+        font-size: 13px;
+
+        white-space: nowrap;
+      }
+
+
+      /* =========================================
+         STICKER GRID
+      ========================================= */
+
+      .sticker-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, minmax(0, 1fr));
+
+        gap: 22px;
+      }
+
+
+      /* =========================================
+         STICKER CARD
+      ========================================= */
+
+      .sticker-card {
+        display: block;
+
+        text-decoration: none;
+
+        background: #fff;
+
+        border: 1px solid #e3e2de;
+
+        border-radius: 18px;
+
+        overflow: hidden;
+
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          border-color 0.25s ease;
+      }
+
+      .sticker-card:hover {
+        transform: translateY(-5px);
+
+        border-color: #d1d0cb;
+
+        box-shadow:
+          0 16px 40px
+          rgba(0, 0, 0, 0.08);
+      }
+
+
+      /* =========================================
+         IMAGE
+      ========================================= */
+
+      .sticker-image-wrap {
+        position: relative;
+
+        aspect-ratio: 1 / 1;
+
+        background: #f3f2ee;
+
+        overflow: hidden;
+      }
+
+      .sticker-image {
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        object-fit: contain;
+
+        padding: 18px;
+
+        transition:
+          transform 0.35s ease;
+      }
+
+      .sticker-card:hover .sticker-image {
+        transform: scale(1.045);
+      }
+
+
+      /* =========================================
+         CARD CONTENT
+      ========================================= */
+
+      .sticker-content {
+        padding: 18px 18px 20px;
+      }
+
+      .sticker-number {
+        font-size: 10px;
+
+        letter-spacing: 0.15em;
+
+        color: #aaa;
+
+        margin-bottom: 9px;
+      }
+
+      .sticker-title {
+        margin: 0;
+
+        font-size: 17px;
+
+        line-height: 1.45;
+
+        font-weight: 800;
+
+        display: -webkit-box;
+
+        -webkit-line-clamp: 2;
+
+        -webkit-box-orient: vertical;
+
+        overflow: hidden;
+      }
+
+      .sticker-description {
+        margin: 11px 0 0;
+
+        font-size: 12px;
+
+        line-height: 1.8;
+
+        color: #777;
+
+        display: -webkit-box;
+
+        -webkit-line-clamp: 3;
+
+        -webkit-box-orient: vertical;
+
+        overflow: hidden;
+      }
+
+
+      /* =========================================
+         CARD FOOTER
+      ========================================= */
+
+      .sticker-meta {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin-top: 17px;
+
+        padding-top: 14px;
+
+        border-top: 1px solid #eeeeeb;
+      }
+
+      .price {
+        font-size: 15px;
+
+        font-weight: 800;
+      }
+
+      .detail-link {
+        font-size: 11px;
+
+        font-weight: 700;
+
+        color: #168b52;
+
+        white-space: nowrap;
+      }
+
+
+      /* =========================================
+         INTRO
+      ========================================= */
+
+      .intro {
+        margin-top: 120px;
+
+        background: #202020;
+
+        color: #fff;
+
+        border-radius: 24px;
+
+        padding: 70px;
+      }
+
+      .intro-label {
+        font-size: 11px;
+
+        letter-spacing: 0.18em;
+
+        color: #aaa;
+
+        margin-bottom: 20px;
+      }
+
+      .intro-title {
+        margin: 0;
+
+        max-width: 700px;
+
+        font-size: clamp(38px, 5vw, 66px);
+
+        line-height: 1.05;
+
+        letter-spacing: -0.04em;
+
+        font-weight: 900;
+      }
+
+      .intro-text {
+        max-width: 650px;
+
+        margin-top: 28px;
+
+        color: #bdbdbd;
+
+        font-size: 14px;
+
+        line-height: 2;
+      }
+
+
+      /* =========================================
+         FOOTER
+      ========================================= */
+
+      .footer {
+        background: #181818;
+
+        color: #fff;
+
+        padding: 70px 5vw 35px;
+      }
+
+      .footer-inner {
+        max-width: 1180px;
+
+        margin: 0 auto;
+      }
+
+      .footer-grid {
+        display: grid;
+
+        grid-template-columns:
+          2fr 1fr 1fr;
+
+        gap: 50px;
+
+        padding-bottom: 55px;
+
+        border-bottom: 1px solid #333;
+      }
+
+      .footer-brand {
+        font-size: 21px;
+
+        font-weight: 900;
+
+        letter-spacing: 0.1em;
+      }
+
+      .footer-copy {
+        margin-top: 18px;
+
+        color: #999;
+
+        font-size: 12px;
+
+        line-height: 1.9;
+      }
+
+      .footer-heading {
+        font-size: 11px;
+
+        color: #777;
+
+        letter-spacing: 0.15em;
+
+        margin-bottom: 18px;
+      }
+
+      .footer-link {
+        display: block;
+
+        color: #ccc;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        margin-bottom: 12px;
+
+        transition: color 0.2s ease;
+      }
+
+      .footer-link:hover {
+        color: #fff;
+      }
+
+      .copyright {
+        padding-top: 25px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        color: #666;
+
+        font-size: 10px;
+
+        letter-spacing: 0.05em;
+      }
+
+
+      /* =========================================
+         TABLET
+      ========================================= */
+
+      @media (max-width: 900px) {
+
+        .sticker-grid {
+          grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+          gap: 18px;
+        }
+
+        .intro {
+          padding: 50px 40px;
+        }
+
+      }
+
+
+      /* =========================================
+         MOBILE
+      ========================================= */
+
+      @media (max-width: 640px) {
+
+        .header {
+          height: 72px;
+
+          padding:
+            0 20px;
+        }
+
+        .brand-title {
+          font-size: 17px;
+        }
+
+        .brand-sub {
+          font-size: 9px;
+
+          margin-top: 5px;
+        }
+
+        .header-link {
+          padding:
+            10px 14px;
+
+          font-size: 11px;
+        }
+
+
+        .main {
+          padding:
+            25px 18px
+            70px;
+        }
+
+
+        .hero {
+          padding:
+            45px 0
+            50px;
+        }
+
+        .hero-title {
+          font-size: 43px;
+
+          line-height: 1.02;
+        }
+
+        .hero-text {
+          font-size: 13px;
+
+          line-height: 1.9;
+        }
+
+
+        .section-header {
+          display: block;
+
+          margin-bottom: 20px;
+        }
+
+        .section-title {
+          font-size: 31px;
+        }
+
+        .section-count {
+          display: block;
+
+          margin-top: 10px;
+        }
+
+
+        .sticker-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 12px;
+        }
+
+        .sticker-card {
+          border-radius: 13px;
+        }
+
+        .sticker-image {
+          padding: 9px;
+        }
+
+        .sticker-content {
+          padding:
+            12px 12px 14px;
+        }
+
+        .sticker-number {
+          font-size: 8px;
+
+          margin-bottom: 6px;
+        }
+
+        .sticker-title {
+          font-size: 13px;
+
+          line-height: 1.4;
+        }
+
+        .sticker-description {
+          font-size: 10px;
+
+          line-height: 1.6;
+
+          margin-top: 7px;
+
+          -webkit-line-clamp: 2;
+        }
+
+        .sticker-meta {
+          margin-top: 11px;
+
+          padding-top: 10px;
+        }
+
+        .price {
+          font-size: 12px;
+        }
+
+        .detail-link {
+          font-size: 9px;
+        }
+
+
+        .intro {
+          margin-top: 75px;
+
+          padding:
+            45px 25px;
+
+          border-radius: 18px;
+        }
+
+        .intro-title {
+          font-size: 39px;
+        }
+
+        .intro-text {
+          font-size: 12px;
+        }
+
+
+        .footer {
+          padding:
+            55px 20px
+            30px;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+
+          gap: 30px;
+        }
+
+        .copyright {
+          display: block;
+
+          line-height: 2;
+        }
+
+      }
+
+    </style>
+  </head>
+
+
+  <body>
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="header">
+
+      <a
+        href="/"
+        class="brand"
+      >
+        <div class="brand-title">
+          STAMP MOKE
+        </div>
+
+        <div class="brand-sub">
+          LINEスタンプ専門メディア
+        </div>
+      </a>
+
+
+      <a
+        href="#stickers"
+        class="header-link"
+      >
+        スタンプを見る ↓
+      </a>
+
+    </header>
+
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="main">
+
+
+      <!-- HERO -->
+
+      <section class="hero">
+
+        <div class="eyebrow">
+          LINE STICKERS / STAMP MOKE
+        </div>
+
+
+        <h1 class="hero-title">
+
+          毎日のひとことを、
+
+          <span>
+            ちょっと楽しく。
+          </span>
+
+        </h1>
+
+
+        <p class="hero-text">
+
+          かわいい、おもしろい、毎日使える。
+          STAMP MOKEでは、LINEで使いたくなる
+          スタンプを紹介しています。
+          気になるスタンプを見つけたら、
+          詳しい紹介ページからチェックしてみてください。
+
+        </p>
+
+      </section>
+
+
+
+      <!-- =====================================
+           STICKERS
+      ====================================== -->
+
+      <section id="stickers">
+
+
+        <div class="section-header">
+
+          <div>
+
+            <div class="section-label">
+              NEW COLLECTION
+            </div>
+
+            <h2 class="section-title">
+              NEW STICKERS
+            </h2>
+
+          </div>
+
+
+          <div class="section-count">
+            {stickers.length} STICKERS
+          </div>
+
+        </div>
+
+
+
+        <div class="sticker-grid">
+
+
+          {
+            stickers.map((sticker, index) => (
+
+              <a
+                href={`/stickers/${sticker.id}`}
+                class="sticker-card"
+              >
+
+
+                <!-- IMAGE -->
+
+                <div class="sticker-image-wrap">
+
+                  <img
+                    class="sticker-image"
+                    src={sticker.image}
+                    alt={sticker.title}
+                    loading={index < 8 ? "eager" : "lazy"}
+                  />
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="sticker-content">
+
+
+                  <div class="sticker-number">
+                    {String(index + 1).padStart(3, "0")}
+                  </div>
+
+
+                  <h3 class="sticker-title">
+                    {sticker.title}
+                  </h3>
+
+
+                  {
+                    sticker.description && (
+
+                      <p class="sticker-description">
+                        {sticker.description}
+                      </p>
+
+                    )
+                  }
+
+
+
+                  <div class="sticker-meta">
+
+
+                    <div class="price">
+                      {sticker.price}
+                    </div>
+
+
+                    <div class="detail-link">
+                      詳しく見る →
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+              </a>
+
+            ))
+          }
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================
+           INTRO
+      ====================================== -->
+
+      <section class="intro">
+
+
+        <div class="intro-label">
+          ABOUT STAMP MOKE
+        </div>
+
+
+        <h2 class="intro-title">
+
+          毎日のひとことを、<br />
+          ちょっと楽しく。
+
+        </h2>
+
+
+        <p class="intro-text">
+
+          STAMP MOKEは、毎日の会話で使いたくなる
+          LINEスタンプを紹介するメディアです。
+
+          <br /><br />
+
+          かわいいスタンプ、
+          ちょっと笑えるスタンプ、
+          気持ちを代わりに伝えてくれるスタンプ。
+
+          <br /><br />
+
+          あなたの日常にぴったりの
+          スタンプを見つけてください。
+
+        </p>
+
+
+      </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="footer">
+
+      <div class="footer-inner">
+
+
+        <div class="footer-grid">
+
+
+          <div>
+
+            <div class="footer-brand">
+              STAMP MOKE
+            </div>
+
+            <div class="footer-copy">
+
+              みんなの日常を、<br />
+              スタンプでもっと楽しく。<br />
+              あなたのお気に入りがきっと見つかる。
+
+            </div>
+
+          </div>
+
+
+
+          <div>
+
+            <div class="footer-heading">
+              MENU
+            </div>
+
+            <a
+              href="/"
+              class="footer-link"
+            >
+              ホーム
+            </a>
+
+            <a
+              href="#stickers"
+              class="footer-link"
+            >
+              スタンプ一覧
+            </a>
+
+          </div>
+
+
+
+          <div>
+
+            <div class="footer-heading">
+              INFORMATION
+            </div>
+
+            <a
+              href="#stickers"
+              class="footer-link"
+            >
+              NEW STICKERS
+            </a>
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="copyright">
+
+          <span>
+            © {new Date().getFullYear()} STAMP MOKE
+          </span>
+
+          <span>
+            LINE STICKERS
+          </span>
+
+        </div>
+
+
+      </div>
+
+    </footer>
+
+
+  </body>
+
+</html>
