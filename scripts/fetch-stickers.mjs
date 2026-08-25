@@ -65,7 +65,9 @@ async function getHtml(url) {
     );
   }
 
-  return await response.text();
+  const buffer = await response.arrayBuffer();
+
+  return new TextDecoder("utf-8").decode(buffer);
 }
 
 
