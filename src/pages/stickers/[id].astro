@@ -1,7 +1,8 @@
 ---
-import stickers from "../../../data/stickers.json";
-import SeoHead from "../../../components/SeoHead.astro";
-import { makeTitle, makeDescription, absoluteUrl } from "../../../lib/seo";
+import stickers from "../../data/stickers.json";
+import SeoHead from "../../components/SeoHead.astro";
+import { makeTitle, makeDescription, absoluteUrl } from "../../lib/seo";
+import { getCategory } from "../../lib/stickers";
 
 export function getStaticPaths() {
   return stickers.map((sticker) => ({ params: { id: sticker.id }, props: { sticker } }));
@@ -12,6 +13,7 @@ const purchaseUrl = sticker.purchaseUrl || sticker.url;
 const pageTitle = makeTitle([`${sticker.title}｜LINEスタンプ`]);
 const description = makeDescription(sticker.description || "", `${sticker.title}のLINEスタンプ。STAMP MOKEで作品情報を紹介しています。`);
 const canonical = absoluteUrl(`/stickers/${sticker.id}`);
-const related = stickers.filter((item) => item.id !== sticker.id && item.category === sticker.category).slice(0, 6);
+const category = getCategory(sticker);
+const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
 ---
 <!doctype html><html lang="ja"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>{pageTitle}</title><SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" /><script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"STAMP MOKE","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":sticker.title,"item":canonical}]})} /></head><body><main><nav aria-label="パンくず"><a href="/">STAMP MOKE</a> / LINEスタンプ / {sticker.title}</nav><article><h1>{sticker.title}</h1><p>{description}</p><img src={sticker.image} alt={`${sticker.title}のLINEスタンプ`} loading="eager" decoding="async" width="512" height="512" /><p><a href={purchaseUrl} rel="noopener">LINE STOREで見る・購入する</a></p></article>{related.length > 0 && <section aria-labelledby="related"><h2 id="related">関連するLINEスタンプ</h2><ul>{related.map((item) => <li><a href={`/stickers/${item.id}`}>{item.title}</a></li>)}</ul></section>}</main></body></html>
