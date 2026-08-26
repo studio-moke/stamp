@@ -7,19 +7,20 @@ import {
   SITE_URL,
 } from "../../../lib/stickers";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = Astro.props.pageSize ?? 24;
 
 export function getStaticPaths() {
   const paths = [];
+  const pageSize = 24;
 
   for (const category of CATEGORY_DEFINITIONS) {
     const items = stickers.filter((sticker) => getCategory(sticker) === category.name);
-    const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+    const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
 
     for (let page = 1; page <= totalPages; page += 1) {
       paths.push({
         params: { category: category.slug, page: String(page) },
-        props: { category, items, page, totalPages },
+        props: { category, items, page, totalPages, pageSize },
       });
     }
   }
