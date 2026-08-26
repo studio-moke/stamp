@@ -4,13 +4,12 @@ import { CATEGORY_DEFINITIONS, getCategory } from "../../../lib/stickers";
 import SeoHead from "../../../components/SeoHead.astro";
 import { makeTitle, makeDescription, absoluteUrl } from "../../../lib/seo";
 
-const PAGE_SIZE = 24;
-
 export function getStaticPaths(){
+  const pageSize = 24;
   const paths = [];
   for (const category of CATEGORY_DEFINITIONS) {
     const items = stickers.filter((s) => getCategory(s) === category.name);
-    const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+    const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
     for (let page = 1; page <= totalPages; page++) {
       paths.push({
         params: { category: category.slug, page: String(page) },
@@ -21,9 +20,10 @@ export function getStaticPaths(){
   return paths;
 }
 
+const pageSize = 24;
 const { category: categoryParam, items, page, totalPages } = Astro.props;
 const category = categoryParam;
-const visible = items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+const visible = items.slice((page - 1) * pageSize, page * pageSize);
 const title = makeTitle([`${category.name}のLINEスタンプ${page > 1 ? `｜${page}ページ目` : ""}`]);
 const description = makeDescription("", `${category.name}のLINEスタンプをSTAMP MOKEで紹介。${items.length}作品から探せます。${page > 1 ? `${page}ページ目。` : ""}`);
 const canonical = absoluteUrl(`/categories/${category.slug}/${page}`);
