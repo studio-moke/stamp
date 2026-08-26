@@ -1,11 +1,4 @@
-import { SITE_URL } from "../lib/stickers";
+import type { APIRoute } from "astro";
+import { SITE_URL } from "../lib/seo";
 
-export function GET() {
-  const body = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
-
-  return new Response(body, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-    },
-  });
-}
+export const GET: APIRoute = () => new Response(`User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap-index.xml\n`, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
