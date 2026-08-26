@@ -7,8 +7,6 @@ import {
   SITE_URL,
 } from "../../../lib/stickers";
 
-const PAGE_SIZE = Astro.props.pageSize ?? 24;
-
 export function getStaticPaths() {
   const paths = [];
   const pageSize = 24;
@@ -28,10 +26,16 @@ export function getStaticPaths() {
   return paths;
 }
 
-const { category: categoryParam, items, page, totalPages } = Astro.props;
+const {
+  category: categoryParam,
+  items,
+  page,
+  totalPages,
+  pageSize = 24,
+} = Astro.props;
 const category = categoryParam;
-const start = (page - 1) * PAGE_SIZE;
-const visible = items.slice(start, start + PAGE_SIZE);
+const start = (page - 1) * pageSize;
+const visible = items.slice(start, start + pageSize);
 const categoryMeta = getCategoryBySlug(category.slug);
 const basePath = `${SITE_URL}/categories/${category.slug}`;
 
