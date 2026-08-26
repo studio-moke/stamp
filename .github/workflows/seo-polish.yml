@@ -1,0 +1,77 @@
+name: SEO Polish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  seo-polish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Improve SEO metadata
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              if old in text:
+                  text = text.replace(old, new, 1)
+                  p.write_text(text, encoding="utf-8")
+                  return True
+              return False
+
+          changed = False
+
+          # Homepage: stronger search intent while keeping the brand.
+          changed |= replace_once(
+              "src/pages/index.astro",
+              'const siteTitle = "STAMP MOKE｜LINEスタンプ専門メディア";',
+              'const siteTitle = "LINEスタンプおすすめ｜かわいい・面白いスタンプを探すならSTAMP MOKE";'
+          )
+          changed |= replace_once(
+              "src/pages/index.astro",
+              '  <meta property="og:type" content="website" />',
+              '  <meta property="og:type" content="website" />\n  <link rel="canonical" href="https://stamp-moke.jp/" />\n  <meta property="og:url" content="https://stamp-moke.jp/" />'
+          )
+
+          # Sticker detail pages: add category context, canonical URL, and a useful WebPage/Breadcrumb schema.
+          detail = Path("src/pages/stickers/[id].astro")
+          text = detail.read_text(encoding="utf-8")
+          original = text
+          text = text.replace(
+              'import stickers from "../../data/stickers.json";',
+              'import stickers from "../../data/stickers.json";\nimport { getCategory, SITE_URL } from "../../lib/stickers";',
+              1
+          )
+          text = text.replace(
+              'const pageTitle = `${sticker.title} | STAMP MOKE`;',
+              'const category = getCategory(sticker);\nconst pageTitle = `${sticker.title}｜${category}のLINEスタンプ｜STAMP MOKE`;',
+              1
+          )
+          text = text.replace(
+              '    <title>{pageTitle}</title>',
+              '    <title>{pageTitle}</title>\n\n    <link rel="canonical" href={`${SITE_URL}/stickers/${sticker.id}`} />',
+              1
+          )
+          text = text.replace(
+              '    <meta\n      property="og:site_name"\n      content="STAMP MOKE"\n    />',
+              '    <meta\n      property="og:site_name"\n      content="STAMP MOKE"\n    />\n\n    <meta property="og:url" content={`${SITE_URL}/stickers/${sticker.id}`} />\n\n    <script type="application/ld+json" set:html={JSON.stringify({\n      "@context": "https://schema.org",\n      "@type": "WebPage",\n      name: pageTitle,\n      description,\n      url: `${SITE_URL}/stickers/${sticker.id}`,\n      isPartOf: { "@type": "WebSite", name: "STAMP MOKE", url: SITE_URL },\n      breadcrumb: {\n        "@type": "BreadcrumbList",\n        itemListElement: [\n          { "@type": "ListItem", position: 1, name: "STAMP MOKE", item: SITE_URL },\n          { "@type": "ListItem", position: 2, name: `${category}のLINEスタンプ` },\n          { "@type": "ListItem", position: 3, name: sticker.title, item: `${SITE_URL}/stickers/${sticker.id}` }\n        ]\n      }\n    })} />',
+              1
+          )
+          if text != original:
+              detail.write_text(text, encoding="utf-8")
+              changed = True
+
+          if changed:
+              print("SEO metadata updated")
+          else:
+              print("SEO metadata already up to date")
