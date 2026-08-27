@@ -22,7 +22,6 @@ jobs:
           node-version: "22"
 
       - name: Fetch stickers
-        continue-on-error: true
         run: node scripts/fetch-stickers.mjs
 
       - name: Validate sticker count
@@ -30,11 +29,10 @@ jobs:
           COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('src/data/stickers.json','utf8')); console.log(data.length)")
           echo "Current sticker count: $COUNT"
           if [ "$COUNT" -lt 100 ]; then
-            echo "WARNING: Sticker count is below 100. Restoring the previous data."
-            git checkout -- src/data/stickers.json public/images/stickers
-          else
-            echo "Sticker count is safe: $COUNT"
+            echo "ERROR: Sticker count is below 100. Refusing to commit potentially incomplete data."
+            exit 1
           fi
+          echo "Sticker count is safe: $COUNT"
 
       - name: Commit changes
         run: |
