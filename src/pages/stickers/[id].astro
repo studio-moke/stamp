@@ -10,8 +10,12 @@ export function getStaticPaths() {
 
 const { sticker } = Astro.props;
 const purchaseUrl = sticker.purchaseUrl || sticker.url;
-const pageTitle = makeTitle([`${sticker.title}｜LINEスタンプ`]);
-const description = makeDescription(sticker.description || "", `${sticker.title}のLINEスタンプ。STAMP MOKEで作品情報を紹介しています。`);
+const giftUrl = sticker.giftUrl || purchaseUrl;
+const qrTarget = sticker.url || purchaseUrl;
+const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
+const cleanTitle = sticker.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "");
+const pageTitle = makeTitle([`${cleanTitle}｜LINEスタンプ`]);
+const description = makeDescription(sticker.description || "", `${cleanTitle}のLINEスタンプ。STAMP MOKEで作品情報を紹介しています。`);
 const canonical = absoluteUrl(`/stickers/${sticker.id}`);
 const category = getCategory(sticker);
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
@@ -23,201 +27,157 @@ const related = stickers.filter((item) => item.id !== sticker.id && getCategory(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
   <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" />
-  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"STAMP MOKE","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":sticker.title,"item":canonical}]})} />
+  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"STAMP MOKE","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: #f7f6f2;
-      color: #161616;
-      font-family: Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      -webkit-font-smoothing: antialiased;
+    body { margin:0; background:#f7f6f2; color:#161616; font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; }
+    .header { min-height:86px; background:rgba(255,255,255,.96); border-bottom:1px solid #e4e3df; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:14px 5vw; position:sticky; top:0; z-index:20; backdrop-filter:blur(12px); }
+    .brand { text-decoration:none; }
+    .brand-title { font-size:21px; font-weight:900; letter-spacing:.1em; line-height:1; }
+    .brand-sub { margin-top:7px; font-size:11px; color:#777; letter-spacing:.05em; }
+    .header-link { text-decoration:none; border:1px solid #d9d8d4; background:#fff; padding:13px 22px; border-radius:999px; font-size:13px; font-weight:700; white-space:nowrap; }
+    .main { max-width:1180px; margin:0 auto; padding:38px 5vw 100px; }
+    .breadcrumb { color:#777; font-size:12px; line-height:1.8; margin-bottom:28px; }
+    .breadcrumb a { text-decoration:none; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .detail-card { display:grid; grid-template-columns:minmax(300px,1fr) minmax(340px,1fr); gap:56px; align-items:center; background:#fff; border:1px solid #e3e2de; border-radius:24px; padding:42px; }
+    .image-panel { aspect-ratio:1/1; background:#f3f2ee; border-radius:18px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .sticker-image { display:block; width:100%; height:100%; object-fit:contain; padding:28px; }
+    .category-label { display:inline-block; margin-bottom:16px; padding:7px 12px; border:1px solid #deddd8; border-radius:999px; color:#777; font-size:11px; font-weight:700; letter-spacing:.08em; }
+    h1 { margin:0; font-size:clamp(30px,4vw,52px); line-height:1.14; letter-spacing:-.035em; font-weight:900; }
+    .description { margin:22px 0 0; color:#666; font-size:14px; line-height:2; }
+    .price { margin:24px 0 0; font-size:24px; font-weight:900; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+    .action { min-height:50px; padding:0 22px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; font-size:13px; font-weight:800; }
+    .action-buy { background:#168b52; color:#fff; }
+    .action-gift { background:#171717; color:#fff; }
+    .trust-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:28px; padding-top:22px; border-top:1px solid #eeeeeb; }
+    .trust-item { font-size:11px; line-height:1.6; color:#666; }
+    .trust-item strong { display:block; color:#222; font-size:12px; margin-bottom:3px; }
+    .info-grid { display:grid; grid-template-columns:minmax(260px,.8fr) minmax(360px,1.2fr); gap:18px; margin-top:20px; }
+    .sub-card { background:#fff; border:1px solid #e3e2de; border-radius:20px; padding:28px; }
+    .sub-label { font-size:11px; letter-spacing:.18em; color:#777; margin-bottom:8px; }
+    .sub-title { margin:0 0 18px; font-size:24px; font-weight:900; letter-spacing:-.02em; }
+    .qr-wrap { display:flex; align-items:center; gap:22px; }
+    .qr { width:150px; height:150px; border-radius:12px; border:1px solid #eee; background:#fff; padding:8px; flex:0 0 auto; }
+    .qr-copy { color:#666; font-size:12px; line-height:1.8; }
+    .smartphone-link { display:inline-block; margin-top:10px; font-weight:800; color:#168b52; text-decoration:none; }
+    .detail-list { margin:0; }
+    .detail-row { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid #efefec; font-size:12px; line-height:1.6; }
+    .detail-row dt { color:#777; }
+    .detail-row dd { margin:0; font-weight:700; overflow-wrap:anywhere; }
+    .official-link { display:inline-flex; margin-top:18px; min-height:44px; align-items:center; font-size:12px; font-weight:800; text-decoration:none; border-bottom:1px solid #222; }
+    .related { margin-top:70px; }
+    .section-label { font-size:11px; letter-spacing:.18em; color:#777; margin-bottom:8px; }
+    .section-title { margin:0 0 20px; font-size:32px; line-height:1.1; font-weight:900; letter-spacing:-.03em; }
+    .related-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; list-style:none; padding:0; margin:0; }
+    .related-card { height:100%; display:flex; flex-direction:column; background:#fff; border:1px solid #e3e2de; border-radius:16px; overflow:hidden; text-decoration:none; transition:transform .2s ease,box-shadow .2s ease; }
+    .related-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.07); }
+    .related-media { height:260px; display:flex; align-items:center; justify-content:center; background:#f3f2ee; padding:18px; }
+    .related-image { display:block; width:100%; height:100%; object-fit:contain; }
+    .related-title { margin:0; padding:14px 15px 16px; font-size:13px; line-height:1.5; font-weight:800; overflow-wrap:anywhere; }
+    .footer { background:#181818; color:#fff; padding:55px 5vw 30px; }
+    .footer-inner { max-width:1180px; margin:0 auto; }
+    .footer-brand { font-size:18px; font-weight:900; letter-spacing:.1em; }
+    .footer-copy { margin:14px 0 0; color:#999; font-size:11px; line-height:1.9; }
+    .footer-links { display:flex; flex-wrap:wrap; gap:16px; margin-top:18px; }
+    .footer-links a { color:#ccc; font-size:11px; text-decoration:none; }
+    .copyright { margin-top:28px; padding-top:20px; border-top:1px solid #333; color:#666; font-size:10px; }
+    @media (max-width:850px) {
+      .detail-card { grid-template-columns:1fr; gap:30px; padding:24px; }
+      .image-panel { max-width:560px; width:100%; margin:0 auto; }
+      .info-grid { grid-template-columns:1fr; }
+      .related-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .related-media { height:220px; }
     }
-    a { color: inherit; }
-    .header {
-      height: 86px;
-      background: rgba(255,255,255,.96);
-      border-bottom: 1px solid #e4e3df;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5vw;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(12px);
+    @media (max-width:640px) {
+      .header { min-height:72px; padding:12px 20px; }
+      .brand-title { font-size:17px; }
+      .brand-sub { font-size:9px; margin-top:5px; }
+      .header-link { padding:10px 14px; font-size:11px; }
+      .main { padding:24px 18px 70px; }
+      .breadcrumb { font-size:11px; margin-bottom:20px; }
+      .detail-card { border-radius:16px; padding:16px; gap:24px; }
+      .image-panel { border-radius:13px; }
+      .sticker-image { padding:12px; }
+      h1 { font-size:29px; }
+      .description { margin-top:16px; font-size:12px; line-height:1.9; }
+      .price { font-size:21px; margin-top:18px; }
+      .actions { display:grid; grid-template-columns:1fr; }
+      .action { width:100%; min-height:48px; }
+      .trust-grid { grid-template-columns:1fr; gap:12px; }
+      .sub-card { padding:20px; border-radius:16px; }
+      .qr-wrap { align-items:flex-start; }
+      .qr { width:112px; height:112px; }
+      .sub-title { font-size:21px; }
+      .detail-row { grid-template-columns:88px 1fr; }
+      .related { margin-top:52px; }
+      .section-title { font-size:27px; }
+      .related-grid { gap:10px; }
+      .related-card { border-radius:12px; }
+      .related-media { height:170px; padding:12px; }
+      .related-title { padding:10px 10px 12px; font-size:11px; }
+      .footer { padding:45px 20px 25px; }
     }
-    .brand { text-decoration: none; }
-    .brand-title { font-size: 21px; font-weight: 900; letter-spacing: .1em; line-height: 1; }
-    .brand-sub { margin-top: 7px; font-size: 11px; color: #777; letter-spacing: .05em; }
-    .header-link {
-      text-decoration: none;
-      border: 1px solid #d9d8d4;
-      background: #fff;
-      padding: 13px 22px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .main { max-width: 1180px; margin: 0 auto; padding: 38px 5vw 100px; }
-    .breadcrumb { color: #777; font-size: 12px; line-height: 1.8; margin-bottom: 28px; }
-    .breadcrumb a { text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .detail-card {
-      display: grid;
-      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
-      gap: 64px;
-      align-items: center;
-      background: #fff;
-      border: 1px solid #e3e2de;
-      border-radius: 24px;
-      padding: 42px;
-    }
-    .image-panel {
-      aspect-ratio: 1 / 1;
-      background: #f3f2ee;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .sticker-image {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      padding: 28px;
-    }
-    .category-label {
-      display: inline-block;
-      margin-bottom: 16px;
-      padding: 7px 12px;
-      border: 1px solid #deddd8;
-      border-radius: 999px;
-      color: #777;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-    }
-    h1 {
-      margin: 0;
-      font-size: clamp(32px, 4vw, 54px);
-      line-height: 1.12;
-      letter-spacing: -.035em;
-      font-weight: 900;
-    }
-    .description {
-      margin: 24px 0 0;
-      color: #666;
-      font-size: 14px;
-      line-height: 2;
-    }
-    .purchase-box {
-      margin-top: 30px;
-      padding-top: 24px;
-      border-top: 1px solid #eeeeeb;
-    }
-    .purchase-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50px;
-      padding: 0 24px;
-      border-radius: 999px;
-      background: #168b52;
-      color: #fff;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 800;
-      transition: transform .2s ease, opacity .2s ease;
-    }
-    .purchase-button:hover { transform: translateY(-2px); opacity: .9; }
-    .related { margin-top: 70px; }
-    .section-label { font-size: 11px; letter-spacing: .18em; color: #777; margin-bottom: 8px; }
-    .section-title { margin: 0 0 20px; font-size: 32px; line-height: 1.1; font-weight: 900; letter-spacing: -.03em; }
-    .related-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .related-card {
-      display: block;
-      background: #fff;
-      border: 1px solid #e3e2de;
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-    .related-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,.07); }
-    .related-image { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; display: block; background: #f3f2ee; padding: 14px; }
-    .related-title { margin: 0; padding: 14px 15px 16px; font-size: 13px; line-height: 1.5; font-weight: 800; }
-    .footer { background: #181818; color: #fff; padding: 55px 5vw 30px; }
-    .footer-inner { max-width: 1180px; margin: 0 auto; }
-    .footer-brand { font-size: 18px; font-weight: 900; letter-spacing: .1em; }
-    .footer-copy { margin: 14px 0 0; color: #999; font-size: 11px; line-height: 1.9; }
-    .copyright { margin-top: 28px; padding-top: 20px; border-top: 1px solid #333; color: #666; font-size: 10px; }
-    @media (max-width: 800px) {
-      .detail-card { grid-template-columns: 1fr; gap: 35px; padding: 24px; }
-      .image-panel { max-width: 600px; width: 100%; margin: 0 auto; }
-      .related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 640px) {
-      .header { height: 72px; padding: 0 20px; }
-      .brand-title { font-size: 17px; }
-      .brand-sub { font-size: 9px; margin-top: 5px; }
-      .header-link { padding: 10px 14px; font-size: 11px; }
-      .main { padding: 24px 18px 70px; }
-      .breadcrumb { font-size: 11px; margin-bottom: 20px; }
-      .detail-card { border-radius: 16px; padding: 16px; gap: 28px; }
-      .image-panel { border-radius: 13px; }
-      .sticker-image { padding: 12px; }
-      h1 { font-size: 30px; }
-      .description { margin-top: 18px; font-size: 12px; line-height: 1.9; }
-      .purchase-box { margin-top: 22px; padding-top: 18px; }
-      .purchase-button { width: 100%; min-height: 48px; }
-      .related { margin-top: 55px; }
-      .section-title { font-size: 27px; }
-      .related-grid { gap: 10px; }
-      .related-card { border-radius: 12px; }
-      .related-image { padding: 8px; }
-      .related-title { padding: 10px 10px 12px; font-size: 11px; }
-      .footer { padding: 45px 20px 25px; }
+    @media (max-width:390px) {
+      .related-media { height:150px; }
+      .qr-wrap { flex-direction:column; }
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <a href="/" class="brand">
-      <div class="brand-title">STAMP MOKE</div>
-      <div class="brand-sub">LINEスタンプ専門メディア</div>
-    </a>
+    <a href="/" class="brand"><div class="brand-title">STAMP MOKE</div><div class="brand-sub">LINEスタンプ専門メディア</div></a>
     <a href="/" class="header-link">スタンプ一覧へ</a>
   </header>
 
   <main class="main">
-    <nav class="breadcrumb" aria-label="パンくず">
-      <a href="/">STAMP MOKE</a> / <a href="/">LINEスタンプ</a> / {sticker.title}
-    </nav>
+    <nav class="breadcrumb" aria-label="パンくず"><a href="/">STAMP MOKE</a> / <a href="/">LINEスタンプ</a> / {cleanTitle}</nav>
 
     <article class="detail-card">
-      <div class="image-panel">
-        <img class="sticker-image" src={sticker.image} alt={`${sticker.title}のLINEスタンプ`} loading="eager" decoding="async" width="512" height="512" />
-      </div>
+      <div class="image-panel"><img class="sticker-image" src={sticker.image} alt={`${cleanTitle}のLINEスタンプ`} loading="eager" decoding="async" width="512" height="512" /></div>
       <div>
         <div class="category-label">{category}</div>
-        <h1>{sticker.title}</h1>
+        <h1>{cleanTitle}</h1>
         <p class="description">{description}</p>
-        <div class="purchase-box">
-          <a class="purchase-button" href={purchaseUrl} rel="noopener">LINE STOREで見る・購入する</a>
+        {sticker.price && <div class="price">{sticker.price}</div>}
+        <div class="actions">
+          <a class="action action-buy" href={purchaseUrl} rel="noopener">LINE STOREで購入する</a>
+          <a class="action action-gift" href={giftUrl} rel="noopener">プレゼントする</a>
+        </div>
+        <div class="trust-grid">
+          <div class="trust-item"><strong>安心・安全</strong>LINE STORE公式ページから購入できます。</div>
+          <div class="trust-item"><strong>スマホで簡単</strong>QRコードからすぐに商品ページを開けます。</div>
+          <div class="trust-item"><strong>プレゼントOK</strong>友だちへのギフトにも利用できます。</div>
         </div>
       </div>
     </article>
+
+    <div class="info-grid">
+      <section class="sub-card">
+        <div class="sub-label">OPEN ON SMARTPHONE</div>
+        <h2 class="sub-title">スマホで見る</h2>
+        <div class="qr-wrap">
+          <img class="qr" src={qrUrl} alt={`${cleanTitle}の商品ページQRコード`} width="240" height="240" loading="lazy" />
+          <div class="qr-copy">スマートフォンのカメラでQRコードを読み取ると、LINE STOREの商品ページを開けます。<br /><a class="smartphone-link" href={purchaseUrl} rel="noopener">スマホで商品ページを開く →</a></div>
+        </div>
+      </section>
+
+      <section class="sub-card">
+        <div class="sub-label">ABOUT THIS STICKER</div>
+        <h2 class="sub-title">このスタンプについて</h2>
+        <dl class="detail-list">
+          <div class="detail-row"><dt>商品ID</dt><dd>{sticker.id}</dd></div>
+          <div class="detail-row"><dt>カテゴリ</dt><dd>{category}</dd></div>
+          {sticker.price && <div class="detail-row"><dt>価格</dt><dd>{sticker.price}</dd></div>}
+          <div class="detail-row"><dt>販売元</dt><dd>LINE STORE</dd></div>
+          <div class="detail-row"><dt>作品名</dt><dd>{cleanTitle}</dd></div>
+        </dl>
+        <a class="official-link" href={purchaseUrl} rel="noopener">LINE STORE公式ページを見る →</a>
+      </section>
+    </div>
 
     {related.length > 0 && (
       <section class="related" aria-labelledby="related">
@@ -225,24 +185,13 @@ const related = stickers.filter((item) => item.id !== sticker.id && getCategory(
         <h2 id="related" class="section-title">関連するLINEスタンプ</h2>
         <ul class="related-grid">
           {related.map((item) => (
-            <li>
-              <a class="related-card" href={`/stickers/${item.id}`}>
-                <img class="related-image" src={item.image} alt={`${item.title}のLINEスタンプ`} loading="lazy" width="512" height="512" />
-                <p class="related-title">{item.title}</p>
-              </a>
-            </li>
+            <li><a class="related-card" href={`/stickers/${item.id}`}><div class="related-media"><img class="related-image" src={item.image} alt={`${item.title}のLINEスタンプ`} loading="lazy" width="512" height="512" /></div><p class="related-title">{item.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "")}</p></a></li>
           ))}
         </ul>
       </section>
     )}
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">STAMP MOKE</div>
-      <p class="footer-copy">かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。</p>
-      <div class="copyright">© STAMP MOKE</div>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-inner"><div class="footer-brand">STAMP MOKE</div><p class="footer-copy">かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。</p><div class="footer-links"><a href="/">スタンプ一覧</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© STAMP MOKE</div></div></footer>
 </body>
 </html>
