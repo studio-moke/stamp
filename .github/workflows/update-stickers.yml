@@ -11,8 +11,6 @@ on:
       - main
     paths:
       - "scripts/fetch-stickers.mjs"
-      - "scripts/discover-author-pages.mjs"
-      - "scripts/discover-new-stickers.mjs"
       - ".github/workflows/update-stickers.yml"
 
 permissions:
@@ -38,14 +36,8 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Fetch stickers
+      - name: Fetch latest stickers
         run: node scripts/fetch-stickers.mjs
-
-      - name: Discover author pages with session
-        run: node scripts/discover-author-pages.mjs
-
-      - name: Discover new stickers from related works
-        run: node scripts/discover-new-stickers.mjs
 
       - name: Validate sticker count
         run: |
