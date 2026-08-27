@@ -5,12 +5,13 @@ on:
     # 毎日 00:00 UTC = 09:00 JST
     - cron: "0 0 * * *"
   workflow_dispatch:
-  # この自動更新処理自体を修正した時は、その場で動作確認する
+  # 自動更新処理を修正した時だけ、その場で動作確認する
   push:
     branches:
       - main
     paths:
       - "scripts/fetch-stickers.mjs"
+      - "scripts/discover-author-pages.mjs"
       - "scripts/discover-new-stickers.mjs"
       - ".github/workflows/update-stickers.yml"
 
@@ -39,6 +40,9 @@ jobs:
 
       - name: Fetch stickers
         run: node scripts/fetch-stickers.mjs
+
+      - name: Discover author pages with session
+        run: node scripts/discover-author-pages.mjs
 
       - name: Discover new stickers from related works
         run: node scripts/discover-new-stickers.mjs
