@@ -45,33 +45,65 @@ function toAbsoluteUrl(href) { try { return new URL(href, AUTHOR_URL).toString()
 
 function extractPaginationUrls(html) {
   const urls = new Set();
-  const pattern = /href=["']([^"']*(?:\?|&)page=\d+[^"']*)["']/gi;
-  let match;
-  while ((match = pattern.exec(html)) !== null) {
-    const url = toAbsoluteUrl(decodeHtml(match[1]));
-    if (url) urls.add(url);
-  }
-  return [...urls];
-}
-
-function extractProducts(html) {
-  const products = [];
   const patterns = [
-    /href=["'](\/stickershop\/product\/(\d+)\/ja)["'][^>]*>([\s\S]*?)<\/a>/g,
-    /href=["'](https?:\/\/store\.line\.me\/stickershop\/product\/(\d+)\/ja)["'][^>]*>([\s\S]*?)<\/a>/g,
+    /href=["']([^"']*(?:\?|&)page=\d+[^"']*)["']/gi,
+    /["'](\/stickershop\/author\/6507349\/ja\?[^"']*(?:page|offset|start)=\d+[^"']*)["']/gi,
   ];
   for (const pattern of patterns) {
     let match;
     while ((match = pattern.exec(html)) !== null) {
-      const url = match[1].startsWith("http") ? match[1] : `https://store.line.me${match[1]}`;
-      const id = match[2];
-      const title = cleanText(match[3]);
-      if (!products.some((item) => item.id === id)) {
-        products.push({ id, title, url, description: "", price: "", purchaseUrl: url, giftUrl: url, imageUrl: "", image: "" });
-      }
+      const url = toAbsoluteUrl(decodeHtml(match[1]).replace(/\\u0026/g, "&"));
+      if (url) urls.add(url);
     }
   }
-  return products;
+  return [...urls];
+}
+
+function makeProduct(id, title = "") {
+  const url = `https://store.line.me/stickershop/product/${id}/ja`;
+  return { id: String(id), title, url, description: "", price: "", purchaseUrl: url, giftUrl: url, imageUrl: "", image: "" };
+}
+
+function extractProducts(html) {
+  const byId = new Map();
+
+  // まず実際のリンクからタイトル付きで取得。
+  const anchorPatterns = [
+    /href=["'](\/stickershop\/product\/(\d+)\/ja)["'][^>]*>([\s\S]*?)<\/a>/g,
+    /href=["'](https?:\/\/store\.line\.me\/stickershop\/product\/(\d+)\/ja)["'][^>]*>([\s\S]*?)<\/a>/g,
+  ];
+  for (const pattern of anchorPatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      const id = match[2];
+      const title = cleanText(match[3]);
+      if (!byId.has(id)) byId.set(id, makeProduct(id, title));
+    }
+  }
+
+  // LINE STOREは表示件数より多い商品をJSON/JS内に持つことがあるため、
+  // HTML全体から商品URL・productIdも拾う。タイトルなしでも詳細ページで補完する。
+  const normalized = decodeHtml(html)
+    .replace(/\\\//g, "/")
+    .replace(/\\u002F/gi, "/")
+    .replace(/\\u003A/gi, ":")
+    .replace(/\\u0026/gi, "&");
+
+  const idPatterns = [
+    /\/stickershop\/product\/(\d+)\/(?:ja|en)/gi,
+    /["']productId["']\s*:\s*["']?(\d+)["']?/gi,
+    /["']product_id["']\s*:\s*["']?(\d+)["']?/gi,
+  ];
+  for (const pattern of idPatterns) {
+    let match;
+    while ((match = pattern.exec(normalized)) !== null) {
+      const id = match[1];
+      if (!byId.has(id)) byId.set(id, makeProduct(id));
+    }
+  }
+
+  console.log(`  → HTML内の商品ID候補 ${byId.size}件`);
+  return [...byId.values()];
 }
 
 async function getProductInfo(product) {
@@ -180,10 +212,10 @@ async function collectAllProducts() {
     catch (error) { console.log(`  → 取得失敗: ${error.message}`); continue; }
     const products = extractProducts(html);
     const newProducts = products.filter((product) => !knownIds.has(product.id));
-    console.log(`  → ${products.length}作品（新規 ${newProducts.length}作品）`);
+    console.log(`  → ${products.length}作品（巡回内の新規 ${newProducts.length}作品）`);
     for (const product of newProducts) { knownIds.add(product.id); allProducts.push(product); }
     const paginationUrls = sortPaginationUrls(extractPaginationUrls(html));
-    console.log(`  → ページ送りリンク ${paginationUrls.length}件`);
+    console.log(`  → ページ送り候補 ${paginationUrls.length}件`);
     for (const nextUrl of paginationUrls) {
       if (!visitedUrls.has(nextUrl) && !queuedUrls.has(nextUrl)) { queuedUrls.add(nextUrl); queue.push(nextUrl); }
     }
@@ -232,10 +264,16 @@ async function main() {
   fs.mkdirSync(imageDir, { recursive: true });
 
   const existingProducts = loadExistingProducts();
+  const existingIds = new Set(existingProducts.map((p) => String(p.id)));
   console.log(`既存データ: ${existingProducts.length}作品`);
   const fetchedProducts = await collectAllProducts();
+  const brandNewProducts = fetchedProducts.filter((p) => !existingIds.has(String(p.id)));
   console.log("");
   console.log(`今回取得: ${fetchedProducts.length}作品`);
+  console.log(`既存データに無い新作候補: ${brandNewProducts.length}作品`);
+  if (brandNewProducts.length) {
+    console.log(`新作候補ID: ${brandNewProducts.map((p) => p.id).join(", ")}`);
+  }
 
   const mergedBeforeDetails = mergeProducts(existingProducts, fetchedProducts);
   console.log(`統合後: ${mergedBeforeDetails.length}作品`);
@@ -248,7 +286,7 @@ async function main() {
   console.log("");
   for (let i = 0; i < fetchedProducts.length; i++) {
     const product = fetchedProducts[i];
-    console.log(`[${i + 1}/${fetchedProducts.length}] ${product.title}`);
+    console.log(`[${i + 1}/${fetchedProducts.length}] ${product.title || product.id}`);
     await getProductInfo(product);
     await sleep(300);
   }
@@ -265,7 +303,6 @@ async function main() {
     await sleep(300);
   }
 
-  // 詳細情報・画像保存が終わった後に最終統合します。
   const finalProducts = mergeProducts(existingProducts, fetchedProducts);
   const outputProducts = finalProducts.map((product) => ({
     id: product.id,
