@@ -11,6 +11,7 @@ on:
       - main
     paths:
       - "scripts/fetch-stickers.mjs"
+      - "scripts/discover-new-stickers.mjs"
       - ".github/workflows/update-stickers.yml"
 
 permissions:
@@ -39,6 +40,9 @@ jobs:
       - name: Fetch stickers
         run: node scripts/fetch-stickers.mjs
 
+      - name: Discover new stickers from related works
+        run: node scripts/discover-new-stickers.mjs
+
       - name: Validate sticker count
         run: |
           COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('src/data/stickers.json','utf8')); console.log(data.length)")
@@ -66,6 +70,5 @@ jobs:
       - name: Push changes
         if: steps.commit.outputs.changed == 'true'
         run: |
-          # 別の自動処理と競合しても最新mainへ安全に載せる
           git pull --rebase origin main
           git push origin HEAD:main
