@@ -65,6 +65,24 @@ function pickMeta(html, property) {
   return "";
 }
 
+function extractReportedCounts(html) {
+  const text = cleanText(html);
+  const matches = [];
+  const patterns = [
+    /スタンプ\s*絵文字\s*([0-9,]+)\s*件/g,
+    /スタンプ[^0-9]{0,30}([0-9,]+)\s*件/g,
+    /絵文字[^0-9]{0,30}([0-9,]+)\s*件/g,
+    /([0-9,]+)\s*件/g,
+  ];
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      const value = Number(match[1].replace(/,/g, ""));
+      if (Number.isFinite(value) && value > 0 && value < 100000) matches.push(value);
+    }
+  }
+  return [...new Set(matches)];
+}
+
 function extractProducts(html) {
   const products = new Map();
   const pattern = /<a[^>]+href=["'](?:https?:\/\/store\.line\.me)?(\/stickershop\/product\/(\d+)\/(?:ja|en))[^"']*["'][^>]*>([\s\S]*?)<\/a>/gi;
@@ -136,6 +154,9 @@ async function main() {
 
   let firstHtml = await getHtml(AUTHOR_URL, "https://store.line.me/");
   console.log(`セッションCookie: ${cookieJar.size}個${cookieJar.size ? ` (${[...cookieJar.keys()].join(", ")})` : ""}`);
+  const reportedCounts = extractReportedCounts(firstHtml);
+  console.log(`LINE STORE本文内の件数候補: ${reportedCounts.length ? reportedCounts.join(", ") : "検出なし"}`);
+  console.log(`既存JSON件数: ${existing.length}`);
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const url = page === 1 ? AUTHOR_URL : `${AUTHOR_URL}?page=${page}`;
