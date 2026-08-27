@@ -11,6 +11,7 @@ on:
       - main
     paths:
       - "scripts/fetch-stickers.mjs"
+      - "scripts/discover-new-stickers.mjs"
       - ".github/workflows/update-stickers.yml"
 
 permissions:
@@ -38,6 +39,9 @@ jobs:
 
       - name: Fetch latest stickers
         run: node scripts/fetch-stickers.mjs
+
+      - name: Backfill missing stickers
+        run: node scripts/discover-new-stickers.mjs
 
       - name: Validate sticker count
         run: |
