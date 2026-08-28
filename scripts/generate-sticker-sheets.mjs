@@ -4,11 +4,13 @@ import os from "node:os";
 import sharp from "sharp";
 
 const DATA_FILE = path.resolve("src/data/stickers.json");
-const OUTPUT_DIR = path.resolve("public/images/sticker-sheets");
-const COLS = 5;
-const ROWS = 8;
-const CELL_W = 128;
-const CELL_H = 100;
+const OUTPUT_DIR = path.resolve(process.env.STICKER_SHEET_OUTPUT || "public/images/sticker-sheets");
+const SHEET_VERSION = "2";
+const VERSION_FILE = path.join(OUTPUT_DIR, ".version");
+const COLS = 4;
+const ROWS = 10;
+const CELL_W = 160;
+const CELL_H = 128;
 const WIDTH = COLS * CELL_W;
 const HEIGHT = ROWS * CELL_H;
 const CONCURRENCY = 2;
@@ -17,6 +19,34 @@ const headers = {
   "Accept-Language": "ja-JP,ja;q=0.9",
   Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
 };
+
+function removeEdgeBars(source) {
+  return sharp(source)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+    .then(({ data, info }) => {
+      const { width, height, channels } = info;
+      const badColumns = new Set();
+      for (let x = 0; x < width; x++) {
+        let dark = 0;
+        let visible = 0;
+        for (let y = 0; y < height; y++) {
+          const offset = (y * width + x) * channels;
+          const alpha = data[offset + 3];
+          if (alpha < 24) continue;
+          visible++;
+          if (data[offset] < 24 && data[offset + 1] < 24 && data[offset + 2] < 24 && alpha > 220) dark++;
+        }
+        // LINE画像の左右端に混入する縦長の黒帯だけを透明化する。
+        if (visible > height * 0.72 && dark / visible > 0.94) badColumns.add(x);
+      }
+      for (const x of badColumns) {
+        for (let y = 0; y < height; y++) data[(y * width + x) * channels + 3] = 0;
+      }
+      return sharp(data, { raw: info }).png().toBuffer();
+    });
+}
 
 function decodeHtml(text = "") {
   return text.replace(/&amp;/g, "&").replace(/\\\//g, "/").replace(/\\u002F/gi, "/").replace(/\\u003A/gi, ":").replace(/\\u0026/gi, "&");
@@ -59,9 +89,9 @@ async function fetchBuffer(url, extraHeaders = {}) {
   return Buffer.from(await response.arrayBuffer());
 }
 
-async function makeSheet(product) {
+async function makeSheet(product, regenerateAll = false) {
   const output = path.join(OUTPUT_DIR, `${product.id}.webp`);
-  if (fs.existsSync(output)) return { status: "exists", id: product.id };
+  if (!regenerateAll && fs.existsSync(output)) return { status: "exists", id: product.id };
 
   let urls = await getStickerUrlsFromMetadata(product.id);
   for (let attempt = 1; attempt <= 4 && urls.length < 8; attempt++) {
@@ -74,17 +104,23 @@ async function makeSheet(product) {
 
   const layers = await Promise.all(urls.map(async (url, index) => {
     const source = await fetchBuffer(url, { Referer: product.url, Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8" });
-    const image = await sharp(source).resize({ width: 112, height: 88, fit: "contain", withoutEnlargement: true }).png().toBuffer();
+    const cleaned = await removeEdgeBars(source);
+    const image = await sharp(cleaned)
+      .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 }, threshold: 4 })
+      .resize({ width: 132, height: 102, fit: "contain", withoutEnlargement: true })
+      .png()
+      .toBuffer();
+    const metadata = await sharp(image).metadata();
     return {
       input: image,
-      left: Math.floor(index % COLS) * CELL_W + 8,
-      top: Math.floor(index / COLS) * CELL_H + 6,
+      left: Math.floor(index % COLS) * CELL_W + Math.floor((CELL_W - metadata.width) / 2),
+      top: Math.floor(index / COLS) * CELL_H + Math.floor((CELL_H - metadata.height) / 2),
     };
   }));
 
   const watermark = Buffer.from(`<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
-    <defs><pattern id="wm" width="210" height="115" patternUnits="userSpaceOnUse" patternTransform="rotate(-24)">
-      <text x="8" y="58" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="rgba(255,255,255,.24)">STAMP MOKE</text>
+    <defs><pattern id="wm" width="300" height="210" patternUnits="userSpaceOnUse" patternTransform="rotate(-22)">
+      <text x="18" y="105" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="2" fill="rgba(255,255,255,.12)">STAMP MOKE</text>
     </pattern></defs><rect width="100%" height="100%" fill="url(#wm)"/>
   </svg>`);
 
@@ -97,21 +133,29 @@ async function makeSheet(product) {
 
 async function main() {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  const products = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  const allProducts = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  const limit = Number.parseInt(process.env.STICKER_SHEET_LIMIT || "0", 10);
+  const products = limit > 0 ? allProducts.slice(0, limit) : allProducts;
+  const regenerateAll = !fs.existsSync(VERSION_FILE) || fs.readFileSync(VERSION_FILE, "utf8").trim() !== SHEET_VERSION;
+  if (regenerateAll) console.log(`一覧デザインをバージョン${SHEET_VERSION}へ更新します`);
   let created = 0;
+  let failed = 0;
   for (let offset = 0; offset < products.length; offset += CONCURRENCY) {
     const batch = products.slice(offset, offset + CONCURRENCY);
-    const results = await Promise.allSettled(batch.map(makeSheet));
+    const results = await Promise.allSettled(batch.map((product) => makeSheet(product, regenerateAll)));
     for (const result of results) {
       if (result.status === "fulfilled") {
         if (result.value.status === "created") created++;
         console.log(`${result.value.status === "created" ? "作成" : "既存"}: ${result.value.id}${result.value.count ? ` (${result.value.count}個)` : ""}`);
       } else {
+        failed++;
         console.error(`生成失敗: ${result.reason?.message || result.reason}`);
       }
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
+  if (failed > 0) throw new Error(`${failed}件の一覧画像を生成できませんでした`);
+  fs.writeFileSync(VERSION_FILE, `${SHEET_VERSION}\n`);
   console.log(`スタンプ一覧画像: 新規${created} / 合計${products.length}`);
 }
 
