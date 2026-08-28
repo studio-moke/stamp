@@ -547,21 +547,21 @@ const heroSlides = [
         <div class="section-header">
           <div>
             <div class="section-label">CHARACTER GOODS / SUZURI</div>
-            <h2 class="section-title">キャラデザイン</h2>
+            <h2 class="section-title">グッズショップ</h2>
           </div>
           <div class="section-count">{suzuriDesigns.length} DESIGNS</div>
         </div>
         <p class="goods-lead">LINEスタンプから生まれたキャラクターたちを、Tシャツやステッカーなどのグッズにしました。</p>
         <div class="goods-grid">
           {suzuriDesigns.map((design, index) => (
-            <a class="goods-card" href={design.url} target="_blank" rel="noopener noreferrer">
+            <a class="goods-card" href={`/goods/${design.id}`}>
               <div class="goods-image-wrap">
                 <img class="goods-image" src={design.image} alt={`${design.title}のSUZURIグッズ`} loading={index < 4 ? "eager" : "lazy"} />
               </div>
               <div class="goods-content">
-                <div class="goods-label">SUZURI / {design.itemName}</div>
+                <div class="goods-label">CHARACTER DESIGN / SUZURI</div>
                 <h3 class="goods-title">{design.title}</h3>
-                <div class="goods-link">グッズを見る ↗</div>
+                <div class="goods-link">キャラとグッズを見る →</div>
               </div>
             </a>
           ))}
