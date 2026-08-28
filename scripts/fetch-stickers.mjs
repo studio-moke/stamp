@@ -5,7 +5,7 @@ const AUTHOR_URL = "https://store.line.me/stickershop/author/6507349/ja";
 const outputDir = path.resolve("src/data");
 const outputFile = path.join(outputDir, "stickers.json");
 const imageDir = path.resolve("public/images/stickers");
-const MAX_PAGES = 100;
+const MAX_PAGES = 20;
 const MINIMUM_SAFE_COUNT = 100;
 
 const headers = {
@@ -199,14 +199,8 @@ function sortPaginationUrls(urls) { return [...urls].sort((a, b) => getPageNumbe
 async function collectAllProducts() {
   const allProducts = [];
   const knownIds = new Set();
-  const visitedUrls = new Set();
-  const queuedUrls = new Set([AUTHOR_URL]);
-  const queue = [AUTHOR_URL];
-  while (queue.length > 0 && visitedUrls.size < MAX_PAGES) {
-    const url = queue.shift();
-    if (visitedUrls.has(url)) continue;
-    visitedUrls.add(url);
-    const page = getPageNumber(url);
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const url = page === 1 ? AUTHOR_URL : `${AUTHOR_URL}?page=${page}`;
     console.log(`ページ ${page} を取得中...`);
     console.log(`  ${url}`);
     let html;
@@ -216,15 +210,10 @@ async function collectAllProducts() {
     const newProducts = products.filter((product) => !knownIds.has(product.id));
     console.log(`  → ${products.length}作品（巡回内の新規 ${newProducts.length}作品）`);
     for (const product of newProducts) { knownIds.add(product.id); allProducts.push(product); }
-    const paginationUrls = sortPaginationUrls(extractPaginationUrls(html));
-    console.log(`  → ページ送り候補 ${paginationUrls.length}件`);
-    for (const nextUrl of paginationUrls) {
-      if (!visitedUrls.has(nextUrl) && !queuedUrls.has(nextUrl)) { queuedUrls.add(nextUrl); queue.push(nextUrl); }
-    }
-    if (page === 1 && paginationUrls.length === 0) {
-      const fallbackUrl = `${AUTHOR_URL}?page=2`;
-      if (!visitedUrls.has(fallbackUrl) && !queuedUrls.has(fallbackUrl)) { queuedUrls.add(fallbackUrl); queue.push(fallbackUrl); }
-    }
+    // The author page currently has four pages. Walk page numbers directly so
+    // newly created pages are discovered even when LINE omits pagination links
+    // from the returned HTML.
+    if (page > 1 && (products.length === 0 || newProducts.length === 0)) break;
     await sleep(500);
   }
   return allProducts;
