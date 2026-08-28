@@ -5,7 +5,7 @@ import sharp from "sharp";
 
 const DATA_FILE = path.resolve("src/data/stickers.json");
 const OUTPUT_DIR = path.resolve(process.env.STICKER_SHEET_OUTPUT || "public/images/sticker-sheets");
-const SHEET_VERSION = "2";
+const SHEET_VERSION = "3";
 const VERSION_FILE = path.join(OUTPUT_DIR, ".version");
 const COLS = 4;
 const ROWS = 10;
@@ -107,7 +107,13 @@ async function makeSheet(product, regenerateAll = false) {
     const cleaned = await removeEdgeBars(source);
     const image = await sharp(cleaned)
       .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 }, threshold: 4 })
-      .resize({ width: 132, height: 102, fit: "contain", withoutEnlargement: true })
+      .resize({
+        width: 132,
+        height: 102,
+        fit: "contain",
+        withoutEnlargement: true,
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+      })
       .png()
       .toBuffer();
     const metadata = await sharp(image).metadata();
