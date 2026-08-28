@@ -12,6 +12,7 @@ on:
     paths:
       - "scripts/fetch-stickers.mjs"
       - "scripts/discover-new-stickers.mjs"
+      - "scripts/generate-sticker-sheets.mjs"
       - ".github/workflows/update-stickers.yml"
 
 permissions:
@@ -37,11 +38,17 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Install preview image generator
+        run: npm install --no-save sharp
+
       - name: Fetch latest stickers
         run: node scripts/fetch-stickers.mjs
 
       - name: Backfill works through creator product links
         run: node scripts/discover-new-stickers.mjs
+
+      - name: Generate protected sticker preview sheets
+        run: node scripts/generate-sticker-sheets.mjs
 
       - name: Validate sticker count
         run: |
@@ -58,7 +65,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/stickers.json public/images/stickers
+          git add src/data/stickers.json public/images/stickers public/images/sticker-sheets
           if git diff --cached --quiet; then
             echo "No sticker changes detected."
             echo "changed=false" >> "$GITHUB_OUTPUT"
