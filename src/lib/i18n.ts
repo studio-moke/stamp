@@ -1,4 +1,4 @@
-export const LOCALES = ["ja", "en", "zh-tw", "th"] as const;
+export const LOCALES = ["ja", "en", "zh-tw", "th", "id"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const localeInfo: Record<Locale, { label: string; htmlLang: string; ogLocale: string; lineLocale: string }> = {
@@ -6,6 +6,7 @@ export const localeInfo: Record<Locale, { label: string; htmlLang: string; ogLoc
   en: { label: "English", htmlLang: "en", ogLocale: "en_US", lineLocale: "en" },
   "zh-tw": { label: "繁體中文", htmlLang: "zh-Hant-TW", ogLocale: "zh_TW", lineLocale: "zh-Hant" },
   th: { label: "ไทย", htmlLang: "th", ogLocale: "th_TH", lineLocale: "th" },
+  id: { label: "Bahasa Indonesia", htmlLang: "id", ogLocale: "id_ID", lineLocale: "id" },
 };
 
 export const messages = {
@@ -129,6 +130,36 @@ export const messages = {
     suzuriOpen: "ดูบน SUZURI ↗",
     taxIncluded: "รวมภาษี",
   },
+  id: {
+    siteTitle: "stamp moke | Stiker LINE Lucu untuk Sehari-hari",
+    siteDescription: "Temukan stiker LINE orisinal dari studio moke yang lucu, unik, dan praktis untuk obrolan sehari-hari, kerja, pasangan, keluarga, dan teman.",
+    brandSub: "SITUS STIKER LINE ORISINAL",
+    shop: "Produk karakter ↗",
+    viewStickers: "Lihat stiker ↓",
+    heroLead: "Lucu, seru, dan praktis setiap hari. Temukan stiker LINE yang paling cocok untuk obrolan Anda dari berbagai seri.",
+    heroCta: "Cari stiker →",
+    heroTitles: ["Stiker baru,\nterus hadir.", "Temui karakter\nlucu kami.", "Tambahkan tawa\ndi setiap obrolan.", "Buat obrolan harian\nlebih mudah."],
+    all: "Semua",
+    stickers: "STIKER LINE",
+    details: "Lihat detail →",
+    noStickers: "Stiker tidak ditemukan.",
+    goodsTitle: "TOKO PRODUK KARAKTER",
+    goodsLead: "Karakter orisinal dari stiker LINE kami kini tersedia dalam bentuk kaus, stiker, dan berbagai produk lainnya.",
+    goodsLink: "Lihat karakter dan produk →",
+    allGoods: "Lihat semua produk di SUZURI ↗",
+    aboutTitle: "Buat setiap pesan\nlebih menyenangkan.",
+    aboutText: "stamp moke adalah situs resmi stiker LINE orisinal dari studio moke. Jelajahi stiker untuk sapaan sehari-hari, pekerjaan, pasangan, keluarga, dan teman.",
+    footerCopy: "Situs stiker LINE orisinal\nTemukan stiker favorit Anda.",
+    categories: "Kategori",
+    categoryDescription: "Jelajahi stiker LINE stamp moke berdasarkan kategori hewan, lucu, humor, pekerjaan, sapaan, dan lainnya.",
+    buy: "Beli di LINE STORE",
+    gift: "Kirim sebagai hadiah",
+    back: "Kembali ke koleksi",
+    productAbout: "Tentang set stiker ini",
+    goodsProducts: "Produk yang tersedia",
+    suzuriOpen: "Lihat di SUZURI ↗",
+    taxIncluded: "termasuk pajak",
+  },
 } as const;
 
 export const categoryLabels: Record<Locale, Record<string, string>> = {
@@ -136,6 +167,7 @@ export const categoryLabels: Record<Locale, Record<string, string>> = {
   en: { "すべて":"All","仕事":"Work","日常":"Daily","その他":"Other","恋愛":"Love","かわいい":"Cute","動物":"Animals","方言":"Dialects","おもしろ":"Funny","食べ物":"Food","あいさつ":"Greetings" },
   "zh-tw": { "すべて":"全部","仕事":"工作","日常":"日常","その他":"其他","恋愛":"戀愛","かわいい":"可愛","動物":"動物","方言":"方言","おもしろ":"幽默","食べ物":"美食","あいさつ":"問候" },
   th: { "すべて":"ทั้งหมด","仕事":"ที่ทำงาน","日常":"ประจำวัน","その他":"อื่น ๆ","恋愛":"ความรัก","かわいい":"น่ารัก","動物":"สัตว์","方言":"ภาษาถิ่น","おもしろ":"ตลก","食べ物":"อาหาร","あいさつ":"คำทักทาย" },
+  id: { "すべて":"Semua","仕事":"Pekerjaan","日常":"Sehari-hari","その他":"Lainnya","恋愛":"Cinta","かわいい":"Lucu","動物":"Hewan","方言":"Dialek","おもしろ":"Humor","食べ物":"Makanan","あいさつ":"Sapaan" },
 };
 
 export function normalizeLocale(value?: string): Locale {
@@ -154,5 +186,5 @@ export function alternateLinks(path = "/") {
 export function localizeLineUrl(url: string, locale: Locale) {
   if (!url) return url;
   const code = localeInfo[locale].lineLocale;
-  return url.replace(/\/(ja|en|zh-Hant|th)(?=\?|$)/, `/${code}`);
+  return url.replace(/\/(ja|en|zh-Hant|th|id)(?=\?|$)/, `/${code}`);
 }
