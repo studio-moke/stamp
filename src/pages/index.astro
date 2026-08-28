@@ -24,6 +24,24 @@ const categorizedStickers = stickers.map((sticker) => ({
   ...sticker,
   category: getCategory(sticker),
 }));
+
+const xPosts = [
+  {
+    date: "8月27日",
+    text: "謎に説得力のある、仕事ができる人風のスタンプを公開しました！",
+    url: "https://x.com/stampmoke/status/2092845497572823533",
+  },
+  {
+    date: "8月25日",
+    text: "中学生ん時、こんな先生いたよなぁ…というか、実在した私の記憶の中にいる先生です（笑） このたび、スタンプになりました。",
+    url: "https://x.com/stampmoke/status/2092261101572600149",
+  },
+  {
+    date: "8月25日",
+    text: "シュールなスタンプの紹介！寿司が乗り物になったら… 思いつきで作ってみました😂 この中で、採用しなかったものも多いです。一部をご紹介。",
+    url: "https://x.com/stampmoke/status/2092081765624299725",
+  },
+];
 ---
 
 <html lang="ja">
@@ -126,29 +144,57 @@ const categorizedStickers = stickers.map((sticker) => ({
     .x-news-feed {
       min-width: 0;
       border-radius: 16px;
-      overflow: hidden;
-      background: #fff;
+      overflow: auto;
+      background: #f7f6f2;
       border: 1px solid #ebe9e3;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
       min-height: 440px;
-      padding: 10px;
+      max-height: 440px;
+      padding: 14px;
     }
-    .x-timeline-fallback {
-      width: 100%;
-      min-height: 420px;
-      padding: 34px;
+    .x-post {
+      display: block;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid #e5e3dc;
+      background: #fff;
       text-decoration: none;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .x-post + .x-post { margin-top: 10px; }
+    .x-post:hover { transform: translateY(-2px); border-color: #bdbab0; }
+    .x-post-head {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .x-post-account { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .x-post-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: #161616;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .x-post-name { font-size: 13px; line-height: 1.2; font-weight: 900; }
+    .x-post-handle { margin-top: 3px; color: #777; font-size: 11px; }
+    .x-post-mark { font-size: 19px; font-weight: 900; }
+    .x-post-text {
+      margin: 16px 0 0;
       color: #161616;
       font-size: 14px;
-      font-weight: 800;
+      line-height: 1.75;
     }
-    .x-news-feed :global(.twitter-timeline-rendered) { width: 100% !important; }
+    .x-post-date {
+      margin-top: 14px;
+      color: #777;
+      font-size: 11px;
+    }
 
     .section-header {
       display: flex;
@@ -386,21 +432,24 @@ const categorizedStickers = stickers.map((sticker) => ({
       </div>
 
       <div class="x-news-feed">
-        <a
-          class="twitter-timeline x-timeline-fallback"
-          data-height="420"
-          data-theme="light"
-          data-dnt="true"
-          href="https://twitter.com/stampmoke"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          @stampmokeの最新投稿を見る →
-        </a>
+        {xPosts.map((post) => (
+          <a class="x-post" href={post.url} target="_blank" rel="noopener noreferrer">
+            <div class="x-post-head">
+              <div class="x-post-account">
+                <div class="x-post-avatar">M</div>
+                <div>
+                  <div class="x-post-name">moke</div>
+                  <div class="x-post-handle">@stampmoke</div>
+                </div>
+              </div>
+              <div class="x-post-mark" aria-label="X">𝕏</div>
+            </div>
+            <p class="x-post-text">{post.text}</p>
+            <div class="x-post-date">{post.date}・Xで投稿を見る →</div>
+          </a>
+        ))}
       </div>
     </section>
-
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" is:inline></script>
 
     <section id="stickers">
       <div class="section-header">
@@ -569,34 +618,3 @@ const categorizedStickers = stickers.map((sticker) => ({
 
       cards.forEach((card) => {
         card.hidden = !visibleSet.has(card);
-      });
-
-      emptyState.style.display = visible.length === 0 ? "block" : "none";
-      countLabel.textContent = `${visible.length} STICKERS`;
-      renderPagination(totalPages, safePage, (nextPage) => {
-        render(category, nextPage);
-        document.getElementById("stickers").scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-
-      controls.querySelectorAll(".category-button").forEach((button) => {
-        button.classList.toggle("is-active", button.dataset.category === category);
-      });
-    }
-
-    categories.forEach((category) => {
-      const count = category === "すべて"
-        ? cards.length
-        : cards.filter((card) => card.dataset.category === category).length;
-      controls.appendChild(makeButton(category, count, category === "すべて"));
-    });
-
-    controls.addEventListener("click", (event) => {
-      const button = event.target.closest(".category-button");
-      if (!button) return;
-      render(button.dataset.category, 1);
-    });
-
-    render();
-  </script>
-</body>
-</html>
