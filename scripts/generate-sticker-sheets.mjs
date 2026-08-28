@@ -63,14 +63,13 @@ async function makeSheet(product) {
   const output = path.join(OUTPUT_DIR, `${product.id}.webp`);
   if (fs.existsSync(output)) return { status: "exists", id: product.id };
 
-  let urls = [];
+  let urls = await getStickerUrlsFromMetadata(product.id);
   for (let attempt = 1; attempt <= 4 && urls.length < 8; attempt++) {
     const requestUrl = attempt % 2 === 0 ? `${product.url}?from=sticker` : product.url;
     const html = (await fetchBuffer(requestUrl, { Referer: "https://store.line.me/" })).toString("utf8");
     urls = extractStickerUrls(html);
     if (urls.length < 8) await new Promise((resolve) => setTimeout(resolve, attempt * 900));
   }
-  if (urls.length < 8) urls = await getStickerUrlsFromMetadata(product.id);
   if (urls.length < 8) throw new Error(`${product.id}: スタンプ画像を${urls.length}件しか検出できませんでした`);
 
   const layers = await Promise.all(urls.map(async (url, index) => {
