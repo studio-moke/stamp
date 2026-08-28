@@ -3,6 +3,8 @@ import stickers from "../../data/stickers.json";
 import SeoHead from "../../components/SeoHead.astro";
 import { makeTitle, makeDescription, absoluteUrl } from "../../lib/seo";
 import { getCategory } from "../../lib/stickers";
+import fs from "node:fs";
+import path from "node:path";
 
 export function getStaticPaths() {
   return stickers.map((sticker) => ({ params: { id: sticker.id }, props: { sticker } }));
@@ -19,6 +21,8 @@ const description = makeDescription(sticker.description || "", `${cleanTitle}の
 const canonical = absoluteUrl(`/stickers/${sticker.id}`);
 const category = getCategory(sticker);
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
+const sheetUrl = `/images/sticker-sheets/${sticker.id}.webp`;
+const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sticker-sheets", `${sticker.id}.webp`));
 ---
 <!doctype html>
 <html lang="ja">
@@ -69,6 +73,11 @@ const related = stickers.filter((item) => item.id !== sticker.id && getCategory(
     .detail-row dt { color:#777; }
     .detail-row dd { margin:0; font-weight:700; overflow-wrap:anywhere; }
     .official-link { display:inline-flex; margin-top:18px; min-height:44px; align-items:center; font-size:12px; font-weight:800; text-decoration:none; border-bottom:1px solid #222; }
+    .all-stickers { margin-top:70px; }
+    .preview-card { position:relative; max-width:720px; margin:0 auto; padding:20px; background:#fff; border:1px solid #e3e2de; border-radius:20px; overflow:hidden; }
+    .preview-sheet { display:block; width:100%; height:auto; border-radius:14px; -webkit-user-drag:none; -webkit-touch-callout:none; user-select:none; pointer-events:none; }
+    .preview-shield { position:absolute; inset:20px; z-index:2; border-radius:14px; background:transparent; }
+    .preview-note { max-width:720px; margin:14px auto 0; color:#777; font-size:11px; line-height:1.8; text-align:center; }
     .related { margin-top:70px; }
     .section-label { font-size:11px; letter-spacing:.18em; color:#777; margin-bottom:8px; }
     .section-title { margin:0 0 20px; font-size:32px; line-height:1.1; font-weight:900; letter-spacing:-.03em; }
@@ -114,6 +123,10 @@ const related = stickers.filter((item) => item.id !== sticker.id && getCategory(
       .sub-title { font-size:21px; }
       .detail-row { grid-template-columns:88px 1fr; }
       .related { margin-top:52px; }
+      .all-stickers { margin-top:52px; }
+      .preview-card { padding:10px; border-radius:16px; }
+      .preview-sheet,.preview-shield { border-radius:10px; }
+      .preview-shield { inset:10px; }
       .section-title { font-size:27px; }
       .related-grid { gap:10px; }
       .related-card { border-radius:12px; }
@@ -179,6 +192,18 @@ const related = stickers.filter((item) => item.id !== sticker.id && getCategory(
       </section>
     </div>
 
+    {hasSheet && (
+      <section class="all-stickers" aria-labelledby="all-stickers-title">
+        <div class="section-label">ALL STICKERS PREVIEW</div>
+        <h2 id="all-stickers-title" class="section-title">収録スタンプ一覧</h2>
+        <div class="preview-card protected-preview" oncontextmenu="return false">
+          <img class="preview-sheet" src={sheetUrl} alt={`${cleanTitle}に収録されている全スタンプの一覧`} loading="lazy" draggable="false" />
+          <div class="preview-shield" aria-hidden="true"></div>
+        </div>
+        <p class="preview-note">低解像度・透かし入りの確認用プレビューです。画像の保存・転載はご遠慮ください。</p>
+      </section>
+    )}
+
     {related.length > 0 && (
       <section class="related" aria-labelledby="related">
         <div class="section-label">RELATED STICKERS</div>
@@ -193,5 +218,13 @@ const related = stickers.filter((item) => item.id !== sticker.id && getCategory(
   </main>
 
   <footer class="footer"><div class="footer-inner"><div class="footer-brand">STAMP MOKE</div><p class="footer-copy">かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。</p><div class="footer-links"><a href="/">スタンプ一覧</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© STAMP MOKE</div></div></footer>
+  <script is:inline>
+    document.addEventListener("contextmenu", (event) => {
+      if (event.target.closest(".protected-preview")) event.preventDefault();
+    });
+    document.addEventListener("dragstart", (event) => {
+      if (event.target.closest(".protected-preview")) event.preventDefault();
+    });
+  </script>
 </body>
 </html>
