@@ -25,7 +25,7 @@ const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${e
 const cleanTitle = localizedStickerTitle(sticker, locale);
 const localizedDescription = localizedStickerDescription(sticker, locale);
 const localizedPrice = localizedStickerPrice(sticker.price, locale);
-const titleSuffix = locale === "ja" ? "LINEスタンプ" : locale === "en" ? "LINE Stickers" : locale === "zh-tw" ? "LINE貼圖" : "สติกเกอร์ LINE";
+const titleSuffix = locale === "ja" ? "LINEスタンプ" : locale === "en" ? "LINE Stickers" : locale === "zh-tw" ? "LINE貼圖" : locale === "th" ? "สติกเกอร์ LINE" : "Stiker LINE";
 const pageTitle = makeTitle([`${cleanTitle} | ${titleSuffix}`]);
 const localizedFallback = locale === "ja"
   ? `${cleanTitle}のLINEスタンプ。stamp mokeで作品情報を紹介しています。`
@@ -33,7 +33,9 @@ const localizedFallback = locale === "ja"
     ? `Discover ${cleanTitle}, an original LINE sticker set by stamp moke for everyday chats.`
     : locale === "zh-tw"
       ? `探索stamp moke原創LINE貼圖「${cleanTitle}」，適合日常聊天使用。`
-      : `พบกับ ${cleanTitle} ชุดสติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
+      : locale === "th"
+        ? `พบกับ ${cleanTitle} ชุดสติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`
+        : `Temukan ${cleanTitle}, set stiker LINE orisinal dari stamp moke untuk obrolan sehari-hari.`;
 const description = makeDescription(localizedDescription, localizedFallback);
 const canonicalPath = `/stickers/${sticker.id}`;
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
@@ -44,6 +46,7 @@ const pageText = {
   en: { list:"Sticker collection", breadcrumb:"LINE Stickers", gift:"Send as a gift", safe:"Official & secure", safeText:"Purchase safely on the official LINE STORE.", mobile:"Easy on mobile", mobileText:"Open the product page instantly with the QR code.", giftOk:"Gift ready", giftText:"Send this sticker set to a friend on LINE.", phone:"Open on your phone", phoneText:"Scan the QR code with your phone camera to open this set on LINE STORE.", open:"Open product page →", id:"Product ID", category:"Category", price:"Price", seller:"Seller", work:"Title", official:"View official LINE STORE page →", included:"All stickers in this set", note:"Low-resolution watermarked preview. Please do not save or redistribute these images.", related:"Related LINE stickers", footer:"Cute, funny and practical LINE stickers for everyday chats." },
   "zh-tw": { list:"貼圖列表", breadcrumb:"LINE貼圖", gift:"贈送給朋友", safe:"官方安全購買", safeText:"可於LINE STORE官方頁面安心購買。", mobile:"手機快速開啟", mobileText:"掃描QR Code即可開啟商品頁面。", giftOk:"可作為禮物", giftText:"可將這組貼圖贈送給LINE好友。", phone:"用手機查看", phoneText:"使用手機相機掃描QR Code，即可開啟LINE STORE商品頁面。", open:"開啟商品頁面 →", id:"商品ID", category:"分類", price:"價格", seller:"販售平台", work:"作品名稱", official:"查看LINE STORE官方頁面 →", included:"收錄貼圖一覽", note:"此為低解析度浮水印預覽，請勿儲存或轉載圖片。", related:"相關LINE貼圖", footer:"提供可愛、有趣又適合日常使用的原創LINE貼圖。" },
   th: { list:"รวมสติกเกอร์", breadcrumb:"สติกเกอร์ LINE", gift:"ส่งเป็นของขวัญ", safe:"ปลอดภัยและเป็นทางการ", safeText:"ซื้อได้จากหน้า LINE STORE อย่างเป็นทางการ", mobile:"เปิดง่ายบนมือถือ", mobileText:"สแกน QR Code เพื่อเปิดหน้าสินค้าได้ทันที", giftOk:"ส่งเป็นของขวัญได้", giftText:"ส่งชุดสติกเกอร์นี้ให้เพื่อนบน LINE ได้", phone:"เปิดบนมือถือ", phoneText:"สแกน QR Code ด้วยกล้องมือถือเพื่อเปิดหน้าสินค้าบน LINE STORE", open:"เปิดหน้าสินค้า →", id:"รหัสสินค้า", category:"หมวดหมู่", price:"ราคา", seller:"ผู้จำหน่าย", work:"ชื่อผลงาน", official:"ดูหน้า LINE STORE อย่างเป็นทางการ →", included:"สติกเกอร์ทั้งหมดในชุด", note:"ภาพตัวอย่างความละเอียดต่ำพร้อมลายน้ำ กรุณาอย่าบันทึกหรือนำภาพไปเผยแพร่ต่อ", related:"สติกเกอร์ LINE ที่เกี่ยวข้อง", footer:"สติกเกอร์ LINE น่ารัก สนุก และใช้ได้ทุกวัน" },
+  id: { list:"Koleksi stiker", breadcrumb:"Stiker LINE", gift:"Kirim sebagai hadiah", safe:"Resmi dan aman", safeText:"Beli dengan aman melalui halaman resmi LINE STORE.", mobile:"Mudah dibuka di ponsel", mobileText:"Pindai QR Code untuk langsung membuka halaman produk.", giftOk:"Bisa dikirim sebagai hadiah", giftText:"Kirim set stiker ini kepada teman di LINE.", phone:"Buka di ponsel", phoneText:"Pindai QR Code dengan kamera ponsel untuk membuka produk ini di LINE STORE.", open:"Buka halaman produk →", id:"ID Produk", category:"Kategori", price:"Harga", seller:"Penjual", work:"Judul karya", official:"Lihat halaman resmi LINE STORE →", included:"Semua stiker dalam set ini", note:"Pratinjau beresolusi rendah dengan tanda air. Mohon jangan menyimpan atau menyebarkan ulang gambar.", related:"Stiker LINE terkait", footer:"Stiker LINE yang lucu, seru, dan praktis untuk obrolan sehari-hari." },
 }[locale];
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
 const sheetUrl = `/images/sticker-sheets/${sticker.id}.webp`;
