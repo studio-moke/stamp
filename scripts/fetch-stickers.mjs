@@ -18,13 +18,37 @@ const imageHeaders = {
   Referer: "https://store.line.me/",
   Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
 };
+const cookieJar = new Map();
 
 function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
-async function getHtml(url) {
+function updateCookies(response) {
+  let values = [];
+  if (typeof response.headers.getSetCookie === "function") values = response.headers.getSetCookie();
+  if (!values.length) {
+    const combined = response.headers.get("set-cookie");
+    if (combined) values = combined.split(/,(?=[^;,]+=)/g);
+  }
+  for (const value of values) {
+    const pair = value.split(";", 1)[0];
+    const index = pair.indexOf("=");
+    if (index <= 0) continue;
+    cookieJar.set(pair.slice(0, index).trim(), pair.slice(index + 1).trim());
+  }
+}
+
+function cookieHeader() {
+  return [...cookieJar.entries()].map(([key, value]) => `${key}=${value}`).join("; ");
+}
+
+async function getHtml(url, referer = "https://store.line.me/") {
+  const requestHeaders = { ...headers, Referer: referer };
+  const cookies = cookieHeader();
+  if (cookies) requestHeaders.Cookie = cookies;
   // Always read the current author catalog. LINE STORE pagination can change
   // several times a day as newly approved works become public.
-  const response = await fetch(url, { headers, cache: "no-store", redirect: "follow" });
+  const response = await fetch(url, { headers: requestHeaders, cache: "no-store", redirect: "follow" });
+  updateCookies(response);
   if (!response.ok) throw new Error(`${response.status}: ${url}`);
   const buffer = await response.arrayBuffer();
   return new TextDecoder("utf-8").decode(buffer);
@@ -204,7 +228,8 @@ async function collectAllProducts() {
     console.log(`ページ ${page} を取得中...`);
     console.log(`  ${url}`);
     let html;
-    try { html = await getHtml(url); }
+    const referer = page === 1 ? "https://store.line.me/" : page === 2 ? AUTHOR_URL : `${AUTHOR_URL}?page=${page - 1}`;
+    try { html = await getHtml(url, referer); }
     catch (error) { console.log(`  → 取得失敗: ${error.message}`); continue; }
     const products = extractProducts(html);
     const newProducts = products.filter((product) => !knownIds.has(product.id));
