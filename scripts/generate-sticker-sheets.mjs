@@ -34,6 +34,25 @@ function extractStickerUrls(html) {
   return [...byStickerId.values()].slice(0, 40);
 }
 
+async function getStickerUrlsFromMetadata(productId) {
+  const metadataUrls = [
+    `https://stickershop.line-scdn.net/stickershop/v1/product/${productId}/android/productInfo.meta`,
+    `https://dl.stickershop.line.naver.jp/products/0/0/1/${productId}/android/productInfo.meta`,
+  ];
+  for (const metadataUrl of metadataUrls) {
+    try {
+      const metadata = JSON.parse((await fetchBuffer(metadataUrl)).toString("utf8"));
+      const ids = Array.isArray(metadata.stickers) ? metadata.stickers.map((item) => String(item.id || "")).filter(Boolean) : [];
+      if (ids.length) {
+        return ids.slice(0, 40).map((id) => `https://stickershop.line-scdn.net/stickershop/v1/sticker/${id}/android/sticker.png`);
+      }
+    } catch (error) {
+      console.log(`メタデータ取得再試行 ${productId}: ${error.message}`);
+    }
+  }
+  return [];
+}
+
 async function fetchBuffer(url, extraHeaders = {}) {
   const response = await fetch(url, { headers: { ...headers, ...extraHeaders }, redirect: "follow", cache: "no-store" });
   if (!response.ok) throw new Error(`${response.status}: ${url}`);
@@ -51,6 +70,7 @@ async function makeSheet(product) {
     urls = extractStickerUrls(html);
     if (urls.length < 8) await new Promise((resolve) => setTimeout(resolve, attempt * 900));
   }
+  if (urls.length < 8) urls = await getStickerUrlsFromMetadata(product.id);
   if (urls.length < 8) throw new Error(`${product.id}: スタンプ画像を${urls.length}件しか検出できませんでした`);
 
   const layers = await Promise.all(urls.map(async (url, index) => {
