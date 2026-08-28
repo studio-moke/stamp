@@ -2,8 +2,8 @@ name: Update Stickers
 
 on:
   schedule:
-    # 毎日 00:00 UTC = 09:00 JST
-    - cron: "0 0 * * *"
+    # 毎日 18:13 UTC = 翌日 03:13 JST
+    - cron: "13 18 * * *"
   workflow_dispatch:
   # 自動更新処理を修正した時だけ、その場で動作確認する
   push:
