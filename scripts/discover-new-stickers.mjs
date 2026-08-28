@@ -4,7 +4,13 @@ import path from "node:path";
 const AUTHOR_ID = "6507349";
 const DATA_FILE = path.resolve("src/data/stickers.json");
 const IMAGE_DIR = path.resolve("public/images/stickers");
-const BOOTSTRAP_PRODUCT_IDS = ["36119361"];
+// Recent catalog entries are explicit seeds because LINE may return an empty
+// second author page to automated runners. Their product pages still expose
+// the creator's other works, allowing the complete catalog graph to be found.
+const BOOTSTRAP_PRODUCT_IDS = [
+  "36149581", "36143733", "36142235", "36137158", "36136531", "36136296",
+  "36135034", "36130275", "36129011", "36125569", "36106671", "36119361",
+];
 const MAX_OWN_PAGES = 400;
 const MAX_CANDIDATE_CHECKS = 4000;
 const CONCURRENCY = 8;
