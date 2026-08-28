@@ -2,6 +2,8 @@
 import designs from "../../data/suzuri-designs.json";
 import Analytics from "../../components/Analytics.astro";
 import SeoHead from "../../components/SeoHead.astro";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+import { localeInfo, localizedPath, messages, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeTitle } from "../../lib/seo";
 
 export function getStaticPaths() {
@@ -11,16 +13,27 @@ export function getStaticPaths() {
   }));
 }
 
-const { design } = Astro.props;
-const pageTitle = makeTitle([`${design.title}のキャラクターグッズ`]);
-const description = design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`;
-const canonical = absoluteUrl(`/goods/${design.id}`);
-const formatPrice = (price) => price ? `¥${Number(price).toLocaleString("ja-JP")}（税込）` : "";
+const { design, locale: localeProp = "ja" } = Astro.props;
+const locale = normalizeLocale(localeProp);
+const t = messages[locale];
+const titleSuffix = locale === "ja" ? "のキャラクターグッズ" : locale === "en" ? " Character Goods" : locale === "zh-tw" ? "角色周邊商品" : " สินค้าคาแรกเตอร์";
+const pageTitle = makeTitle([`${design.title}${titleSuffix}`]);
+const description = locale === "ja"
+  ? (design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`)
+  : locale === "en"
+    ? `Shop original ${design.title} character goods by stamp moke, including T-shirts, stickers and accessories available on SUZURI.`
+    : locale === "zh-tw"
+      ? `選購stamp moke原創角色「${design.title}」的T恤、貼紙與各式SUZURI周邊商品。`
+      : `เลือกซื้อสินค้าคาแรกเตอร์ ${design.title} จาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI`;
+const canonicalPath = `/goods/${design.id}`;
+const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
+const numberLocale = locale === "ja" ? "ja-JP" : locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : "en-US";
+const formatPrice = (price) => price ? `¥${Number(price).toLocaleString(numberLocale)} ${t.taxIncluded}` : "";
 const products = Array.isArray(design.products) ? design.products : [];
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={localeInfo[locale].htmlLang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -44,6 +57,7 @@ const products = Array.isArray(design.products) ? design.products : [];
     .brand { text-decoration: none; }
     .brand-title { font-size: 17px; font-weight: 900; letter-spacing: .12em; }
     .brand-sub { margin-top: 3px; color: #999; font-size: 9px; letter-spacing: .08em; }
+    .header-actions { display:flex; align-items:center; gap:9px; }
     .back-link { padding: 10px 15px; border: 1px solid #d8d7d2; border-radius: 999px; color: #555; font-size: 11px; font-weight: 800; text-decoration: none; }
     .main { max-width: 1180px; margin: 0 auto; padding: 40px 5vw 110px; }
     .breadcrumb { margin-bottom: 28px; color: #888; font-size: 11px; }
@@ -93,12 +107,12 @@ const products = Array.isArray(design.products) ? design.products : [];
 </head>
 <body>
   <header class="header">
-    <a href="/" class="brand"><div class="brand-title">stamp moke</div><div class="brand-sub">LINEスタンプ専門メディア</div></a>
-    <a href="/#character-goods" class="back-link">グッズショップへ戻る</a>
+    <a href={localizedPath(locale, "/")} class="brand"><div class="brand-title">stamp moke</div><div class="brand-sub">{t.brandSub}</div></a>
+    <div class="header-actions"><LanguageSwitcher locale={locale} path={canonicalPath} /><a href={localizedPath(locale, "/#character-goods")} class="back-link">{t.back}</a></div>
   </header>
 
   <main class="main">
-    <nav class="breadcrumb" aria-label="パンくず"><a href="/">stamp moke</a> / <a href="/#character-goods">グッズショップ</a> / {design.title}</nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href={localizedPath(locale, "/")}>stamp moke</a> / <a href={localizedPath(locale, "/#character-goods")}>{t.goodsTitle}</a> / {design.title}</nav>
 
     <article class="feature">
       <div class="character-image-wrap">
@@ -108,13 +122,13 @@ const products = Array.isArray(design.products) ? design.products : [];
         <div class="eyebrow">CHARACTER GOODS / SUZURI</div>
         <h1 class="title">{design.title}</h1>
         <p class="description">{description}</p>
-        <a class="shop-link" href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">SUZURIショップを見る ↗</a>
+        <a class="shop-link" href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">{t.allGoods}</a>
       </div>
     </article>
 
     <section class="products">
       <div class="section-label">AVAILABLE GOODS</div>
-      <h2 class="section-heading">このキャラのグッズ</h2>
+      <h2 class="section-heading">{t.goodsProducts}</h2>
       <div class="product-grid">
         {products.map((product, index) => (
           <a class="product-card" href={product.url} target="_blank" rel="noopener noreferrer">
@@ -126,7 +140,7 @@ const products = Array.isArray(design.products) ? design.products : [];
               <h3 class="product-title">{product.title}</h3>
               <div class="product-meta">
                 <div class="product-price">{formatPrice(product.price)}</div>
-                <div class="product-link">SUZURIで見る ↗</div>
+                <div class="product-link">{t.suzuriOpen}</div>
               </div>
             </div>
           </a>
@@ -135,6 +149,6 @@ const products = Array.isArray(design.products) ? design.products : [];
     </section>
   </main>
 
-  <footer class="footer"><div class="footer-inner"><span>© stamp moke</span><a href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">LINEスタンプキャラグッズ店（SUZURI）</a></div></footer>
+  <footer class="footer"><div class="footer-inner"><span>© stamp moke</span><a href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">{t.goodsTitle}（SUZURI）</a></div></footer>
 </body>
 </html>

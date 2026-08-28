@@ -1,16 +1,23 @@
 ---
 import { SITE_NAME, absoluteUrl } from "../lib/seo";
-const { title, description, canonical, image, type = "website" } = Astro.props;
+import { alternateLinks, localeInfo, normalizeLocale } from "../lib/i18n";
+
+const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname } = Astro.props;
+const locale = normalizeLocale(localeProp);
 const url = canonical || absoluteUrl(Astro.url.pathname);
+const alternates = alternateLinks(path);
 ---
 <meta name="description" content={description} />
-<meta name="keywords" content="stamp moke,スタンプもけ,スタンプモケ,スタンプもけぇ,studio moke,スタジオモケ,スタジオもけぇ,LINEスタンプ" />
 <link rel="canonical" href={url} />
+{alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
+<link rel="alternate" hreflang="x-default" href={absoluteUrl(path)} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content={type} />
 <meta property="og:url" content={url} />
 <meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content={localeInfo[locale].ogLocale} />
+{alternates.filter((item) => item.locale !== locale).map((item) => <meta property="og:locale:alternate" content={localeInfo[item.locale].ogLocale} />)}
 {image && <meta property="og:image" content={image} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

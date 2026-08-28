@@ -1,9 +1,11 @@
 import stickers from "../data/stickers.json";
+import designs from "../data/suzuri-designs.json";
 import {
   CATEGORY_DEFINITIONS,
   getCategory,
   SITE_URL,
 } from "../lib/stickers";
+import { LOCALES, localeInfo, localizedPath } from "../lib/i18n";
 
 const PAGE_SIZE = 24;
 
@@ -16,34 +18,49 @@ function escapeXml(value: string) {
     .replace(/'/g, "&apos;");
 }
 
-export function GET() {
-  const urls = new Set<string>();
-  urls.add(`${SITE_URL}/`);
-  urls.add(`${SITE_URL}/categories/`);
+function localizedUrl(locale: (typeof LOCALES)[number], path: string) {
+  return `${SITE_URL}${localizedPath(locale, path)}`;
+}
 
+function multilingualEntry(path: string) {
+  const alternates = LOCALES
+    .map((locale) => `    <xhtml:link rel="alternate" hreflang="${localeInfo[locale].htmlLang}" href="${escapeXml(localizedUrl(locale, path))}" />`)
+    .join("\n");
+  return `  <url>
+    <loc>${escapeXml(localizedUrl("ja", path))}</loc>
+${alternates}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(localizedUrl("ja", path))}" />
+  </url>`;
+}
+
+export function GET() {
+  const entries: string[] = [];
+
+  entries.push(multilingualEntry("/"));
+  entries.push(multilingualEntry("/goods/"));
+
+  for (const sticker of stickers) {
+    entries.push(multilingualEntry(`/stickers/${encodeURIComponent(sticker.id)}`));
+  }
+
+  for (const design of designs) {
+    entries.push(multilingualEntry(`/goods/${encodeURIComponent(String(design.id))}`));
+  }
+
+  entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/`)}</loc></url>`);
   for (const category of CATEGORY_DEFINITIONS) {
     const count = stickers.filter((sticker) => getCategory(sticker) === category.name).length;
     const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
-
     for (let page = 1; page <= totalPages; page += 1) {
-      urls.add(`${SITE_URL}/categories/${category.slug}/${page}`);
+      entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/${category.slug}/${page}`)}</loc></url>`);
     }
   }
 
-  for (const sticker of stickers) {
-    urls.add(`${SITE_URL}/stickers/${encodeURIComponent(sticker.id)}`);
-  }
-
-  const body = [...urls]
-    .map((url) => `  <url><loc>${escapeXml(url)}</loc></url>`)
-    .join("\n");
-
-  return new Response(
-    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>`,
-    {
-      headers: {
-        "Content-Type": "application/xml; charset=utf-8",
-      },
-    },
-  );
+  const body = entries.join("\n");
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${body}
+</urlset>`, {
+    headers: { "Content-Type": "application/xml; charset=utf-8" },
+  });
 }

@@ -1,0 +1,10 @@
+---
+import designs from "../../../data/suzuri-designs.json";
+import GoodsPage from "../../goods/[id].astro";
+
+export function getStaticPaths() {
+  return designs.map((design) => ({ params: { id: String(design.id) }, props: { design } }));
+}
+const { design } = Astro.props;
+---
+<GoodsPage design={design} locale="en" />

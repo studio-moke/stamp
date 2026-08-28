@@ -2,6 +2,8 @@
 import stickers from "../../data/stickers.json";
 import SeoHead from "../../components/SeoHead.astro";
 import Analytics from "../../components/Analytics.astro";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+import { categoryLabels, localeInfo, localizedPath, localizeLineUrl, messages, normalizeLocale } from "../../lib/i18n";
 import { makeTitle, makeDescription, absoluteUrl } from "../../lib/seo";
 import { getCategory } from "../../lib/stickers";
 import fs from "node:fs";
@@ -11,27 +13,46 @@ export function getStaticPaths() {
   return stickers.map((sticker) => ({ params: { id: sticker.id }, props: { sticker } }));
 }
 
-const { sticker } = Astro.props;
-const purchaseUrl = sticker.purchaseUrl || sticker.url;
-const giftUrl = sticker.giftUrl || purchaseUrl;
-const qrTarget = sticker.url || purchaseUrl;
+const { sticker, locale: localeProp = "ja" } = Astro.props;
+const locale = normalizeLocale(localeProp);
+const t = messages[locale];
+const basePurchaseUrl = sticker.purchaseUrl || sticker.url;
+const purchaseUrl = localizeLineUrl(basePurchaseUrl, locale);
+const giftUrl = localizeLineUrl(sticker.giftUrl || basePurchaseUrl, locale);
+const qrTarget = purchaseUrl;
 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
 const cleanTitle = sticker.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "");
-const pageTitle = makeTitle([`${cleanTitle}｜LINEスタンプ`]);
-const description = makeDescription(sticker.description || "", `${cleanTitle}のLINEスタンプ。stamp mokeで作品情報を紹介しています。`);
-const canonical = absoluteUrl(`/stickers/${sticker.id}`);
+const titleSuffix = locale === "ja" ? "LINEスタンプ" : locale === "en" ? "LINE Stickers" : locale === "zh-tw" ? "LINE貼圖" : "สติกเกอร์ LINE";
+const pageTitle = makeTitle([`${cleanTitle} | ${titleSuffix}`]);
+const localizedFallback = locale === "ja"
+  ? `${cleanTitle}のLINEスタンプ。stamp mokeで作品情報を紹介しています。`
+  : locale === "en"
+    ? `Discover ${cleanTitle}, an original LINE sticker set by stamp moke for everyday chats.`
+    : locale === "zh-tw"
+      ? `探索stamp moke原創LINE貼圖「${cleanTitle}」，適合日常聊天使用。`
+      : `พบกับ ${cleanTitle} ชุดสติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
+const description = makeDescription(locale === "ja" ? (sticker.description || "") : "", localizedFallback);
+const canonicalPath = `/stickers/${sticker.id}`;
+const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
 const category = getCategory(sticker);
+const localizedCategory = categoryLabels[locale][category] || category;
+const pageText = {
+  ja: { list:"スタンプ一覧へ", breadcrumb:"LINEスタンプ", gift:"プレゼントする", safe:"安心・安全", safeText:"LINE STORE公式ページから購入できます。", mobile:"スマホで簡単", mobileText:"QRコードからすぐに商品ページを開けます。", giftOk:"プレゼントOK", giftText:"友だちへのギフトにも利用できます。", phone:"スマホで見る", phoneText:"スマートフォンのカメラでQRコードを読み取ると、LINE STOREの商品ページを開けます。", open:"スマホで商品ページを開く →", id:"商品ID", category:"カテゴリ", price:"価格", seller:"販売元", work:"作品名", official:"LINE STORE公式ページを見る →", included:"収録スタンプ一覧", note:"低解像度・透かし入りの確認用プレビューです。画像の保存・転載はご遠慮ください。", related:"関連するLINEスタンプ", footer:"かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。" },
+  en: { list:"Sticker collection", breadcrumb:"LINE Stickers", gift:"Send as a gift", safe:"Official & secure", safeText:"Purchase safely on the official LINE STORE.", mobile:"Easy on mobile", mobileText:"Open the product page instantly with the QR code.", giftOk:"Gift ready", giftText:"Send this sticker set to a friend on LINE.", phone:"Open on your phone", phoneText:"Scan the QR code with your phone camera to open this set on LINE STORE.", open:"Open product page →", id:"Product ID", category:"Category", price:"Price", seller:"Seller", work:"Title", official:"View official LINE STORE page →", included:"All stickers in this set", note:"Low-resolution watermarked preview. Please do not save or redistribute these images.", related:"Related LINE stickers", footer:"Cute, funny and practical LINE stickers for everyday chats." },
+  "zh-tw": { list:"貼圖列表", breadcrumb:"LINE貼圖", gift:"贈送給朋友", safe:"官方安全購買", safeText:"可於LINE STORE官方頁面安心購買。", mobile:"手機快速開啟", mobileText:"掃描QR Code即可開啟商品頁面。", giftOk:"可作為禮物", giftText:"可將這組貼圖贈送給LINE好友。", phone:"用手機查看", phoneText:"使用手機相機掃描QR Code，即可開啟LINE STORE商品頁面。", open:"開啟商品頁面 →", id:"商品ID", category:"分類", price:"價格", seller:"販售平台", work:"作品名稱", official:"查看LINE STORE官方頁面 →", included:"收錄貼圖一覽", note:"此為低解析度浮水印預覽，請勿儲存或轉載圖片。", related:"相關LINE貼圖", footer:"提供可愛、有趣又適合日常使用的原創LINE貼圖。" },
+  th: { list:"รวมสติกเกอร์", breadcrumb:"สติกเกอร์ LINE", gift:"ส่งเป็นของขวัญ", safe:"ปลอดภัยและเป็นทางการ", safeText:"ซื้อได้จากหน้า LINE STORE อย่างเป็นทางการ", mobile:"เปิดง่ายบนมือถือ", mobileText:"สแกน QR Code เพื่อเปิดหน้าสินค้าได้ทันที", giftOk:"ส่งเป็นของขวัญได้", giftText:"ส่งชุดสติกเกอร์นี้ให้เพื่อนบน LINE ได้", phone:"เปิดบนมือถือ", phoneText:"สแกน QR Code ด้วยกล้องมือถือเพื่อเปิดหน้าสินค้าบน LINE STORE", open:"เปิดหน้าสินค้า →", id:"รหัสสินค้า", category:"หมวดหมู่", price:"ราคา", seller:"ผู้จำหน่าย", work:"ชื่อผลงาน", official:"ดูหน้า LINE STORE อย่างเป็นทางการ →", included:"สติกเกอร์ทั้งหมดในชุด", note:"ภาพตัวอย่างความละเอียดต่ำพร้อมลายน้ำ กรุณาอย่าบันทึกหรือนำภาพไปเผยแพร่ต่อ", related:"สติกเกอร์ LINE ที่เกี่ยวข้อง", footer:"สติกเกอร์ LINE น่ารัก สนุก และใช้ได้ทุกวัน" },
+}[locale];
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
 const sheetUrl = `/images/sticker-sheets/${sticker.id}.webp`;
 const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sticker-sheets", `${sticker.id}.webp`));
 ---
 <!doctype html>
-<html lang="ja">
+<html lang={localeInfo[locale].htmlLang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
-  <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" />
+  <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" locale={locale} path={canonicalPath} />
   <Analytics />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"stamp moke","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
   <style>
@@ -43,6 +64,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
     .brand { text-decoration:none; }
     .brand-title { font-size:21px; font-weight:900; letter-spacing:.1em; line-height:1; }
     .brand-sub { margin-top:7px; font-size:11px; color:#777; letter-spacing:.05em; }
+    .header-actions { display:flex; align-items:center; gap:9px; }
     .header-link { text-decoration:none; border:1px solid #d9d8d4; background:#fff; padding:13px 22px; border-radius:999px; font-size:13px; font-weight:700; white-space:nowrap; }
     .main { max-width:1180px; margin:0 auto; padding:38px 5vw 100px; }
     .breadcrumb { color:#777; font-size:12px; line-height:1.8; margin-bottom:28px; }
@@ -144,28 +166,28 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
 </head>
 <body>
   <header class="header">
-    <a href="/" class="brand"><div class="brand-title">stamp moke</div><div class="brand-sub">LINEスタンプ専門メディア</div></a>
-    <a href="/" class="header-link">スタンプ一覧へ</a>
+    <a href={localizedPath(locale, "/")} class="brand"><div class="brand-title">stamp moke</div><div class="brand-sub">{t.brandSub}</div></a>
+    <div class="header-actions"><LanguageSwitcher locale={locale} path={canonicalPath} /><a href={localizedPath(locale, "/")} class="header-link">{pageText.list}</a></div>
   </header>
 
   <main class="main">
-    <nav class="breadcrumb" aria-label="パンくず"><a href="/">stamp moke</a> / <a href="/">LINEスタンプ</a> / {cleanTitle}</nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href={localizedPath(locale, "/")}>stamp moke</a> / <a href={localizedPath(locale, "/")}>{pageText.breadcrumb}</a> / {cleanTitle}</nav>
 
     <article class="detail-card">
-      <div class="image-panel"><img class="sticker-image" src={sticker.image} alt={`${cleanTitle}のLINEスタンプ`} loading="eager" decoding="async" width="512" height="512" /></div>
+      <div class="image-panel"><img class="sticker-image" src={sticker.image} alt={`${cleanTitle} - ${titleSuffix}`} loading="eager" decoding="async" width="512" height="512" /></div>
       <div>
-        <div class="category-label">{category}</div>
+        <div class="category-label">{localizedCategory}</div>
         <h1>{cleanTitle}</h1>
         <p class="description">{description}</p>
         {sticker.price && <div class="price">{sticker.price}</div>}
         <div class="actions">
-          <a class="action action-buy" href={purchaseUrl} rel="noopener">LINE STOREで購入する</a>
-          <a class="action action-gift" href={giftUrl} rel="noopener">プレゼントする</a>
+          <a class="action action-buy" href={purchaseUrl} rel="noopener">{t.buy}</a>
+          <a class="action action-gift" href={giftUrl} rel="noopener">{pageText.gift}</a>
         </div>
         <div class="trust-grid">
-          <div class="trust-item"><strong>安心・安全</strong>LINE STORE公式ページから購入できます。</div>
-          <div class="trust-item"><strong>スマホで簡単</strong>QRコードからすぐに商品ページを開けます。</div>
-          <div class="trust-item"><strong>プレゼントOK</strong>友だちへのギフトにも利用できます。</div>
+          <div class="trust-item"><strong>{pageText.safe}</strong>{pageText.safeText}</div>
+          <div class="trust-item"><strong>{pageText.mobile}</strong>{pageText.mobileText}</div>
+          <div class="trust-item"><strong>{pageText.giftOk}</strong>{pageText.giftText}</div>
         </div>
       </div>
     </article>
@@ -173,53 +195,53 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
     <div class="info-grid">
       <section class="sub-card">
         <div class="sub-label">OPEN ON SMARTPHONE</div>
-        <h2 class="sub-title">スマホで見る</h2>
+        <h2 class="sub-title">{pageText.phone}</h2>
         <div class="qr-wrap">
           <img class="qr" src={qrUrl} alt={`${cleanTitle}の商品ページQRコード`} width="240" height="240" loading="lazy" />
-          <div class="qr-copy">スマートフォンのカメラでQRコードを読み取ると、LINE STOREの商品ページを開けます。<br /><a class="smartphone-link" href={purchaseUrl} rel="noopener">スマホで商品ページを開く →</a></div>
+          <div class="qr-copy">{pageText.phoneText}<br /><a class="smartphone-link" href={purchaseUrl} rel="noopener">{pageText.open}</a></div>
         </div>
       </section>
 
       <section class="sub-card">
         <div class="sub-label">ABOUT THIS STICKER</div>
-        <h2 class="sub-title">このスタンプについて</h2>
+        <h2 class="sub-title">{t.productAbout}</h2>
         <dl class="detail-list">
-          <div class="detail-row"><dt>商品ID</dt><dd>{sticker.id}</dd></div>
-          <div class="detail-row"><dt>カテゴリ</dt><dd>{category}</dd></div>
-          {sticker.price && <div class="detail-row"><dt>価格</dt><dd>{sticker.price}</dd></div>}
-          <div class="detail-row"><dt>販売元</dt><dd>LINE STORE</dd></div>
-          <div class="detail-row"><dt>作品名</dt><dd>{cleanTitle}</dd></div>
+          <div class="detail-row"><dt>{pageText.id}</dt><dd>{sticker.id}</dd></div>
+          <div class="detail-row"><dt>{pageText.category}</dt><dd>{localizedCategory}</dd></div>
+          {sticker.price && <div class="detail-row"><dt>{pageText.price}</dt><dd>{sticker.price}</dd></div>}
+          <div class="detail-row"><dt>{pageText.seller}</dt><dd>LINE STORE</dd></div>
+          <div class="detail-row"><dt>{pageText.work}</dt><dd>{cleanTitle}</dd></div>
         </dl>
-        <a class="official-link" href={purchaseUrl} rel="noopener">LINE STORE公式ページを見る →</a>
+        <a class="official-link" href={purchaseUrl} rel="noopener">{pageText.official}</a>
       </section>
     </div>
 
     {hasSheet && (
       <section class="all-stickers" aria-labelledby="all-stickers-title">
         <div class="section-label">ALL STICKERS PREVIEW</div>
-        <h2 id="all-stickers-title" class="section-title">収録スタンプ一覧</h2>
+        <h2 id="all-stickers-title" class="section-title">{pageText.included}</h2>
         <div class="preview-card protected-preview" oncontextmenu="return false">
           <img class="preview-sheet" src={sheetUrl} alt={`${cleanTitle}に収録されている全スタンプの一覧`} loading="lazy" draggable="false" />
           <div class="preview-shield" aria-hidden="true"></div>
         </div>
-        <p class="preview-note">低解像度・透かし入りの確認用プレビューです。画像の保存・転載はご遠慮ください。</p>
+        <p class="preview-note">{pageText.note}</p>
       </section>
     )}
 
     {related.length > 0 && (
       <section class="related" aria-labelledby="related">
         <div class="section-label">RELATED STICKERS</div>
-        <h2 id="related" class="section-title">関連するLINEスタンプ</h2>
+        <h2 id="related" class="section-title">{pageText.related}</h2>
         <ul class="related-grid">
           {related.map((item) => (
-            <li><a class="related-card" href={`/stickers/${item.id}`}><div class="related-media"><img class="related-image" src={item.image} alt={`${item.title}のLINEスタンプ`} loading="lazy" width="512" height="512" /></div><p class="related-title">{item.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "")}</p></a></li>
+            <li><a class="related-card" href={localizedPath(locale, `/stickers/${item.id}`)}><div class="related-media"><img class="related-image" src={item.image} alt={`${item.title}のLINEスタンプ`} loading="lazy" width="512" height="512" /></div><p class="related-title">{item.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "")}</p></a></li>
           ))}
         </ul>
       </section>
     )}
   </main>
 
-  <footer class="footer"><div class="footer-inner"><div class="footer-brand">stamp moke</div><p class="footer-copy">かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。</p><div class="footer-links"><a href="/">スタンプ一覧</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© stamp moke</div></div></footer>
+  <footer class="footer"><div class="footer-inner"><div class="footer-brand">stamp moke</div><p class="footer-copy">{pageText.footer}</p><div class="footer-links"><a href={localizedPath(locale, "/")}>{pageText.list}</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© stamp moke</div></div></footer>
   <script is:inline>
     document.addEventListener("contextmenu", (event) => {
       if (event.target.closest(".protected-preview")) event.preventDefault();
