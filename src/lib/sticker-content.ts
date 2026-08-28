@@ -125,7 +125,42 @@ const genericTitles = {
   en: (id: string) => `Original LINE Sticker Set ${id}`,
   "zh-tw": (id: string) => `原創LINE貼圖系列 ${id}`,
   th: (id: string) => `ชุดสติกเกอร์ LINE ต้นฉบับ ${id}`,
+  id: (id: string) => `Set Stiker LINE Orisinal ${id}`,
 };
+
+const indonesianPhrases: Array<[RegExp, string]> = [
+  [/Ultra-Simple/gi,"Super Sederhana"],[/Straight-Talking/gi,"Blak-blakan"],[/Grown Women/gi,"Wanita Dewasa"],[/Grown Man/gi,"Pria Dewasa"],
+  [/Polite Replies/gi,"Balasan Sopan"],[/Messages for Family/gi,"Pesan untuk Keluarga"],[/Inspiring Words/gi,"Kata-kata Inspiratif"],[/Capable Men/gi,"Pria Andal"],
+  [/Guy Friends/gi,"Teman Pria"],[/Showa Men/gi,"Pria Era Showa"],[/Showa Dad/gi,"Ayah Era Showa"],[/My Girlfriend/gi,"Kekasihku"],
+  [/Awkward but Loving/gi,"Canggung tetapi Penuh Cinta"],[/Possessive Boyfriend/gi,"Pacar Pria yang Posesif"],[/Relatable Phrases/gi,"Ungkapan yang Mengena"],
+  [/Replies Only/gi,"Khusus Balasan"],[/What You Are Thinking/gi,"Isi Pikiranmu"],[/Gentle Hearts/gi,"Hati yang Lembut"],[/Middle School Girl/gi,"Gadis SMP"],
+  [/Daily Chats?/gi,"Obrolan Sehari-hari"],[/Daily Messages?/gi,"Pesan Sehari-hari"],[/Daily Life/gi,"Kehidupan Sehari-hari"],[/Everyday Life/gi,"Kehidupan Sehari-hari"],
+  [/Everyday Mystery/gi,"Misteri Sehari-hari"],[/Everyday Stickers?/gi,"Stiker Sehari-hari"],[/Every Day/gi,"Setiap Hari"],[/Everyday Edition/gi,"Edisi Sehari-hari"],
+  [/Daily Greetings?/gi,"Sapaan Sehari-hari"],[/Gentle Everyday/gi,"Sehari-hari yang Lembut"],[/Everyday Sumo/gi,"Sumo Sehari-hari"],
+  [/Daily Chat/gi,"Obrolan Sehari-hari"],[/Everyday/gi,"Sehari-hari"],[/Daily/gi,"Sehari-hari"],
+  [/Original LINE Sticker Set/gi,"Set Stiker LINE Orisinal"],[/LINE Sticker Set/gi,"Set Stiker LINE"],[/LINE Stickers?/gi,"Stiker LINE"],[/Stickers?/gi,"Stiker"],
+  [/Cute/gi,"Lucu"],[/Gentle/gi,"Lembut"],[/Soft/gi,"Lembut"],[/Fluffy/gi,"Berbulu Lembut"],[/Healing/gi,"Menenangkan"],[/Funny/gi,"Lucu"],
+  [/Laid-Back/gi,"Santai"],[/Low-Energy/gi,"Tanpa Semangat"],[/Timid/gi,"Pemalu"],[/Strong but Timid/gi,"Kuat tetapi Pemalu"],[/Tsundere/gi,"Tsundere"],
+  [/Black Cat/gi,"Kucing Hitam"],[/Orange Tabby Cat/gi,"Kucing Oren"],[/Kitty/gi,"Anak Kucing"],[/Cat/gi,"Kucing"],[/Puppy/gi,"Anjing Kecil"],[/Dog/gi,"Anjing"],
+  [/Bunny Girl/gi,"Gadis Kelinci"],[/Bunny/gi,"Kelinci"],[/Panda/gi,"Panda"],[/Hamster/gi,"Hamster"],[/Lion/gi,"Singa"],[/Monkey/gi,"Monyet"],[/Mouse/gi,"Tikus"],
+  [/Grandpa & Grandchild/gi,"Kakek dan Cucu"],[/Grandma & Grandchild/gi,"Nenek dan Cucu"],[/Grandpa & Grandma/gi,"Kakek dan Nenek"],
+  [/Schoolgirl/gi,"Siswi"],[/School Pup/gi,"Anjing Kecil Anak Sekolah"],[/School Kitty/gi,"Anak Kucing Sekolah"],[/Office Worker/gi,"Karyawan Kantor"],
+  [/Business/gi,"Bisnis"],[/Work/gi,"Pekerjaan"],[/for Moms/gi,"untuk Ibu"],[/for Parents/gi,"untuk Orang Tua"],[/for Troubled Times/gi,"saat Menghadapi Masalah"],
+  [/Greetings/gi,"Sapaan"],[/Messages/gi,"Pesan"],[/Reactions/gi,"Reaksi"],[/Thoughts/gi,"Pikiran"],[/Words/gi,"Kata-kata"],[/Apologies/gi,"Permintaan Maaf"],
+  [/Support/gi,"Dukungan"],[/Cheer/gi,"Semangat"],[/Drinks/gi,"Minuman"],[/Time & Meeting/gi,"Waktu dan Janji Temu"],[/Full-Power/gi,"Sepenuh Tenaga"],
+  [/Surreal/gi,"Surealis"],[/Brazen/gi,"Tak Tahu Malu"],[/Quirky/gi,"Unik"],[/Lonely/gi,"Kesepian"],[/Honest/gi,"Jujur"],[/Moody/gi,"Sesuai Suasana Hati"],
+  [/\bGirl\b/gi,"Gadis"],[/\bBoy\b/gi,"Anak Laki-laki"],[/\bWomen\b/gi,"Wanita"],[/\bMen\b/gi,"Pria"],[/\bBaby\b/gi,"Bayi"],[/Mom & Dad/gi,"Ibu dan Ayah"],
+  [/Reporter/gi,"Reporter"],[/Detective/gi,"Detektif"],[/Teacher/gi,"Guru"],[/Uncle/gi,"Paman"],[/Grandma/gi,"Nenek"],[/Grandpa/gi,"Kakek"],
+  [/for Erasing/gi,"untuk Menghapus"],[/You Want to Delete/gi,"yang Ingin Dihapus"],[/Imaginary Medicines/gi,"Obat-obatan Khayalan"],[/Tools/gi,"Peralatan"],
+  [/Friends from Hell/gi,"Teman-teman dari Neraka"],[/Heart-Pounding/gi,"Mendebarkan"],[/True Feelings/gi,"Perasaan Sebenarnya"],[/Polite/gi,"Sopan"],
+  [/\bSimple\b/gi,"Sederhana"],[/\bBold\b/gi,"Tegas"],[/\bPractical\b/gi,"Praktis"],[/\bSweet\b/gi,"Manis"],[/\bHappy\b/gi,"Bahagia"],[/\bWarm\b/gi,"Hangat"],
+  [/with a /gi,"dengan "],[/with /gi,"dengan "],[/ from /gi," dari "],[/ for /gi," untuk "],[/ and /gi," dan "],[/ & /g," dan "],
+];
+
+function indonesianTitle(title: string) {
+  return indonesianPhrases.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), title)
+    .replace(/\s{2,}/g," ").trim();
+}
 
 export function cleanStickerTitle(title = "") {
   return title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "").trim();
@@ -133,6 +168,10 @@ export function cleanStickerTitle(title = "") {
 
 export function localizedStickerTitle(sticker: { id: string; title?: string }, locale: Locale) {
   if (locale === "ja") return cleanStickerTitle(sticker.title || "");
+  if (locale === "id") {
+    const english = titles[String(sticker.id)]?.en;
+    return english ? indonesianTitle(english) : genericTitles.id(String(sticker.id));
+  }
   return titles[String(sticker.id)]?.[locale] || genericTitles[locale](String(sticker.id));
 }
 
@@ -141,11 +180,12 @@ export function localizedStickerDescription(sticker: { id: string; title?: strin
   const title = localizedStickerTitle(sticker, locale);
   if (locale === "en") return `Discover “${title},” an original LINE sticker set by stamp moke for everyday chats.`;
   if (locale === "zh-tw") return `探索stamp moke原創作品「${title}」，讓日常LINE對話更可愛、更有趣。`;
-  return `พบกับ “${title}” สติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
+  if (locale === "th") return `พบกับ “${title}” สติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
+  return `Temukan “${title},” set stiker LINE orisinal dari stamp moke untuk obrolan sehari-hari.`;
 }
 
 export function localizedStickerPrice(price: string | undefined, locale: Locale) {
   if (!price) return "";
   if (locale === "ja") return price;
-  return locale === "en" ? "Check price on LINE STORE" : locale === "zh-tw" ? "請至LINE STORE確認目前價格" : "ตรวจสอบราคาปัจจุบันบน LINE STORE";
+  return locale === "en" ? "Check price on LINE STORE" : locale === "zh-tw" ? "請至LINE STORE確認目前價格" : locale === "th" ? "ตรวจสอบราคาปัจจุบันบน LINE STORE" : "Periksa harga terbaru di LINE STORE";
 }

@@ -16,7 +16,7 @@ export function getStaticPaths() {
 const { design, locale: localeProp = "ja" } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const t = messages[locale];
-const titleSuffix = locale === "ja" ? "のキャラクターグッズ" : locale === "en" ? " Character Goods" : locale === "zh-tw" ? "角色周邊商品" : " สินค้าคาแรกเตอร์";
+const titleSuffix = locale === "ja" ? "のキャラクターグッズ" : locale === "en" ? " Character Goods" : locale === "zh-tw" ? "角色周邊商品" : locale === "th" ? " สินค้าคาแรกเตอร์" : " - Produk Karakter";
 const pageTitle = makeTitle([`${design.title}${titleSuffix}`]);
 const description = locale === "ja"
   ? (design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`)
@@ -24,11 +24,13 @@ const description = locale === "ja"
     ? `Shop original ${design.title} character goods by stamp moke, including T-shirts, stickers and accessories available on SUZURI.`
     : locale === "zh-tw"
       ? `選購stamp moke原創角色「${design.title}」的T恤、貼紙與各式SUZURI周邊商品。`
-      : `เลือกซื้อสินค้าคาแรกเตอร์ ${design.title} จาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI`;
+      : locale === "th"
+        ? `เลือกซื้อสินค้าคาแรกเตอร์ ${design.title} จาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI`
+        : `Temukan produk karakter ${design.title} dari stamp moke, termasuk kaus, stiker, dan aksesori yang tersedia di SUZURI.`;
 const canonicalPath = `/goods/${design.id}`;
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
-const numberLocale = locale === "ja" ? "ja-JP" : locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : "en-US";
-const formatPrice = (price) => price ? `¥${Number(price).toLocaleString(numberLocale)} ${t.taxIncluded}` : "";
+const numberLocale = locale === "ja" ? "ja-JP" : locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "id" ? "id-ID" : "en-US";
+const formatPrice = (price) => !price ? "" : locale === "id" ? "Periksa harga di SUZURI" : `¥${Number(price).toLocaleString(numberLocale)} ${t.taxIncluded}`;
 const products = Array.isArray(design.products) ? design.products : [];
 ---
 
@@ -38,7 +40,7 @@ const products = Array.isArray(design.products) ? design.products : [];
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>{pageTitle}</title>
-  <SeoHead title={pageTitle} description={description} canonical={canonical} image={design.image} type="article" />
+  <SeoHead title={pageTitle} description={description} canonical={canonical} image={design.image} type="article" locale={locale} path={canonicalPath} />
   <Analytics />
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
