@@ -9,7 +9,7 @@ const locale = normalizeLocale(Astro.props.locale);
 const t = messages[locale];
 
 const shopUrl = "https://suzuri.jp/bayasihimokei/designs";
-const title = locale === "ja" ? "オリジナルグッズ｜stamp moke × SUZURI" : locale === "en" ? "Original Character Goods | stamp moke × SUZURI" : locale === "zh-tw" ? "原創角色周邊｜stamp moke × SUZURI" : "สินค้าคาแรกเตอร์ต้นฉบับ | stamp moke × SUZURI";
+const title = locale === "ja" ? "オリジナルグッズ｜stamp moke × SUZURI" : locale === "en" ? "Original Character Goods | stamp moke × SUZURI" : locale === "zh-tw" ? "原創角色周邊｜stamp moke × SUZURI" : locale === "th" ? "สินค้าคาแรกเตอร์ต้นฉบับ | stamp moke × SUZURI" : "Produk Karakter Orisinal | stamp moke × SUZURI";
 const description = locale === "ja" ? "stamp moke / studio moke のSUZURIオリジナルグッズ。販売中のデザインやTシャツ、雑貨などを紹介します。" : t.goodsLead;
 const canonicalPath = "/goods/";
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
@@ -18,6 +18,7 @@ const goodsText = {
   en:{lead:"Enjoy stamp moke characters and designs on original SUZURI goods. Please check each SUZURI product page for current availability and final prices.",shop:"Visit our SUZURI shop ↗",empty:"The product list is temporarily unavailable. You can still browse all available designs in our official SUZURI shop.",view:"View available designs on SUZURI →",note:"Product information is provided by the official SUZURI API."},
   "zh-tw":{lead:"在SUZURI選購stamp moke原創角色與設計周邊。最新庫存與價格請以SUZURI商品頁面為準。",shop:"前往SUZURI商店 ↗",empty:"目前暫時無法取得商品列表，仍可前往SUZURI官方商店查看販售中的設計。",view:"在SUZURI查看販售中的設計 →",note:"商品資訊由SUZURI官方API提供。"},
   th:{lead:"พบกับคาแรกเตอร์และดีไซน์ของ stamp moke บนสินค้าออริจินัลจาก SUZURI โปรดตรวจสอบสถานะและราคาล่าสุดที่หน้าสินค้า SUZURI",shop:"ไปที่ร้าน SUZURI ↗",empty:"ไม่สามารถโหลดรายการสินค้าได้ชั่วคราว แต่ยังดูดีไซน์ที่จำหน่ายได้จากร้าน SUZURI อย่างเป็นทางการ",view:"ดูดีไซน์ที่จำหน่ายบน SUZURI →",note:"ข้อมูลสินค้ามาจาก API อย่างเป็นทางการของ SUZURI"},
+  id:{lead:"Nikmati karakter dan desain stamp moke dalam berbagai produk orisinal di SUZURI. Periksa ketersediaan dan harga terbaru pada halaman produk SUZURI.",shop:"Kunjungi toko SUZURI ↗",empty:"Daftar produk untuk sementara tidak dapat dimuat. Anda tetap dapat melihat semua desain di toko resmi SUZURI.",view:"Lihat desain yang tersedia di SUZURI →",note:"Informasi produk disediakan oleh API resmi SUZURI."},
 }[locale];
 let products = [];
 try {
@@ -47,7 +48,7 @@ try {
 <main class="main">
   <section class="hero"><div class="eyebrow">ORIGINAL GOODS / SUZURI</div><h1>GOODS</h1><p class="lead">{goodsText.lead}</p><a class="shop-button" href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.shop}</a></section>
   <section class="section"><div class="section-head"><h2>{t.goodsProducts}</h2><div class="count">{products.length} ITEMS</div></div>
-  {products.length ? <div class="grid">{products.map((product) => <a class="card" href={`https://suzuri.jp/bayasihimokei/${product.id}`} target="_blank" rel="noopener noreferrer"><div class="media"><img src={product.sampleImageUrl} alt={product.title} loading="lazy" /></div><div class="body"><h3 class="title">{product.title}</h3>{product.priceWithTax && <div class="price">¥{Number(product.priceWithTax).toLocaleString(locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "en" ? "en-US" : "ja-JP")} {t.taxIncluded}</div>}</div></a>)}</div> : <div class="empty">{goodsText.empty}<br /><a href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.view}</a></div>}
+  {products.length ? <div class="grid">{products.map((product) => <a class="card" href={`https://suzuri.jp/bayasihimokei/${product.id}`} target="_blank" rel="noopener noreferrer"><div class="media"><img src={product.sampleImageUrl} alt={product.title} loading="lazy" /></div><div class="body"><h3 class="title">{product.title}</h3>{product.priceWithTax && <div class="price">{locale === "id" ? "Periksa harga di SUZURI" : `¥${Number(product.priceWithTax).toLocaleString(locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "en" ? "en-US" : "ja-JP")} ${t.taxIncluded}`}</div>}</div></a>)}</div> : <div class="empty">{goodsText.empty}<br /><a href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.view}</a></div>}
   </section>
 </main>
 <footer class="footer"><div class="footer-inner"><strong>stamp moke</strong><div class="note">{goodsText.note}</div></div></footer>
