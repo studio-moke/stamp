@@ -1,0 +1,64 @@
+---
+import stickers from "../../data/stickers.json";
+import SeoHead from "../../components/SeoHead.astro";
+import Analytics from "../../components/Analytics.astro";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+import { localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
+import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
+import { localizedStickerTitle } from "../../lib/sticker-content";
+import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions, type TagDefinition } from "../../lib/sticker-tags";
+
+function matchingStickers(tagId: string) {
+  return stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tagId));
+}
+
+export function getStaticPaths() {
+  return tagDefinitions
+    .filter((tag) => matchingStickers(tag.id).length >= 2)
+    .map((tag) => ({ params: { tag: tag.slugs.ja }, props: { tag, locale: "ja" } }));
+}
+
+const { tag, locale: localeProp = "ja" } = Astro.props as { tag: TagDefinition; locale?: string };
+const locale = normalizeLocale(localeProp);
+const items = matchingStickers(tag.id);
+const label = tag.labels[locale];
+const canonicalPath = `/tags/${tag.slugs[locale]}`;
+const canonical = absoluteUrl(getTagPath(locale, tag));
+const titleLabel = locale === "ja" ? `${label}のLINEスタンプ` : locale === "en" ? `${label} LINE Stickers` : locale === "zh-tw" ? `${label} LINE貼圖` : locale === "th" ? `สติกเกอร์ LINE: ${label}` : `Stiker LINE: ${label}`;
+const pageTitle = makeTitle([titleLabel, "stamp moke"]);
+const description = makeDescription(tag.description[locale]);
+const ui = {
+  ja:{back:"スタンプ一覧",eyebrow:"言葉・用途から探す",count:"該当するスタンプ",footer:"かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。"},
+  en:{back:"Sticker collection",eyebrow:"Browse by phrase & use",count:"Matching sticker sets",footer:"Cute, funny and practical LINE stickers for everyday chats."},
+  "zh-tw":{back:"貼圖列表",eyebrow:"依語句與用途搜尋",count:"符合的貼圖",footer:"提供可愛、有趣又適合日常使用的原創LINE貼圖。"},
+  th:{back:"รวมสติกเกอร์",eyebrow:"ค้นหาตามคำและการใช้งาน",count:"ชุดสติกเกอร์ที่ตรงกัน",footer:"สติกเกอร์ LINE น่ารัก สนุก และใช้ได้ทุกวัน"},
+  id:{back:"Koleksi stiker",eyebrow:"Cari berdasarkan frasa & kegunaan",count:"Set stiker yang cocok",footer:"Stiker LINE yang lucu, seru, dan praktis untuk obrolan sehari-hari."},
+}[locale];
+---
+<!doctype html>
+<html lang={localeInfo[locale].htmlLang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <SeoHead title={pageTitle} description={description} canonical={canonical} locale={locale} path={canonicalPath} />
+  <Analytics />
+  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:titleLabel,description,url:canonical,mainEntity:{"@type":"ItemList",numberOfItems:items.length,itemListElement:items.map((item,index)=>({"@type":"ListItem",position:index+1,url:absoluteUrl(localizedPath(locale,`/stickers/${item.id}`)),name:localizedStickerTitle(item,locale)}))}})} />
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.header{background:#fff;border-bottom:1px solid #e4e3df;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{text-decoration:none;font-weight:900;letter-spacing:.08em}.actions{display:flex;gap:10px;align-items:center}.back{border:1px solid #ddd;background:#fff;border-radius:999px;padding:10px 16px;text-decoration:none;font-size:12px;font-weight:700}.main{max-width:1180px;margin:0 auto;padding:56px 5vw 100px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#777;text-transform:uppercase}.title{font-size:clamp(36px,6vw,72px);line-height:1.05;margin:12px 0 18px;letter-spacing:-.04em}.lead{max-width:760px;color:#666;line-height:1.9;font-size:14px}.count{margin:40px 0 16px;font-size:12px;color:#777}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;list-style:none;padding:0;margin:0}.card{display:block;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden;text-decoration:none}.media{aspect-ratio:1/1;background:#7696c4;display:flex;align-items:center;justify-content:center}.media img{width:100%;height:100%;object-fit:contain;padding:18px}.name{margin:0;padding:16px;font-size:13px;font-weight:800;line-height:1.5}.footer{background:#181818;color:#999;padding:38px 5vw;font-size:11px}.footer strong{display:block;color:#fff;margin-bottom:8px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.main{padding:38px 18px 70px}.header{padding:14px 18px}.title{font-size:38px}}@media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.name{padding:11px;font-size:11px}.media img{padding:10px}}
+  </style>
+</head>
+<body>
+<header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} path={`/tags/${tag.slugs.ja}`} /><a class="back" href={localizedPath(locale,"/")}>{ui.back}</a></div></header>
+<main class="main">
+  <div class="eyebrow">{ui.eyebrow}</div>
+  <h1 class="title">{titleLabel}</h1>
+  <p class="lead">{description}</p>
+  <div class="count">{ui.count}: {items.length}</div>
+  <ul class="grid">
+    {items.map((item)=><li><a class="card" href={localizedPath(locale,`/stickers/${item.id}`)}><div class="media"><img src={item.image} alt={localizedStickerTitle(item,locale)} loading="lazy" width="512" height="512" /></div><p class="name">{localizedStickerTitle(item,locale)}</p></a></li>)}
+  </ul>
+</main>
+<footer class="footer"><strong>stamp moke</strong>{ui.footer}</footer>
+</body>
+</html>
