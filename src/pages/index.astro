@@ -1,5 +1,6 @@
 ---
 import stickers from "../data/stickers.json";
+import suzuriDesigns from "../data/suzuri-designs.json";
 import Analytics from "../components/Analytics.astro";
 
 const siteTitle = "stamp moke｜LINEスタンプ専門メディア";
@@ -331,6 +332,30 @@ const heroSlides = [
       border-radius: 18px;
     }
 
+    .goods-section { margin-top: 120px; }
+    .goods-lead { max-width: 650px; margin: 15px 0 30px; color: #777; font-size: 13px; line-height: 1.9; }
+    .goods-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+    .goods-card {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #e3e2de;
+      border-radius: 18px;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .goods-card:hover { transform: translateY(-5px); border-color: #d1d0cb; box-shadow: 0 16px 40px rgba(0,0,0,.08); }
+    .goods-image-wrap { aspect-ratio: 1; overflow: hidden; background: #f0eee8; }
+    .goods-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+    .goods-card:hover .goods-image { transform: scale(1.035); }
+    .goods-content { padding: 17px 18px 19px; }
+    .goods-label { margin-bottom: 8px; color: #999; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+    .goods-title { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 800; }
+    .goods-link { margin-top: 13px; color: #168b52; font-size: 11px; font-weight: 800; }
+    .goods-footer { margin-top: 30px; text-align: center; }
+    .goods-shop-button { display: inline-flex; padding: 13px 20px; border-radius: 999px; background: #161616; color: #fff; font-size: 12px; font-weight: 800; text-decoration: none; }
+
     .intro {
       margin-top: 120px;
       background: #202020;
@@ -367,6 +392,7 @@ const heroSlides = [
       .hero-collage { width: 100%; max-width: 600px; justify-self: center; padding: 20px; }
       .hero-nav { left: 42px; bottom: 24px; }
       .sticker-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+      .goods-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
       .intro { padding: 50px 40px; }
     }
     @media (max-width: 640px) {
@@ -393,6 +419,9 @@ const heroSlides = [
       .controls { gap: 7px; }
       .category-button { padding: 8px 12px; font-size: 11px; }
       .sticker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .goods-section { margin-top: 85px; }
+      .goods-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .goods-content { padding: 14px; }
       .sticker-card { border-radius: 13px; }
       .sticker-image { padding: 9px; }
       .sticker-content { padding: 12px 12px 14px; }
@@ -512,6 +541,36 @@ const heroSlides = [
       <div class="empty-state" id="empty-state">該当するスタンプがありません。</div>
       <nav class="pagination" id="pagination" aria-label="ページ"></nav>
     </section>
+
+    {suzuriDesigns.length > 0 && (
+      <section class="goods-section" id="character-goods">
+        <div class="section-header">
+          <div>
+            <div class="section-label">CHARACTER GOODS / SUZURI</div>
+            <h2 class="section-title">キャラデザイン</h2>
+          </div>
+          <div class="section-count">{suzuriDesigns.length} DESIGNS</div>
+        </div>
+        <p class="goods-lead">LINEスタンプから生まれたキャラクターたちを、Tシャツやステッカーなどのグッズにしました。</p>
+        <div class="goods-grid">
+          {suzuriDesigns.map((design, index) => (
+            <a class="goods-card" href={design.url} target="_blank" rel="noopener noreferrer">
+              <div class="goods-image-wrap">
+                <img class="goods-image" src={design.image} alt={`${design.title}のSUZURIグッズ`} loading={index < 4 ? "eager" : "lazy"} />
+              </div>
+              <div class="goods-content">
+                <div class="goods-label">SUZURI / {design.itemName}</div>
+                <h3 class="goods-title">{design.title}</h3>
+                <div class="goods-link">グッズを見る ↗</div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="goods-footer">
+          <a class="goods-shop-button" href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">SUZURIショップをすべて見る ↗</a>
+        </div>
+      </section>
+    )}
 
     <section class="intro">
       <div class="intro-label">ABOUT / stamp moke</div>
