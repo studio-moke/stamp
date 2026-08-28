@@ -1,0 +1,10 @@
+---
+import stickers from "../../../data/stickers.json";
+import StickerPage from "../../stickers/[id].astro";
+
+export function getStaticPaths() {
+  return stickers.map((sticker) => ({ params: { id: String(sticker.id) }, props: { sticker } }));
+}
+const { sticker } = Astro.props;
+---
+<StickerPage sticker={sticker} locale="en" />
