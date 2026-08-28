@@ -19,13 +19,22 @@ const t = messages[locale];
 const basePurchaseUrl = sticker.purchaseUrl || sticker.url;
 const purchaseUrl = localizeLineUrl(basePurchaseUrl, locale);
 const giftUrl = localizeLineUrl(sticker.giftUrl || basePurchaseUrl, locale);
-const qrTarget = sticker.url || purchaseUrl;
+const qrTarget = purchaseUrl;
 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
 const cleanTitle = sticker.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "");
-const pageTitle = makeTitle([`${cleanTitle}｜LINEスタンプ`]);
-const description = makeDescription(sticker.description || "", `${cleanTitle}のLINEスタンプ。stamp mokeで作品情報を紹介しています。`);
+const titleSuffix = locale === "ja" ? "LINEスタンプ" : locale === "en" ? "LINE Stickers" : locale === "zh-tw" ? "LINE貼圖" : "สติกเกอร์ LINE";
+const pageTitle = makeTitle([`${cleanTitle} | ${titleSuffix}`]);
+const localizedFallback = locale === "ja"
+  ? `${cleanTitle}のLINEスタンプ。stamp mokeで作品情報を紹介しています。`
+  : locale === "en"
+    ? `Discover ${cleanTitle}, an original LINE sticker set by stamp moke for everyday chats.`
+    : locale === "zh-tw"
+      ? `探索stamp moke原創LINE貼圖「${cleanTitle}」，適合日常聊天使用。`
+      : `พบกับ ${cleanTitle} ชุดสติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
+const description = makeDescription(locale === "ja" ? (sticker.description || "") : "", localizedFallback);
 const canonicalPath = `/stickers/${sticker.id}`;
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
+const category = getCategory(sticker);
 const localizedCategory = categoryLabels[locale][category] || category;
 const pageText = {
   ja: { list:"スタンプ一覧へ", breadcrumb:"LINEスタンプ", gift:"プレゼントする", safe:"安心・安全", safeText:"LINE STORE公式ページから購入できます。", mobile:"スマホで簡単", mobileText:"QRコードからすぐに商品ページを開けます。", giftOk:"プレゼントOK", giftText:"友だちへのギフトにも利用できます。", phone:"スマホで見る", phoneText:"スマートフォンのカメラでQRコードを読み取ると、LINE STOREの商品ページを開けます。", open:"スマホで商品ページを開く →", id:"商品ID", category:"カテゴリ", price:"価格", seller:"販売元", work:"作品名", official:"LINE STORE公式ページを見る →", included:"収録スタンプ一覧", note:"低解像度・透かし入りの確認用プレビューです。画像の保存・転載はご遠慮ください。", related:"関連するLINEスタンプ", footer:"かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。" },
@@ -33,7 +42,6 @@ const pageText = {
   "zh-tw": { list:"貼圖列表", breadcrumb:"LINE貼圖", gift:"贈送給朋友", safe:"官方安全購買", safeText:"可於LINE STORE官方頁面安心購買。", mobile:"手機快速開啟", mobileText:"掃描QR Code即可開啟商品頁面。", giftOk:"可作為禮物", giftText:"可將這組貼圖贈送給LINE好友。", phone:"用手機查看", phoneText:"使用手機相機掃描QR Code，即可開啟LINE STORE商品頁面。", open:"開啟商品頁面 →", id:"商品ID", category:"分類", price:"價格", seller:"販售平台", work:"作品名稱", official:"查看LINE STORE官方頁面 →", included:"收錄貼圖一覽", note:"此為低解析度浮水印預覽，請勿儲存或轉載圖片。", related:"相關LINE貼圖", footer:"提供可愛、有趣又適合日常使用的原創LINE貼圖。" },
   th: { list:"รวมสติกเกอร์", breadcrumb:"สติกเกอร์ LINE", gift:"ส่งเป็นของขวัญ", safe:"ปลอดภัยและเป็นทางการ", safeText:"ซื้อได้จากหน้า LINE STORE อย่างเป็นทางการ", mobile:"เปิดง่ายบนมือถือ", mobileText:"สแกน QR Code เพื่อเปิดหน้าสินค้าได้ทันที", giftOk:"ส่งเป็นของขวัญได้", giftText:"ส่งชุดสติกเกอร์นี้ให้เพื่อนบน LINE ได้", phone:"เปิดบนมือถือ", phoneText:"สแกน QR Code ด้วยกล้องมือถือเพื่อเปิดหน้าสินค้าบน LINE STORE", open:"เปิดหน้าสินค้า →", id:"รหัสสินค้า", category:"หมวดหมู่", price:"ราคา", seller:"ผู้จำหน่าย", work:"ชื่อผลงาน", official:"ดูหน้า LINE STORE อย่างเป็นทางการ →", included:"สติกเกอร์ทั้งหมดในชุด", note:"ภาพตัวอย่างความละเอียดต่ำพร้อมลายน้ำ กรุณาอย่าบันทึกหรือนำภาพไปเผยแพร่ต่อ", related:"สติกเกอร์ LINE ที่เกี่ยวข้อง", footer:"สติกเกอร์ LINE น่ารัก สนุก และใช้ได้ทุกวัน" },
 }[locale];
-const category = getCategory(sticker);
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
 const sheetUrl = `/images/sticker-sheets/${sticker.id}.webp`;
 const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sticker-sheets", `${sticker.id}.webp`));
@@ -44,7 +52,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
-  <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" />
+  <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" locale={locale} path={canonicalPath} />
   <Analytics />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"stamp moke","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
   <style>
