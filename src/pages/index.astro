@@ -87,6 +87,8 @@ const heroSlides = [
       font-size: 13px;
       font-weight: 700;
     }
+    .header-actions { display: flex; align-items: center; gap: 9px; }
+    .header-shop-link { background: #161616; border-color: #161616; color: #fff; }
 
     .main { max-width: 1180px; margin: 0 auto; padding: 45px 5vw 110px; }
     .hero { padding: 28px 0 72px; }
@@ -119,12 +121,12 @@ const heroSlides = [
     .hero-label { margin-bottom: 18px; color: #666; font-size: 10px; font-weight: 800; letter-spacing: .2em; }
     .hero-title {
       margin: 0;
-      white-space: pre-line;
-      font-size: clamp(42px, 5vw, 68px);
+      font-size: clamp(36px, 4vw, 60px);
       line-height: 1.02;
       letter-spacing: -.05em;
       font-weight: 900;
     }
+    .hero-title-line { display: block; white-space: nowrap; }
     .hero-text { max-width: 430px; margin: 24px 0 0; color: #666; font-size: 13px; line-height: 1.9; }
     .hero-cta {
       display: inline-flex;
@@ -347,7 +349,7 @@ const heroSlides = [
       .hero-carousel { min-height: 690px; }
       .hero-slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding: 42px; }
       .hero-copy { justify-content: flex-start; }
-      .hero-title { font-size: 48px; }
+      .hero-title { font-size: 44px; }
       .hero-text { display: none; }
       .hero-cta { margin-top: 18px; }
       .hero-collage { width: 100%; max-width: 600px; justify-self: center; padding: 20px; }
@@ -360,11 +362,14 @@ const heroSlides = [
       .brand-title { font-size: 17px; }
       .brand-sub { font-size: 9px; margin-top: 5px; }
       .header-link { padding: 10px 14px; font-size: 11px; }
+      .header-actions { gap: 6px; }
+      .header-shop-link { padding-inline: 12px; }
+      .header-actions .header-link:not(.header-shop-link) { display: none; }
       .main { padding: 25px 18px 70px; }
       .hero { padding: 12px 0 48px; }
       .hero-carousel { min-height: 620px; border-radius: 20px; }
       .hero-slide { gap: 18px; padding: 30px 20px 72px; }
-      .hero-title { font-size: 38px; line-height: 1.04; }
+      .hero-title { font-size: clamp(30px, 9.2vw, 36px); line-height: 1.06; }
       .hero-label { margin-bottom: 12px; font-size: 9px; }
       .hero-collage { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 7px; padding: 12px; border-radius: 17px; transform: none; }
       .hero-sticker { border-radius: 11px; }
@@ -402,7 +407,10 @@ const heroSlides = [
       <div class="brand-title">STAMP MOKE</div>
       <div class="brand-sub">LINEスタンプ専門メディア</div>
     </a>
-    <a href="#stickers" class="header-link">スタンプを見る ↓</a>
+    <div class="header-actions">
+      <a href="https://suzuri.jp/bayasihimokei" class="header-link header-shop-link" target="_blank" rel="noopener noreferrer">キャラグッズ店 ↗</a>
+      <a href="#stickers" class="header-link">スタンプを見る ↓</a>
+    </div>
   </header>
 
   <main class="main">
@@ -416,7 +424,9 @@ const heroSlides = [
           >
             <div class="hero-copy">
               <div class="hero-label">{slide.label} / STAMP MOKE</div>
-              <h1 class="hero-title">{slide.title}</h1>
+              <h1 class="hero-title">
+                {slide.title.split("\n").map((line) => <span class="hero-title-line">{line}</span>)}
+              </h1>
               <p class="hero-text">かわいい、おもしろい、毎日使える。いろいろなシリーズから、あなたにぴったりのLINEスタンプを見つけてください。</p>
               <a class="hero-cta" href="#stickers">スタンプを探す →</a>
             </div>
@@ -516,6 +526,7 @@ const heroSlides = [
         <div>
           <div class="footer-heading">LINK</div>
           <a class="footer-link" href="https://store.line.me/" target="_blank" rel="noreferrer">LINE STORE</a>
+          <a class="footer-link" href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">LINEスタンプキャラグッズ店（SUZURI）</a>
           <a class="footer-link" href="https://x.com/stampmoke" target="_blank" rel="noopener noreferrer">公式X @stampmoke</a>
         </div>
       </div>
