@@ -6,6 +6,7 @@ import SeoHead from "../components/SeoHead.astro";
 import LanguageSwitcher from "../components/LanguageSwitcher.astro";
 import { localeInfo, localizedPath, messages, normalizeLocale } from "../lib/i18n";
 import { absoluteUrl } from "../lib/seo";
+import { localizedStickerDescription, localizedStickerPrice, localizedStickerTitle } from "../lib/sticker-content";
 
 const locale = normalizeLocale(Astro.props.locale);
 const t = messages[locale];
@@ -32,6 +33,9 @@ function getCategory(sticker) {
 const categorizedStickers = stickers.map((sticker) => ({
   ...sticker,
   category: getCategory(sticker),
+  localizedTitle: localizedStickerTitle(sticker, locale),
+  localizedDescription: localizedStickerDescription(sticker, locale),
+  localizedPrice: localizedStickerPrice(sticker.price, locale),
 }));
 
 function pickForHero(categories, offset = 0) {
@@ -488,7 +492,7 @@ const heroSlides = [
             </div>
             <div class="hero-collage">
               {slide.stickers.map((sticker) => (
-                <a class="hero-sticker" href={localizedPath(locale, `/stickers/${sticker.id}`)} aria-label={sticker.title}>
+                <a class="hero-sticker" href={localizedPath(locale, `/stickers/${sticker.id}`)} aria-label={sticker.localizedTitle}>
                   <img src={sticker.image} alt="" loading={slideIndex === 0 ? "eager" : "lazy"} />
                 </a>
               ))}
@@ -531,20 +535,20 @@ const heroSlides = [
                 <img
                   class="sticker-image"
                   src={sticker.image}
-                  alt={sticker.title}
+                  alt={sticker.localizedTitle}
                   loading={index < 8 ? "eager" : "lazy"}
                 />
               </div>
               <div class="sticker-content">
                 <div class="sticker-number">{String(index + 1).padStart(3, "0")}</div>
-                <h3 class="sticker-title">{sticker.title}</h3>
+                <h3 class="sticker-title">{sticker.localizedTitle}</h3>
                 {
-                  sticker.description && (
-                    <p class="sticker-description">{sticker.description}</p>
+                  sticker.localizedDescription && (
+                    <p class="sticker-description">{sticker.localizedDescription}</p>
                   )
                 }
                 <div class="sticker-meta">
-                  <div class="price">{sticker.price}</div>
+                  <div class="price">{sticker.localizedPrice}</div>
                   <div class="detail-link">{t.details}</div>
                 </div>
               </div>
