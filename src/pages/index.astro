@@ -25,6 +25,19 @@ const categorizedStickers = stickers.map((sticker) => ({
   category: getCategory(sticker),
 }));
 
+function pickForHero(categories, offset = 0) {
+  const selected = categorizedStickers.filter((sticker) => categories.includes(sticker.category));
+  const pool = selected.length >= 8 ? selected : categorizedStickers;
+  return Array.from({ length: Math.min(8, pool.length) }, (_, index) => pool[(index + offset) % pool.length]);
+}
+
+const heroSlides = [
+  { label: "NEW ARRIVALS", title: "新しいスタンプ、\n続々登場。", accent: "#ffd86b", stickers: categorizedStickers.slice(0, 8) },
+  { label: "CUTE & ANIMALS", title: "かわいい仲間が、\nいっぱい。", accent: "#a9dccc", stickers: pickForHero(["動物", "かわいい"], 2) },
+  { label: "FUNNY & UNIQUE", title: "クスッと笑える、\nひとことを。", accent: "#f2b8c6", stickers: pickForHero(["おもしろ", "食べ物", "方言"], 4) },
+  { label: "DAILY & WORK", title: "毎日の会話を、\nもっと便利に。", accent: "#a9c6eb", stickers: pickForHero(["仕事", "日常", "恋愛", "あいさつ"], 6) },
+];
+
 ---
 
 <html lang="ja">
@@ -76,18 +89,105 @@ const categorizedStickers = stickers.map((sticker) => ({
     }
 
     .main { max-width: 1180px; margin: 0 auto; padding: 45px 5vw 110px; }
-    .hero { padding: 55px 0 65px; }
-    .eyebrow { font-size: 11px; letter-spacing: .2em; color: #777; margin-bottom: 18px; }
+    .hero { padding: 28px 0 72px; }
+    .hero-carousel {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      border: 1px solid #deddd8;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(42,40,32,.08);
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: .82fr 1.18fr;
+      gap: 28px;
+      padding: 54px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(28px);
+      transition: opacity .65s ease, transform .65s ease, visibility .65s;
+      background:
+        radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--accent) 33%, transparent), transparent 34%),
+        linear-gradient(135deg, #fff 0%, #faf9f5 100%);
+    }
+    .hero-slide.is-active { opacity: 1; visibility: visible; transform: translateX(0); z-index: 1; }
+    .hero-copy { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center; }
+    .hero-label { margin-bottom: 18px; color: #666; font-size: 10px; font-weight: 800; letter-spacing: .2em; }
     .hero-title {
       margin: 0;
-      max-width: 850px;
-      font-size: clamp(42px, 6vw, 82px);
-      line-height: .98;
-      letter-spacing: -.045em;
+      white-space: pre-line;
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 1.02;
+      letter-spacing: -.05em;
       font-weight: 900;
     }
-    .hero-title span { display: block; color: #777; }
-    .hero-text { max-width: 620px; margin-top: 28px; font-size: 15px; line-height: 2; color: #666; }
+    .hero-text { max-width: 430px; margin: 24px 0 0; color: #666; font-size: 13px; line-height: 1.9; }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      margin-top: 25px;
+      padding: 12px 17px;
+      border-radius: 999px;
+      background: #161616;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .hero-collage {
+      position: relative;
+      align-self: center;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      padding: 24px;
+      border-radius: 25px;
+      background: color-mix(in srgb, var(--accent) 45%, #fff);
+      transform: rotate(-1.5deg);
+    }
+    .hero-sticker {
+      position: relative;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 10px 24px rgba(60,55,40,.1);
+      transition: transform .25s ease;
+    }
+    .hero-sticker:nth-child(even) { transform: translateY(9px); }
+    .hero-sticker:hover { transform: translateY(-4px) rotate(2deg); }
+    .hero-sticker img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+    .hero-nav {
+      position: absolute;
+      z-index: 4;
+      left: 54px;
+      bottom: 35px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .hero-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 99px; background: #c9c7c0; cursor: pointer; transition: width .25s, background .25s; }
+    .hero-dot.is-active { width: 28px; background: #161616; }
+    .hero-arrow {
+      width: 38px;
+      height: 38px;
+      border: 1px solid #d6d4cd;
+      border-radius: 50%;
+      background: rgba(255,255,255,.88);
+      color: #161616;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .hero-arrow:first-child { margin-right: 5px; }
+    .hero-arrow:last-child { margin-left: 5px; }
 
     .section-header {
       display: flex;
@@ -244,6 +344,14 @@ const categorizedStickers = stickers.map((sticker) => ({
     .copyright { padding-top: 25px; display: flex; justify-content: space-between; color: #666; font-size: 10px; letter-spacing: .05em; }
 
     @media (max-width: 900px) {
+      .hero-carousel { min-height: 690px; }
+      .hero-slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding: 42px; }
+      .hero-copy { justify-content: flex-start; }
+      .hero-title { font-size: 48px; }
+      .hero-text { display: none; }
+      .hero-cta { margin-top: 18px; }
+      .hero-collage { width: 100%; max-width: 600px; justify-self: center; padding: 20px; }
+      .hero-nav { left: 42px; bottom: 24px; }
       .sticker-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
       .intro { padding: 50px 40px; }
     }
@@ -253,9 +361,15 @@ const categorizedStickers = stickers.map((sticker) => ({
       .brand-sub { font-size: 9px; margin-top: 5px; }
       .header-link { padding: 10px 14px; font-size: 11px; }
       .main { padding: 25px 18px 70px; }
-      .hero { padding: 45px 0 50px; }
-      .hero-title { font-size: 43px; line-height: 1.02; }
-      .hero-text { font-size: 13px; line-height: 1.9; }
+      .hero { padding: 12px 0 48px; }
+      .hero-carousel { min-height: 620px; border-radius: 20px; }
+      .hero-slide { gap: 18px; padding: 30px 20px 72px; }
+      .hero-title { font-size: 38px; line-height: 1.04; }
+      .hero-label { margin-bottom: 12px; font-size: 9px; }
+      .hero-collage { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 7px; padding: 12px; border-radius: 17px; transform: none; }
+      .hero-sticker { border-radius: 11px; }
+      .hero-sticker img { padding: 4px; }
+      .hero-nav { left: 20px; right: 20px; bottom: 20px; justify-content: center; }
       .section-header { display: block; margin-bottom: 18px; }
       .section-title { font-size: 31px; }
       .section-count { display: block; margin-top: 10px; }
@@ -293,15 +407,36 @@ const categorizedStickers = stickers.map((sticker) => ({
 
   <main class="main">
     <section class="hero">
-      <div class="eyebrow">LINE STICKERS / STAMP MOKE</div>
-      <h1 class="hero-title">
-        毎日のひとことを、
-        <span>ちょっと楽しく。</span>
-      </h1>
-      <p class="hero-text">
-        かわいい、おもしろい、毎日使える。STAMP MOKEでは、LINEで使いたくなるスタンプを紹介しています。
-        気になるスタンプを見つけたら、詳しい紹介ページからチェックしてみてください。
-      </p>
+      <div class="hero-carousel" id="hero-carousel" aria-roledescription="カルーセル" aria-label="STAMP MOKEのスタンプシリーズ">
+        {heroSlides.map((slide, slideIndex) => (
+          <article
+            class={`hero-slide${slideIndex === 0 ? " is-active" : ""}`}
+            style={`--accent:${slide.accent}`}
+            aria-hidden={slideIndex === 0 ? "false" : "true"}
+          >
+            <div class="hero-copy">
+              <div class="hero-label">{slide.label} / STAMP MOKE</div>
+              <h1 class="hero-title">{slide.title}</h1>
+              <p class="hero-text">かわいい、おもしろい、毎日使える。いろいろなシリーズから、あなたにぴったりのLINEスタンプを見つけてください。</p>
+              <a class="hero-cta" href="#stickers">スタンプを探す →</a>
+            </div>
+            <div class="hero-collage">
+              {slide.stickers.map((sticker) => (
+                <a class="hero-sticker" href={`/stickers/${sticker.id}`} aria-label={sticker.title}>
+                  <img src={sticker.image} alt="" loading={slideIndex === 0 ? "eager" : "lazy"} />
+                </a>
+              ))}
+            </div>
+          </article>
+        ))}
+        <div class="hero-nav" aria-label="スライド操作">
+          <button class="hero-arrow" type="button" id="hero-prev" aria-label="前のスライド">‹</button>
+          {heroSlides.map((_, index) => (
+            <button class={`hero-dot${index === 0 ? " is-active" : ""}`} type="button" data-slide={index} aria-label={`${index + 1}枚目を表示`}></button>
+          ))}
+          <button class="hero-arrow" type="button" id="hero-next" aria-label="次のスライド">›</button>
+        </div>
+      </div>
     </section>
 
     <section id="stickers">
@@ -392,6 +527,49 @@ const categorizedStickers = stickers.map((sticker) => ({
   </footer>
 
   <script>
+    const carousel = document.getElementById("hero-carousel");
+    const slides = Array.from(carousel.querySelectorAll(".hero-slide"));
+    const dots = Array.from(carousel.querySelectorAll(".hero-dot"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let currentSlide = 0;
+    let slideTimer;
+    let touchStartX = 0;
+
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === currentSlide;
+        slide.classList.toggle("is-active", active);
+        slide.setAttribute("aria-hidden", String(!active));
+      });
+      dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === currentSlide));
+    }
+
+    function stopSlides() {
+      if (slideTimer) window.clearInterval(slideTimer);
+    }
+
+    function startSlides() {
+      stopSlides();
+      if (!reducedMotion) slideTimer = window.setInterval(() => showSlide(currentSlide + 1), 5000);
+    }
+
+    document.getElementById("hero-prev").addEventListener("click", () => { showSlide(currentSlide - 1); startSlides(); });
+    document.getElementById("hero-next").addEventListener("click", () => { showSlide(currentSlide + 1); startSlides(); });
+    dots.forEach((dot) => dot.addEventListener("click", () => { showSlide(Number(dot.dataset.slide)); startSlides(); }));
+    carousel.addEventListener("mouseenter", stopSlides);
+    carousel.addEventListener("mouseleave", startSlides);
+    carousel.addEventListener("focusin", stopSlides);
+    carousel.addEventListener("focusout", startSlides);
+    carousel.addEventListener("touchstart", (event) => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    carousel.addEventListener("touchend", (event) => {
+      const distance = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(distance) > 45) showSlide(currentSlide + (distance < 0 ? 1 : -1));
+      startSlides();
+    }, { passive: true });
+    document.addEventListener("visibilitychange", () => document.hidden ? stopSlides() : startSlides());
+    startSlides();
+
     const PAGE_SIZE = 24;
     const cards = Array.from(document.querySelectorAll(".sticker-card"));
     const controls = document.getElementById("category-controls");
