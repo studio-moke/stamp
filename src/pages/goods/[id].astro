@@ -49,8 +49,8 @@ const products = Array.isArray(design.products) ? design.products : [];
     .breadcrumb { margin-bottom: 28px; color: #888; font-size: 11px; }
     .breadcrumb a { text-decoration: none; }
     .feature { display: grid; grid-template-columns: minmax(280px,.85fr) minmax(0,1.15fr); gap: 55px; align-items: center; padding: 46px; border: 1px solid #e3e2de; border-radius: 28px; background: #fff; box-shadow: 0 24px 70px rgba(42,40,32,.07); }
-    .character-image-wrap { aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; border-radius: 22px; background: #f2f0ea; }
-    .character-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .character-image-wrap { aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; border-radius: 22px; background: #fff; }
+    .character-image { display: block; width: 100%; height: 100%; object-fit: cover; background: #fff; filter: brightness(1.055) contrast(1.02); }
     .eyebrow { margin-bottom: 15px; color: #888; font-size: 10px; font-weight: 800; letter-spacing: .18em; }
     .title { margin: 0; font-size: clamp(34px,4.5vw,62px); line-height: 1.08; letter-spacing: -.045em; font-weight: 900; }
     .description { margin: 25px 0 0; color: #666; font-size: 13px; line-height: 2; white-space: pre-line; }
