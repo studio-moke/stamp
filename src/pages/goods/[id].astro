@@ -16,6 +16,7 @@ const pageTitle = makeTitle([`${design.title}のキャラクターグッズ`]);
 const description = design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`;
 const canonical = absoluteUrl(`/goods/${design.id}`);
 const formatPrice = (price) => price ? `¥${Number(price).toLocaleString("ja-JP")}（税込）` : "";
+const products = Array.isArray(design.products) ? design.products : [];
 ---
 
 <!doctype html>
@@ -115,7 +116,7 @@ const formatPrice = (price) => price ? `¥${Number(price).toLocaleString("ja-JP"
       <div class="section-label">AVAILABLE GOODS</div>
       <h2 class="section-heading">このキャラのグッズ</h2>
       <div class="product-grid">
-        {design.products.map((product, index) => (
+        {products.map((product, index) => (
           <a class="product-card" href={product.url} target="_blank" rel="noopener noreferrer">
             <div class="product-image-wrap">
               <img class="product-image" src={product.image} alt={product.title} loading={index < 8 ? "eager" : "lazy"} />
