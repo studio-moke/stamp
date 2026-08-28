@@ -22,7 +22,9 @@ const imageHeaders = {
 function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
 async function getHtml(url) {
-  const response = await fetch(url, { headers });
+  // Always read the current author catalog. LINE STORE pagination can change
+  // several times a day as newly approved works become public.
+  const response = await fetch(url, { headers, cache: "no-store", redirect: "follow" });
   if (!response.ok) throw new Error(`${response.status}: ${url}`);
   const buffer = await response.arrayBuffer();
   return new TextDecoder("utf-8").decode(buffer);
