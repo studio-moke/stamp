@@ -19,7 +19,7 @@ permissions:
 
 concurrency:
   group: update-stickers
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   update-stickers:
@@ -39,9 +39,6 @@ jobs:
 
       - name: Fetch latest stickers
         run: node scripts/fetch-stickers.mjs
-
-      - name: Backfill missing stickers
-        run: node scripts/discover-new-stickers.mjs
 
       - name: Validate sticker count
         run: |
