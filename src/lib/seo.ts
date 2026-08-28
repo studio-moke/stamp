@@ -1,4 +1,4 @@
-export const SITE_NAME = "STAMP MOKE";
+export const SITE_NAME = "stamp moke";
 export const SITE_URL = "https://stamp-moke.jp";
 
 export function makeTitle(parts: string[]) {

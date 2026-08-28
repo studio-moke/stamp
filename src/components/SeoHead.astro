@@ -4,6 +4,7 @@ const { title, description, canonical, image, type = "website" } = Astro.props;
 const url = canonical || absoluteUrl(Astro.url.pathname);
 ---
 <meta name="description" content={description} />
+<meta name="keywords" content="stamp moke,スタンプもけ,スタンプモケ,スタンプもけぇ,studio moke,スタジオモケ,スタジオもけぇ,LINEスタンプ" />
 <link rel="canonical" href={url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

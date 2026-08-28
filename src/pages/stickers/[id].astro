@@ -1,6 +1,7 @@
 ---
 import stickers from "../../data/stickers.json";
 import SeoHead from "../../components/SeoHead.astro";
+import Analytics from "../../components/Analytics.astro";
 import { makeTitle, makeDescription, absoluteUrl } from "../../lib/seo";
 import { getCategory } from "../../lib/stickers";
 import fs from "node:fs";
@@ -17,7 +18,7 @@ const qrTarget = sticker.url || purchaseUrl;
 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
 const cleanTitle = sticker.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "");
 const pageTitle = makeTitle([`${cleanTitle}｜LINEスタンプ`]);
-const description = makeDescription(sticker.description || "", `${cleanTitle}のLINEスタンプ。STAMP MOKEで作品情報を紹介しています。`);
+const description = makeDescription(sticker.description || "", `${cleanTitle}のLINEスタンプ。stamp mokeで作品情報を紹介しています。`);
 const canonical = absoluteUrl(`/stickers/${sticker.id}`);
 const category = getCategory(sticker);
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
@@ -31,7 +32,8 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
   <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" />
-  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"STAMP MOKE","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
+  <Analytics />
+  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"stamp moke","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -142,12 +144,12 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
 </head>
 <body>
   <header class="header">
-    <a href="/" class="brand"><div class="brand-title">STAMP MOKE</div><div class="brand-sub">LINEスタンプ専門メディア</div></a>
+    <a href="/" class="brand"><div class="brand-title">stamp moke</div><div class="brand-sub">LINEスタンプ専門メディア</div></a>
     <a href="/" class="header-link">スタンプ一覧へ</a>
   </header>
 
   <main class="main">
-    <nav class="breadcrumb" aria-label="パンくず"><a href="/">STAMP MOKE</a> / <a href="/">LINEスタンプ</a> / {cleanTitle}</nav>
+    <nav class="breadcrumb" aria-label="パンくず"><a href="/">stamp moke</a> / <a href="/">LINEスタンプ</a> / {cleanTitle}</nav>
 
     <article class="detail-card">
       <div class="image-panel"><img class="sticker-image" src={sticker.image} alt={`${cleanTitle}のLINEスタンプ`} loading="eager" decoding="async" width="512" height="512" /></div>
@@ -217,7 +219,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
     )}
   </main>
 
-  <footer class="footer"><div class="footer-inner"><div class="footer-brand">STAMP MOKE</div><p class="footer-copy">かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。</p><div class="footer-links"><a href="/">スタンプ一覧</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© STAMP MOKE</div></div></footer>
+  <footer class="footer"><div class="footer-inner"><div class="footer-brand">stamp moke</div><p class="footer-copy">かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。</p><div class="footer-links"><a href="/">スタンプ一覧</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© stamp moke</div></div></footer>
   <script is:inline>
     document.addEventListener("contextmenu", (event) => {
       if (event.target.closest(".protected-preview")) event.preventDefault();

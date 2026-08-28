@@ -34,8 +34,8 @@ jobs:
           # Homepage: stronger search intent while keeping the brand.
           changed |= replace_once(
               "src/pages/index.astro",
-              'const siteTitle = "STAMP MOKE｜LINEスタンプ専門メディア";',
-              'const siteTitle = "LINEスタンプおすすめ｜かわいい・面白いスタンプを探すならSTAMP MOKE";'
+              'const siteTitle = "stamp moke｜LINEスタンプ専門メディア";',
+              'const siteTitle = "LINEスタンプおすすめ｜かわいい・面白いスタンプを探すならstamp moke";'
           )
           changed |= replace_once(
               "src/pages/index.astro",
@@ -53,8 +53,8 @@ jobs:
               1
           )
           text = text.replace(
-              'const pageTitle = `${sticker.title} | STAMP MOKE`;',
-              'const category = getCategory(sticker);\nconst pageTitle = `${sticker.title}｜${category}のLINEスタンプ｜STAMP MOKE`;',
+              'const pageTitle = `${sticker.title} | stamp moke`;',
+              'const category = getCategory(sticker);\nconst pageTitle = `${sticker.title}｜${category}のLINEスタンプ｜stamp moke`;',
               1
           )
           text = text.replace(
@@ -63,8 +63,8 @@ jobs:
               1
           )
           text = text.replace(
-              '    <meta\n      property="og:site_name"\n      content="STAMP MOKE"\n    />',
-              '    <meta\n      property="og:site_name"\n      content="STAMP MOKE"\n    />\n\n    <meta property="og:url" content={`${SITE_URL}/stickers/${sticker.id}`} />\n\n    <script type="application/ld+json" set:html={JSON.stringify({\n      "@context": "https://schema.org",\n      "@type": "WebPage",\n      name: pageTitle,\n      description,\n      url: `${SITE_URL}/stickers/${sticker.id}`,\n      isPartOf: { "@type": "WebSite", name: "STAMP MOKE", url: SITE_URL },\n      breadcrumb: {\n        "@type": "BreadcrumbList",\n        itemListElement: [\n          { "@type": "ListItem", position: 1, name: "STAMP MOKE", item: SITE_URL },\n          { "@type": "ListItem", position: 2, name: `${category}のLINEスタンプ` },\n          { "@type": "ListItem", position: 3, name: sticker.title, item: `${SITE_URL}/stickers/${sticker.id}` }\n        ]\n      }\n    })} />',
+              '    <meta\n      property="og:site_name"\n      content="stamp moke"\n    />',
+              '    <meta\n      property="og:site_name"\n      content="stamp moke"\n    />\n\n    <meta property="og:url" content={`${SITE_URL}/stickers/${sticker.id}`} />\n\n    <script type="application/ld+json" set:html={JSON.stringify({\n      "@context": "https://schema.org",\n      "@type": "WebPage",\n      name: pageTitle,\n      description,\n      url: `${SITE_URL}/stickers/${sticker.id}`,\n      isPartOf: { "@type": "WebSite", name: "stamp moke", url: SITE_URL },\n      breadcrumb: {\n        "@type": "BreadcrumbList",\n        itemListElement: [\n          { "@type": "ListItem", position: 1, name: "stamp moke", item: SITE_URL },\n          { "@type": "ListItem", position: 2, name: `${category}のLINEスタンプ` },\n          { "@type": "ListItem", position: 3, name: sticker.title, item: `${SITE_URL}/stickers/${sticker.id}` }\n        ]\n      }\n    })} />',
               1
           )
           if text != original:

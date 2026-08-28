@@ -1,9 +1,11 @@
 ---
 import stickers from "../data/stickers.json";
+import Analytics from "../components/Analytics.astro";
 
-const siteTitle = "STAMP MOKE｜LINEスタンプ専門メディア";
+const siteTitle = "stamp moke｜LINEスタンプ専門メディア";
 const siteDescription =
-  "かわいい、おもしろい、毎日使えるLINEスタンプを紹介。お気に入りのスタンプを見つけて、詳しい紹介ページからLINE STOREへ。";
+  "stamp moke（スタンプもけ・スタンプモケ）は、かわいい、おもしろい、毎日使えるLINEスタンプを紹介するstudio mokeの公式サイトです。";
+const siteKeywords = "stamp moke,スタンプもけ,スタンプモケ,スタンプもけぇ,studio moke,スタジオモケ,スタジオもけぇ,LINEスタンプ,クリエイターズスタンプ";
 
 function getCategory(sticker) {
   const text = `${sticker.title || ""} ${sticker.description || ""}`;
@@ -46,9 +48,19 @@ const heroSlides = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{siteTitle}</title>
   <meta name="description" content={siteDescription} />
+  <meta name="keywords" content={siteKeywords} />
   <meta property="og:title" content={siteTitle} />
   <meta property="og:description" content={siteDescription} />
   <meta property="og:type" content="website" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "stamp moke",
+    alternateName: ["スタンプもけ", "スタンプモケ", "スタンプもけぇ", "studio moke", "スタジオモケ", "スタジオもけぇ"],
+    url: "https://stamp-moke.jp/",
+    description: siteDescription,
+  })} />
+  <Analytics />
 
   <style>
     * { box-sizing: border-box; }
@@ -404,7 +416,7 @@ const heroSlides = [
 <body>
   <header class="header">
     <a href="/" class="brand">
-      <div class="brand-title">STAMP MOKE</div>
+      <div class="brand-title">stamp moke</div>
       <div class="brand-sub">LINEスタンプ専門メディア</div>
     </a>
     <div class="header-actions">
@@ -415,7 +427,7 @@ const heroSlides = [
 
   <main class="main">
     <section class="hero">
-      <div class="hero-carousel" id="hero-carousel" aria-roledescription="カルーセル" aria-label="STAMP MOKEのスタンプシリーズ">
+      <div class="hero-carousel" id="hero-carousel" aria-roledescription="カルーセル" aria-label="stamp mokeのスタンプシリーズ">
         {heroSlides.map((slide, slideIndex) => (
           <article
             class={`hero-slide${slideIndex === 0 ? " is-active" : ""}`}
@@ -423,7 +435,7 @@ const heroSlides = [
             aria-hidden={slideIndex === 0 ? "false" : "true"}
           >
             <div class="hero-copy">
-              <div class="hero-label">{slide.label} / STAMP MOKE</div>
+              <div class="hero-label">{slide.label} / stamp moke</div>
               <h1 class="hero-title">
                 {slide.title.split("\n").map((line) => <span class="hero-title-line">{line}</span>)}
               </h1>
@@ -502,10 +514,10 @@ const heroSlides = [
     </section>
 
     <section class="intro">
-      <div class="intro-label">ABOUT STAMP MOKE</div>
+      <div class="intro-label">ABOUT / stamp moke</div>
       <h2 class="intro-title">毎日のひとことを、<br />ちょっと楽しく。</h2>
       <p class="intro-text">
-        STAMP MOKEは、LINEで使いやすいスタンプを見つけるためのメディアです。
+        stamp moke（スタンプもけ／スタンプモケ）は、studio moke（スタジオモケ）が運営する、LINEで使いやすいスタンプを見つけるためのメディアです。
         スタンプが増えても探しやすいように、カテゴリーとページ送りで整理していきます。
       </p>
     </section>
@@ -515,7 +527,7 @@ const heroSlides = [
     <div class="footer-inner">
       <div class="footer-grid">
         <div>
-          <div class="footer-brand">STAMP MOKE</div>
+          <div class="footer-brand">stamp moke</div>
           <div class="footer-copy">LINEスタンプ専門メディア<br />お気に入りのスタンプを見つけよう。</div>
         </div>
         <div>
@@ -531,8 +543,8 @@ const heroSlides = [
         </div>
       </div>
       <div class="copyright">
-        <span>© STAMP MOKE</span>
-        <span>LINE STICKERS / STAMP MOKE</span>
+        <span>© stamp moke</span>
+        <span>LINE STICKERS / stamp moke</span>
       </div>
     </div>
   </footer>

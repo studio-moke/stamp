@@ -2,6 +2,7 @@
 import stickers from "../../../data/stickers.json";
 import { CATEGORY_DEFINITIONS, getCategory } from "../../../lib/stickers";
 import SeoHead from "../../../components/SeoHead.astro";
+import Analytics from "../../../components/Analytics.astro";
 import { makeTitle, makeDescription, absoluteUrl } from "../../../lib/seo";
 
 export function getStaticPaths(){
@@ -25,7 +26,7 @@ const { category: categoryParam, items, page, totalPages } = Astro.props;
 const category = categoryParam;
 const visible = items.slice((page - 1) * pageSize, page * pageSize);
 const title = makeTitle([`${category.name}のLINEスタンプ${page > 1 ? `｜${page}ページ目` : ""}`]);
-const description = makeDescription("", `${category.name}のLINEスタンプをSTAMP MOKEで紹介。${items.length}作品から探せます。${page > 1 ? `${page}ページ目。` : ""}`);
+const description = makeDescription("", `${category.name}のLINEスタンプをstamp mokeで紹介。${items.length}作品から探せます。${page > 1 ? `${page}ページ目。` : ""}`);
 const canonical = absoluteUrl(`/categories/${category.slug}/${page}`);
 ---
 <!doctype html>
@@ -35,10 +36,11 @@ const canonical = absoluteUrl(`/categories/${category.slug}/${page}`);
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>{title}</title>
   <SeoHead title={title} description={description} canonical={canonical} />
+  <Analytics />
 </head>
 <body>
   <main>
-    <nav aria-label="パンくず"><a href="/">STAMP MOKE</a> / <a href="/categories/">カテゴリー</a> / {category.name}</nav>
+    <nav aria-label="パンくず"><a href="/">stamp moke</a> / <a href="/categories/">カテゴリー</a> / {category.name}</nav>
     <header>
       <h1>{category.name}のLINEスタンプ</h1>
       <p>{items.length}作品を掲載中。気になるスタンプを探せます。</p>
