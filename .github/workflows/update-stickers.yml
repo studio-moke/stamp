@@ -13,6 +13,7 @@ on:
       - "scripts/fetch-stickers.mjs"
       - "scripts/discover-new-stickers.mjs"
       - "scripts/generate-sticker-sheets.mjs"
+      - "scripts/extract-sticker-phrases.mjs"
       - "scripts/fetch-suzuri-designs.mjs"
       - ".github/workflows/update-stickers.yml"
 
@@ -26,7 +27,7 @@ concurrency:
 jobs:
   update-stickers:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -42,6 +43,11 @@ jobs:
       - name: Install preview image generator
         run: npm install --no-save sharp
 
+      - name: Install Japanese OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-jpn
+
       - name: Fetch latest stickers
         run: node scripts/fetch-stickers.mjs
 
@@ -50,6 +56,9 @@ jobs:
 
       - name: Generate protected sticker preview sheets
         run: node scripts/generate-sticker-sheets.mjs
+
+      - name: Extract safe sticker phrases
+        run: node scripts/extract-sticker-phrases.mjs
 
       - name: Fetch SUZURI character designs
         env:
@@ -71,12 +80,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/stickers.json src/data/suzuri-designs.json public/images/stickers public/images/sticker-sheets
+          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json public/images/stickers public/images/sticker-sheets
           if git diff --cached --quiet; then
             echo "No sticker changes detected."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update stickers"
+            git commit -m "Update stickers and phrase tags"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
