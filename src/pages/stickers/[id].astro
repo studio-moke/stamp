@@ -6,6 +6,7 @@ import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
 import { categoryLabels, localeInfo, localizedPath, localizeLineUrl, messages, normalizeLocale } from "../../lib/i18n";
 import { makeTitle, makeDescription, absoluteUrl } from "../../lib/seo";
 import { getCategory } from "../../lib/stickers";
+import { localizedStickerDescription, localizedStickerPrice, localizedStickerTitle } from "../../lib/sticker-content";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -21,7 +22,9 @@ const purchaseUrl = localizeLineUrl(basePurchaseUrl, locale);
 const giftUrl = localizeLineUrl(sticker.giftUrl || basePurchaseUrl, locale);
 const qrTarget = purchaseUrl;
 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
-const cleanTitle = sticker.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "");
+const cleanTitle = localizedStickerTitle(sticker, locale);
+const localizedDescription = localizedStickerDescription(sticker, locale);
+const localizedPrice = localizedStickerPrice(sticker.price, locale);
 const titleSuffix = locale === "ja" ? "LINEスタンプ" : locale === "en" ? "LINE Stickers" : locale === "zh-tw" ? "LINE貼圖" : "สติกเกอร์ LINE";
 const pageTitle = makeTitle([`${cleanTitle} | ${titleSuffix}`]);
 const localizedFallback = locale === "ja"
@@ -31,7 +34,7 @@ const localizedFallback = locale === "ja"
     : locale === "zh-tw"
       ? `探索stamp moke原創LINE貼圖「${cleanTitle}」，適合日常聊天使用。`
       : `พบกับ ${cleanTitle} ชุดสติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
-const description = makeDescription(locale === "ja" ? (sticker.description || "") : "", localizedFallback);
+const description = makeDescription(localizedDescription, localizedFallback);
 const canonicalPath = `/stickers/${sticker.id}`;
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
 const category = getCategory(sticker);
@@ -54,7 +57,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
   <title>{pageTitle}</title>
   <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" locale={locale} path={canonicalPath} />
   <Analytics />
-  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"stamp moke","item":absoluteUrl("/")},{"@type":"ListItem","position":2,"name":"LINEスタンプ","item":absoluteUrl("/")},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
+  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"stamp moke","item":absoluteUrl(localizedPath(locale, "/"))},{"@type":"ListItem","position":2,"name":pageText.breadcrumb,"item":absoluteUrl(localizedPath(locale, "/"))},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -179,7 +182,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
         <div class="category-label">{localizedCategory}</div>
         <h1>{cleanTitle}</h1>
         <p class="description">{description}</p>
-        {sticker.price && <div class="price">{sticker.price}</div>}
+        {localizedPrice && <div class="price">{localizedPrice}</div>}
         <div class="actions">
           <a class="action action-buy" href={purchaseUrl} rel="noopener">{t.buy}</a>
           <a class="action action-gift" href={giftUrl} rel="noopener">{pageText.gift}</a>
@@ -197,7 +200,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
         <div class="sub-label">OPEN ON SMARTPHONE</div>
         <h2 class="sub-title">{pageText.phone}</h2>
         <div class="qr-wrap">
-          <img class="qr" src={qrUrl} alt={`${cleanTitle}の商品ページQRコード`} width="240" height="240" loading="lazy" />
+          <img class="qr" src={qrUrl} alt={`${cleanTitle} - QR Code`} width="240" height="240" loading="lazy" />
           <div class="qr-copy">{pageText.phoneText}<br /><a class="smartphone-link" href={purchaseUrl} rel="noopener">{pageText.open}</a></div>
         </div>
       </section>
@@ -208,7 +211,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
         <dl class="detail-list">
           <div class="detail-row"><dt>{pageText.id}</dt><dd>{sticker.id}</dd></div>
           <div class="detail-row"><dt>{pageText.category}</dt><dd>{localizedCategory}</dd></div>
-          {sticker.price && <div class="detail-row"><dt>{pageText.price}</dt><dd>{sticker.price}</dd></div>}
+          {localizedPrice && <div class="detail-row"><dt>{pageText.price}</dt><dd>{localizedPrice}</dd></div>}
           <div class="detail-row"><dt>{pageText.seller}</dt><dd>LINE STORE</dd></div>
           <div class="detail-row"><dt>{pageText.work}</dt><dd>{cleanTitle}</dd></div>
         </dl>
@@ -221,7 +224,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
         <div class="section-label">ALL STICKERS PREVIEW</div>
         <h2 id="all-stickers-title" class="section-title">{pageText.included}</h2>
         <div class="preview-card protected-preview" oncontextmenu="return false">
-          <img class="preview-sheet" src={sheetUrl} alt={`${cleanTitle}に収録されている全スタンプの一覧`} loading="lazy" draggable="false" />
+          <img class="preview-sheet" src={sheetUrl} alt={`${cleanTitle} - ${pageText.included}`} loading="lazy" draggable="false" />
           <div class="preview-shield" aria-hidden="true"></div>
         </div>
         <p class="preview-note">{pageText.note}</p>
@@ -234,7 +237,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
         <h2 id="related" class="section-title">{pageText.related}</h2>
         <ul class="related-grid">
           {related.map((item) => (
-            <li><a class="related-card" href={localizedPath(locale, `/stickers/${item.id}`)}><div class="related-media"><img class="related-image" src={item.image} alt={`${item.title}のLINEスタンプ`} loading="lazy" width="512" height="512" /></div><p class="related-title">{item.title.replace(/\s*-\s*LINE\s*スタンプ\s*\|\s*LINE\s*STORE\s*$/i, "")}</p></a></li>
+            <li><a class="related-card" href={localizedPath(locale, `/stickers/${item.id}`)}><div class="related-media"><img class="related-image" src={item.image} alt={localizedStickerTitle(item, locale)} loading="lazy" width="512" height="512" /></div><p class="related-title">{localizedStickerTitle(item, locale)}</p></a></li>
           ))}
         </ul>
       </section>
