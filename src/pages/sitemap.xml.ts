@@ -6,6 +6,7 @@ import {
   SITE_URL,
 } from "../lib/stickers";
 import { LOCALES, localeInfo, localizedPath } from "../lib/i18n";
+import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions } from "../lib/sticker-tags";
 
 const PAGE_SIZE = 24;
 
@@ -26,11 +27,15 @@ function multilingualEntry(path: string) {
   const alternates = LOCALES
     .map((locale) => `    <xhtml:link rel="alternate" hreflang="${localeInfo[locale].htmlLang}" href="${escapeXml(localizedUrl(locale, path))}" />`)
     .join("\n");
-  return `  <url>
-    <loc>${escapeXml(localizedUrl("ja", path))}</loc>
-${alternates}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(localizedUrl("ja", path))}" />
-  </url>`;
+  return `  <url>\n    <loc>${escapeXml(localizedUrl("ja", path))}</loc>\n${alternates}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(localizedUrl("ja", path))}" />\n  </url>`;
+}
+
+function multilingualTagEntry(tag: (typeof tagDefinitions)[number]) {
+  const urls = Object.fromEntries(LOCALES.map((locale) => [locale, `${SITE_URL}${getTagPath(locale, tag)}`])) as Record<(typeof LOCALES)[number], string>;
+  const alternates = LOCALES
+    .map((locale) => `    <xhtml:link rel="alternate" hreflang="${localeInfo[locale].htmlLang}" href="${escapeXml(urls[locale])}" />`)
+    .join("\n");
+  return `  <url>\n    <loc>${escapeXml(urls.ja)}</loc>\n${alternates}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(urls.ja)}" />\n  </url>`;
 }
 
 export function GET() {
@@ -38,6 +43,7 @@ export function GET() {
 
   entries.push(multilingualEntry("/"));
   entries.push(multilingualEntry("/goods/"));
+  entries.push(multilingualEntry("/tags/"));
 
   for (const sticker of stickers) {
     entries.push(multilingualEntry(`/stickers/${encodeURIComponent(sticker.id)}`));
@@ -45,6 +51,11 @@ export function GET() {
 
   for (const design of designs) {
     entries.push(multilingualEntry(`/goods/${encodeURIComponent(String(design.id))}`));
+  }
+
+  for (const tag of tagDefinitions) {
+    const count = stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length;
+    if (count >= 2) entries.push(multilingualTagEntry(tag));
   }
 
   entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/`)}</loc></url>`);
@@ -57,10 +68,7 @@ export function GET() {
   }
 
   const body = entries.join("\n");
-  return new Response(`<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${body}
-</urlset>`, {
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>`, {
     headers: { "Content-Type": "application/xml; charset=utf-8" },
   });
 }
