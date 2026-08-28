@@ -47,10 +47,23 @@ function priorityFor(product) {
   return itemPriority.get(product.item?.name) ?? 99;
 }
 
-function designImageUrl(sampleImageUrl) {
-  const url = new URL(sampleImageUrl);
-  url.searchParams.set("printed", "false");
-  return url.toString();
+function designImageUrl(sampleImageUrl, materialId) {
+  const source = new URL(sampleImageUrl);
+  const parts = source.pathname.split("/");
+  const materialIndex = parts.indexOf(String(materialId));
+  const sourceFile = parts[materialIndex + 1];
+
+  if (materialIndex < 0 || !sourceFile) {
+    return sampleImageUrl;
+  }
+
+  const protectedImage = new URL(source);
+  protectedImage.pathname = `/v3/400x400/protected/${materialId}/${sourceFile.replace(/\.webp$/, ".png")}`;
+
+  const hash = source.searchParams.get("h");
+  protectedImage.search = hash ? `?h=${encodeURIComponent(hash)}` : "";
+
+  return protectedImage.toString();
 }
 
 const grouped = new Map();
@@ -65,7 +78,7 @@ for (const product of products) {
       id: materialId,
       title: product.material.title || product.title,
       description: product.material.description || "",
-      image: designImageUrl(product.sampleImageUrl),
+      image: designImageUrl(product.sampleImageUrl, materialId),
       publishedAt: product.material.publishedAt || product.publishedAt || "",
       representativePriority: priorityFor(product),
       products: [],
@@ -75,7 +88,7 @@ for (const product of products) {
 
   const priority = priorityFor(product);
   if (priority < design.representativePriority) {
-    design.image = designImageUrl(product.sampleImageUrl);
+    design.image = designImageUrl(product.sampleImageUrl, materialId);
     design.representativePriority = priority;
   }
 
