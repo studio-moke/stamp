@@ -618,3 +618,34 @@ const xPosts = [
 
       cards.forEach((card) => {
         card.hidden = !visibleSet.has(card);
+      });
+
+      emptyState.style.display = visible.length === 0 ? "block" : "none";
+      countLabel.textContent = `${visible.length} STICKERS`;
+      renderPagination(totalPages, safePage, (nextPage) => {
+        render(category, nextPage);
+        document.getElementById("stickers").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      controls.querySelectorAll(".category-button").forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.category === category);
+      });
+    }
+
+    categories.forEach((category) => {
+      const count = category === "すべて"
+        ? cards.length
+        : cards.filter((card) => card.dataset.category === category).length;
+      controls.appendChild(makeButton(category, count, category === "すべて"));
+    });
+
+    controls.addEventListener("click", (event) => {
+      const button = event.target.closest(".category-button");
+      if (!button) return;
+      render(button.dataset.category, 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>
