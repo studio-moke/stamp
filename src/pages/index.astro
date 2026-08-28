@@ -74,7 +74,7 @@ const heroSlides = [
         if (window.location.pathname !== "/") return;
         const saved = localStorage.getItem("stamp-moke-locale");
         const language = (saved || navigator.languages?.[0] || navigator.language || "ja").toLowerCase();
-        const preferred = saved || (language.startsWith("th") ? "th" : language.startsWith("zh") ? "zh-tw" : language.startsWith("en") ? "en" : "ja");
+        const preferred = saved || (language.startsWith("id") || language.startsWith("in") ? "id" : language.startsWith("th") ? "th" : language.startsWith("zh") ? "zh-tw" : language.startsWith("en") ? "en" : "ja");
         if (preferred !== "ja") window.location.replace(`/${preferred}/`);
       })();
     </script>
