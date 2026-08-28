@@ -2,11 +2,17 @@
 import stickers from "../data/stickers.json";
 import suzuriDesigns from "../data/suzuri-designs.json";
 import Analytics from "../components/Analytics.astro";
+import SeoHead from "../components/SeoHead.astro";
+import LanguageSwitcher from "../components/LanguageSwitcher.astro";
+import { localeInfo, localizedPath, messages, normalizeLocale } from "../lib/i18n";
+import { absoluteUrl } from "../lib/seo";
 
-const siteTitle = "stamp moke｜LINEスタンプ専門メディア";
-const siteDescription =
-  "stamp moke（スタンプもけ・スタンプモケ）は、かわいい、おもしろい、毎日使えるLINEスタンプを紹介するstudio mokeの公式サイトです。";
-const siteKeywords = "stamp moke,スタンプもけ,スタンプモケ,スタンプもけぇ,studio moke,スタジオモケ,スタジオもけぇ,LINEスタンプ,クリエイターズスタンプ";
+const locale = normalizeLocale(Astro.props.locale);
+const t = messages[locale];
+
+const siteTitle = t.siteTitle;
+const siteDescription = t.siteDescription;
+const canonical = absoluteUrl(localizedPath(locale, "/"));
 
 function getCategory(sticker) {
   const text = `${sticker.title || ""} ${sticker.description || ""}`;
@@ -35,33 +41,41 @@ function pickForHero(categories, offset = 0) {
 }
 
 const heroSlides = [
-  { label: "NEW ARRIVALS", title: "新しいスタンプ、\n続々登場。", accent: "#ffd86b", stickers: categorizedStickers.slice(0, 8) },
-  { label: "CUTE & ANIMALS", title: "かわいい仲間が、\nいっぱい。", accent: "#a9dccc", stickers: pickForHero(["動物", "かわいい"], 2) },
-  { label: "FUNNY & UNIQUE", title: "クスッと笑える、\nひとことを。", accent: "#f2b8c6", stickers: pickForHero(["おもしろ", "食べ物", "方言"], 4) },
-  { label: "DAILY & WORK", title: "毎日の会話を、\nもっと便利に。", accent: "#a9c6eb", stickers: pickForHero(["仕事", "日常", "恋愛", "あいさつ"], 6) },
+  { label: "NEW ARRIVALS", title: t.heroTitles[0], accent: "#ffd86b", stickers: categorizedStickers.slice(0, 8) },
+  { label: "CUTE & ANIMALS", title: t.heroTitles[1], accent: "#a9dccc", stickers: pickForHero(["動物", "かわいい"], 2) },
+  { label: "FUNNY & UNIQUE", title: t.heroTitles[2], accent: "#f2b8c6", stickers: pickForHero(["おもしろ", "食べ物", "方言"], 4) },
+  { label: "DAILY & WORK", title: t.heroTitles[3], accent: "#a9c6eb", stickers: pickForHero(["仕事", "日常", "恋愛", "あいさつ"], 6) },
 ];
 
 ---
 
-<html lang="ja">
+<html lang={localeInfo[locale].htmlLang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{siteTitle}</title>
-  <meta name="description" content={siteDescription} />
-  <meta name="keywords" content={siteKeywords} />
-  <meta property="og:title" content={siteTitle} />
-  <meta property="og:description" content={siteDescription} />
-  <meta property="og:type" content="website" />
+  <SeoHead title={siteTitle} description={siteDescription} canonical={canonical} locale={locale} path="/" />
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "stamp moke",
     alternateName: ["スタンプもけ", "スタンプモケ", "スタンプもけぇ", "studio moke", "スタジオモケ", "スタジオもけぇ"],
-    url: "https://stamp-moke.jp/",
+    url: canonical,
     description: siteDescription,
   })} />
   <Analytics />
+  {locale === "ja" && (
+    <script is:inline>
+      (() => {
+        if (window.location.pathname !== "/") return;
+        const saved = localStorage.getItem("stamp-moke-locale");
+        const language = (saved || navigator.languages?.[0] || navigator.language || "ja").toLowerCase();
+        const preferred = saved || (language.startsWith("th") ? "th" : language.startsWith("zh") ? "zh-tw" : language.startsWith("en") ? "en" : "ja");
+        if (preferred !== "ja") window.location.replace(`/${preferred}/`);
+      })();
+    </script>
+  )}
+
 
   <style>
     * { box-sizing: border-box; }
@@ -444,13 +458,14 @@ const heroSlides = [
 
 <body>
   <header class="header">
-    <a href="/" class="brand">
+    <a href={localizedPath(locale, "/")} class="brand">
       <div class="brand-title">stamp moke</div>
-      <div class="brand-sub">LINEスタンプ専門メディア</div>
+      <div class="brand-sub">{t.brandSub}</div>
     </a>
     <div class="header-actions">
-      <a href="https://suzuri.jp/bayasihimokei" class="header-link header-shop-link" target="_blank" rel="noopener noreferrer">キャラグッズ店 ↗</a>
-      <a href="#stickers" class="header-link">スタンプを見る ↓</a>
+      <LanguageSwitcher locale={locale} path="/" />
+      <a href={localizedPath(locale, "/goods/")} class="header-link header-shop-link">{t.shop}</a>
+      <a href="#stickers" class="header-link">{t.viewStickers}</a>
     </div>
   </header>
 
@@ -468,12 +483,12 @@ const heroSlides = [
               <h1 class="hero-title">
                 {slide.title.split("\n").map((line) => <span class="hero-title-line">{line}</span>)}
               </h1>
-              <p class="hero-text">かわいい、おもしろい、毎日使える。いろいろなシリーズから、あなたにぴったりのLINEスタンプを見つけてください。</p>
-              <a class="hero-cta" href="#stickers">スタンプを探す →</a>
+              <p class="hero-text">{t.heroLead}</p>
+              <a class="hero-cta" href="#stickers">{t.heroCta}</a>
             </div>
             <div class="hero-collage">
               {slide.stickers.map((sticker) => (
-                <a class="hero-sticker" href={`/stickers/${sticker.id}`} aria-label={sticker.title}>
+                <a class="hero-sticker" href={localizedPath(locale, `/stickers/${sticker.id}`)} aria-label={sticker.title}>
                   <img src={sticker.image} alt="" loading={slideIndex === 0 ? "eager" : "lazy"} />
                 </a>
               ))}
@@ -494,20 +509,20 @@ const heroSlides = [
       <div class="section-header">
         <div>
           <div class="section-label">STICKER COLLECTION</div>
-          <h2 class="section-title">STICKERS</h2>
+          <h2 class="section-title">{t.stickers}</h2>
         </div>
         <div class="section-count" id="sticker-count">{stickers.length} STICKERS</div>
       </div>
 
       <div class="controls" id="category-controls" aria-label="カテゴリー">
-        <button class="category-button is-active" type="button" data-category="すべて">すべて</button>
+        <button class="category-button is-active" type="button" data-category="すべて">{t.all}</button>
       </div>
 
       <div class="sticker-grid" id="sticker-grid">
         {
           categorizedStickers.map((sticker, index) => (
             <a
-              href={`/stickers/${sticker.id}`}
+              href={localizedPath(locale, `/stickers/${sticker.id}`)}
               class="sticker-card"
               data-category={sticker.category}
               data-index={index}
@@ -530,7 +545,7 @@ const heroSlides = [
                 }
                 <div class="sticker-meta">
                   <div class="price">{sticker.price}</div>
-                  <div class="detail-link">詳しく見る →</div>
+                  <div class="detail-link">{t.details}</div>
                 </div>
               </div>
             </a>
@@ -538,7 +553,7 @@ const heroSlides = [
         }
       </div>
 
-      <div class="empty-state" id="empty-state">該当するスタンプがありません。</div>
+      <div class="empty-state" id="empty-state">{t.noStickers}</div>
       <nav class="pagination" id="pagination" aria-label="ページ"></nav>
     </section>
 
@@ -547,38 +562,35 @@ const heroSlides = [
         <div class="section-header">
           <div>
             <div class="section-label">CHARACTER GOODS / SUZURI</div>
-            <h2 class="section-title">グッズショップ</h2>
+            <h2 class="section-title">{t.goodsTitle}</h2>
           </div>
           <div class="section-count">{suzuriDesigns.length} DESIGNS</div>
         </div>
-        <p class="goods-lead">LINEスタンプから生まれたキャラクターたちを、Tシャツやステッカーなどのグッズにしました。</p>
+        <p class="goods-lead">{t.goodsLead}</p>
         <div class="goods-grid">
           {suzuriDesigns.map((design, index) => (
-            <a class="goods-card" href={`/goods/${design.id}`}>
+            <a class="goods-card" href={localizedPath(locale, `/goods/${design.id}`)}>
               <div class="goods-image-wrap">
                 <img class="goods-image" src={design.image} alt={`${design.title}のSUZURIグッズ`} loading={index < 4 ? "eager" : "lazy"} />
               </div>
               <div class="goods-content">
                 <div class="goods-label">CHARACTER DESIGN / SUZURI</div>
                 <h3 class="goods-title">{design.title}</h3>
-                <div class="goods-link">キャラとグッズを見る →</div>
+                <div class="goods-link">{t.goodsLink}</div>
               </div>
             </a>
           ))}
         </div>
         <div class="goods-footer">
-          <a class="goods-shop-button" href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">SUZURIショップをすべて見る ↗</a>
+          <a class="goods-shop-button" href="https://suzuri.jp/bayasihimokei" target="_blank" rel="noopener noreferrer">{t.allGoods}</a>
         </div>
       </section>
     )}
 
     <section class="intro">
       <div class="intro-label">ABOUT / stamp moke</div>
-      <h2 class="intro-title">毎日のひとことを、<br />ちょっと楽しく。</h2>
-      <p class="intro-text">
-        stamp moke（スタンプもけ／スタンプモケ）は、studio moke（スタジオモケ）が運営する、LINEで使いやすいスタンプを見つけるためのメディアです。
-        スタンプが増えても探しやすいように、カテゴリーとページ送りで整理していきます。
-      </p>
+      <h2 class="intro-title">{t.aboutTitle.split("\n").map((line) => <span class="hero-title-line">{line}</span>)}</h2>
+      <p class="intro-text">{t.aboutText}</p>
     </section>
   </main>
 
@@ -587,12 +599,12 @@ const heroSlides = [
       <div class="footer-grid">
         <div>
           <div class="footer-brand">stamp moke</div>
-          <div class="footer-copy">LINEスタンプ専門メディア<br />お気に入りのスタンプを見つけよう。</div>
+          <div class="footer-copy">{t.footerCopy.split("\n").map((line) => <span class="hero-title-line">{line}</span>)}</div>
         </div>
         <div>
           <div class="footer-heading">NAVIGATION</div>
-          <a class="footer-link" href="#stickers">スタンプ一覧</a>
-          <a class="footer-link" href="/">トップへ戻る</a>
+          <a class="footer-link" href="#stickers">{t.stickers}</a>
+          <a class="footer-link" href={localizedPath(locale, "/")}>{t.back}</a>
         </div>
         <div>
           <div class="footer-heading">LINK</div>
@@ -652,6 +664,7 @@ const heroSlides = [
     document.addEventListener("visibilitychange", () => document.hidden ? stopSlides() : startSlides());
     startSlides();
 
+    const categoryNames = {"ja":{"すべて":"すべて","仕事":"仕事","日常":"日常","その他":"その他","恋愛":"恋愛","かわいい":"かわいい","動物":"動物","方言":"方言","おもしろ":"おもしろ","食べ物":"食べ物","あいさつ":"あいさつ"},"en":{"すべて":"All","仕事":"Work","日常":"Daily","その他":"Other","恋愛":"Love","かわいい":"Cute","動物":"Animals","方言":"Dialects","おもしろ":"Funny","食べ物":"Food","あいさつ":"Greetings"},"zh-tw":{"すべて":"全部","仕事":"工作","日常":"日常","その他":"其他","恋愛":"戀愛","かわいい":"可愛","動物":"動物","方言":"方言","おもしろ":"幽默","食べ物":"美食","あいさつ":"問候"},"th":{"すべて":"ทั้งหมด","仕事":"ที่ทำงาน","日常":"ประจำวัน","その他":"อื่น ๆ","恋愛":"ความรัก","かわいい":"น่ารัก","動物":"สัตว์","方言":"ภาษาถิ่น","おもしろ":"ตลก","食べ物":"อาหาร","あいさつ":"คำทักทาย"}}[document.documentElement.lang === "en" ? "en" : document.documentElement.lang.startsWith("zh") ? "zh-tw" : document.documentElement.lang === "th" ? "th" : "ja"];
     const PAGE_SIZE = 24;
     const cards = Array.from(document.querySelectorAll(".sticker-card"));
     const controls = document.getElementById("category-controls");
@@ -669,7 +682,7 @@ const heroSlides = [
       button.type = "button";
       button.className = `category-button${active ? " is-active" : ""}`;
       button.dataset.category = label;
-      button.innerHTML = `${label}<span class="category-count">(${count})</span>`;
+      button.innerHTML = `${categoryNames[label] || label}<span class="category-count">(${count})</span>`;
       return button;
     }
 
