@@ -1,0 +1,24 @@
+---
+import stickers from "../../data/stickers.json";
+import SeoHead from "../../components/SeoHead.astro";
+import Analytics from "../../components/Analytics.astro";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+import { localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
+import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
+import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions } from "../../lib/sticker-tags";
+
+const { locale: localeProp = "ja" } = Astro.props;
+const locale = normalizeLocale(localeProp);
+const tags = tagDefinitions.map((tag)=>({tag,count:stickers.filter((sticker)=>getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length})).filter((entry)=>entry.count>=2);
+const copy = {
+ ja:{title:"言葉・用途からLINEスタンプを探す",desc:"おはよう、ありがとう、がんばれなど、スタンプに実際に含まれる言葉や用途からstamp mokeのLINEスタンプを探せます。",back:"スタンプ一覧",count:"作品"},
+ en:{title:"Find LINE Stickers by Phrase & Use",desc:"Browse stamp moke LINE stickers by phrases and uses found in the actual sticker sets, such as good morning, thank you and good luck.",back:"Sticker collection",count:"sets"},
+ "zh-tw":{title:"依語句與用途尋找LINE貼圖",desc:"依照貼圖實際包含的語句與用途，例如早安、謝謝、加油，尋找stamp moke的LINE貼圖。",back:"貼圖列表",count:"組"},
+ th:{title:"ค้นหาสติกเกอร์ LINE ตามคำและการใช้งาน",desc:"ค้นหาสติกเกอร์ LINE ของ stamp moke ตามข้อความและการใช้งานจริง เช่น อรุณสวัสดิ์ ขอบคุณ และสู้ ๆ",back:"รวมสติกเกอร์",count:"ชุด"},
+ id:{title:"Cari Stiker LINE berdasarkan Frasa & Kegunaan",desc:"Jelajahi stiker LINE stamp moke berdasarkan frasa dan kegunaan yang benar-benar ada di set, seperti selamat pagi, terima kasih, dan semangat.",back:"Koleksi stiker",count:"set"},
+}[locale];
+const canonicalPath="/tags/";
+const canonical=absoluteUrl(localizedPath(locale,canonicalPath));
+const pageTitle=makeTitle([copy.title,"stamp moke"]); const description=makeDescription(copy.desc);
+---
+<!doctype html><html lang={localeInfo[locale].htmlLang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>{pageTitle}</title><SeoHead title={pageTitle} description={description} canonical={canonical} locale={locale} path={canonicalPath}/><Analytics/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.header{padding:18px 5vw;background:#fff;border-bottom:1px solid #e3e2de;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:900;text-decoration:none;letter-spacing:.08em}.actions{display:flex;gap:10px;align-items:center}.back{padding:10px 14px;border:1px solid #ddd;border-radius:999px;text-decoration:none;font-size:12px}.main{max-width:1050px;margin:auto;padding:64px 5vw 100px}h1{font-size:clamp(34px,5vw,60px);line-height:1.1;margin:0 0 18px}.lead{color:#666;line-height:1.9;max-width:760px}.tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}.tag{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:999px;padding:13px 18px;text-decoration:none;font-weight:800}.num{color:#888;font-size:11px;font-weight:600}@media(max-width:640px){.main{padding:42px 18px 70px}.header{padding:14px 18px}.tag{padding:11px 14px}}</style></head><body><header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} path="/tags/"/><a class="back" href={localizedPath(locale,"/")}>{copy.back}</a></div></header><main class="main"><h1>{copy.title}</h1><p class="lead">{description}</p><div class="tags">{tags.map(({tag,count})=><a class="tag" href={getTagPath(locale,tag)}><span>{tag.labels[locale]}</span><span class="num">{count} {copy.count}</span></a>)}</div></main></body></html>
