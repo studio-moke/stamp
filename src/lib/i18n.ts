@@ -154,5 +154,5 @@ export function alternateLinks(path = "/") {
 export function localizeLineUrl(url: string, locale: Locale) {
   if (!url) return url;
   const code = localeInfo[locale].lineLocale;
-  return url.replace(/\/(ja|en|zh-Hant|th)(?:\?|$)/, `/${code}$2`);
+  return url.replace(/\/(ja|en|zh-Hant|th)(?=\?|$)/, `/${code}`);
 }
