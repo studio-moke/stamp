@@ -6,17 +6,17 @@ import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
 import { LOCALES, localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
 import { localizedStickerTitle } from "../../lib/sticker-content";
-import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions, type TagDefinition } from "../../lib/sticker-tags";
+import { getTagIdsForSticker, getTagPath, tagDefinitions, type TagDefinition } from "../../lib/sticker-search-tags";
 
 export function getStaticPaths() {
   return tagDefinitions
-    .filter((tag) => stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length >= 2)
+    .filter((tag) => stickers.filter((sticker) => getTagIdsForSticker(sticker).includes(tag.id)).length >= 2)
     .map((tag) => ({ params: { tag: tag.slugs.ja }, props: { tag, locale: "ja" } }));
 }
 
 const { tag, locale: localeProp = "ja" } = Astro.props as { tag: TagDefinition; locale?: string };
 const locale = normalizeLocale(localeProp);
-const items = stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id));
+const items = stickers.filter((sticker) => getTagIdsForSticker(sticker).includes(tag.id));
 const label = tag.labels[locale];
 const canonicalPath = `/tags/${tag.slugs[locale]}`;
 const canonical = absoluteUrl(getTagPath(locale, tag));

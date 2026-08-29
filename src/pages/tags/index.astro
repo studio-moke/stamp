@@ -5,17 +5,17 @@ import Analytics from "../../components/Analytics.astro";
 import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
 import { localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
-import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions } from "../../lib/sticker-tags";
+import { getTagIdsForSticker, getTagPath, tagDefinitions } from "../../lib/sticker-search-tags";
 
 const { locale: localeProp = "ja" } = Astro.props;
 const locale = normalizeLocale(localeProp);
-const tags = tagDefinitions.map((tag)=>({tag,count:stickers.filter((sticker)=>getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length})).filter((entry)=>entry.count>=2);
+const tags = tagDefinitions.map((tag)=>({tag,count:stickers.filter((sticker)=>getTagIdsForSticker(sticker).includes(tag.id)).length})).filter((entry)=>entry.count>=2);
 const copy = {
- ja:{title:"言葉・用途からLINEスタンプを探す",desc:"おはよう、ありがとう、がんばれなど、スタンプに実際に含まれる言葉や用途からstamp mokeのLINEスタンプを探せます。",back:"スタンプ一覧",count:"作品"},
- en:{title:"Find LINE Stickers by Phrase & Use",desc:"Browse stamp moke LINE stickers by phrases and uses found in the actual sticker sets, such as good morning, thank you and good luck.",back:"Sticker collection",count:"sets"},
- "zh-tw":{title:"依語句與用途尋找LINE貼圖",desc:"依照貼圖實際包含的語句與用途，例如早安、謝謝、加油，尋找stamp moke的LINE貼圖。",back:"貼圖列表",count:"組"},
- th:{title:"ค้นหาสติกเกอร์ LINE ตามคำและการใช้งาน",desc:"ค้นหาสติกเกอร์ LINE ของ stamp moke ตามข้อความและการใช้งานจริง เช่น อรุณสวัสดิ์ ขอบคุณ และสู้ ๆ",back:"รวมสติกเกอร์",count:"ชุด"},
- id:{title:"Cari Stiker LINE berdasarkan Frasa & Kegunaan",desc:"Jelajahi stiker LINE stamp moke berdasarkan frasa dan kegunaan yang benar-benar ada di set, seperti selamat pagi, terima kasih, dan semangat.",back:"Koleksi stiker",count:"set"},
+ ja:{title:"言葉・用途からLINEスタンプを探す",desc:"スタンプに実際に含まれる言葉に加え、仕事、家族、方言、動物など作品の内容や用途からstamp mokeのLINEスタンプを探せます。",back:"スタンプ一覧",count:"作品"},
+ en:{title:"Find LINE Stickers by Phrase & Use",desc:"Browse stamp moke LINE stickers by actual phrases, themes and uses such as work, family, dialects, animals and everyday replies.",back:"Sticker collection",count:"sets"},
+ "zh-tw":{title:"依語句與用途尋找LINE貼圖",desc:"除了貼圖中的實際語句，也可依工作、家人、方言、動物與日常用途尋找stamp moke的LINE貼圖。",back:"貼圖列表",count:"組"},
+ th:{title:"ค้นหาสติกเกอร์ LINE ตามคำและการใช้งาน",desc:"ค้นหาสติกเกอร์ LINE ของ stamp moke จากข้อความจริง ธีม และการใช้งาน เช่น งาน ครอบครัว ภาษาถิ่น สัตว์ และคำตอบในชีวิตประจำวัน",back:"รวมสติกเกอร์",count:"ชุด"},
+ id:{title:"Cari Stiker LINE berdasarkan Frasa & Kegunaan",desc:"Jelajahi stiker LINE stamp moke berdasarkan frasa, tema, dan kegunaan seperti kerja, keluarga, dialek, hewan, serta balasan sehari-hari.",back:"Koleksi stiker",count:"set"},
 }[locale];
 const canonicalPath="/tags/";
 const canonical=absoluteUrl(localizedPath(locale,canonicalPath));
