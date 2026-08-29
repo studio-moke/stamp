@@ -10,13 +10,23 @@ const SHEET_DIR = path.resolve("public/images/sticker-sheets");
 const MAX_PHRASES = 40;
 const MIN_CONFIDENCE = 68;
 
-// Publish only phrases that clearly map to useful, curated search intent.
-// This keeps stylized-text OCR mistakes out of indexable HTML.
+// Only index phrases that closely match known useful expressions.  Stylized
+// sticker lettering is difficult OCR, so substring matches are intentionally
+// avoided: a near miss must never become searchable page copy.
 const SAFE_PATTERNS = [
-  /おはよ/u,/こんにちは/u,/こんにちわ/u,/おやすみ/u,/またね/u,/またあとで/u,/じゃあね/u,/ばいばい/u,/バイバイ/u,
-  /いってきます/u,/行ってきます/u,/ただいま/u,/ありがと/u,/感謝/u,/サンキュー/u,/たすかった/u,/助かった/u,/助かりました/u,
-  /うれし/u,/嬉し/u,/やった/u,/最高/u,/さすが/u,/すごい/u,/すげ/u,/えらい/u,/天才/u,/がんば/u,/頑張/u,/ファイト/u,/応援/u,
-  /了解/u,/りょうかい/u,/OK/iu,/オッケ/u,/おっけ/u,/承知/u,/ごめん/u,/すみません/u,/すいません/u,/申し訳/u,
+  /^(?:おはよう|おはよ|おはよー)$/u,
+  /^(?:こんにちは|こんにちわ)$/u,
+  /^(?:おやすみ|おやすみなさい)$/u,
+  /^(?:またね|またあとで|じゃあね|ばいばい|バイバイ)$/u,
+  /^(?:いってきます|行ってきます)$/u,
+  /^(?:ただいま|帰ったよ|帰宅しました)$/u,
+  /^(?:ありがとう|ありがとうございます|いつもありがとう|ありがと|ありがとー|感謝|サンキュー)$/u,
+  /^(?:たすかった|助かった|助かりました)$/u,
+  /^(?:うれしい|嬉しい|やった|やったー|最高)$/u,
+  /^(?:さすが|すごい|すげー|えらい|天才)$/u,
+  /^(?:がんばれ|がんばって|頑張れ|頑張って|ファイト|応援してる)$/u,
+  /^(?:了解|りょうかい|OK|ok|オッケー|オッケ|おっけー|おっけ|承知しました)$/u,
+  /^(?:ごめん|ごめんなさい|すみません|すいません|申し訳ない|申し訳ありません)$/u,
 ];
 
 function normalize(text = "") {
@@ -24,13 +34,14 @@ function normalize(text = "") {
     .replace(/[\u200b-\u200d\ufeff]/g, "")
     .replace(/[|¦]/g, "")
     .replace(/\s+/g, "")
-    .replace(/^[・･,，.。!！?？:：;；~〜～ー_-]+|[・･,，.。!！?？:：;；~〜～_-]+$/g, "")
+    .replace(/^[\s・･,，.。!！?？:：;；~〜～ー_\-()（）\[\]{}「」『』【】<>＜＞'\"“”]+|[\s・･,，.。!！?？:：;；~〜～ー_\-()（）\[\]{}「」『』【】<>＜＞'\"“”]+$/g, "")
     .trim();
 }
 
 function isSafePhrase(text) {
-  if (!text || text.length < 2 || text.length > 24) return false;
+  if (!text || text.length < 2 || text.length > 16) return false;
   if (!/[ぁ-んァ-ヶ一-龯A-Za-z]/u.test(text)) return false;
+  if (/[0-9０-９]/u.test(text)) return false;
   return SAFE_PATTERNS.some((pattern) => pattern.test(text));
 }
 
