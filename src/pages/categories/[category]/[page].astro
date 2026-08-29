@@ -37,25 +37,37 @@ const canonical = absoluteUrl(`/categories/${category.slug}/${page}`);
   <title>{title}</title>
   <SeoHead title={title} description={description} canonical={canonical} />
   <Analytics />
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}a{color:inherit}.main{max-width:1180px;margin:0 auto;padding:48px 5vw 100px}.breadcrumb{font-size:12px;color:#777;margin-bottom:30px}.page-head{margin-bottom:34px}.page-head h1{font-size:clamp(36px,5vw,62px);line-height:1.08;margin:0 0 15px;font-weight:900;letter-spacing:-.04em}.page-head p{color:#666;line-height:1.8}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.card{display:block;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden;text-decoration:none}.media{aspect-ratio:1;background:#7696c4;display:flex;align-items:center;justify-content:center}.media img{display:block;width:100%;height:100%;object-fit:contain;padding:18px}.card h2{margin:0;padding:15px;font-size:14px;line-height:1.5}.pager{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:45px;font-size:13px}.pager a{padding:10px 15px;border:1px solid #d9d8d4;border-radius:999px;text-decoration:none;background:#fff}@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:640px){.main{padding:30px 18px 70px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card h2{font-size:12px;padding:11px}.media img{padding:10px}}
+  </style>
 </head>
 <body>
-  <main>
-    <nav aria-label="パンくず"><a href="/">stamp moke</a> / <a href="/categories/">カテゴリー</a> / {category.name}</nav>
-    <header>
+  <header class="header">
+    <a class="brand" href="/">
+      <div class="brand-title">stamp moke</div>
+      <div class="brand-sub">LINEスタンプ専門メディア</div>
+    </a>
+    <div class="header-actions">
+      <a class="header-link" href="/categories/">カテゴリー一覧</a>
+    </div>
+  </header>
+  <main class="main">
+    <nav class="breadcrumb" aria-label="パンくず"><a href="/">stamp moke</a> / <a href="/categories/">カテゴリー</a> / {category.name}</nav>
+    <section class="page-head">
       <h1>{category.name}のLINEスタンプ</h1>
       <p>{items.length}作品を掲載中。気になるスタンプを探せます。</p>
-    </header>
-    <section aria-label={`${category.name}のLINEスタンプ一覧`}>
+    </section>
+    <section class="grid" aria-label={`${category.name}のLINEスタンプ一覧`}>
       {visible.map((sticker) => (
-        <article>
-          <a href={`/stickers/${sticker.id}`}>
-            <img src={sticker.image} alt={`${sticker.title}のLINEスタンプ`} loading="lazy" width="512" height="512" />
+        <article class="card">
+          <a href={`/stickers/${sticker.id}`} style="text-decoration:none;color:inherit;display:block;">
+            <div class="media"><img src={sticker.image} alt={`${sticker.title}のLINEスタンプ`} loading="lazy" width="512" height="512" /></div>
             <h2>{sticker.title}</h2>
           </a>
         </article>
       ))}
     </section>
-    <nav aria-label="ページ移動">
+    <nav class="pager" aria-label="ページ移動">
       {page > 1 && <a href={`/categories/${category.slug}/${page - 1}`}>前のページ</a>}
       <span>{page} / {totalPages}</span>
       {page < totalPages && <a href={`/categories/${category.slug}/${page + 1}`}>次のページ</a>}
