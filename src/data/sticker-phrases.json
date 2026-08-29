@@ -612,5 +612,64 @@
     "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
+  },
+  "36156647": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36161149": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36165213": {
+    "phrases": [
+      "ありがとう"
+    ],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36168893": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36170365": {
+    "phrases": [
+      "ありがと"
+    ],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36170943": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36171011": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36172499": {
+    "phrases": [
+      "ありがと",
+      "すみません"
+    ],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36177180": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
+  },
+  "36179882": {
+    "phrases": [
+      "OK"
+    ],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-29"
   }
 }
