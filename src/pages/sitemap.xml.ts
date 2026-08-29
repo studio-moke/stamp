@@ -6,7 +6,7 @@ import {
   SITE_URL,
 } from "../lib/stickers";
 import { LOCALES, localeInfo, localizedPath } from "../lib/i18n";
-import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions } from "../lib/sticker-tags";
+import { getTagIdsForSticker, getTagPath, tagDefinitions } from "../lib/sticker-search-tags";
 
 const PAGE_SIZE = 24;
 
@@ -54,7 +54,7 @@ export function GET() {
   }
 
   for (const tag of tagDefinitions) {
-    const count = stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length;
+    const count = stickers.filter((sticker) => getTagIdsForSticker(sticker).includes(tag.id)).length;
     if (count >= 2) entries.push(multilingualTagEntry(tag));
   }
 
