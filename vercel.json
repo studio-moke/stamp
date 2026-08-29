@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/line-author.js": {
+      "regions": ["hnd1"],
+      "maxDuration": 30
+    }
+  }
+}
