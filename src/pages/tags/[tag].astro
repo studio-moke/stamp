@@ -3,7 +3,7 @@ import stickers from "../../data/stickers.json";
 import SeoHead from "../../components/SeoHead.astro";
 import Analytics from "../../components/Analytics.astro";
 import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
-import { LOCALES, localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
+import { LOCALES, localeInfo, localizedPath, messages, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
 import { localizedStickerTitle } from "../../lib/sticker-content";
 import { getTagIdsForSticker, getTagPath, tagDefinitions, type TagDefinition } from "../../lib/sticker-search-tags";
@@ -16,6 +16,7 @@ export function getStaticPaths() {
 
 const { tag, locale: localeProp = "ja" } = Astro.props as { tag: TagDefinition; locale?: string };
 const locale = normalizeLocale(localeProp);
+const t = messages[locale];
 const items = stickers.filter((sticker) => getTagIdsForSticker(sticker).includes(tag.id));
 const label = tag.labels[locale];
 const canonicalPath = `/tags/${tag.slugs[locale]}`;
@@ -42,11 +43,56 @@ const ui = {
   <Analytics />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:titleLabel,description,url:canonical,mainEntity:{"@type":"ItemList",numberOfItems:items.length,itemListElement:items.map((item,index)=>({"@type":"ListItem",position:index+1,url:absoluteUrl(localizedPath(locale,`/stickers/${item.id}`)),name:localizedStickerTitle(item,locale)}))}})} />
   <style>
-    *{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.header{background:#fff;border-bottom:1px solid #e4e3df;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{text-decoration:none;font-weight:900;letter-spacing:.08em}.actions{display:flex;gap:10px;align-items:center}.back{border:1px solid #ddd;background:#fff;border-radius:999px;padding:10px 16px;text-decoration:none;font-size:12px;font-weight:700}.main{max-width:1180px;margin:0 auto;padding:56px 5vw 100px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#777;text-transform:uppercase}.title{font-size:clamp(36px,6vw,72px);line-height:1.05;margin:12px 0 18px;letter-spacing:-.04em}.lead{max-width:760px;color:#666;line-height:1.9;font-size:14px}.count{margin:40px 0 16px;font-size:12px;color:#777}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;list-style:none;padding:0;margin:0}.card{display:block;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden;text-decoration:none}.media{aspect-ratio:1/1;background:#7696c4;display:flex;align-items:center;justify-content:center}.media img{width:100%;height:100%;object-fit:contain;padding:18px}.name{margin:0;padding:16px;font-size:13px;font-weight:800;line-height:1.5}.footer{background:#181818;color:#999;padding:38px 5vw;font-size:11px}.footer strong{display:block;color:#fff;margin-bottom:8px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.main{padding:38px 18px 70px}.header{padding:14px 18px}.title{font-size:38px}}@media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.name{padding:11px;font-size:11px}.media img{padding:10px}}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #f7f6f2; color: #161616; font-family: Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .header { height: 86px; background: rgba(255,255,255,.96); border-bottom: 1px solid #e4e3df; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); }
+    .brand { text-decoration: none; }
+    .brand-title { font-size: 21px; font-weight: 900; letter-spacing: .1em; line-height: 1; }
+    .brand-sub { margin-top: 7px; font-size: 11px; color: #777; letter-spacing: .05em; }
+    .header-actions { display: flex; align-items: center; gap: 9px; }
+    .header-link { text-decoration: none; border: 1px solid #d9d8d4; background: #fff; padding: 13px 22px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+    .main { max-width: 1180px; margin: 0 auto; padding: 56px 5vw 100px; }
+    .eyebrow { font-size: 11px; letter-spacing: .18em; color: #777; text-transform: uppercase; }
+    .title { font-size: clamp(36px,6vw,72px); line-height: 1.05; margin: 12px 0 18px; letter-spacing: -.04em; }
+    .lead { max-width: 760px; color: #666; line-height: 1.9; font-size: 14px; }
+    .count { margin: 40px 0 16px; font-size: 12px; color: #777; }
+    .grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; list-style: none; padding: 0; margin: 0; }
+    .card { display: block; background: #fff; border: 1px solid #e3e2de; border-radius: 18px; overflow: hidden; text-decoration: none; }
+    .media { aspect-ratio: 1/1; background: #7696c4; display: flex; align-items: center; justify-content: center; }
+    .media img { width: 100%; height: 100%; object-fit: contain; padding: 18px; }
+    .name { margin: 0; padding: 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
+    .footer { background: #181818; color: #999; padding: 38px 5vw; font-size: 11px; }
+    .footer strong { display: block; color: #fff; margin-bottom: 8px; }
+    @media(max-width:760px){
+      .header { height: 72px; padding: 0 20px; }
+      .brand-title { font-size: 17px; }
+      .brand-sub { font-size: 9px; margin-top: 5px; }
+      .header-link { padding: 10px 14px; font-size: 11px; }
+      .header-actions { gap: 6px; }
+      .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .main { padding: 38px 18px 70px; }
+      .title { font-size: 38px; }
+    }
+    @media(max-width:420px){
+      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .name { padding: 11px; font-size: 11px; }
+      .media img { padding: 10px; }
+    }
   </style>
 </head>
 <body>
-<header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} paths={localePaths} /><a class="back" href={localizedPath(locale,"/")}>{ui.back}</a></div></header>
+<header class="header">
+  <a class="brand" href={localizedPath(locale,"/")}>
+    <div class="brand-title">stamp moke</div>
+    <div class="brand-sub">{t.brandSub}</div>
+  </a>
+  <div class="header-actions">
+    <LanguageSwitcher locale={locale} paths={localePaths} />
+    <a class="header-link" href={localizedPath(locale,"/")}>{ui.back}</a>
+  </div>
+</header>
 <main class="main">
   <div class="eyebrow">{ui.eyebrow}</div>
   <h1 class="title">{titleLabel}</h1>
