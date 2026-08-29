@@ -55,12 +55,12 @@ const products = Array.isArray(design.products) ? design.products : [];
     html { scroll-behavior: smooth; }
     body { margin: 0; background: #f7f6f2; color: #161616; font-family: Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; -webkit-font-smoothing: antialiased; }
     a { color: inherit; }
-    .header { height: 86px; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; background: rgba(255,255,255,.96); border-bottom: 1px solid #e4e3df; }
+    .header { height: 86px; background: rgba(255,255,255,.96); border-bottom: 1px solid #e4e3df; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); }
     .brand { text-decoration: none; }
-    .brand-title { font-size: 17px; font-weight: 900; letter-spacing: .12em; }
-    .brand-sub { margin-top: 3px; color: #999; font-size: 9px; letter-spacing: .08em; }
-    .header-actions { display:flex; align-items:center; gap:9px; }
-    .back-link { padding: 10px 15px; border: 1px solid #d8d7d2; border-radius: 999px; color: #555; font-size: 11px; font-weight: 800; text-decoration: none; }
+    .brand-title { font-size: 21px; font-weight: 900; letter-spacing: .1em; line-height: 1; }
+    .brand-sub { margin-top: 7px; font-size: 11px; color: #777; letter-spacing: .05em; }
+    .header-link { text-decoration: none; border: 1px solid #d9d8d4; background: #fff; padding: 13px 22px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+    .header-actions { display: flex; align-items: center; gap: 9px; }
     .main { max-width: 1180px; margin: 0 auto; padding: 40px 5vw 110px; }
     .breadcrumb { margin-bottom: 28px; color: #888; font-size: 11px; }
     .breadcrumb a { text-decoration: none; }
@@ -95,7 +95,11 @@ const products = Array.isArray(design.products) ? design.products : [];
       .product-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
     }
     @media (max-width: 620px) {
-      .header { height: 74px; padding: 0 18px; }
+      .header { height: 72px; padding: 0 20px; }
+      .brand-title { font-size: 17px; }
+      .brand-sub { font-size: 9px; margin-top: 5px; }
+      .header-link { padding: 10px 14px; font-size: 11px; }
+      .header-actions { gap: 6px; }
       .main { padding: 25px 18px 75px; }
       .feature { padding: 18px; border-radius: 20px; }
       .title { font-size: 34px; }
@@ -109,8 +113,14 @@ const products = Array.isArray(design.products) ? design.products : [];
 </head>
 <body>
   <header class="header">
-    <a href={localizedPath(locale, "/")} class="brand"><div class="brand-title">stamp moke</div><div class="brand-sub">{t.brandSub}</div></a>
-    <div class="header-actions"><LanguageSwitcher locale={locale} path={canonicalPath} /><a href={localizedPath(locale, "/#character-goods")} class="back-link">{t.back}</a></div>
+    <a href={localizedPath(locale, "/")} class="brand">
+      <div class="brand-title">stamp moke</div>
+      <div class="brand-sub">{t.brandSub}</div>
+    </a>
+    <div class="header-actions">
+      <LanguageSwitcher locale={locale} path={canonicalPath} />
+      <a href={localizedPath(locale, "/#character-goods")} class="header-link">{t.back}</a>
+    </div>
   </header>
 
   <main class="main">
