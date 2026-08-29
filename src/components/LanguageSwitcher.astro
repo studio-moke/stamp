@@ -3,12 +3,13 @@ import { LOCALES, localeInfo, localizedPath, normalizeLocale } from "../lib/i18n
 
 const locale = normalizeLocale(Astro.props.locale);
 const path = Astro.props.path || "/";
+const paths = Astro.props.paths || null;
 ---
 <label class="language-switcher">
   <span class="language-label">Language</span>
   <select id="language-select" aria-label="Language">
     {LOCALES.map((item) => (
-      <option value={localizedPath(item, path)} data-locale={item} selected={item === locale}>
+      <option value={paths?.[item] || localizedPath(item, path)} data-locale={item} selected={item === locale}>
         {localeInfo[item].label}
       </option>
     ))}
