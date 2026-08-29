@@ -4,9 +4,11 @@ import path from "node:path";
 const AUTHOR_ID = "6507349";
 const DATA_FILE = path.resolve("src/data/stickers.json");
 const IMAGE_DIR = path.resolve("public/images/stickers");
-const SCAN_LIMIT = Number(process.env.STICKER_ID_SCAN_LIMIT || 12000);
-const CONCURRENCY = Number(process.env.STICKER_ID_SCAN_CONCURRENCY || 16);
-const STOP_AFTER_LAST_OWN = Number(process.env.STICKER_ID_STOP_AFTER_LAST_OWN || 3000);
+const STATE_FILE = path.resolve(process.env.STICKER_ID_SCAN_STATE || ".cache/sticker-id-scan/state.json");
+const SCAN_LIMIT = Number(process.env.STICKER_ID_SCAN_LIMIT || 5000);
+const CONCURRENCY = Number(process.env.STICKER_ID_SCAN_CONCURRENCY || 8);
+const MAX_CONSECUTIVE_MISSING = Number(process.env.STICKER_ID_MAX_CONSECUTIVE_MISSING || 120);
+const OVERLAP = Number(process.env.STICKER_ID_SCAN_OVERLAP || 200);
 const RANGE_BYTES = Number(process.env.STICKER_ID_RANGE_BYTES || 131071);
 
 const headers = {
@@ -155,6 +157,20 @@ function loadStickers() {
   return data;
 }
 
+function loadState() {
+  try {
+    const state = JSON.parse(fs.readFileSync(STATE_FILE, "utf8"));
+    return Number.isFinite(Number(state?.nextId)) ? { nextId: Number(state.nextId) } : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveState(nextId) {
+  fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
+  fs.writeFileSync(STATE_FILE, JSON.stringify({ nextId, updatedAt: new Date().toISOString() }, null, 2), "utf8");
+}
+
 function mergeAndSave(stickers, additions) {
   if (!additions.length) return stickers;
   const byId = new Map(stickers.map((item) => [String(item.id), item]));
@@ -172,31 +188,29 @@ async function main() {
   const existingIds = new Set(stickers.map((item) => String(item.id)));
   const numericIds = stickers.map((item) => Number(item.id)).filter(Number.isFinite);
   const highestKnown = Math.max(...numericIds);
-  const start = highestKnown + 1;
-  const hardEnd = highestKnown + SCAN_LIMIT;
+  const state = loadState();
+  const resumeFrom = state?.nextId || highestKnown + 1;
+  const start = Math.max(highestKnown + 1, resumeFrom - OVERLAP);
+  const hardEnd = start + SCAN_LIMIT - 1;
 
   console.log("=================================");
   console.log(" STAMP MOKE 商品IDベース新作探索");
   console.log("=================================");
   console.log(`既存: ${stickers.length}作品`);
   console.log(`最大登録ID: ${highestKnown}`);
+  console.log(`前回カーソル: ${state?.nextId || "なし"}`);
   console.log(`探索範囲: ${start} - ${hardEnd} (最大 ${SCAN_LIMIT} ID)`);
-  console.log(`並列数: ${CONCURRENCY} / 最終自作品から ${STOP_AFTER_LAST_OWN} ID で停止`);
+  console.log(`並列数: ${CONCURRENCY} / 重複確認: ${OVERLAP} / 未来ID連続 ${MAX_CONSECUTIVE_MISSING} で停止`);
 
   let cursor = start;
   let checked = 0;
   let exists = 0;
   let errors = 0;
-  let lastOwnId = highestKnown;
-  let foundAny = false;
+  let consecutiveMissing = 0;
+  let lastExistingId = start - 1;
   const additions = [];
 
   while (cursor <= hardEnd) {
-    if (foundAny && cursor - lastOwnId > STOP_AFTER_LAST_OWN) {
-      console.log(`停止: 最後に見つけた自作品 ${lastOwnId} から ${STOP_AFTER_LAST_OWN} ID を超えました。`);
-      break;
-    }
-
     const ids = [];
     for (let i = 0; i < CONCURRENCY && cursor <= hardEnd; i += 1, cursor += 1) ids.push(cursor);
     const results = await Promise.all(ids.map(async (id) => {
@@ -205,14 +219,26 @@ async function main() {
     }));
     checked += results.length;
 
-    for (const result of results) {
+    let shouldStopAtFutureBoundary = false;
+    for (const result of results.sort((a, b) => a.id - b.id)) {
       if (result.status === "error") {
         errors += 1;
+        consecutiveMissing = 0;
         if (errors <= 10) console.log(`取得エラー ${result.id}: ${result.code || result.error?.message || "unknown"}`);
         continue;
       }
-      if (result.status !== "exists") continue;
+      if (result.status === "missing") {
+        consecutiveMissing += 1;
+        if (consecutiveMissing >= MAX_CONSECUTIVE_MISSING) {
+          shouldStopAtFutureBoundary = true;
+          break;
+        }
+        continue;
+      }
+
+      consecutiveMissing = 0;
       exists += 1;
+      lastExistingId = result.id;
       if (!result.isOwn || existingIds.has(String(result.id))) continue;
 
       try {
@@ -220,8 +246,6 @@ async function main() {
         if (!product) continue;
         additions.push(product);
         existingIds.add(String(result.id));
-        lastOwnId = result.id;
-        foundAny = true;
         console.log(`★ 新作発見: ${result.id} ${product.title}`);
       } catch (error) {
         errors += 1;
@@ -235,21 +259,26 @@ async function main() {
     if (errors > Math.max(50, checked * 0.2)) {
       throw new Error(`ID探索のエラー率が高すぎます: ${errors}/${checked}`);
     }
+    if (shouldStopAtFutureBoundary) {
+      console.log(`停止: 未発行と思われるIDが ${MAX_CONSECUTIVE_MISSING} 件連続しました。`);
+      break;
+    }
     if (checked % 500 === 0) await sleep(300);
   }
 
-  if (checked < Math.min(200, SCAN_LIMIT)) {
+  if (checked < Math.min(100, SCAN_LIMIT) && consecutiveMissing < MAX_CONSECUTIVE_MISSING) {
     throw new Error(`ID探索が十分に実行されていません: checked=${checked}`);
   }
 
+  const nextId = consecutiveMissing >= MAX_CONSECUTIVE_MISSING ? Math.max(highestKnown + 1, lastExistingId + 1) : cursor;
+  saveState(nextId);
   const merged = mergeAndSave(stickers, additions);
+
   console.log("");
   console.log(`探索完了: ${checked} ID / 実在 ${exists} / 新規 ${additions.length} / エラー ${errors}`);
+  console.log(`次回開始候補: ${nextId}`);
   console.log(`作品数: ${merged.length}`);
-
-  if (!additions.length) {
-    console.log("新作は見つかりませんでした。作者ページの件数に依存せずID範囲を直接確認済みです。");
-  }
+  if (!additions.length) console.log("新作なし。次回は保存済みカーソル付近から継続します。");
 }
 
 main().catch((error) => {
