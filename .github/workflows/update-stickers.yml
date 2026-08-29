@@ -11,6 +11,7 @@ on:
       - main
     paths:
       - "scripts/fetch-stickers.mjs"
+      - "scripts/discover-new-stickers-by-id.mjs"
       - "scripts/discover-new-stickers.mjs"
       - "scripts/generate-sticker-sheets.mjs"
       - "scripts/extract-sticker-phrases.mjs"
@@ -41,6 +42,14 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Restore sticker ID scan cursor
+        uses: actions/cache@v4
+        with:
+          path: .cache/sticker-id-scan
+          key: sticker-id-scan-${{ github.run_id }}
+          restore-keys: |
+            sticker-id-scan-
+
       - name: Install preview image generator
         run: npm install --no-save sharp
 
@@ -49,10 +58,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr tesseract-ocr-jpn
 
-      - name: Fetch latest stickers
+      - name: Discover new stickers by product ID
+        env:
+          STICKER_ID_SCAN_LIMIT: "5000"
+          STICKER_ID_SCAN_CONCURRENCY: "8"
+          STICKER_ID_MAX_CONSECUTIVE_MISSING: "120"
+          STICKER_ID_SCAN_OVERLAP: "200"
+        run: node scripts/discover-new-stickers-by-id.mjs
+
+      - name: Refresh metadata from creator page
         run: node scripts/fetch-stickers.mjs
 
-      - name: Backfill works through creator product links
+      - name: Backfill older works through creator product links
         run: node scripts/discover-new-stickers.mjs
 
       - name: Generate protected sticker preview sheets
