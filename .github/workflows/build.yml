@@ -24,5 +24,8 @@ jobs:
           node --check scripts/discover-new-stickers-by-id.mjs
           node --check scripts/fetch-stickers.mjs
           node --check scripts/discover-new-stickers.mjs
+          node --check scripts/diagnose-line-pagination.mjs
+      - name: Diagnose LINE STORE pagination
+        run: node scripts/diagnose-line-pagination.mjs
       - name: Build Astro site
         run: npm run build
