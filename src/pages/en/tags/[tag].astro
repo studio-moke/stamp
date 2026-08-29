@@ -1,11 +1,11 @@
 ---
 import TagPage from "../../tags/[tag].astro";
 import stickers from "../../../data/stickers.json";
-import { getStickerPhrases, getTagIdsForPhrases, tagDefinitions } from "../../../lib/sticker-tags";
+import { getTagIdsForSticker, tagDefinitions } from "../../../lib/sticker-search-tags";
 
 export function getStaticPaths(){
   return tagDefinitions
-    .filter((tag)=>stickers.filter((sticker)=>getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length>=2)
+    .filter((tag)=>stickers.filter((sticker)=>getTagIdsForSticker(sticker).includes(tag.id)).length>=2)
     .map((tag)=>({params:{tag:tag.slugs.en},props:{tag}}));
 }
 const { tag } = Astro.props;
