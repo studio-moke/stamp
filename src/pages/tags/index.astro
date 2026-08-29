@@ -3,12 +3,13 @@ import stickers from "../../data/stickers.json";
 import SeoHead from "../../components/SeoHead.astro";
 import Analytics from "../../components/Analytics.astro";
 import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
-import { localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
+import { localeInfo, localizedPath, messages, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
 import { getTagIdsForSticker, getTagPath, tagDefinitions } from "../../lib/sticker-search-tags";
 
 const { locale: localeProp = "ja" } = Astro.props;
 const locale = normalizeLocale(localeProp);
+const t = messages[locale];
 const tags = tagDefinitions.map((tag)=>({tag,count:stickers.filter((sticker)=>getTagIdsForSticker(sticker).includes(tag.id)).length})).filter((entry)=>entry.count>=2);
 const copy = {
  ja:{title:"言葉・用途からLINEスタンプを探す",desc:"スタンプに実際に含まれる言葉に加え、仕事、家族、方言、動物など作品の内容や用途からstamp mokeのLINEスタンプを探せます。",back:"スタンプ一覧",count:"作品"},
@@ -21,4 +22,57 @@ const canonicalPath="/tags/";
 const canonical=absoluteUrl(localizedPath(locale,canonicalPath));
 const pageTitle=makeTitle([copy.title,"stamp moke"]); const description=makeDescription(copy.desc);
 ---
-<!doctype html><html lang={localeInfo[locale].htmlLang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>{pageTitle}</title><SeoHead title={pageTitle} description={description} canonical={canonical} locale={locale} path={canonicalPath}/><Analytics/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.header{padding:18px 5vw;background:#fff;border-bottom:1px solid #e3e2de;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:900;text-decoration:none;letter-spacing:.08em}.actions{display:flex;gap:10px;align-items:center}.back{padding:10px 14px;border:1px solid #ddd;border-radius:999px;text-decoration:none;font-size:12px}.main{max-width:1050px;margin:auto;padding:64px 5vw 100px}h1{font-size:clamp(34px,5vw,60px);line-height:1.1;margin:0 0 18px}.lead{color:#666;line-height:1.9;max-width:760px}.tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}.tag{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:999px;padding:13px 18px;text-decoration:none;font-weight:800}.num{color:#888;font-size:11px;font-weight:600}@media(max-width:640px){.main{padding:42px 18px 70px}.header{padding:14px 18px}.tag{padding:11px 14px}}</style></head><body><header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} path="/tags/"/><a class="back" href={localizedPath(locale,"/")}>{copy.back}</a></div></header><main class="main"><h1>{copy.title}</h1><p class="lead">{description}</p><div class="tags">{tags.map(({tag,count})=><a class="tag" href={getTagPath(locale,tag)}><span>{tag.labels[locale]}</span><span class="num">{count} {copy.count}</span></a>)}</div></main></body></html>
+<!doctype html>
+<html lang={localeInfo[locale].htmlLang}>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>{pageTitle}</title>
+  <SeoHead title={pageTitle} description={description} canonical={canonical} locale={locale} path={canonicalPath}/>
+  <Analytics/>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #f7f6f2; color: #161616; font-family: Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .header { height: 86px; background: rgba(255,255,255,.96); border-bottom: 1px solid #e4e3df; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); }
+    .brand { text-decoration: none; }
+    .brand-title { font-size: 21px; font-weight: 900; letter-spacing: .1em; line-height: 1; }
+    .brand-sub { margin-top: 7px; font-size: 11px; color: #777; letter-spacing: .05em; }
+    .header-link { text-decoration: none; border: 1px solid #d9d8d4; background: #fff; padding: 13px 22px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+    .header-actions { display: flex; align-items: center; gap: 9px; }
+    .main { max-width: 1050px; margin: auto; padding: 64px 5vw 100px; }
+    h1 { font-size: clamp(34px,5vw,60px); line-height: 1.1; margin: 0 0 18px; }
+    .lead { color: #666; line-height: 1.9; max-width: 760px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+    .tag { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #ddd; border-radius: 999px; padding: 13px 18px; text-decoration: none; font-weight: 800; }
+    .num { color: #888; font-size: 11px; font-weight: 600; }
+    @media(max-width:640px){
+      .header { height: 72px; padding: 0 20px; }
+      .brand-title { font-size: 17px; }
+      .brand-sub { font-size: 9px; margin-top: 5px; }
+      .header-link { padding: 10px 14px; font-size: 11px; }
+      .header-actions { gap: 6px; }
+      .main { padding: 42px 18px 70px; }
+      .tag { padding: 11px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href={localizedPath(locale,"/")}>
+      <div class="brand-title">stamp moke</div>
+      <div class="brand-sub">{t.brandSub}</div>
+    </a>
+    <div class="header-actions">
+      <LanguageSwitcher locale={locale} path="/tags/"/>
+      <a class="header-link" href={localizedPath(locale,"/")}>{copy.back}</a>
+    </div>
+  </header>
+  <main class="main">
+    <h1>{copy.title}</h1>
+    <p class="lead">{description}</p>
+    <div class="tags">{tags.map(({tag,count})=><a class="tag" href={getTagPath(locale,tag)}><span>{tag.labels[locale]}</span><span class="num">{count} {copy.count}</span></a>)}</div>
+  </main>
+</body>
+</html>
