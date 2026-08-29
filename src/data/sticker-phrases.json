@@ -25,10 +25,7 @@
     "updatedAt": "2026-08-29"
   },
   "35818703": {
-    "phrases": [
-      "\"うれしかこつ",
-      "うれしかこつ"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -41,7 +38,7 @@
   },
   "35819929": {
     "phrases": [
-      "()OK"
+      "OK"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
@@ -62,8 +59,7 @@
   },
   "35824996": {
     "phrases": [
-      "OK",
-      "おはよ3"
+      "OK"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
@@ -184,10 +180,7 @@
   },
   "35909858": {
     "phrases": [
-      "おやすみなさい",
-      "がんばれる",
-      "がんば>て",
-      "\\またね"
+      "おやすみなさい"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
@@ -210,9 +203,7 @@
     "updatedAt": "2026-08-29"
   },
   "35912888": {
-    "phrases": [
-      "ありがと2"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -340,7 +331,6 @@
   },
   "36021937": {
     "phrases": [
-      "ありがとうて",
       "おやすみ"
     ],
     "source": "ocr-curated",
@@ -385,8 +375,6 @@
   "36046443": {
     "phrases": [
       "すみません",
-      "いありがとう",
-      "またね/",
       "ごめんなさい"
     ],
     "source": "ocr-curated",
@@ -401,9 +389,7 @@
   },
   "36050370": {
     "phrases": [
-      "おはよう:9",
       "ありがとう",
-      "ごめんね",
       "ありがと"
     ],
     "source": "ocr-curated",
@@ -420,24 +406,19 @@
     "updatedAt": "2026-08-29"
   },
   "36051910": {
-    "phrases": [
-      "がんば5ぅ"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
   "36052650": {
     "phrases": [
-      "すみません/",
       "ありがと"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
   "36052990": {
-    "phrases": [
-      "承知いたしまし"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -452,17 +433,13 @@
     "updatedAt": "2026-08-29"
   },
   "36058653": {
-    "phrases": [
-      "ありがと2",
-      "*おやすみ"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
   "36059387": {
     "phrases": [
-      "おやすみ",
-      "またね/"
+      "おやすみ"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
@@ -508,9 +485,7 @@
     "updatedAt": "2026-08-29"
   },
   "36079686": {
-    "phrases": [
-      "ごめんね"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -521,16 +496,13 @@
   },
   "36081595": {
     "phrases": [
-      "ありがとうこざいまお",
-      "すみません)"
+      "すみません"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
   "36081623": {
-    "phrases": [
-      "ありがとう/"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -541,17 +513,13 @@
   },
   "36081992": {
     "phrases": [
-      "ありがとう",
-      "でもOK"
+      "ありがとう"
     ],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
   "36082506": {
-    "phrases": [
-      "ありがと2う",
-      "ありがとうゅ"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -561,9 +529,7 @@
     "updatedAt": "2026-08-29"
   },
   "36086508": {
-    "phrases": [
-      "応援"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -583,9 +549,7 @@
     "updatedAt": "2026-08-29"
   },
   "36098831": {
-    "phrases": [
-      "ごめんね"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
@@ -600,9 +564,7 @@
     "updatedAt": "2026-08-29"
   },
   "36125569": {
-    "phrases": [
-      "おはよ2"
-    ],
+    "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-29"
   },
