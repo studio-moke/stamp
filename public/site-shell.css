@@ -66,6 +66,105 @@
   color: #fff !important;
 }
 
+/* Smart WORDS & USES block is injected at runtime, so these styles must be global rather than Astro-scoped. */
+.phrase-section {
+  margin-top: 28px;
+  background: #fff;
+  border: 1px solid #e3e2de;
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.phrase-section .sub-label {
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.phrase-section .sub-title {
+  margin: 0 0 18px;
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+.phrase-section .phrase-lead {
+  margin: 0 0 18px;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.phrase-section .phrase-list,
+.phrase-section .tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.phrase-section .phrase-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #f7f6f2;
+  border: 1px solid #e3e2de;
+  border-radius: 999px;
+  padding: 9px 13px;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.phrase-section .tag-block {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #eeeeeb;
+}
+
+.phrase-section .tag-label {
+  margin: 0 0 10px;
+  color: #777;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.phrase-section .tag-chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  background: #171717;
+  color: #fff;
+  border: 1px solid #171717;
+  border-radius: 999px;
+  padding: 9px 13px;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 800;
+  transition: transform .15s ease, opacity .15s ease;
+}
+
+.phrase-section .tag-chip:hover {
+  transform: translateY(-1px);
+  opacity: .86;
+}
+
+.phrase-section .tag-all {
+  display: inline-block;
+  margin-top: 16px;
+  color: #168b52;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.phrase-section .tag-all:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   .header {
     height: 72px !important;
@@ -97,5 +196,25 @@
 
   .header .header-shop-link {
     padding-inline: 12px !important;
+  }
+
+  .phrase-section {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .phrase-section .sub-title {
+    font-size: 21px;
+  }
+
+  .phrase-section .phrase-list,
+  .phrase-section .tag-list {
+    gap: 7px;
+  }
+
+  .phrase-section .phrase-chip,
+  .phrase-section .tag-chip {
+    padding: 8px 11px;
+    font-size: 11px;
   }
 }
