@@ -42,6 +42,14 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Restore sticker ID scan cursor
+        uses: actions/cache@v4
+        with:
+          path: .cache/sticker-id-scan
+          key: sticker-id-scan-${{ github.run_id }}
+          restore-keys: |
+            sticker-id-scan-
+
       - name: Install preview image generator
         run: npm install --no-save sharp
 
@@ -52,9 +60,10 @@ jobs:
 
       - name: Discover new stickers by product ID
         env:
-          STICKER_ID_SCAN_LIMIT: "12000"
-          STICKER_ID_SCAN_CONCURRENCY: "16"
-          STICKER_ID_STOP_AFTER_LAST_OWN: "3000"
+          STICKER_ID_SCAN_LIMIT: "5000"
+          STICKER_ID_SCAN_CONCURRENCY: "8"
+          STICKER_ID_MAX_CONSECUTIVE_MISSING: "120"
+          STICKER_ID_SCAN_OVERLAP: "200"
         run: node scripts/discover-new-stickers-by-id.mjs
 
       - name: Refresh metadata from creator page
