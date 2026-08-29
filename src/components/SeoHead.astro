@@ -1,16 +1,19 @@
 ---
 import { SITE_NAME, absoluteUrl } from "../lib/seo";
-import { alternateLinks, localeInfo, normalizeLocale } from "../lib/i18n";
+import { LOCALES, alternateLinks, localeInfo, normalizeLocale } from "../lib/i18n";
 
-const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname } = Astro.props;
+const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname, alternatePaths = null } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const url = canonical || absoluteUrl(Astro.url.pathname);
-const alternates = alternateLinks(path);
+const alternates = alternatePaths
+  ? LOCALES.map((item) => ({ locale: item, href: absoluteUrl(alternatePaths[item]) }))
+  : alternateLinks(path);
+const xDefault = alternatePaths ? absoluteUrl(alternatePaths.ja || path) : absoluteUrl(path);
 ---
 <meta name="description" content={description} />
 <link rel="canonical" href={url} />
 {alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
-<link rel="alternate" hreflang="x-default" href={absoluteUrl(path)} />
+<link rel="alternate" hreflang="x-default" href={xDefault} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content={type} />

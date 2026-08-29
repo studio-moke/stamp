@@ -1,0 +1,12 @@
+---
+import TagPage from "../../tags/[tag].astro";
+import stickers from "../../../data/stickers.json";
+import { getStickerPhrases, getTagIdsForPhrases, tagDefinitions } from "../../../lib/sticker-tags";
+export function getStaticPaths(){
+  return tagDefinitions
+    .filter((tag)=>stickers.filter((sticker)=>getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length>=2)
+    .map((tag)=>({params:{tag:tag.slugs["zh-tw"]},props:{tag}}));
+}
+const { tag } = Astro.props;
+---
+<TagPage tag={tag} locale="zh-tw" />

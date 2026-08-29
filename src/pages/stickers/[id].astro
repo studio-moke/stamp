@@ -7,6 +7,7 @@ import { categoryLabels, localeInfo, localizedPath, localizeLineUrl, messages, n
 import { makeTitle, makeDescription, absoluteUrl } from "../../lib/seo";
 import { getCategory } from "../../lib/stickers";
 import { localizedStickerDescription, localizedStickerPrice, localizedStickerTitle } from "../../lib/sticker-content";
+import { getStickerPhrases, getTagIdsForPhrases, getTagById, getTagPath, localizedPhraseSummary } from "../../lib/sticker-tags";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -25,6 +26,9 @@ const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${e
 const cleanTitle = localizedStickerTitle(sticker, locale);
 const localizedDescription = localizedStickerDescription(sticker, locale);
 const localizedPrice = localizedStickerPrice(sticker.price, locale);
+const phrases = getStickerPhrases(sticker.id);
+const stickerTags = getTagIdsForPhrases(phrases).map((id) => getTagById(id)).filter(Boolean);
+const phraseSummary = localizedPhraseSummary(locale, phrases);
 const titleSuffix = locale === "ja" ? "LINEスタンプ" : locale === "en" ? "LINE Stickers" : locale === "zh-tw" ? "LINE貼圖" : locale === "th" ? "สติกเกอร์ LINE" : "Stiker LINE";
 const pageTitle = makeTitle([`${cleanTitle} | ${titleSuffix}`]);
 const localizedFallback = locale === "ja"
@@ -48,6 +52,13 @@ const pageText = {
   th: { list:"รวมสติกเกอร์", breadcrumb:"สติกเกอร์ LINE", gift:"ส่งเป็นของขวัญ", safe:"ปลอดภัยและเป็นทางการ", safeText:"ซื้อได้จากหน้า LINE STORE อย่างเป็นทางการ", mobile:"เปิดง่ายบนมือถือ", mobileText:"สแกน QR Code เพื่อเปิดหน้าสินค้าได้ทันที", giftOk:"ส่งเป็นของขวัญได้", giftText:"ส่งชุดสติกเกอร์นี้ให้เพื่อนบน LINE ได้", phone:"เปิดบนมือถือ", phoneText:"สแกน QR Code ด้วยกล้องมือถือเพื่อเปิดหน้าสินค้าบน LINE STORE", open:"เปิดหน้าสินค้า →", id:"รหัสสินค้า", category:"หมวดหมู่", price:"ราคา", seller:"ผู้จำหน่าย", work:"ชื่อผลงาน", official:"ดูหน้า LINE STORE อย่างเป็นทางการ →", included:"สติกเกอร์ทั้งหมดในชุด", note:"ภาพตัวอย่างความละเอียดต่ำพร้อมลายน้ำ กรุณาอย่าบันทึกหรือนำภาพไปเผยแพร่ต่อ", related:"สติกเกอร์ LINE ที่เกี่ยวข้อง", footer:"สติกเกอร์ LINE น่ารัก สนุก และใช้ได้ทุกวัน" },
   id: { list:"Koleksi stiker", breadcrumb:"Stiker LINE", gift:"Kirim sebagai hadiah", safe:"Resmi dan aman", safeText:"Beli dengan aman melalui halaman resmi LINE STORE.", mobile:"Mudah dibuka di ponsel", mobileText:"Pindai QR Code untuk langsung membuka halaman produk.", giftOk:"Bisa dikirim sebagai hadiah", giftText:"Kirim set stiker ini kepada teman di LINE.", phone:"Buka di ponsel", phoneText:"Pindai QR Code dengan kamera ponsel untuk membuka produk ini di LINE STORE.", open:"Buka halaman produk →", id:"ID Produk", category:"Kategori", price:"Harga", seller:"Penjual", work:"Judul karya", official:"Lihat halaman resmi LINE STORE →", included:"Semua stiker dalam set ini", note:"Pratinjau beresolusi rendah dengan tanda air. Mohon jangan menyimpan atau menyebarkan ulang gambar.", related:"Stiker LINE terkait", footer:"Stiker LINE yang lucu, seru, dan praktis untuk obrolan sehari-hari." },
 }[locale];
+const phraseText = {
+  ja:{label:"WORDS & USES",title:"このスタンプに含まれる言葉",lead:"画像内の文字を確認し、検索に役立つ代表的なセリフと用途だけを掲載しています。",tags:"用途から探す",all:"言葉・用途の一覧を見る →"},
+  en:{label:"WORDS & USES",title:"Phrases in this sticker set",lead:"Representative Japanese phrases detected in the sticker artwork, plus localized usage tags.",tags:"Browse by use",all:"Browse all phrases & uses →"},
+  "zh-tw":{label:"語句與用途",title:"這組貼圖包含的語句",lead:"列出貼圖圖像中確認到的代表性日文語句，並提供在地化用途標籤。",tags:"依用途搜尋",all:"查看所有語句與用途 →"},
+  th:{label:"คำและการใช้งาน",title:"ข้อความในชุดสติกเกอร์นี้",lead:"ข้อความภาษาญี่ปุ่นที่ตรวจพบจากภาพ พร้อมแท็กการใช้งานที่แปลให้เหมาะกับภาษาไทย",tags:"ค้นหาตามการใช้งาน",all:"ดูคำและการใช้งานทั้งหมด →"},
+  id:{label:"FRASA & KEGUNAAN",title:"Frasa dalam set stiker ini",lead:"Frasa bahasa Jepang yang terdeteksi pada gambar stiker, dilengkapi tag kegunaan yang dilokalkan.",tags:"Cari berdasarkan kegunaan",all:"Lihat semua frasa & kegunaan →"},
+}[locale];
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
 const sheetUrl = `/images/sticker-sheets/${sticker.id}.webp`;
 const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sticker-sheets", `${sticker.id}.webp`));
@@ -61,6 +72,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
   <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" locale={locale} path={canonicalPath} />
   <Analytics />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"stamp moke","item":absoluteUrl(localizedPath(locale, "/"))},{"@type":"ListItem","position":2,"name":pageText.breadcrumb,"item":absoluteUrl(localizedPath(locale, "/"))},{"@type":"ListItem","position":3,"name":cleanTitle,"item":canonical}]})} />
+  {phrases.length > 0 && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CreativeWork",name:cleanTitle,url:canonical,image:absoluteUrl(sticker.image),description,keywords:[...phrases,...stickerTags.map((tag)=>tag.labels[locale])],inLanguage:localeInfo[locale].htmlLang,abstract:phraseSummary})} />}
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -103,6 +115,14 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
     .detail-row dt { color:#777; }
     .detail-row dd { margin:0; font-weight:700; overflow-wrap:anywhere; }
     .official-link { display:inline-flex; margin-top:18px; min-height:44px; align-items:center; font-size:12px; font-weight:800; text-decoration:none; border-bottom:1px solid #222; }
+    .phrase-section { margin-top:28px; background:#fff; border:1px solid #e3e2de; border-radius:20px; padding:28px; }
+    .phrase-lead { margin:0 0 18px; color:#666; font-size:12px; line-height:1.8; }
+    .phrase-list,.tag-list { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:0; }
+    .phrase-chip { background:#f7f6f2; border:1px solid #e3e2de; border-radius:999px; padding:9px 13px; font-size:12px; font-weight:800; }
+    .tag-block { margin-top:20px; padding-top:18px; border-top:1px solid #eeeeeb; }
+    .tag-label { margin:0 0 10px; color:#777; font-size:11px; font-weight:800; }
+    .tag-chip { display:inline-flex; text-decoration:none; background:#171717; color:#fff; border-radius:999px; padding:9px 13px; font-size:11px; font-weight:800; }
+    .tag-all { display:inline-block; margin-top:16px; color:#168b52; font-size:12px; font-weight:800; text-decoration:none; }
     .all-stickers { margin-top:70px; }
     .preview-card { position:relative; max-width:720px; margin:0 auto; padding:20px; background:#fff; border:1px solid #e3e2de; border-radius:20px; overflow:hidden; }
     .preview-sheet { display:block; width:100%; height:auto; border-radius:14px; -webkit-user-drag:none; -webkit-touch-callout:none; user-select:none; pointer-events:none; }
@@ -147,7 +167,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
       .actions { display:grid; grid-template-columns:1fr; }
       .action { width:100%; min-height:48px; }
       .trust-grid { grid-template-columns:1fr; gap:12px; }
-      .sub-card { padding:20px; border-radius:16px; }
+      .sub-card,.phrase-section { padding:20px; border-radius:16px; }
       .qr-wrap { align-items:flex-start; }
       .qr { width:112px; height:112px; }
       .sub-title { font-size:21px; }
@@ -222,6 +242,16 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
       </section>
     </div>
 
+    {phrases.length > 0 && (
+      <section class="phrase-section" aria-labelledby="sticker-phrases">
+        <div class="sub-label">{phraseText.label}</div>
+        <h2 id="sticker-phrases" class="sub-title">{phraseText.title}</h2>
+        <p class="phrase-lead">{phraseText.lead}</p>
+        <ul class="phrase-list">{phrases.map((phrase)=><li class="phrase-chip" lang="ja">{phrase}</li>)}</ul>
+        {stickerTags.length > 0 && <div class="tag-block"><p class="tag-label">{phraseText.tags}</p><div class="tag-list">{stickerTags.map((tag)=><a class="tag-chip" href={getTagPath(locale,tag)}>{tag.labels[locale]}</a>)}</div><a class="tag-all" href={localizedPath(locale,"/tags/")}>{phraseText.all}</a></div>}
+      </section>
+    )}
+
     {hasSheet && (
       <section class="all-stickers" aria-labelledby="all-stickers-title">
         <div class="section-label">ALL STICKERS PREVIEW</div>
@@ -247,7 +277,7 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
     )}
   </main>
 
-  <footer class="footer"><div class="footer-inner"><div class="footer-brand">stamp moke</div><p class="footer-copy">{pageText.footer}</p><div class="footer-links"><a href={localizedPath(locale, "/")}>{pageText.list}</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© stamp moke</div></div></footer>
+  <footer class="footer"><div class="footer-inner"><div class="footer-brand">stamp moke</div><p class="footer-copy">{pageText.footer}</p><div class="footer-links"><a href={localizedPath(locale, "/")}>{pageText.list}</a><a href={localizedPath(locale,"/tags/")}>{phraseText.all}</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© stamp moke</div></div></footer>
   <script is:inline>
     document.addEventListener("contextmenu", (event) => {
       if (event.target.closest(".protected-preview")) event.preventDefault();
