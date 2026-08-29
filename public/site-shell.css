@@ -1,0 +1,101 @@
+/* Shared site chrome for stamp moke. Keep the global header visually identical across all page templates. */
+.header {
+  height: 86px !important;
+  min-height: 86px !important;
+  background: rgba(255,255,255,.96) !important;
+  border-bottom: 1px solid #e4e3df !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  padding: 0 5vw !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 20 !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.header .brand {
+  text-decoration: none !important;
+  color: inherit !important;
+  flex: 0 0 auto;
+}
+
+.header .brand-title {
+  font-size: 21px !important;
+  font-weight: 900 !important;
+  letter-spacing: .1em !important;
+  line-height: 1 !important;
+}
+
+.header .brand-sub {
+  margin-top: 7px !important;
+  color: #777 !important;
+  font-size: 11px !important;
+  letter-spacing: .05em !important;
+  line-height: 1.2 !important;
+}
+
+.header .header-actions,
+.header .actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  min-width: 0;
+}
+
+.header .header-link,
+.header .back,
+.header .back-link {
+  text-decoration: none !important;
+  border: 1px solid #d9d8d4 !important;
+  background: #fff !important;
+  color: inherit !important;
+  padding: 13px 22px !important;
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+.header .header-shop-link {
+  background: #161616 !important;
+  border-color: #161616 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 640px) {
+  .header {
+    height: 72px !important;
+    min-height: 72px !important;
+    padding: 0 20px !important;
+    gap: 10px !important;
+  }
+
+  .header .brand-title {
+    font-size: 17px !important;
+  }
+
+  .header .brand-sub {
+    margin-top: 5px !important;
+    font-size: 9px !important;
+  }
+
+  .header .header-actions,
+  .header .actions {
+    gap: 6px !important;
+  }
+
+  .header .header-link,
+  .header .back,
+  .header .back-link {
+    padding: 10px 14px !important;
+    font-size: 11px !important;
+  }
+
+  .header .header-shop-link {
+    padding-inline: 12px !important;
+  }
+}
