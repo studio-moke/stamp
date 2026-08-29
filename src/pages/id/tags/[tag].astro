@@ -2,8 +2,11 @@
 import TagPage from "../../tags/[tag].astro";
 import stickers from "../../../data/stickers.json";
 import { getStickerPhrases, getTagIdsForPhrases, tagDefinitions } from "../../../lib/sticker-tags";
-function count(tagId){ return stickers.filter((sticker)=>getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tagId)).length; }
-export function getStaticPaths(){ return tagDefinitions.filter((tag)=>count(tag.id)>=2).map((tag)=>({params:{tag:tag.slugs.id},props:{tag}})); }
+export function getStaticPaths(){
+  return tagDefinitions
+    .filter((tag)=>stickers.filter((sticker)=>getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length>=2)
+    .map((tag)=>({params:{tag:tag.slugs.id},props:{tag}}));
+}
 const { tag } = Astro.props;
 ---
 <TagPage tag={tag} locale="id" />
