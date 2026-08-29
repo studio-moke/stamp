@@ -10,6 +10,9 @@ on:
     branches:
       - main
     paths:
+      - "api/line-author.js"
+      - "vercel.json"
+      - "scripts/fetch-stickers-via-tokyo.mjs"
       - "scripts/fetch-stickers.mjs"
       - "scripts/discover-new-stickers-by-id.mjs"
       - "scripts/discover-new-stickers.mjs"
@@ -58,7 +61,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr tesseract-ocr-jpn
 
-      - name: Discover new stickers by product ID
+      # GitHub hosted runners are in the US. LINE STORE filters the moke creator
+      # catalog by access region, so the primary catalog is fetched through a
+      # Vercel Function pinned to Tokyo (hnd1).
+      - name: Discover stickers through Tokyo catalog
+        id: tokyo_catalog
+        continue-on-error: true
+        env:
+          LINE_TOKYO_CATALOG_URL: "https://stamp-moke.jp/api/line-author"
+          LINE_TOKYO_EXPECTED_REGION: "hnd1"
+          LINE_TOKYO_MIN_CATALOG_COUNT: "37"
+          LINE_TOKYO_RETRIES: "12"
+          LINE_TOKYO_RETRY_DELAY_MS: "10000"
+        run: node scripts/fetch-stickers-via-tokyo.mjs
+
+      # Keep the ID scanner only as a fallback. It is intentionally not the
+      # normal path because product IDs are global and sparse.
+      - name: Discover new stickers by product ID fallback
+        if: steps.tokyo_catalog.outcome != 'success'
         env:
           STICKER_ID_SCAN_LIMIT: "5000"
           STICKER_ID_SCAN_CONCURRENCY: "8"
