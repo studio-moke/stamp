@@ -3,27 +3,24 @@ import stickers from "../../data/stickers.json";
 import SeoHead from "../../components/SeoHead.astro";
 import Analytics from "../../components/Analytics.astro";
 import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
-import { localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
+import { LOCALES, localeInfo, localizedPath, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeDescription, makeTitle } from "../../lib/seo";
 import { localizedStickerTitle } from "../../lib/sticker-content";
 import { getStickerPhrases, getTagIdsForPhrases, getTagPath, tagDefinitions, type TagDefinition } from "../../lib/sticker-tags";
 
-function matchingStickers(tagId: string) {
-  return stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tagId));
-}
-
 export function getStaticPaths() {
   return tagDefinitions
-    .filter((tag) => matchingStickers(tag.id).length >= 2)
+    .filter((tag) => stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id)).length >= 2)
     .map((tag) => ({ params: { tag: tag.slugs.ja }, props: { tag, locale: "ja" } }));
 }
 
 const { tag, locale: localeProp = "ja" } = Astro.props as { tag: TagDefinition; locale?: string };
 const locale = normalizeLocale(localeProp);
-const items = matchingStickers(tag.id);
+const items = stickers.filter((sticker) => getTagIdsForPhrases(getStickerPhrases(sticker.id)).includes(tag.id));
 const label = tag.labels[locale];
 const canonicalPath = `/tags/${tag.slugs[locale]}`;
 const canonical = absoluteUrl(getTagPath(locale, tag));
+const localePaths = Object.fromEntries(LOCALES.map((item) => [item, getTagPath(item, tag)]));
 const titleLabel = locale === "ja" ? `${label}のLINEスタンプ` : locale === "en" ? `${label} LINE Stickers` : locale === "zh-tw" ? `${label} LINE貼圖` : locale === "th" ? `สติกเกอร์ LINE: ${label}` : `Stiker LINE: ${label}`;
 const pageTitle = makeTitle([titleLabel, "stamp moke"]);
 const description = makeDescription(tag.description[locale]);
@@ -41,7 +38,7 @@ const ui = {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
-  <SeoHead title={pageTitle} description={description} canonical={canonical} locale={locale} path={canonicalPath} />
+  <SeoHead title={pageTitle} description={description} canonical={canonical} locale={locale} path={canonicalPath} alternatePaths={localePaths} />
   <Analytics />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:titleLabel,description,url:canonical,mainEntity:{"@type":"ItemList",numberOfItems:items.length,itemListElement:items.map((item,index)=>({"@type":"ListItem",position:index+1,url:absoluteUrl(localizedPath(locale,`/stickers/${item.id}`)),name:localizedStickerTitle(item,locale)}))}})} />
   <style>
@@ -49,7 +46,7 @@ const ui = {
   </style>
 </head>
 <body>
-<header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} path={`/tags/${tag.slugs.ja}`} /><a class="back" href={localizedPath(locale,"/")}>{ui.back}</a></div></header>
+<header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} paths={localePaths} /><a class="back" href={localizedPath(locale,"/")}>{ui.back}</a></div></header>
 <main class="main">
   <div class="eyebrow">{ui.eyebrow}</div>
   <h1 class="title">{titleLabel}</h1>
