@@ -24,7 +24,7 @@ const title = "フリー素材 管理 | stamp moke";
       <div class="field"><label>今回の主な用途（任意）</label><select id="platformHint"><option value="">AIに任せる</option><option value="pokekara">ポケカラ</option><option value="x">X</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="line">LINE</option><option value="youtube">YouTube</option></select></div>
       <div class="field"><label>透かし文字</label><input id="watermark" value="stamp-moke.jp" /></div>
     </div>
-    <p class="notice">原本も公開用プレビューもPrivate Blobに保存し、公開ページではAPI経由で透かし入り画像だけを配信します。管理トークンはこのタブ内だけに保存します。</p>
+    <p class="notice">原本と透かし入りプレビューはCloudflare R2へ非公開保存します。公開ページではAPI経由で透かし画像だけを表示し、原本は利用条件同意後のダウンロード時だけ配信します。</p>
   </section>
 
   <section class="panel">
@@ -36,8 +36,6 @@ const title = "フリー素材 管理 | stamp moke";
 </main>
 
 <script>
-  import { upload } from "@vercel/blob/client";
-
   const $ = (id) => document.getElementById(id);
   const filesInput = $("files"); const drop = $("drop"); const queueEl = $("queue"); const run = $("run"); const clear = $("clear"); const progress = $("progress"); const queueNote = $("queueNote");
   const tokenEl = $("adminToken"); const characterEl = $("characterHint"); const platformEl = $("platformHint"); const watermarkEl = $("watermark");
@@ -56,7 +54,7 @@ const title = "フリー素材 管理 | stamp moke";
   async function imageInfo(file){const bitmap=await createImageBitmap(file);const out={width:bitmap.width,height:bitmap.height};bitmap.close();return out}
   async function addFiles(files){try{for(const file of files){if(!file.type.startsWith("image/"))continue;const info=await imageInfo(file);queue.push({file,localUrl:URL.createObjectURL(file),...info,state:"待機中",title:""})}render();if(queue.length)setProgress(`${queue.length}枚を読み込みました。「AI解析して${queue.length}枚を一括公開」を押してください。`);else setProgress('対応画像を読み込めませんでした。PNG/JPEG/WebPを選んでください。',true)}catch(e){console.error(e);setProgress(`画像読込エラー：${e?.message||String(e)}`,true)}}
   drop.addEventListener("click",()=>filesInput.click()); filesInput.addEventListener("change",()=>addFiles(filesInput.files));
-  drop.addEventListener("dragover",e=>{e.preventDefault()}); drop.addEventListener("drop",e=>{e.preventDefault();addFiles(e.dataTransfer.files)});
+  drop.addEventListener("dragover",e=>e.preventDefault()); drop.addEventListener("drop",e=>{e.preventDefault();addFiles(e.dataTransfer.files)});
   clear.addEventListener("click",()=>{queue.forEach(q=>URL.revokeObjectURL(q.localUrl));queue=[];render();progress.className='progress';progress.textContent=''});
 
   async function makePreview(file,text){
@@ -70,38 +68,38 @@ const title = "フリー素材 管理 | stamp moke";
     ctx.restore(); return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('プレビュー生成に失敗しました')),"image/png",.92));
   }
   async function api(action,body,token){const r=await fetch(`/api/free-assets?action=${encodeURIComponent(action)}`,{method:"POST",headers:{"Content-Type":"application/json","x-admin-token":token},body:JSON.stringify(body)});const text=await r.text();let j={};try{j=JSON.parse(text)}catch{throw new Error(text||`HTTP ${r.status}`)}if(!r.ok)throw new Error(j.error||`HTTP ${r.status}`);return j}
+  async function uploadR2(role,blob,filename,adminToken){
+    const signed=await api("upload-url",{role,filename},adminToken);
+    const r=await fetch(signed.uploadUrl,{method:"PUT",headers:{"Content-Type":blob.type||"application/octet-stream"},body:blob});
+    if(!r.ok)throw new Error(`R2アップロード失敗 (${r.status})`);
+    return signed.key;
+  }
 
   run.addEventListener("click",async()=>{
     const adminToken=tokenEl.value.trim();
     if(!adminToken){setProgress("管理トークンを入力してください。",true);return}
     if(!queue.length){setProgress("画像を1枚以上選択してください。",true);return}
     run.disabled=true;clear.disabled=true;
-    try{
-      setProgress("接続設定を確認中…");
-      await api("health",{},adminToken);
-      setProgress("接続設定OK。アップロードを開始します…");
-    }catch(e){
-      setProgress(`設定エラー：${e?.message||String(e)}`,true);run.disabled=false;clear.disabled=false;return;
-    }
+    try{setProgress("R2 / OpenAI 接続設定を確認中…");await api("health",{},adminToken);setProgress("接続設定OK。R2へアップロードを開始します…")}catch(e){setProgress(`設定エラー：${e?.message||String(e)}`,true);run.disabled=false;clear.disabled=false;return}
     let done=0;
     for(const q of queue){
       if(q.state==="公開済み"){done++;continue}
       try{
         setProgress(`${done+1}/${queue.length}：${q.file.name} の透かしを生成中…`);q.state="透かし生成中";render();run.disabled=true;
         const previewBlob=await makePreview(q.file,watermarkEl.value.trim()||"stamp-moke.jp");
-        setProgress(`${done+1}/${queue.length}：AI解析用プレビューを保存中…`);q.state="プレビューアップ中";render();run.disabled=true;
-        const preview=await upload(`free-assets/previews/${Date.now()}-${q.file.name.replace(/\.[^.]+$/,"")}.png`,previewBlob,{access:"private",handleUploadUrl:"/api/free-upload",clientPayload:JSON.stringify({adminToken,role:"preview"})});
+        setProgress(`${done+1}/${queue.length}：透かしプレビューをR2へ保存中…`);q.state="プレビュー保存中";render();run.disabled=true;
+        const previewKey=await uploadR2("preview",previewBlob,`${q.file.name.replace(/\.[^.]+$/,"")}.png`,adminToken);
         setProgress(`${done+1}/${queue.length}：AIが画像を解析中…`);q.state="AI解析中";render();run.disabled=true;
-        const analyzed=await api("analyze",{filename:q.file.name,width:q.width,height:q.height,previewUrl:preview.url,characterHint:characterEl.value.trim(),platformHint:platformEl.value},adminToken);
+        const analyzed=await api("analyze",{filename:q.file.name,width:q.width,height:q.height,previewKey,characterHint:characterEl.value.trim(),platformHint:platformEl.value},adminToken);
         q.title=analyzed.metadata?.locales?.ja?.title||"";
-        setProgress(`${done+1}/${queue.length}：原本を非公開保存中…`);q.state="原本アップ中";render();run.disabled=true;
-        const original=await upload(`free-assets/originals/${Date.now()}-${q.file.name}`,q.file,{access:"private",handleUploadUrl:"/api/free-upload",multipart:q.file.size>5*1024*1024,clientPayload:JSON.stringify({adminToken,role:"original"})});
+        setProgress(`${done+1}/${queue.length}：原本をR2へ非公開保存中…`);q.state="原本保存中";render();run.disabled=true;
+        const originalKey=await uploadR2("original",q.file,q.file.name,adminToken);
         setProgress(`${done+1}/${queue.length}：公開データを登録中…`);q.state="公開中";render();run.disabled=true;
-        await api("publish",{metadata:analyzed.metadata,originalUrl:original.url,previewUrl:preview.url,width:q.width,height:q.height,contentType:q.file.type,downloadName:q.file.name,characterHint:characterEl.value.trim()},adminToken);
+        await api("publish",{metadata:analyzed.metadata,originalKey,previewKey,width:q.width,height:q.height,contentType:q.file.type,downloadName:q.file.name,characterHint:characterEl.value.trim()},adminToken);
         q.state="公開済み";done++;render();run.disabled=true;
       }catch(e){console.error(e);q.state="エラー";q.title=e?.message||String(e);render();setProgress(`エラー：${q.title}`,true);run.disabled=false;clear.disabled=false;return}
     }
-    setProgress(`${done}枚すべて公開できました。`);run.disabled=false;clear.disabled=false;
+    setProgress(`${done}枚すべてR2へ保存・公開できました。`);run.disabled=false;clear.disabled=false;
   });
   render();
 </script>
