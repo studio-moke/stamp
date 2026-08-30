@@ -8,6 +8,20 @@ function adminTokenValid(value) {
   return Boolean(expected && value && value === expected);
 }
 
+function toWebRequest(req) {
+  const protocol = req.headers["x-forwarded-proto"] || "https";
+  const host = req.headers.host || "stamp-moke.jp";
+  const headers = new Headers();
+  for (const [key, value] of Object.entries(req.headers || {})) {
+    if (Array.isArray(value)) value.forEach((v) => headers.append(key, v));
+    else if (value != null) headers.set(key, String(value));
+  }
+  return new Request(`${protocol}://${host}${req.url || "/api/free-upload"}`, {
+    method: req.method || "POST",
+    headers,
+  });
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
@@ -15,10 +29,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const body = req.body;
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
     const response = await handleUpload({
       body,
-      request: req,
+      request: toWebRequest(req),
       onBeforeGenerateToken: async (pathname, clientPayload) => {
         let payload = {};
         try {
