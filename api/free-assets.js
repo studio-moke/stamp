@@ -104,8 +104,19 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST") {
-      if (!isAdmin(req)) return json(res, 401, { error: "Unauthorized" });
+      if (!isAdmin(req)) return json(res, 401, { error: "管理トークンが一致しません。FREE_ADMIN_TOKEN を確認してください。" });
       const action = String(req.query.action || req.body?.action || "");
+      if (action === "health") {
+        const checks = {
+          adminToken: true,
+          blobReadWriteToken: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+          blobStoreId: Boolean(process.env.BLOB_STORE_ID),
+          openaiApiKey: Boolean(process.env.OPENAI_API_KEY),
+        };
+        const missing = Object.entries(checks).filter(([, ok]) => !ok).map(([name]) => name);
+        if (missing.length) return json(res, 500, { error: `環境設定不足: ${missing.join(", ")}`, checks });
+        return json(res, 200, { ok: true, checks });
+      }
       if (action === "analyze") { const ai = await analyzeWithOpenAI(req.body || {}); return json(res, 200, { metadata: normalizeMetadata(ai, req.body || {}) }); }
       if (action === "publish") {
         const body = req.body || {}; const meta = normalizeMetadata(body.metadata || {}, body); if (!body.originalUrl || !body.previewUrl) return json(res, 400, { error: "originalUrl and previewUrl are required" });
