@@ -11,6 +11,7 @@ const alternates = alternatePaths
 const xDefault = alternatePaths ? absoluteUrl(alternatePaths.ja || path) : absoluteUrl(path);
 ---
 <meta name="description" content={description} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="canonical" href={url} />
 {alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
 <link rel="alternate" hreflang="x-default" href={xDefault} />
