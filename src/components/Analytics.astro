@@ -3,125 +3,40 @@ import stickers from "../data/stickers.json";
 import { normalizeLocale, type Locale } from "../lib/i18n";
 import { getCategory, getCategorySlug } from "../lib/stickers";
 import { getStickerPhrases, getTagById, getTagIdsForSticker, getTagPath } from "../lib/sticker-search-tags";
+import { r2GetJson } from "../../api/_r2.js";
 
 const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || "G-QSXPPLWSB7";
 const enabled = /^G-[A-Z0-9]+$/i.test(measurementId);
-
 const parts = Astro.url.pathname.split("/").filter(Boolean);
 let locale: Locale = "ja";
-if (["en", "zh-tw", "th", "id"].includes(parts[0])) {
-  locale = normalizeLocale(parts.shift());
-}
-
+if (["en", "zh-tw", "th", "id"].includes(parts[0])) locale = normalizeLocale(parts.shift());
 const stickerId = parts[0] === "stickers" && /^\d+$/.test(parts[1] || "") ? parts[1] : null;
 const sticker = stickerId ? stickers.find((item) => String(item.id) === stickerId) : null;
 
 const copy = {
-  ja: { label:"WORDS & USES", title:"このスタンプの言葉・用途", lead:"画像内の文字、作品タイトル、説明文をもとに、検索に役立つ代表的なセリフ・用途・テーマを整理しています。", tags:"用途・テーマから探す", all:"言葉・用途の一覧を見る →" },
-  en: { label:"WORDS & USES", title:"Phrases, uses & themes", lead:"Representative phrases, uses and themes inferred from the sticker artwork, title and description.", tags:"Browse by use or theme", all:"Browse all phrases & uses →" },
-  "zh-tw": { label:"語句與用途", title:"這組貼圖的語句與用途", lead:"根據貼圖文字、作品標題與說明，整理有助於搜尋的代表性語句、用途與主題。", tags:"依用途或主題搜尋", all:"查看所有語句與用途 →" },
-  th: { label:"คำและการใช้งาน", title:"คำ การใช้งาน และธีมของชุดนี้", lead:"สรุปคำที่สำคัญ การใช้งาน และธีมจากข้อความในภาพ ชื่อผลงาน และคำอธิบาย เพื่อช่วยให้ค้นหาได้ง่ายขึ้น", tags:"ค้นหาตามการใช้งานหรือธีม", all:"ดูคำและการใช้งานทั้งหมด →" },
-  id: { label:"FRASA & KEGUNAAN", title:"Frasa, kegunaan & tema", lead:"Frasa, kegunaan, dan tema utama dirangkum dari teks gambar, judul karya, dan deskripsi agar lebih mudah ditemukan.", tags:"Cari berdasarkan kegunaan atau tema", all:"Lihat semua frasa & kegunaan →" },
+  ja:{label:"WORDS & USES",title:"このスタンプの言葉・用途",lead:"画像内の文字、作品タイトル、説明文をもとに、検索に役立つ代表的なセリフ・用途・テーマを整理しています。",tags:"用途・テーマから探す",all:"言葉・用途の一覧を見る →"},
+  en:{label:"WORDS & USES",title:"Phrases, uses & themes",lead:"Representative phrases, uses and themes inferred from the sticker artwork, title and description.",tags:"Browse by use or theme",all:"Browse all phrases & uses →"},
+  "zh-tw":{label:"語句與用途",title:"這組貼圖的語句與用途",lead:"根據貼圖文字、作品標題與說明，整理有助於搜尋的代表性語句、用途與主題。",tags:"依用途或主題搜尋",all:"查看所有語句與用途 →"},
+  th:{label:"คำและการใช้งาน",title:"คำ การใช้งาน และธีมของชุดนี้",lead:"สรุปคำที่สำคัญ การใช้งาน และธีมจากข้อความในภาพ ชื่อผลงาน และคำอธิบาย เพื่อช่วยให้ค้นหาได้ง่ายขึ้น",tags:"ค้นหาตามการใช้งานหรือธีม",all:"ดูคำและการใช้งานทั้งหมด →"},
+  id:{label:"FRASA & KEGUNAAN",title:"Frasa, kegunaan & tema",lead:"Frasa, kegunaan, dan tema utama dirangkum dari teks gambar, judul karya, dan deskripsi agar lebih mudah ditemukan.",tags:"Cari berdasarkan kegunaan atau tema",all:"Lihat semua frasa & kegunaan →"},
 }[locale];
-
-const navCopy = {
-  ja: { free:"フリー素材集" },
-  en: { free:"Free assets" },
-  "zh-tw": { free:"免費素材" },
-  th: { free:"素材ฟรี" },
-  id: { free:"Aset gratis" },
+const navCopy={ja:{free:"フリー素材集"},en:{free:"Free assets"},"zh-tw":{free:"免費素材"},th:{free:"素材ฟรี"},id:{free:"Aset gratis"}}[locale];
+const freeHref=locale==="ja"?"/free/":`/${locale}/free/`;
+const seoCopy={
+ ja:{label:"ABOUT THIS STICKER",title:"このLINEスタンプについて",target:"こんな人におすすめ",concept:"コンセプト",uses:"こんな場面で使えます",keywords:"関連キーワード"},
+ en:{label:"ABOUT THIS STICKER",title:"About this LINE sticker set",target:"Recommended for",concept:"Concept",uses:"When to use it",keywords:"Related searches"},
+ "zh-tw":{label:"ABOUT THIS STICKER",title:"關於這組LINE貼圖",target:"推薦給這些人",concept:"貼圖概念",uses:"適合使用的情境",keywords:"相關搜尋詞"},
+ th:{label:"ABOUT THIS STICKER",title:"เกี่ยวกับสติกเกอร์ LINE ชุดนี้",target:"เหมาะสำหรับ",concept:"คอนเซปต์",uses:"สถานการณ์ที่เหมาะ",keywords:"คำค้นที่เกี่ยวข้อง"},
+ id:{label:"ABOUT THIS STICKER",title:"Tentang set stiker LINE ini",target:"Cocok untuk",concept:"Konsep",uses:"Situasi penggunaan",keywords:"Kata kunci terkait"}
 }[locale];
-const freeHref = locale === "ja" ? "/free/" : `/${locale}/free/`;
-
-let smartTagPayload = null;
-if (sticker) {
-  const phrases = getStickerPhrases(sticker.id);
-  const tags = getTagIdsForSticker(sticker)
-    .map((id) => getTagById(id))
-    .filter(Boolean)
-    .map((tag) => ({ label: tag.labels[locale], href: getTagPath(locale, tag) }));
-
-  if (tags.length === 0) {
-    const category = getCategory(sticker);
-    const categorySlug = getCategorySlug(category);
-    if (categorySlug) tags.push({ label: category, href: `/categories/${categorySlug}/1` });
-  }
-
-  smartTagPayload = {
-    phrases,
-    tags,
-    copy,
-    allHref: locale === "ja" ? "/tags/" : `/${locale}/tags/`,
-  };
-}
+let smartTagPayload=null;
+if(sticker){const phrases=getStickerPhrases(sticker.id);const tags=getTagIdsForSticker(sticker).map(id=>getTagById(id)).filter(Boolean).map(tag=>({label:tag.labels[locale],href:getTagPath(locale,tag)}));if(tags.length===0){const category=getCategory(sticker),categorySlug=getCategorySlug(category);if(categorySlug)tags.push({label:category,href:`/categories/${categorySlug}/1`})}smartTagPayload={phrases,tags,copy,allHref:locale==="ja"?"/tags/":`/${locale}/tags/`}}
+let stickerSeoPayload=null;
+if(stickerId){try{const record=await r2GetJson(`sticker-seo/${stickerId}.json`,null);const content=record?.locales?.[locale]||record?.locales?.ja;if(content)stickerSeoPayload={content,copy:seoCopy}}catch(error){console.warn("sticker SEO section unavailable",error)}}
 ---
-
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/site-shell.css" />
-
-<script is:inline define:vars={{ freeHref, navCopy }}>
-  document.addEventListener("DOMContentLoaded", () => {
-    const header = document.querySelector(".header");
-    if (!header || header.querySelector('[data-global-free-link]')) return;
-    let actions = header.querySelector(".header-actions, .actions");
-    if (!actions) {
-      actions = document.createElement("div");
-      actions.className = "header-actions";
-      header.appendChild(actions);
-    }
-    const link = document.createElement("a");
-    link.href = freeHref;
-    link.textContent = navCopy.free;
-    link.className = "header-link global-free-link";
-    link.dataset.globalFreeLink = "1";
-    actions.insertBefore(link, actions.firstChild);
-  });
-</script>
-
-{smartTagPayload && (
-  <script is:inline define:vars={{ smartTagPayload }}>
-    document.addEventListener("DOMContentLoaded", () => {
-      const payload = smartTagPayload;
-      if (!payload || (!payload.phrases.length && !payload.tags.length)) return;
-      const infoGrid = document.querySelector(".info-grid");
-      if (!infoGrid) return;
-      let section = document.querySelector(".phrase-section");
-      if (!section) {
-        section = document.createElement("section");
-        section.className = "phrase-section";
-        section.setAttribute("aria-labelledby", "sticker-phrases");
-        infoGrid.insertAdjacentElement("afterend", section);
-      }
-      section.replaceChildren();
-      const label = document.createElement("div"); label.className = "sub-label"; label.textContent = payload.copy.label; section.appendChild(label);
-      const title = document.createElement("h2"); title.id = "sticker-phrases"; title.className = "sub-title"; title.textContent = payload.copy.title; section.appendChild(title);
-      const lead = document.createElement("p"); lead.className = "phrase-lead"; lead.textContent = payload.copy.lead; section.appendChild(lead);
-      if (payload.phrases.length) {
-        const phraseList = document.createElement("ul"); phraseList.className = "phrase-list";
-        for (const phrase of payload.phrases) { const item = document.createElement("li"); item.className = "phrase-chip"; item.lang = "ja"; item.textContent = phrase; phraseList.appendChild(item); }
-        section.appendChild(phraseList);
-      }
-      if (payload.tags.length) {
-        const tagBlock = document.createElement("div"); tagBlock.className = "tag-block";
-        const tagLabel = document.createElement("p"); tagLabel.className = "tag-label"; tagLabel.textContent = payload.copy.tags; tagBlock.appendChild(tagLabel);
-        const tagList = document.createElement("div"); tagList.className = "tag-list";
-        for (const tag of payload.tags) { const link = document.createElement("a"); link.className = "tag-chip"; link.href = tag.href; link.textContent = tag.label; tagList.appendChild(link); }
-        tagBlock.appendChild(tagList);
-        const all = document.createElement("a"); all.className = "tag-all"; all.href = payload.allHref; all.textContent = payload.copy.all; tagBlock.appendChild(all);
-        section.appendChild(tagBlock);
-      }
-    });
-  </script>
-)}
-
-{enabled && (
-  <>
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script>
-    <script is:inline define:vars={{ measurementId }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', measurementId);
-    </script>
-  </>
-)}
+<script is:inline define:vars={{ freeHref, navCopy }}>document.addEventListener("DOMContentLoaded",()=>{const header=document.querySelector(".header");if(!header||header.querySelector('[data-global-free-link]'))return;let actions=header.querySelector(".header-actions, .actions");if(!actions){actions=document.createElement("div");actions.className="header-actions";header.appendChild(actions)}const link=document.createElement("a");link.href=freeHref;link.textContent=navCopy.free;link.className="header-link global-free-link";link.dataset.globalFreeLink="1";actions.insertBefore(link,actions.firstChild)});</script>
+{smartTagPayload && <script is:inline define:vars={{ smartTagPayload }}>document.addEventListener("DOMContentLoaded",()=>{const p=smartTagPayload;if(!p||(!p.phrases.length&&!p.tags.length))return;const info=document.querySelector(".info-grid");if(!info)return;let section=document.querySelector(".phrase-section");if(!section){section=document.createElement("section");section.className="phrase-section";section.setAttribute("aria-labelledby","sticker-phrases");info.insertAdjacentElement("afterend",section)}section.replaceChildren();const label=document.createElement("div");label.className="sub-label";label.textContent=p.copy.label;section.appendChild(label);const title=document.createElement("h2");title.id="sticker-phrases";title.className="sub-title";title.textContent=p.copy.title;section.appendChild(title);const lead=document.createElement("p");lead.className="phrase-lead";lead.textContent=p.copy.lead;section.appendChild(lead);if(p.phrases.length){const ul=document.createElement("ul");ul.className="phrase-list";for(const phrase of p.phrases){const li=document.createElement("li");li.className="phrase-chip";li.lang="ja";li.textContent=phrase;ul.appendChild(li)}section.appendChild(ul)}if(p.tags.length){const block=document.createElement("div");block.className="tag-block";const tl=document.createElement("p");tl.className="tag-label";tl.textContent=p.copy.tags;block.appendChild(tl);const tags=document.createElement("div");tags.className="tag-list";for(const tag of p.tags){const a=document.createElement("a");a.className="tag-chip";a.href=tag.href;a.textContent=tag.label;tags.appendChild(a)}block.appendChild(tags);const all=document.createElement("a");all.className="tag-all";all.href=p.allHref;all.textContent=p.copy.all;block.appendChild(all);section.appendChild(block)}});</script>}
+{stickerSeoPayload && <script is:inline define:vars={{ stickerSeoPayload }}>document.addEventListener("DOMContentLoaded",()=>{const p=stickerSeoPayload;if(!p?.content)return;const anchor=document.querySelector(".phrase-section")||document.querySelector(".info-grid");if(!anchor)return;const c=p.content,t=p.copy,section=document.createElement("section");section.className="sticker-seo-section";const text=(tag,cls,value)=>{if(!value)return null;const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=value;return el};section.append(text("div","seo-eyebrow",t.label));section.append(text("h2","seo-title",t.title));section.append(text("p","seo-overview",c.overview));const g=document.createElement("div");g.className="seo-info-grid";for(const [label,value] of [[t.target,c.target],[t.concept,c.concept]]){if(!value)continue;const box=document.createElement("div");box.className="seo-box";box.append(text("h3","seo-subtitle",label));box.append(text("p","seo-text",value));g.appendChild(box)}if(g.children.length)section.appendChild(g);if((c.uses||[]).length){section.append(text("h3","seo-subtitle",t.uses));if(c.usageIntro)section.append(text("p","seo-text",c.usageIntro));const ul=document.createElement("ul");ul.className="seo-use-list";for(const v of c.uses){const li=document.createElement("li");li.textContent=v;ul.appendChild(li)}section.appendChild(ul)}if((c.keywords||[]).length){section.append(text("h3","seo-subtitle",t.keywords));const chips=document.createElement("div");chips.className="seo-keywords";for(const v of c.keywords.slice(0,30)){const span=document.createElement("span");span.textContent=v;chips.appendChild(span)}section.appendChild(chips)}anchor.insertAdjacentElement("afterend",section)});</script>}
+{enabled && <><script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script><script is:inline define:vars={{ measurementId }}>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',measurementId);</script></>}
