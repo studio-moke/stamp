@@ -2,6 +2,7 @@
 import stickers from "../../data/stickers.json";
 import { CATEGORY_DEFINITIONS, getCategory, SITE_URL } from "../../lib/stickers";
 import Analytics from "../../components/Analytics.astro";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
 
 const counts = new Map(CATEGORY_DEFINITIONS.map((category) => [category.name, 0]));
 for (const sticker of stickers) {
@@ -11,6 +12,7 @@ for (const sticker of stickers) {
 
 const pageTitle = "LINEスタンプのカテゴリー一覧 | stamp moke";
 const description = "猫・犬などの動物、かわいい、面白い、仕事、方言など、stamp mokeのLINEスタンプをカテゴリー別に探せます。";
+const languagePaths = { ja: "/categories/", en: "/en/", "zh-tw": "/zh-tw/", th: "/th/", id: "/id/" };
 ---
 
 <!doctype html>
@@ -35,6 +37,7 @@ const description = "猫・犬などの動物、かわいい、面白い、仕�
         <div class="brand-sub">LINEスタンプ専門メディア</div>
       </a>
       <div class="header-actions">
+        <LanguageSwitcher locale="ja" path="/categories/" paths={languagePaths} />
         <a class="header-link" href="/#stickers">スタンプを見る ↓</a>
       </div>
     </header>
