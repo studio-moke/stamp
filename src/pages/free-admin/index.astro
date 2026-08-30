@@ -76,6 +76,13 @@ const title = "フリー素材 管理 | stamp moke";
     if(!adminToken){setProgress("管理トークンを入力してください。",true);return}
     if(!queue.length){setProgress("画像を1枚以上選択してください。",true);return}
     run.disabled=true;clear.disabled=true;
+    try{
+      setProgress("接続設定を確認中…");
+      await api("health",{},adminToken);
+      setProgress("接続設定OK。アップロードを開始します…");
+    }catch(e){
+      setProgress(`設定エラー：${e?.message||String(e)}`,true);run.disabled=false;clear.disabled=false;return;
+    }
     let done=0;
     for(const q of queue){
       if(q.state==="公開済み"){done++;continue}
