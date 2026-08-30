@@ -7,11 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/inject-seo-content.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@vercel/blob": "^2.0.0",
     "astro": "^7.2.6",
     "qrcode": "^1.5.4"
   },
