@@ -4,6 +4,24 @@
     "api/line-author.js": {
       "regions": ["hnd1"],
       "maxDuration": 30
+    },
+    "api/free-assets.js": {
+      "regions": ["hnd1"],
+      "maxDuration": 60
+    },
+    "api/free-upload.js": {
+      "regions": ["hnd1"],
+      "maxDuration": 60
+    },
+    "api/free-page.js": {
+      "regions": ["hnd1"],
+      "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/free/:slug",
+      "destination": "/api/free-page?slug=:slug"
+    }
+  ]
 }
