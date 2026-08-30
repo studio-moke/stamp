@@ -20,6 +20,6 @@ export default async function handler(req,res){try{
  const id=String(req.query.id||req.body?.id||"").replace(/[^0-9]/g,"");if(!id)return json(res,400,{error:"Sticker ID is required"});
  if(req.method==="GET"){const record=await r2GetJson(key(id),null);if(!record)return json(res,404,{error:"Not generated"});res.setHeader("Cache-Control","public, s-maxage=300, stale-while-revalidate=1800");return json(res,200,{record})}
  if(req.method!=="POST")return json(res,405,{error:"Method not allowed"});if(!isAdmin(req))return json(res,401,{error:"管理トークンが一致しません。"});if(!process.env.OPENAI_API_KEY)return json(res,500,{error:"OPENAI_API_KEY is not configured"});
- const force=Boolean(req.body?.force),existing=await r2GetJson(key(id),null);if(existing&&!force)return json(res,200,{record:existing,skipped:true});
+ const force=Boolean(req.body?.force),existing=await r2GetJson(key(id),null);if(existing?.version>=2&&!force)return json(res,200,{record:existing,skipped:true});
  const record=await generate({...req.body,id});await r2PutJson(key(id),record);return json(res,200,{record,skipped:false});
 }catch(error){console.error("sticker-seo",error);return json(res,500,{error:error instanceof Error?error.message:String(error)})}}
