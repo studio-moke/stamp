@@ -17,42 +17,21 @@ const stickerId = parts[0] === "stickers" && /^\d+$/.test(parts[1] || "") ? part
 const sticker = stickerId ? stickers.find((item) => String(item.id) === stickerId) : null;
 
 const copy = {
-  ja: {
-    label: "WORDS & USES",
-    title: "このスタンプの言葉・用途",
-    lead: "画像内の文字、作品タイトル、説明文をもとに、検索に役立つ代表的なセリフ・用途・テーマを整理しています。",
-    tags: "用途・テーマから探す",
-    all: "言葉・用途の一覧を見る →",
-  },
-  en: {
-    label: "WORDS & USES",
-    title: "Phrases, uses & themes",
-    lead: "Representative phrases, uses and themes inferred from the sticker artwork, title and description.",
-    tags: "Browse by use or theme",
-    all: "Browse all phrases & uses →",
-  },
-  "zh-tw": {
-    label: "語句與用途",
-    title: "這組貼圖的語句與用途",
-    lead: "根據貼圖文字、作品標題與說明，整理有助於搜尋的代表性語句、用途與主題。",
-    tags: "依用途或主題搜尋",
-    all: "查看所有語句與用途 →",
-  },
-  th: {
-    label: "คำและการใช้งาน",
-    title: "คำ การใช้งาน และธีมของชุดนี้",
-    lead: "สรุปคำที่สำคัญ การใช้งาน และธีมจากข้อความในภาพ ชื่อผลงาน และคำอธิบาย เพื่อช่วยให้ค้นหาได้ง่ายขึ้น",
-    tags: "ค้นหาตามการใช้งานหรือธีม",
-    all: "ดูคำและการใช้งานทั้งหมด →",
-  },
-  id: {
-    label: "FRASA & KEGUNAAN",
-    title: "Frasa, kegunaan & tema",
-    lead: "Frasa, kegunaan, dan tema utama dirangkum dari teks gambar, judul karya, dan deskripsi agar lebih mudah ditemukan.",
-    tags: "Cari berdasarkan kegunaan atau tema",
-    all: "Lihat semua frasa & kegunaan →",
-  },
+  ja: { label:"WORDS & USES", title:"このスタンプの言葉・用途", lead:"画像内の文字、作品タイトル、説明文をもとに、検索に役立つ代表的なセリフ・用途・テーマを整理しています。", tags:"用途・テーマから探す", all:"言葉・用途の一覧を見る →" },
+  en: { label:"WORDS & USES", title:"Phrases, uses & themes", lead:"Representative phrases, uses and themes inferred from the sticker artwork, title and description.", tags:"Browse by use or theme", all:"Browse all phrases & uses →" },
+  "zh-tw": { label:"語句與用途", title:"這組貼圖的語句與用途", lead:"根據貼圖文字、作品標題與說明，整理有助於搜尋的代表性語句、用途與主題。", tags:"依用途或主題搜尋", all:"查看所有語句與用途 →" },
+  th: { label:"คำและการใช้งาน", title:"คำ การใช้งาน และธีมของชุดนี้", lead:"สรุปคำที่สำคัญ การใช้งาน และธีมจากข้อความในภาพ ชื่อผลงาน และคำอธิบาย เพื่อช่วยให้ค้นหาได้ง่ายขึ้น", tags:"ค้นหาตามการใช้งานหรือธีม", all:"ดูคำและการใช้งานทั้งหมด →" },
+  id: { label:"FRASA & KEGUNAAN", title:"Frasa, kegunaan & tema", lead:"Frasa, kegunaan, dan tema utama dirangkum dari teks gambar, judul karya, dan deskripsi agar lebih mudah ditemukan.", tags:"Cari berdasarkan kegunaan atau tema", all:"Lihat semua frasa & kegunaan →" },
 }[locale];
+
+const navCopy = {
+  ja: { free:"フリー素材集" },
+  en: { free:"Free assets" },
+  "zh-tw": { free:"免費素材" },
+  th: { free:"素材ฟรี" },
+  id: { free:"Aset gratis" },
+}[locale];
+const freeHref = locale === "ja" ? "/free/" : `/${locale}/free/`;
 
 let smartTagPayload = null;
 if (sticker) {
@@ -65,9 +44,7 @@ if (sticker) {
   if (tags.length === 0) {
     const category = getCategory(sticker);
     const categorySlug = getCategorySlug(category);
-    if (categorySlug) {
-      tags.push({ label: category, href: `/categories/${categorySlug}/1` });
-    }
+    if (categorySlug) tags.push({ label: category, href: `/categories/${categorySlug}/1` });
   }
 
   smartTagPayload = {
@@ -82,15 +59,32 @@ if (sticker) {
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/site-shell.css" />
 
+<script is:inline define:vars={{ freeHref, navCopy }}>
+  document.addEventListener("DOMContentLoaded", () => {
+    const header = document.querySelector(".header");
+    if (!header || header.querySelector('[data-global-free-link]')) return;
+    let actions = header.querySelector(".header-actions, .actions");
+    if (!actions) {
+      actions = document.createElement("div");
+      actions.className = "header-actions";
+      header.appendChild(actions);
+    }
+    const link = document.createElement("a");
+    link.href = freeHref;
+    link.textContent = navCopy.free;
+    link.className = "header-link global-free-link";
+    link.dataset.globalFreeLink = "1";
+    actions.insertBefore(link, actions.firstChild);
+  });
+</script>
+
 {smartTagPayload && (
   <script is:inline define:vars={{ smartTagPayload }}>
     document.addEventListener("DOMContentLoaded", () => {
       const payload = smartTagPayload;
       if (!payload || (!payload.phrases.length && !payload.tags.length)) return;
-
       const infoGrid = document.querySelector(".info-grid");
       if (!infoGrid) return;
-
       let section = document.querySelector(".phrase-section");
       if (!section) {
         section = document.createElement("section");
@@ -98,63 +92,22 @@ if (sticker) {
         section.setAttribute("aria-labelledby", "sticker-phrases");
         infoGrid.insertAdjacentElement("afterend", section);
       }
-
       section.replaceChildren();
-
-      const label = document.createElement("div");
-      label.className = "sub-label";
-      label.textContent = payload.copy.label;
-      section.appendChild(label);
-
-      const title = document.createElement("h2");
-      title.id = "sticker-phrases";
-      title.className = "sub-title";
-      title.textContent = payload.copy.title;
-      section.appendChild(title);
-
-      const lead = document.createElement("p");
-      lead.className = "phrase-lead";
-      lead.textContent = payload.copy.lead;
-      section.appendChild(lead);
-
+      const label = document.createElement("div"); label.className = "sub-label"; label.textContent = payload.copy.label; section.appendChild(label);
+      const title = document.createElement("h2"); title.id = "sticker-phrases"; title.className = "sub-title"; title.textContent = payload.copy.title; section.appendChild(title);
+      const lead = document.createElement("p"); lead.className = "phrase-lead"; lead.textContent = payload.copy.lead; section.appendChild(lead);
       if (payload.phrases.length) {
-        const phraseList = document.createElement("ul");
-        phraseList.className = "phrase-list";
-        for (const phrase of payload.phrases) {
-          const item = document.createElement("li");
-          item.className = "phrase-chip";
-          item.lang = "ja";
-          item.textContent = phrase;
-          phraseList.appendChild(item);
-        }
+        const phraseList = document.createElement("ul"); phraseList.className = "phrase-list";
+        for (const phrase of payload.phrases) { const item = document.createElement("li"); item.className = "phrase-chip"; item.lang = "ja"; item.textContent = phrase; phraseList.appendChild(item); }
         section.appendChild(phraseList);
       }
-
       if (payload.tags.length) {
-        const tagBlock = document.createElement("div");
-        tagBlock.className = "tag-block";
-
-        const tagLabel = document.createElement("p");
-        tagLabel.className = "tag-label";
-        tagLabel.textContent = payload.copy.tags;
-        tagBlock.appendChild(tagLabel);
-
-        const tagList = document.createElement("div");
-        tagList.className = "tag-list";
-        for (const tag of payload.tags) {
-          const link = document.createElement("a");
-          link.className = "tag-chip";
-          link.href = tag.href;
-          link.textContent = tag.label;
-          tagList.appendChild(link);
-        }
+        const tagBlock = document.createElement("div"); tagBlock.className = "tag-block";
+        const tagLabel = document.createElement("p"); tagLabel.className = "tag-label"; tagLabel.textContent = payload.copy.tags; tagBlock.appendChild(tagLabel);
+        const tagList = document.createElement("div"); tagList.className = "tag-list";
+        for (const tag of payload.tags) { const link = document.createElement("a"); link.className = "tag-chip"; link.href = tag.href; link.textContent = tag.label; tagList.appendChild(link); }
         tagBlock.appendChild(tagList);
-
-        const all = document.createElement("a");
-        all.className = "tag-all";
-        all.href = payload.allHref;
-        all.textContent = payload.copy.all;
-        tagBlock.appendChild(all);
+        const all = document.createElement("a"); all.className = "tag-all"; all.href = payload.allHref; all.textContent = payload.copy.all; tagBlock.appendChild(all);
         section.appendChild(tagBlock);
       }
     });
