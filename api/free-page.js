@@ -1,9 +1,9 @@
-import { get, list } from "@vercel/blob";
+import { r2GetJson } from "./_r2.js";
 
 const SITE_URL="https://stamp-moke.jp";
 function esc(v=""){return String(v).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function slugify(value=""){return String(value).normalize("NFKC").toLowerCase().trim().replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90)}
-async function find(slug){const path=`free-assets/meta/${slug}.json`;const found=await list({prefix:path,limit:5});const blob=found.blobs.find(b=>b.pathname===path);if(!blob)return null;const r=await get(blob.url,{access:"private"});return r?await r.json():null}
+async function find(slug){return r2GetJson(`free-assets/meta/${slug}.json`,null)}
 export default async function handler(req,res){
   try{
     const slug=slugify(req.query.slug||"");const asset=await find(slug);if(!asset||asset.status!=="published"){res.status(404).setHeader("Content-Type","text/html; charset=utf-8").send("<!doctype html><meta charset=utf-8><title>素材が見つかりません | stamp moke</title><p>素材が見つかりません。</p><p><a href=/free/>無料素材一覧へ</a></p>");return}
