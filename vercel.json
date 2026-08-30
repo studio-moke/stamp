@@ -1,27 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/line-author.js": {
-      "regions": ["hnd1"],
-      "maxDuration": 30
-    },
-    "api/free-assets.js": {
-      "regions": ["hnd1"],
-      "maxDuration": 60
-    },
-    "api/free-upload.js": {
-      "regions": ["hnd1"],
-      "maxDuration": 60
-    },
-    "api/free-page.js": {
-      "regions": ["hnd1"],
-      "maxDuration": 30
-    }
+    "api/line-author.js": { "regions": ["hnd1"], "maxDuration": 30 },
+    "api/free-assets.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/free-upload.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/free-page.js": { "regions": ["hnd1"], "maxDuration": 30 },
+    "api/free-download.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/free-preview.js": { "regions": ["hnd1"], "maxDuration": 30 },
+    "api/free-sitemap.js": { "regions": ["hnd1"], "maxDuration": 30 }
   },
   "rewrites": [
-    {
-      "source": "/free/:slug",
-      "destination": "/api/free-page?slug=:slug"
-    }
+    { "source": "/free-sitemap.xml", "destination": "/api/free-sitemap" },
+    { "source": "/free/:slug", "destination": "/api/free-page?slug=:slug&locale=ja" },
+    { "source": "/en/free/:slug", "destination": "/api/free-page?slug=:slug&locale=en" },
+    { "source": "/zh-tw/free/:slug", "destination": "/api/free-page?slug=:slug&locale=zh-tw" },
+    { "source": "/th/free/:slug", "destination": "/api/free-page?slug=:slug&locale=th" },
+    { "source": "/id/free/:slug", "destination": "/api/free-page?slug=:slug&locale=id" }
   ]
 }
