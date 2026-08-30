@@ -18,6 +18,17 @@ function isAdmin(req) { const expected = process.env.FREE_ADMIN_TOKEN; return Bo
 function slugify(value = "") { return String(value).normalize("NFKC").toLowerCase().trim().replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 90) || `asset-${Date.now()}`; }
 function safeArray(values, allowed) { return [...new Set((Array.isArray(values) ? values : []).filter((v) => allowed.includes(v)))]; }
 function stripJsonFence(value = "") { return value.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, ""); }
+function parseAiJson(value = "") {
+  const raw = stripJsonFence(value);
+  try { return JSON.parse(raw); } catch {}
+  const first = raw.indexOf("{");
+  const last = raw.lastIndexOf("}");
+  if (first >= 0 && last > first) {
+    const sliced = raw.slice(first, last + 1).replace(/,\s*([}\]])/g, "$1");
+    try { return JSON.parse(sliced); } catch {}
+  }
+  return null;
+}
 function cleanHash(value = "") { const v=String(value).toLowerCase().replace(/[^a-f0-9]/g,""); return v.length===64?v:""; }
 function extFor(contentType = "") { if(/webp/i.test(contentType))return ".webp"; if(/jpe?g/i.test(contentType))return ".jpg"; return ".png"; }
 function publicCode(){return crypto.randomBytes(6).toString("hex")}
@@ -28,12 +39,26 @@ async function listAssets(limit=250){const index=await readIndex();return index.
 async function findBySlug(slug){return r2GetJson(`free-assets/meta/${slug}.json`,null)}
 async function persistRecord(record){await r2PutJson(`free-assets/meta/${record.slug}.json`,record);const index=await readIndex();const next=record.status==="published"?[record,...index.filter(x=>x?.slug!==record.slug)]:index.filter(x=>x?.slug!==record.slug);await writeIndex(next)}
 async function analyzeWithOpenAI(input){
-  if(!process.env.OPENAI_API_KEY)throw new Error("OPENAI_API_KEY is not configured");if(!input.previewKey)throw new Error("previewKey is required");
+  if(!process.env.OPENAI_API_KEY)throw new Error("OPENAI_API_KEY is not configured");
+  if(!input.previewKey)throw new Error("previewKey is required");
   const preview=await r2GetBuffer(input.previewKey);if(!preview)throw new Error("AI解析用プレビューが見つかりません");
   const imageDataUrl=`data:${preview.contentType};base64,${preview.buffer.toString("base64")}`;
-  const instruction=`You create accurate SEO metadata for stamp-moke.jp free illustration/photo assets.\nUse only these controlled vocabularies:\nplatforms=${MASTER.platforms.join(",")}\ntypes=${MASTER.types.join(",")}\nmotifs=${MASTER.motifs.join(",")}\nstyles=${MASTER.styles.join(",")}\n\nUsage policy: personal/non-commercial use only. Good uses include Pokekara and social media profiles/posts, personal flyers, school/circle/non-commercial print. Commercial use, resale, redistribution and claiming authorship are prohibited. Copyright belongs to stamp-moke.jp.\n\nReturn JSON only with this shape:\n{\"slug\":\"\",\"platforms\":[],\"types\":[],\"motifs\":[],\"styles\":[],\"character\":\"\",\"transparent\":true,\"locales\":{\"ja\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"en\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"zh-tw\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"th\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"id\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]}}}\nDescriptions must describe only what is visible. Do not invent a character name. SEO copy must be natural and useful.`;
-  const response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({model:process.env.FREE_ASSET_AI_MODEL||"gpt-5.6-luna",input:[{role:"user",content:[{type:"input_text",text:`${instruction}\n\nFilename: ${input.filename||"unknown"}\nSize: ${input.width||"?"}x${input.height||"?"}\nPlatform hint: ${input.platformHint||"none"}\nCharacter hint: ${input.characterHint||"none"}`},{type:"input_image",image_url:imageDataUrl}]}]})});
-  if(!response.ok)throw new Error(`OpenAI ${response.status}: ${await response.text()}`);const data=await response.json();const text=data.output_text||data.output?.flatMap(o=>o.content||[]).find(c=>c.type==="output_text")?.text;if(!text)throw new Error("AI returned no metadata");return JSON.parse(stripJsonFence(text));
+  const instruction=`You create accurate SEO metadata for stamp-moke.jp free illustration/photo assets.\nUse only these controlled vocabularies:\nplatforms=${MASTER.platforms.join(",")}\ntypes=${MASTER.types.join(",")}\nmotifs=${MASTER.motifs.join(",")}\nstyles=${MASTER.styles.join(",")}\n\nUsage policy: personal/non-commercial use only. Good uses include Pokekara and social media profiles/posts, personal flyers, school/circle/non-commercial print. Commercial use, resale, redistribution and claiming authorship are prohibited. Copyright belongs to stamp-moke.jp.\n\nReturn one valid JSON object only. Never use markdown fences or comments. Escape every quote inside string values. Shape:\n{\"slug\":\"\",\"platforms\":[],\"types\":[],\"motifs\":[],\"styles\":[],\"character\":\"\",\"transparent\":true,\"locales\":{\"ja\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"en\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"zh-tw\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"th\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]},\"id\":{\"title\":\"\",\"description\":\"\",\"seoTitle\":\"\",\"metaDescription\":\"\",\"alt\":\"\",\"keywords\":[]}}}\nDescriptions must describe only what is visible. Do not invent a character name. SEO copy must be natural and useful.`;
+  const baseInput=[{role:"user",content:[{type:"input_text",text:`${instruction}\n\nFilename: ${input.filename||"unknown"}\nSize: ${input.width||"?"}x${input.height||"?"}\nPlatform hint: ${input.platformHint||"none"}\nCharacter hint: ${input.characterHint||"none"}`},{type:"input_image",image_url:imageDataUrl}]}];
+  async function call(extra=""){
+    const requestInput=extra?[...baseInput,{role:"user",content:[{type:"input_text",text:extra}]}]:baseInput;
+    const response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({model:process.env.FREE_ASSET_AI_MODEL||"gpt-5.6-luna",input:requestInput})});
+    if(!response.ok)throw new Error(`OpenAI ${response.status}: ${await response.text()}`);
+    const data=await response.json();
+    const text=data.output_text||data.output?.flatMap(o=>o.content||[]).find(c=>c.type==="output_text")?.text;
+    if(!text)throw new Error("AI returned no metadata");
+    return {text,parsed:parseAiJson(text)};
+  }
+  const first=await call();
+  if(first.parsed)return first.parsed;
+  const second=await call("Your previous response was invalid JSON. Return the same metadata again as one strictly valid JSON object only. No markdown, no explanation.");
+  if(second.parsed)return second.parsed;
+  throw new Error("AI解析結果のJSON生成に2回失敗しました。もう一度実行してください。");
 }
 function normalizeLocales(locales={}){return Object.fromEntries(LOCALES.map(locale=>{const v=locales?.[locale]||{};return[locale,{title:String(v.title||"").slice(0,120),description:String(v.description||"").slice(0,700),seoTitle:String(v.seoTitle||"").slice(0,160),metaDescription:String(v.metaDescription||"").slice(0,320),alt:String(v.alt||"").slice(0,180),keywords:[...new Set((Array.isArray(v.keywords)?v.keywords:[]).map(String).map(x=>x.trim()).filter(Boolean))].slice(0,30)}]}))}
 function normalizeMetadata(raw,fallback={}){const locales=normalizeLocales(raw?.locales||fallback.locales||{});const jaTitle=locales.ja.title||fallback.filename?.replace(/\.[^.]+$/,"")||"無料素材";return{slug:slugify(raw?.slug||fallback.slug||jaTitle),platforms:safeArray(raw?.platforms??fallback.platforms,MASTER.platforms),types:safeArray(raw?.types??fallback.types,MASTER.types),motifs:safeArray(raw?.motifs??fallback.motifs,MASTER.motifs),styles:safeArray(raw?.styles??fallback.styles,MASTER.styles),character:String(raw?.character??fallback.characterHint??fallback.character??"").slice(0,60),transparent:Boolean(raw?.transparent??fallback.transparent),locales}}
