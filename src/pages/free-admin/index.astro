@@ -1,0 +1,94 @@
+---
+const title = "フリー素材 管理 | stamp moke";
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>{title}</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1f2937;background:#f7f7f5}*{box-sizing:border-box}body{margin:0}main{max-width:980px;margin:auto;padding:24px 16px 80px}.top{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-size:22px;font-weight:800}.panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,.04)}label{font-size:13px;font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;background:#fff}button{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}.primary{background:#111827;color:#fff}.sub{background:#eef0f2}.drop{border:2px dashed #c7c9ce;border-radius:16px;padding:38px 18px;text-align:center;background:#fafafa}.drop strong{display:block;font-size:19px;margin-bottom:7px}.queue{display:grid;gap:12px}.item{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:start;border:1px solid #e5e7eb;border-radius:14px;padding:12px}.item img{width:120px;height:120px;object-fit:contain;background:#f2f2f2;border-radius:10px}.meta{font-size:13px;color:#667085}.status{font-size:12px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eef0f2;white-space:nowrap}.ok{background:#e8f7ec;color:#176b2c}.err{background:#feecec;color:#9b1c1c}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.notice{font-size:12px;color:#667085;line-height:1.6}@media(max-width:700px){.row{grid-template-columns:1fr}.item{grid-template-columns:84px 1fr}.item img{width:84px;height:84px}.item .status{grid-column:2}.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="top"><div><div class="brand">stamp moke / フリー素材管理</div><div class="meta">画像をまとめて入れて、AIに任せて公開します。</div></div><a href="/free/">公開ページを見る</a></div>
+
+  <section class="panel">
+    <div class="row">
+      <div class="field"><label>管理トークン</label><input id="adminToken" type="password" placeholder="FREE_ADMIN_TOKEN" autocomplete="current-password" /></div>
+      <div class="field"><label>今回の共通キャラクター（任意）</label><input id="characterHint" placeholder="例：くろねこ" /></div>
+      <div class="field"><label>今回の主な用途（任意）</label><select id="platformHint"><option value="">AIに任せる</option><option value="pokekara">ポケカラ</option><option value="x">X</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="line">LINE</option><option value="youtube">YouTube</option></select></div>
+      <div class="field"><label>透かし文字</label><input id="watermark" value="stamp-moke.jp" /></div>
+    </div>
+    <p class="notice">原本は非公開で保存し、公開用にはブラウザ内で透かし入りプレビューを生成します。管理トークンはこのタブ内だけに保存します。</p>
+  </section>
+
+  <section class="panel">
+    <div class="drop" id="drop"><strong>画像をドカッと入れる</strong><span>タップして複数選択 / ドラッグ＆ドロップ</span><input id="files" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden /></div>
+    <div class="actions"><button class="primary" id="run" disabled>AI解析して一括公開</button><button class="sub" id="clear" disabled>一覧をクリア</button></div>
+  </section>
+
+  <section class="panel"><div id="queue" class="queue"><div class="meta">まだ画像はありません。</div></div></section>
+</main>
+
+<script>
+  import { upload } from "@vercel/blob/client";
+
+  const $ = (id) => document.getElementById(id);
+  const filesInput = $("files"); const drop = $("drop"); const queueEl = $("queue"); const run = $("run"); const clear = $("clear");
+  const tokenEl = $("adminToken"); const characterEl = $("characterHint"); const platformEl = $("platformHint"); const watermarkEl = $("watermark");
+  tokenEl.value = sessionStorage.getItem("sm_free_admin") || "";
+  tokenEl.addEventListener("input",()=>sessionStorage.setItem("sm_free_admin", tokenEl.value));
+  let queue = [];
+
+  function esc(v=""){return String(v).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+  function render(){
+    if(!queue.length){queueEl.innerHTML='<div class="meta">まだ画像はありません。</div>';run.disabled=true;clear.disabled=true;return}
+    run.disabled=false;clear.disabled=false;
+    queueEl.innerHTML=queue.map((q,i)=>`<div class="item"><img src="${q.localUrl}" alt=""><div><strong>${esc(q.file.name)}</strong><div class="meta">${q.width||"?"} × ${q.height||"?"} / ${(q.file.size/1024/1024).toFixed(2)}MB</div><div class="meta">${esc(q.title||"")}</div></div><span class="status ${q.state==='公開済み'?'ok':q.state==='エラー'?'err':''}">${esc(q.state)}</span></div>`).join("");
+  }
+  async function imageInfo(file){const bitmap=await createImageBitmap(file);const out={width:bitmap.width,height:bitmap.height};bitmap.close();return out}
+  async function addFiles(files){for(const file of files){if(!file.type.startsWith("image/"))continue;const info=await imageInfo(file);queue.push({file,localUrl:URL.createObjectURL(file),...info,state:"待機中",title:""})}render()}
+  drop.addEventListener("click",()=>filesInput.click()); filesInput.addEventListener("change",()=>addFiles(filesInput.files));
+  drop.addEventListener("dragover",e=>{e.preventDefault()}); drop.addEventListener("drop",e=>{e.preventDefault();addFiles(e.dataTransfer.files)});
+  clear.addEventListener("click",()=>{queue.forEach(q=>URL.revokeObjectURL(q.localUrl));queue=[];render()});
+
+  async function makePreview(file,text){
+    const bitmap=await createImageBitmap(file); const max=1200; const scale=Math.min(1,max/Math.max(bitmap.width,bitmap.height));
+    const canvas=document.createElement("canvas"); canvas.width=Math.max(1,Math.round(bitmap.width*scale)); canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+    const ctx=canvas.getContext("2d"); ctx.drawImage(bitmap,0,0,canvas.width,canvas.height); bitmap.close();
+    ctx.save();ctx.globalAlpha=.22;ctx.fillStyle="#111";ctx.font=`700 ${Math.max(18,Math.round(canvas.width/18))}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.translate(canvas.width/2,canvas.height/2);ctx.rotate(-Math.PI/6);
+    const stepX=Math.max(220,canvas.width*.55),stepY=Math.max(120,canvas.height*.3);
+    for(let y=-canvas.height;y<=canvas.height;y+=stepY)for(let x=-canvas.width;x<=canvas.width;x+=stepX)ctx.fillText(text,x,y);
+    ctx.restore(); return await new Promise(resolve=>canvas.toBlob(resolve,"image/png",.92));
+  }
+  async function api(action,body,token){const r=await fetch(`/api/free-assets?action=${encodeURIComponent(action)}`,{method:"POST",headers:{"Content-Type":"application/json","x-admin-token":token},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error||`HTTP ${r.status}`);return j}
+
+  run.addEventListener("click",async()=>{
+    const adminToken=tokenEl.value.trim(); if(!adminToken){alert("管理トークンを入力してください");return}
+    run.disabled=true;
+    for(const q of queue){
+      if(q.state==="公開済み")continue;
+      try{
+        q.state="透かし生成中";render(); const previewBlob=await makePreview(q.file,watermarkEl.value.trim()||"stamp-moke.jp");
+        q.state="原本アップ中";render();
+        const original=await upload(`free-assets/originals/${Date.now()}-${q.file.name}`,q.file,{access:"private",handleUploadUrl:"/api/free-upload",multipart:q.file.size>5*1024*1024,clientPayload:JSON.stringify({adminToken,role:"original"})});
+        q.state="プレビューアップ中";render();
+        const preview=await upload(`free-assets/previews/${Date.now()}-${q.file.name.replace(/\.[^.]+$/,"")}.png`,previewBlob,{access:"public",handleUploadUrl:"/api/free-upload",clientPayload:JSON.stringify({adminToken,role:"preview"})});
+        q.state="AI解析中";render();
+        const analyzed=await api("analyze",{filename:q.file.name,width:q.width,height:q.height,previewUrl:preview.url,characterHint:characterEl.value.trim(),platformHint:platformEl.value},adminToken);
+        q.title=analyzed.metadata?.locales?.ja?.title||""; q.state="公開中";render();
+        await api("publish",{metadata:analyzed.metadata,originalUrl:original.url,previewUrl:preview.url,width:q.width,height:q.height,contentType:q.file.type,downloadName:q.file.name,characterHint:characterEl.value.trim()},adminToken);
+        q.state="公開済み";render();
+      }catch(e){console.error(e);q.state="エラー";q.title=e.message||String(e);render()}
+    }
+    run.disabled=false;
+  });
+  render();
+</script>
+</body>
+</html>
