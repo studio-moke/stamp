@@ -9,7 +9,7 @@ const title = "フリー素材 管理 | stamp moke";
   <meta name="robots" content="noindex,nofollow" />
   <title>{title}</title>
   <style>
-    :root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1f2937;background:#f7f7f5}*{box-sizing:border-box}body{margin:0}main{max-width:980px;margin:auto;padding:24px 16px 80px}.top{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-size:22px;font-weight:800}.panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,.04)}label{font-size:13px;font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;background:#fff}button{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}.primary{background:#111827;color:#fff}.sub{background:#eef0f2}.drop{border:2px dashed #c7c9ce;border-radius:16px;padding:38px 18px;text-align:center;background:#fafafa}.drop strong{display:block;font-size:19px;margin-bottom:7px}.queue{display:grid;gap:12px}.item{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:start;border:1px solid #e5e7eb;border-radius:14px;padding:12px}.item img{width:120px;height:120px;object-fit:contain;background:#f2f2f2;border-radius:10px}.meta{font-size:13px;color:#667085}.status{font-size:12px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eef0f2;white-space:nowrap}.ok{background:#e8f7ec;color:#176b2c}.err{background:#feecec;color:#9b1c1c}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.notice{font-size:12px;color:#667085;line-height:1.6}.progress{display:none;margin:0 0 18px;padding:14px 16px;border-radius:14px;background:#111827;color:#fff;font-weight:800}.progress.show{display:block}.progress.error{background:#9b1c1c}@media(max-width:700px){.row{grid-template-columns:1fr}.item{grid-template-columns:84px 1fr}.item img{width:84px;height:84px}.item .status{grid-column:2}.top{align-items:flex-start;flex-direction:column}}
+    :root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1f2937;background:#f7f7f5}*{box-sizing:border-box}body{margin:0}main{max-width:980px;margin:auto;padding:24px 16px 80px}.top{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-size:22px;font-weight:800}.panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,.04)}label{font-size:13px;font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;background:#fff}button{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}.primary{background:#111827;color:#fff}.primary:disabled,.sub:disabled{background:#e5e7eb;color:#9ca3af;cursor:not-allowed}.sub{background:#eef0f2}.drop{border:2px dashed #c7c9ce;border-radius:16px;padding:38px 18px;text-align:center;background:#fafafa;cursor:pointer}.drop strong{display:block;font-size:19px;margin-bottom:7px}.queue{display:grid;gap:12px}.item{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:start;border:1px solid #e5e7eb;border-radius:14px;padding:12px}.item img{width:120px;height:120px;object-fit:contain;background:#f2f2f2;border-radius:10px}.meta{font-size:13px;color:#667085}.status{font-size:12px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eef0f2;white-space:nowrap}.ok{background:#e8f7ec;color:#176b2c}.err{background:#feecec;color:#9b1c1c}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}.notice{font-size:12px;color:#667085;line-height:1.6}.progress{display:none;margin:0 0 18px;padding:14px 16px;border-radius:14px;background:#111827;color:#fff;font-weight:800}.progress.show{display:block}.progress.error{background:#9b1c1c}.queue-note{font-size:13px;font-weight:700;color:#667085}@media(max-width:700px){.row{grid-template-columns:1fr}.item{grid-template-columns:84px 1fr}.item img{width:84px;height:84px}.item .status{grid-column:2}.top{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
 <body>
@@ -29,7 +29,7 @@ const title = "フリー素材 管理 | stamp moke";
 
   <section class="panel">
     <div class="drop" id="drop"><strong>画像をドカッと入れる</strong><span>タップして複数選択 / ドラッグ＆ドロップ</span><input id="files" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden /></div>
-    <div class="actions"><button class="primary" id="run" disabled>AI解析して一括公開</button><button class="sub" id="clear" disabled>一覧をクリア</button></div>
+    <div class="actions"><button class="primary" id="run" disabled>画像を追加してください</button><button class="sub" id="clear" disabled>一覧をクリア</button><span id="queueNote" class="queue-note">0枚</span></div>
   </section>
 
   <section class="panel"><div id="queue" class="queue"><div class="meta">まだ画像はありません。</div></div></section>
@@ -39,7 +39,7 @@ const title = "フリー素材 管理 | stamp moke";
   import { upload } from "@vercel/blob/client";
 
   const $ = (id) => document.getElementById(id);
-  const filesInput = $("files"); const drop = $("drop"); const queueEl = $("queue"); const run = $("run"); const clear = $("clear"); const progress = $("progress");
+  const filesInput = $("files"); const drop = $("drop"); const queueEl = $("queue"); const run = $("run"); const clear = $("clear"); const progress = $("progress"); const queueNote = $("queueNote");
   const tokenEl = $("adminToken"); const characterEl = $("characterHint"); const platformEl = $("platformHint"); const watermarkEl = $("watermark");
   tokenEl.value = sessionStorage.getItem("sm_free_admin") || "";
   tokenEl.addEventListener("input",()=>sessionStorage.setItem("sm_free_admin", tokenEl.value));
@@ -48,12 +48,13 @@ const title = "フリー素材 管理 | stamp moke";
   function setProgress(text,error=false){progress.textContent=text;progress.className=`progress show${error?' error':''}`;progress.scrollIntoView({behavior:'smooth',block:'nearest'})}
   function esc(v=""){return String(v).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
   function render(){
-    if(!queue.length){queueEl.innerHTML='<div class="meta">まだ画像はありません。</div>';run.disabled=true;clear.disabled=true;return}
-    run.disabled=false;clear.disabled=false;
+    queueNote.textContent=`${queue.length}枚`;
+    if(!queue.length){queueEl.innerHTML='<div class="meta">まだ画像はありません。上の「画像をドカッと入れる」から画像を選んでください。</div>';run.disabled=true;run.textContent='画像を追加してください';clear.disabled=true;return}
+    run.disabled=false;run.textContent=`AI解析して${queue.length}枚を一括公開`;clear.disabled=false;
     queueEl.innerHTML=queue.map((q)=>`<div class="item"><img src="${q.localUrl}" alt=""><div><strong>${esc(q.file.name)}</strong><div class="meta">${q.width||"?"} × ${q.height||"?"} / ${(q.file.size/1024/1024).toFixed(2)}MB</div><div class="meta">${esc(q.title||"")}</div></div><span class="status ${q.state==='公開済み'?'ok':q.state==='エラー'?'err':''}">${esc(q.state)}</span></div>`).join("");
   }
   async function imageInfo(file){const bitmap=await createImageBitmap(file);const out={width:bitmap.width,height:bitmap.height};bitmap.close();return out}
-  async function addFiles(files){for(const file of files){if(!file.type.startsWith("image/"))continue;const info=await imageInfo(file);queue.push({file,localUrl:URL.createObjectURL(file),...info,state:"待機中",title:""})}render();setProgress(`${queue.length}枚を読み込みました。AI解析して一括公開を押してください。`)}
+  async function addFiles(files){try{for(const file of files){if(!file.type.startsWith("image/"))continue;const info=await imageInfo(file);queue.push({file,localUrl:URL.createObjectURL(file),...info,state:"待機中",title:""})}render();if(queue.length)setProgress(`${queue.length}枚を読み込みました。「AI解析して${queue.length}枚を一括公開」を押してください。`);else setProgress('対応画像を読み込めませんでした。PNG/JPEG/WebPを選んでください。',true)}catch(e){console.error(e);setProgress(`画像読込エラー：${e?.message||String(e)}`,true)}}
   drop.addEventListener("click",()=>filesInput.click()); filesInput.addEventListener("change",()=>addFiles(filesInput.files));
   drop.addEventListener("dragover",e=>{e.preventDefault()}); drop.addEventListener("drop",e=>{e.preventDefault();addFiles(e.dataTransfer.files)});
   clear.addEventListener("click",()=>{queue.forEach(q=>URL.revokeObjectURL(q.localUrl));queue=[];render();progress.className='progress';progress.textContent=''});
@@ -79,22 +80,18 @@ const title = "フリー素材 管理 | stamp moke";
     for(const q of queue){
       if(q.state==="公開済み"){done++;continue}
       try{
-        setProgress(`${done+1}/${queue.length}：${q.file.name} の透かしを生成中…`);q.state="透かし生成中";render();
+        setProgress(`${done+1}/${queue.length}：${q.file.name} の透かしを生成中…`);q.state="透かし生成中";render();run.disabled=true;
         const previewBlob=await makePreview(q.file,watermarkEl.value.trim()||"stamp-moke.jp");
-
-        setProgress(`${done+1}/${queue.length}：AI解析用プレビューを保存中…`);q.state="プレビューアップ中";render();
+        setProgress(`${done+1}/${queue.length}：AI解析用プレビューを保存中…`);q.state="プレビューアップ中";render();run.disabled=true;
         const preview=await upload(`free-assets/previews/${Date.now()}-${q.file.name.replace(/\.[^.]+$/,"")}.png`,previewBlob,{access:"private",handleUploadUrl:"/api/free-upload",clientPayload:JSON.stringify({adminToken,role:"preview"})});
-
-        setProgress(`${done+1}/${queue.length}：AIが画像を解析中…`);q.state="AI解析中";render();
+        setProgress(`${done+1}/${queue.length}：AIが画像を解析中…`);q.state="AI解析中";render();run.disabled=true;
         const analyzed=await api("analyze",{filename:q.file.name,width:q.width,height:q.height,previewUrl:preview.url,characterHint:characterEl.value.trim(),platformHint:platformEl.value},adminToken);
         q.title=analyzed.metadata?.locales?.ja?.title||"";
-
-        setProgress(`${done+1}/${queue.length}：原本を非公開保存中…`);q.state="原本アップ中";render();
+        setProgress(`${done+1}/${queue.length}：原本を非公開保存中…`);q.state="原本アップ中";render();run.disabled=true;
         const original=await upload(`free-assets/originals/${Date.now()}-${q.file.name}`,q.file,{access:"private",handleUploadUrl:"/api/free-upload",multipart:q.file.size>5*1024*1024,clientPayload:JSON.stringify({adminToken,role:"original"})});
-
-        setProgress(`${done+1}/${queue.length}：公開データを登録中…`);q.state="公開中";render();
+        setProgress(`${done+1}/${queue.length}：公開データを登録中…`);q.state="公開中";render();run.disabled=true;
         await api("publish",{metadata:analyzed.metadata,originalUrl:original.url,previewUrl:preview.url,width:q.width,height:q.height,contentType:q.file.type,downloadName:q.file.name,characterHint:characterEl.value.trim()},adminToken);
-        q.state="公開済み";done++;render();
+        q.state="公開済み";done++;render();run.disabled=true;
       }catch(e){console.error(e);q.state="エラー";q.title=e?.message||String(e);render();setProgress(`エラー：${q.title}`,true);run.disabled=false;clear.disabled=false;return}
     }
     setProgress(`${done}枚すべて公開できました。`);run.disabled=false;clear.disabled=false;
