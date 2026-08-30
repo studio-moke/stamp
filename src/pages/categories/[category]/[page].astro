@@ -3,6 +3,7 @@ import stickers from "../../../data/stickers.json";
 import { CATEGORY_DEFINITIONS, getCategory } from "../../../lib/stickers";
 import SeoHead from "../../../components/SeoHead.astro";
 import Analytics from "../../../components/Analytics.astro";
+import LanguageSwitcher from "../../../components/LanguageSwitcher.astro";
 import { makeTitle, makeDescription, absoluteUrl } from "../../../lib/seo";
 
 export function getStaticPaths(){
@@ -27,7 +28,9 @@ const category = categoryParam;
 const visible = items.slice((page - 1) * pageSize, page * pageSize);
 const title = makeTitle([`${category.name}のLINEスタンプ${page > 1 ? `｜${page}ページ目` : ""}`]);
 const description = makeDescription("", `${category.name}のLINEスタンプをstamp mokeで紹介。${items.length}作品から探せます。${page > 1 ? `${page}ページ目。` : ""}`);
-const canonical = absoluteUrl(`/categories/${category.slug}/${page}`);
+const canonicalPath = `/categories/${category.slug}/${page}`;
+const canonical = absoluteUrl(canonicalPath);
+const languagePaths = { ja: canonicalPath, en: "/en/", "zh-tw": "/zh-tw/", th: "/th/", id: "/id/" };
 ---
 <!doctype html>
 <html lang="ja">
@@ -48,6 +51,7 @@ const canonical = absoluteUrl(`/categories/${category.slug}/${page}`);
       <div class="brand-sub">LINEスタンプ専門メディア</div>
     </a>
     <div class="header-actions">
+      <LanguageSwitcher locale="ja" path={canonicalPath} paths={languagePaths} />
       <a class="header-link" href="/categories/">カテゴリー一覧</a>
     </div>
   </header>
