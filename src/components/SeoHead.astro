@@ -1,6 +1,7 @@
 ---
 import { SITE_NAME, absoluteUrl } from "../lib/seo";
 import { LOCALES, alternateLinks, localeInfo, normalizeLocale } from "../lib/i18n";
+import { r2GetJson } from "../../api/_r2.js";
 
 const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname, alternatePaths = null } = Astro.props;
 const locale = normalizeLocale(localeProp);
@@ -9,14 +10,21 @@ const alternates = alternatePaths
   ? LOCALES.map((item) => ({ locale: item, href: absoluteUrl(alternatePaths[item]) }))
   : alternateLinks(path);
 const xDefault = alternatePaths ? absoluteUrl(alternatePaths.ja || path) : absoluteUrl(path);
+const stickerMatch=String(path||Astro.url.pathname).match(/\/stickers\/(\d+)/);
+let stickerSeo=null;
+if(stickerMatch){try{stickerSeo=await r2GetJson(`sticker-seo/${stickerMatch[1]}.json`,null)}catch(error){console.warn("sticker SEO metadata unavailable",error)}}
+const seoLocale=stickerSeo?.locales?.[locale]||stickerSeo?.locales?.ja||null;
+const finalDescription=seoLocale?.metaDescription||description;
+const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 ---
-<meta name="description" content={description} />
+<meta name="description" content={finalDescription} />
+{keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="canonical" href={url} />
 {alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
 <link rel="alternate" hreflang="x-default" href={xDefault} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={finalDescription} />
 <meta property="og:type" content={type} />
 <meta property="og:url" content={url} />
 <meta property="og:site_name" content={SITE_NAME} />
@@ -25,5 +33,6 @@ const xDefault = alternatePaths ? absoluteUrl(alternatePaths.ja || path) : absol
 {image && <meta property="og:image" content={image} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:description" content={finalDescription} />
 {image && <meta name="twitter:image" content={image} />}
+{seoLocale && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CreativeWork",name:title,url,description:seoLocale.overview||finalDescription,abstract:seoLocale.concept||undefined,audience:seoLocale.target?{"@type":"Audience",audienceType:seoLocale.target}:undefined,keywords,usageInfo:seoLocale.usageIntro||undefined,inLanguage:localeInfo[locale].htmlLang,image:image?absoluteUrl(image):undefined})} />}
