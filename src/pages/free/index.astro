@@ -37,11 +37,15 @@ import FreeGallery from "../../components/FreeGallery.astro";
   const translate = () => {
     document.querySelectorAll('#platforms button, #category option, #tag option, .chip').forEach((el) => {
       const raw = (el.getAttribute('data-v') || el.getAttribute('value') || el.textContent || '').trim();
-      if (raw && labels[raw]) el.textContent = labels[raw];
+      if (raw && labels[raw] && el.textContent !== labels[raw]) el.textContent = labels[raw];
     });
   };
-  const observer = new MutationObserver(translate);
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  let tries = 0;
+  const timer = setInterval(() => {
+    translate();
+    tries += 1;
+    if (tries >= 20 || document.querySelector('.card')) clearInterval(timer);
+  }, 150);
   document.addEventListener('DOMContentLoaded', translate, { once: true });
   translate();
 })();
