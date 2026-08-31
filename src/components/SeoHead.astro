@@ -36,4 +36,26 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={finalDescription} />
 {image && <meta name="twitter:image" content={image} />}
+<style is:global>
+  .header.sm-common-header{height:86px;background:rgba(255,255,255,.96);border-bottom:1px solid #e4e3df;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 5vw;position:sticky;top:0;z-index:50;backdrop-filter:blur(12px)}
+  .header.sm-common-header .header-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+  .header.sm-common-header .header-link{display:inline-flex;align-items:center;justify-content:center;min-height:40px;border:1px solid #d9d8d4;background:#fff;color:#161616;padding:9px 14px;border-radius:999px;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}
+  .header.sm-common-header .header-link.sm-tool{background:#161616;border-color:#161616;color:#fff}
+  @media(max-width:900px){.header.sm-common-header .sm-hide-tablet{display:none!important}}
+  @media(max-width:640px){.header.sm-common-header{height:72px;padding:0 16px;gap:10px}.header.sm-common-header .brand-title{font-size:17px}.header.sm-common-header .brand-sub{font-size:9px;margin-top:5px}.header.sm-common-header .sm-common-link{display:none!important}}
+</style>
+<script is:inline>
+(() => {
+  const config = {
+    ja:{prefix:"",brand:"LINEスタンプ専門メディア",free:"フリー素材",search:"サイト内検索",qr:"QRメーカー",chat:"チャットスタンプ"},
+    en:{prefix:"/en",brand:"ORIGINAL LINE STICKERS",free:"Free assets",search:"Search",qr:"QR Maker",chat:"Chat Stamp Maker"},
+    "zh-tw":{prefix:"/zh-tw",brand:"原創LINE貼圖專門網站",free:"免費素材",search:"站內搜尋",qr:"QR產生器",chat:"聊天貼圖產生器"},
+    th:{prefix:"/th",brand:"เว็บไซต์สติกเกอร์ LINE ต้นฉบับ",free:"素材ฟรี",search:"ค้นหา",qr:"สร้าง QR",chat:"สร้างสติกเกอร์แชต"},
+    id:{prefix:"/id",brand:"SITUS STIKER LINE ORISINAL",free:"Aset gratis",search:"Cari",qr:"Pembuat QR",chat:"Pembuat Stiker Chat"}
+  };
+  function locale(){const l=(document.documentElement.lang||"ja").toLowerCase();if(l.startsWith("zh"))return "zh-tw";if(l.startsWith("en"))return "en";if(l.startsWith("th"))return "th";if(l.startsWith("id"))return "id";return "ja"}
+  function normalize(){const header=document.querySelector("header.header");if(!header||header.classList.contains("sm-common-header"))return;const actions=header.querySelector(".header-actions");if(!actions)return;const c=config[locale()]||config.ja;const language=actions.querySelector(".language-switcher");const sub=header.querySelector(".brand-sub");if(sub)sub.textContent=c.brand;actions.querySelectorAll("a").forEach(a=>a.remove());const links=[[`${c.prefix}/free/`,c.free,false],[`${c.prefix}/search/`,c.search,false],[`${c.prefix}/qr-maker`,c.qr,true],[`${c.prefix}/chat-stamp-maker`,c.chat,true]];links.forEach(([href,label,tool],i)=>{const a=document.createElement("a");a.href=href;a.textContent=label;a.className=`header-link sm-common-link${tool?" sm-tool":""}${i===3?" sm-hide-tablet":""}`;actions.insertBefore(a,language||null)});if(language&&language.parentElement!==actions)actions.appendChild(language);header.classList.add("sm-common-header")}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",normalize,{once:true});else normalize();
+})();
+</script>
 {seoLocale && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CreativeWork",name:title,url,description:seoLocale.overview||finalDescription,abstract:seoLocale.concept||undefined,audience:seoLocale.target?{"@type":"Audience",audienceType:seoLocale.target}:undefined,keywords,usageInfo:seoLocale.usageIntro||undefined,inLanguage:localeInfo[locale].htmlLang,image:image?absoluteUrl(image):undefined})} />}
