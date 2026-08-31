@@ -731,5 +731,42 @@
     "phrases": [],
     "source": "ocr-curated",
     "updatedAt": "2026-08-31"
+  },
+  "36217110": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
+  },
+  "36217676": {
+    "phrases": [
+      "ありがと"
+    ],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
+  },
+  "36218749": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
+  },
+  "36226953": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
+  },
+  "36227614": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
+  },
+  "36228272": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
+  },
+  "36229246": {
+    "phrases": [],
+    "source": "ocr-curated",
+    "updatedAt": "2026-08-31"
   }
 }
