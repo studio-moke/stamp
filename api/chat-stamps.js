@@ -3,18 +3,45 @@ import { r2GetJson, r2PutJson } from "./_r2.js";
 
 const INDEX_KEY = "chat-stamps/index.json";
 const MAX_ITEMS = 500;
-const MAX_TEXT = 24;
+const MAX_TEXT = 32;
 const allowedStyles = new Set(["business", "pop", "stamp", "bold", "soft", "mono"]);
 const allowedLayouts = new Set(["horizontal", "vertical"]);
+const allowedLineModes = new Set(["auto", "1", "2", "3", "4"]);
+const allowedEffects = new Set(["none", "shadow", "glow", "depth"]);
+const allowedBackgrounds = new Set(["transparent", "white", "color"]);
 
 function normalizeText(value) {
-  return String(value || "").normalize("NFKC").replace(/[\u0000-\u001F\u007F]/g, "").trim().slice(0, MAX_TEXT);
+  return String(value || "")
+    .normalize("NFKC")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F]/g, "")
+    .trim()
+    .slice(0, MAX_TEXT);
+}
+
+function safeColor(value, fallback) {
+  const v = String(value || "").trim();
+  return /^#[0-9a-fA-F]{6}$/.test(v) ? v.toLowerCase() : fallback;
+}
+
+function safeSettings(raw = {}) {
+  return {
+    lineMode: allowedLineModes.has(String(raw.lineMode)) ? String(raw.lineMode) : "auto",
+    textColor: safeColor(raw.textColor, "#111827"),
+    strokeEnabled: raw.strokeEnabled !== false,
+    strokeColor: safeColor(raw.strokeColor, "#ffffff"),
+    strokeWidth: Math.min(28, Math.max(0, Number(raw.strokeWidth) || 14)),
+    effect: allowedEffects.has(raw.effect) ? raw.effect : "none",
+    background: allowedBackgrounds.has(raw.background) ? raw.background : "transparent",
+    backgroundColor: safeColor(raw.backgroundColor, "#fff3f7"),
+  };
 }
 
 function safetyCheck(raw) {
   const text = normalizeText(raw);
   if (!text) return { level: "red", reason: "文字を入力してください" };
-  const lower = text.toLowerCase();
+  const flattened = text.replace(/\n/g, " ");
+  const lower = flattened.toLowerCase();
   const redPatterns = [
     /(?:https?:\/\/|www\.)/i,
     /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,
@@ -25,8 +52,7 @@ function safetyCheck(raw) {
     /(?:〒?\d{3}[-ー]\d{4})/,
     /(?:東京都|北海道|大阪府|京都府|.{2,3}県).{0,12}(?:市|区|町|村).{0,12}(?:丁目|番地|番|号)/,
   ];
-  if (redPatterns.some((p) => p.test(text))) return { level: "red", reason: "個人情報・機密情報の可能性があります" };
-
+  if (redPatterns.some((p) => p.test(flattened))) return { level: "red", reason: "個人情報・機密情報の可能性があります" };
   const yellowPatterns = [
     /\d{4,}/,
     /[A-Za-z]{2,}\d{2,}|\d{2,}[A-Za-z]{2,}/,
@@ -34,8 +60,7 @@ function safetyCheck(raw) {
     /(?:[一-龯々]{2,8})(?:さん|様|くん|君|ちゃん|氏)/,
     /(?:住所|電話|携帯|メール|E-mail|ID|ログイン|アカウント)/i,
   ];
-  if (yellowPatterns.some((p) => p.test(text))) return { level: "yellow", reason: "固有情報を含む可能性があります" };
-
+  if (yellowPatterns.some((p) => p.test(flattened))) return { level: "yellow", reason: "固有情報を含む可能性があります" };
   if (/死ね|殺す|ころす|fuck|shit/i.test(lower)) return { level: "yellow", reason: "公開に適さない表現の可能性があります" };
   return { level: "green", reason: "公開可能な範囲と判定しました" };
 }
@@ -68,12 +93,14 @@ export default async function handler(req, res) {
 
       const style = allowedStyles.has(body.style) ? body.style : "business";
       const layout = allowedLayouts.has(body.layout) ? body.layout : "horizontal";
+      const settings = safeSettings(body.settings);
       const deleteToken = crypto.randomBytes(24).toString("base64url");
       const item = {
         id: `${Date.now().toString(36)}-${crypto.randomBytes(5).toString("hex")}`,
         text,
         style,
         layout,
+        settings,
         createdAt: new Date().toISOString(),
         deleteTokenHash: crypto.createHash("sha256").update(deleteToken).digest("hex"),
       };
