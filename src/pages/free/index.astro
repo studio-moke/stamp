@@ -2,3 +2,47 @@
 import FreeGallery from "../../components/FreeGallery.astro";
 ---
 <FreeGallery locale="ja" />
+<script is:inline>
+(() => {
+  const labels = {
+    pokekara: "ポケカラ",
+    x: "X",
+    instagram: "Instagram",
+    facebook: "Facebook",
+    line: "LINE",
+    youtube: "YouTube",
+    other: "その他",
+    icon: "アイコン",
+    header: "ヘッダー",
+    background: "背景",
+    story: "ストーリー",
+    wallpaper: "壁紙",
+    thumbnail: "サムネイル",
+    frame: "フレーム",
+    decoration: "装飾",
+    cat: "猫",
+    dog: "犬",
+    bird: "鳥",
+    food: "食べ物",
+    human: "人物",
+    text: "文字",
+    cute: "かわいい",
+    simple: "シンプル",
+    handdrawn: "手描き",
+    funny: "おもしろ",
+    cool: "クール",
+    retro: "レトロ",
+    minimal: "ミニマル"
+  };
+  const translate = () => {
+    document.querySelectorAll('#platforms button, #category option, #tag option, .chip').forEach((el) => {
+      const raw = (el.getAttribute('data-v') || el.getAttribute('value') || el.textContent || '').trim();
+      if (raw && labels[raw]) el.textContent = labels[raw];
+    });
+  };
+  const observer = new MutationObserver(translate);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', translate, { once: true });
+  translate();
+})();
+</script>
