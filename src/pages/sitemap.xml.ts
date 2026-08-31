@@ -55,6 +55,8 @@ export function GET() {
   entries.push(...multilingualEntries("/"));
   entries.push(...multilingualEntries("/goods/"));
   entries.push(...multilingualEntries("/tags/"));
+  entries.push(...multilingualEntries("/qr-maker"));
+  entries.push(...multilingualEntries("/chat-stamp-maker"));
 
   for (const sticker of stickers) {
     entries.push(...multilingualEntries(`/stickers/${encodeURIComponent(sticker.id)}`));
@@ -68,9 +70,6 @@ export function GET() {
     const count = stickers.filter((sticker) => getTagIdsForSticker(sticker).includes(tag.id)).length;
     if (count >= 2) entries.push(...multilingualTagEntries(tag));
   }
-
-  // Japanese-only utility pages.
-  entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/qr-maker`)}</loc></url>`);
 
   // Category routes currently exist only in Japanese, so do not advertise
   // non-existent localized category URLs to search engines.
