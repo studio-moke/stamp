@@ -1,150 +1,29 @@
 ---
-const title = "社内チャットスタンプメーカー｜Slack・Teams・LINE WORKS向け無料作成 | stamp moke";
-const description = "Slack、Microsoft Teams、LINE WORKS、Chatwork、Google Chatなどで使える文字スタンプを無料作成。AI不使用、ブラウザ内生成、公開は安全判定＋本人同意のみ。";
+const title="社内チャットスタンプメーカー｜Slack・Teams・LINE WORKS向け無料作成 | stamp moke";
+const description="Slack、Teams、LINE WORKSなどで使える文字スタンプを無料作成。フォント・色・縁取り・背景・エフェクト・行数を自由に編集。";
 ---
-<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href="https://stamp-moke.jp/chat-stamp-maker" />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://stamp-moke.jp/chat-stamp-maker" />
-  <style>
-    :root{--ink:#171717;--muted:#6b7280;--line:#e5e7eb;--bg:#f7f7f5;--card:#fff;--accent:#111827;--ok:#15803d;--warn:#a16207;--bad:#b91c1c}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.wrap{max-width:1180px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{font-weight:900;font-size:22px;text-decoration:none;color:var(--ink)}.back{color:#444;text-decoration:none;font-weight:700}.hero{background:linear-gradient(135deg,#fff,#f1f5f9);border:1px solid var(--line);border-radius:24px;padding:34px;margin-bottom:22px}.eyebrow{font-size:13px;font-weight:800;color:#64748b;letter-spacing:.08em}.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:8px 0 14px}.hero p{font-size:16px;line-height:1.8;color:#4b5563;max-width:780px}.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.badge{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:22px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.04)}h2{margin:0 0 18px;font-size:22px}.field{margin-bottom:18px}.field label{display:block;font-weight:800;font-size:14px;margin-bottom:8px}.field input[type=text]{width:100%;font-size:22px;padding:14px 16px;border:2px solid #d1d5db;border-radius:12px;outline:none}.field input[type=text]:focus{border-color:#111827}.row{display:flex;gap:10px;flex-wrap:wrap}.choice{border:1px solid #d1d5db;background:#fff;border-radius:12px;padding:10px 13px;cursor:pointer;font-weight:750}.choice.active{background:#111827;color:white;border-color:#111827}.preview-shell{min-height:390px;display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(#f8fafc 0 25%,#eef2f7 0 50%) 50%/24px 24px;border-radius:16px;border:1px solid var(--line);padding:18px}.preview-shell canvas{width:min(100%,640px);aspect-ratio:1/1;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.16))}.status{margin:16px 0;padding:12px 14px;border-radius:12px;font-size:14px;font-weight:750}.status.green{background:#ecfdf5;color:var(--ok)}.status.yellow{background:#fffbeb;color:var(--warn)}.status.red{background:#fef2f2;color:var(--bad)}.privacy{font-size:13px;color:#6b7280;line-height:1.65}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.btn{border:0;border-radius:12px;padding:13px 16px;font-size:15px;font-weight:850;cursor:pointer}.btn.primary{background:#111827;color:#fff}.btn.secondary{background:#eef2f7;color:#111827}.publishbox{margin-top:14px;padding:14px;background:#f8fafc;border-radius:14px;border:1px solid var(--line)}.publishbox label{display:flex;gap:10px;align-items:flex-start;font-size:13px;font-weight:700;line-height:1.5}.gallery{margin-top:28px}.gallery-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:14px}.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}.stamp-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}.stamp-card canvas{width:100%;height:auto;background:transparent}.stamp-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:8px}.mini{border:0;background:#eef2f7;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:12px;font-weight:800}.note{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;line-height:1.8;color:#4b5563}.toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;display:none;z-index:20;max-width:360px}.toast.show{display:block}@media(max-width:820px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero{padding:24px 18px}.actions{grid-template-columns:1fr}.preview-shell{min-height:300px}}
-  </style>
-</head>
-<body>
-  <main class="wrap">
-    <div class="top"><a class="brand" href="/">stamp moke</a><a class="back" href="/">← サイトへ戻る</a></div>
-    <section class="hero">
-      <div class="eyebrow">FREE CHAT STAMP MAKER</div>
-      <h1>社内チャットで使える<br/>文字スタンプを、すぐ作る。</h1>
-      <p>Slack、LINE WORKS、Microsoft Teams、Chatwork、Google Chat、direct、ChatLuckなどで使いやすいPNG画像を無料で作成できます。画像生成AIやGPTは使わず、画像はあなたのブラウザ内で生成します。</p>
-      <div class="badges"><span class="badge">AI不使用</span><span class="badge">PNG保存</span><span class="badge">公開は本人同意制</span><span class="badge">個人情報フィルタ</span></div>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <h2>スタンプを作る</h2>
-        <div class="field"><label for="stampText">文字</label><input id="stampText" type="text" maxlength="24" value="確認しました" autocomplete="off" /></div>
-        <div class="field"><label>デザイン</label><div class="row" id="styleChoices">
-          <button class="choice active" data-style="business">ビジネス</button><button class="choice" data-style="pop">ポップ</button><button class="choice" data-style="stamp">ハンコ</button><button class="choice" data-style="bold">無骨</button><button class="choice" data-style="soft">やわらか</button><button class="choice" data-style="mono">白黒</button>
-        </div></div>
-        <div class="field"><label>文字方向</label><div class="row" id="layoutChoices"><button class="choice active" data-layout="horizontal">横書き</button><button class="choice" data-layout="vertical">縦書き</button></div></div>
-        <div id="safetyStatus" class="status green">GREEN：公開可能な範囲と判定しました</div>
-        <div class="privacy">非公開のスタンプはサーバーへ保存しません。PNG生成・ダウンロードはブラウザ内だけで完結します。公開を選んだ場合のみ、サーバー側でも安全判定を再実行します。</div>
-        <div class="publishbox"><label><input id="publishConsent" type="checkbox" /> <span>このスタンプを「みんなのチャットスタンプ」に一般公開することに同意します。個人名・会社名・顧客情報・機密情報を含めません。</span></label></div>
-        <div class="actions"><button id="downloadBtn" class="btn primary">PNGをダウンロード</button><button id="publishBtn" class="btn secondary">みんなに公開する</button></div>
-        <div id="deleteInfo" class="privacy" style="margin-top:12px"></div>
-      </div>
-
-      <div class="card">
-        <h2>プレビュー</h2>
-        <div class="preview-shell"><canvas id="preview" width="640" height="640"></canvas></div>
-        <div class="privacy" style="margin-top:12px">背景透過PNG・640×640px。文字数に応じて自動改行し、正方形いっぱいにバランスよく配置します。</div>
-      </div>
-    </section>
-
-    <section class="gallery">
-      <div class="gallery-head"><div><div class="eyebrow">PUBLIC GALLERY</div><h2 style="margin:4px 0 0">みんなのチャットスタンプ</h2></div><button id="reloadBtn" class="mini">更新</button></div>
-      <div id="galleryGrid" class="gallery-grid"></div>
-    </section>
-
-    <section class="note"><strong>安全について：</strong>公開判定はルールベースで行い、メールアドレス、電話番号、住所らしい文字列、長い数字列、認証情報、機密・顧客関連語、固有名詞らしい表現などを検知した場合は自動公開しません。ただし自動判定は完全ではありません。公開前に必ず入力内容をご確認ください。非公開で作る場合は、この公開判定に関係なくPNGを作成できます。</section>
-  </main>
-  <div class="toast" id="toast"></div>
-
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title}</title><meta name="description" content={description}><link rel="canonical" href="https://stamp-moke.jp/chat-stamp-maker"><style>
+:root{--ink:#171717;--muted:#6b7280;--line:#e5e7eb;--bg:#f7f7f5;--card:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.wrap{max-width:1220px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;margin-bottom:22px}.brand,.back{color:var(--ink);font-weight:900;text-decoration:none}.hero,.card,.note{background:#fff;border:1px solid var(--line);border-radius:22px}.hero{padding:30px;margin-bottom:22px}.hero h1{font-size:clamp(30px,5vw,52px);line-height:1.08;margin:6px 0 12px}.hero p,.privacy{color:var(--muted);line-height:1.65}.badges,.row{display:flex;gap:8px;flex-wrap:wrap}.badge{border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800}.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:22px}.card{padding:22px}.field{margin-bottom:18px}.field>label{display:block;font-size:14px;font-weight:900;margin-bottom:8px}textarea,select,input[type=text]{width:100%;border:2px solid #d1d5db;border-radius:12px;padding:12px;font:inherit;font-size:18px}textarea{resize:vertical;min-height:76px}.choice{border:1px solid #d1d5db;background:#fff;border-radius:11px;padding:9px 12px;font-weight:800;cursor:pointer}.choice.active{background:#111827;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.control{border:1px solid var(--line);border-radius:14px;padding:12px}.control label{font-size:12px;font-weight:850;display:block;margin-bottom:7px}.colorrow{display:flex;gap:8px;align-items:center}.colorrow input[type=color]{width:52px;height:38px;border:0;padding:0;background:none}.colorrow input[type=text]{font-size:13px;padding:8px}.rangeval{font-size:12px;color:var(--muted)}.preview-shell{display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(#f8fafc 0 25%,#eef2f7 0 50%) 50%/24px 24px;border-radius:16px;border:1px solid var(--line);padding:16px;position:sticky;top:16px}.preview-shell canvas{width:min(100%,640px);height:auto;aspect-ratio:1}.status{margin:15px 0;padding:11px 13px;border-radius:11px;font-size:13px;font-weight:800}.green{background:#ecfdf5;color:#15803d}.yellow{background:#fffbeb;color:#a16207}.red{background:#fef2f2;color:#b91c1c}.publishbox{margin-top:13px;padding:13px;background:#f8fafc;border-radius:12px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.btn{border:0;border-radius:12px;padding:13px;font-weight:900;cursor:pointer}.primary{background:#111827;color:#fff}.secondary{background:#eef2f7}.gallery{margin-top:28px}.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}.stamp-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:10px}.stamp-card canvas{width:100%;height:auto}.mini{border:0;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}.meta{display:flex;justify-content:space-between;margin-top:7px}.note{margin-top:26px;padding:18px}.toast{position:fixed;right:18px;bottom:18px;background:#111827;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:9}.toast.show{display:block}@media(max-width:850px){.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.wrap{padding:13px}.preview-shell{position:static}.actions{grid-template-columns:1fr}}
+</style></head><body><main class="wrap"><div class="top"><a class="brand" href="/">stamp moke</a><a class="back" href="/">← サイトへ戻る</a></div><section class="hero"><b>FREE CHAT STAMP MAKER</b><h1>社内チャットで使える<br>文字スタンプを、自由に作る。</h1><p>文字・フォント・色・フチ・背景・エフェクト・行数を自由に調整。画像生成AIやGPTは使わず、PNGはブラウザ内で生成します。</p><div class="badges"><span class="badge">AI不使用</span><span class="badge">640×640 PNG</span><span class="badge">10フォント</span><span class="badge">自由配色</span><span class="badge">公開は本人同意制</span></div></section>
+<section class="grid"><div class="card"><h2>スタンプを作る</h2><div class="field"><label for="stampText">文字（改行もできます）</label><textarea id="stampText" maxlength="32">確認しました</textarea></div><div class="field"><label>プリセット</label><div class="row" id="styleChoices"><button class="choice active" data-style="business">ビジネス</button><button class="choice" data-style="pop">ポップ</button><button class="choice" data-style="stamp">ハンコ</button><button class="choice" data-style="bold">無骨</button><button class="choice" data-style="soft">やわらか</button><button class="choice" data-style="mono">白黒</button></div></div>
+<div class="controls"><div class="control"><label>フォント</label><select id="font"><option value="gothic">極太ゴシック</option><option value="rounded">丸ゴシック</option><option value="mincho">明朝</option><option value="serif">筆・毛筆風</option><option value="hand">手書き風</option><option value="pop">ポップ</option><option value="retro">レトロ</option><option value="bold">無骨</option><option value="classic">クラシック</option><option value="casual">カジュアル</option></select></div><div class="control"><label>行数</label><select id="lineMode"><option value="auto">自動</option><option value="1">1行</option><option value="2">2行</option><option value="3">3行</option><option value="4">4行</option></select></div><div class="control"><label>文字方向</label><select id="layout"><option value="horizontal">横書き</option><option value="vertical">縦書き</option></select></div><div class="control"><label>エフェクト</label><select id="effect"><option value="none">なし</option><option value="shadow">影</option><option value="glow">発光</option><option value="depth">立体</option></select></div><div class="control"><label>文字色</label><div class="colorrow"><input id="textColor" type="color" value="#111827"><input id="textHex" type="text" value="#111827" maxlength="7"></div></div><div class="control"><label>フチ色</label><div class="colorrow"><input id="strokeColor" type="color" value="#ffffff"><input id="strokeHex" type="text" value="#ffffff" maxlength="7"></div><label style="margin-top:8px"><input id="strokeEnabled" type="checkbox" checked> フチを付ける</label></div><div class="control"><label>フチの太さ <span id="strokeValue" class="rangeval">14</span></label><input id="strokeWidth" type="range" min="0" max="28" value="14" style="width:100%"></div><div class="control"><label>背景</label><select id="background"><option value="transparent">透明</option><option value="white">白</option><option value="color">好きな色</option></select><div class="colorrow" style="margin-top:8px"><input id="backgroundColor" type="color" value="#fff3f7"><input id="backgroundHex" type="text" value="#fff3f7" maxlength="7"></div></div></div>
+<div id="safetyStatus" class="status green">GREEN：公開可能な範囲と判定しました</div><div class="privacy">非公開スタンプはサーバーへ保存しません。一般公開する場合のみ安全判定を再実行します。</div><div class="publishbox"><label><input id="publishConsent" type="checkbox"> このスタンプを「みんなのチャットスタンプ」に一般公開することに同意します。</label></div><div class="actions"><button id="downloadBtn" class="btn primary">PNGをダウンロード</button><button id="publishBtn" class="btn secondary">みんなに公開する</button></div><div id="deleteInfo" class="privacy"></div></div>
+<div class="card"><h2>プレビュー</h2><div class="preview-shell"><canvas id="preview" width="640" height="640"></canvas></div><p class="privacy">背景透過対応・640×640px。行数を指定した場合は、その行数で正方形いっぱいに収まる最大サイズへ自動調整します。</p></div></section>
+<section class="gallery"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>PUBLIC GALLERY</b><h2>みんなのチャットスタンプ</h2></div><button id="reloadBtn" class="mini">更新</button></div><div id="galleryGrid" class="gallery-grid"></div></section><section class="note"><b>安全について：</b> 公開時はメールアドレス、電話番号、長い数字列、認証情報、機密関連語、固有情報らしい表現などをルールベースで検査します。自動判定は完全ではないため、公開前に必ず内容をご確認ください。</section></main><div id="toast" class="toast"></div>
 <script>
-const canvas = document.getElementById('preview');
-const ctx = canvas.getContext('2d');
-const input = document.getElementById('stampText');
-const safetyEl = document.getElementById('safetyStatus');
-const consent = document.getElementById('publishConsent');
-const toast = document.getElementById('toast');
-let style = 'business';
-let layout = 'horizontal';
-
-const styles = {
-  business:{fill:'#111827',stroke:'#ffffff',bg:null,weight:900,family:'"Noto Sans JP", sans-serif',shadow:false},
-  pop:{fill:'#ff4f87',stroke:'#ffffff',bg:'#fff3f7',weight:900,family:'"Noto Sans JP", sans-serif',shadow:true},
-  stamp:{fill:'#b91c1c',stroke:'#ffffff',bg:null,weight:900,family:'serif',shadow:false,stamp:true},
-  bold:{fill:'#111111',stroke:'#ffffff',bg:null,weight:900,family:'Impact, "Noto Sans JP", sans-serif',shadow:true},
-  soft:{fill:'#6d5c80',stroke:'#ffffff',bg:'#f6f1fb',weight:800,family:'"Noto Sans JP", sans-serif',shadow:false},
-  mono:{fill:'#ffffff',stroke:'#111111',bg:'#111111',weight:900,family:'"Noto Sans JP", sans-serif',shadow:false}
-};
-
-function splitBalanced(text){
-  const chars=[...String(text||'').replace(/\s+/g,'')];
-  if(chars.length<=4)return[chars.join('')];
-  if(chars.length<=8){const cut=Math.floor(chars.length/2);return[chars.slice(0,cut).join(''),chars.slice(cut).join('')]}
-  if(chars.length<=15){const rows=3,base=Math.floor(chars.length/rows),extra=chars.length%rows;let i=0;return Array.from({length:rows},(_,r)=>{const n=base+(r<extra?1:0);const part=chars.slice(i,i+n).join('');i+=n;return part})}
-  const rows=4,base=Math.floor(chars.length/rows),extra=chars.length%rows;let i=0;return Array.from({length:rows},(_,r)=>{const n=base+(r<extra?1:0);const part=chars.slice(i,i+n).join('');i+=n;return part});
-}
-function fitBlock(x,lines,cfg,maxW,maxH){
-  let size=220;
-  while(size>36){
-    x.font=`${cfg.weight} ${size}px ${cfg.family}`;
-    const widest=Math.max(...lines.map(line=>x.measureText(line).width));
-    const lineH=size*1.02;
-    if(widest<=maxW && lineH*lines.length<=maxH)return{size,lineH};
-    size-=2;
-  }
-  return{size:36,lineH:37};
-}
-function drawStamp(target=canvas, text=input.value.trim()||'確認しました', s=style, l=layout){
-  const c=target, x=c.getContext('2d'), cfg=styles[s]||styles.business;
-  x.clearRect(0,0,c.width,c.height);x.save();
-  const pad=Math.round(c.width*0.07);
-  if(cfg.bg){x.fillStyle=cfg.bg;x.beginPath();x.roundRect(pad,pad,c.width-pad*2,c.height-pad*2,48);x.fill()}
-  x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.strokeStyle=cfg.stroke;x.fillStyle=cfg.fill;
-  if(cfg.shadow){x.shadowColor='rgba(0,0,0,.22)';x.shadowBlur=12;x.shadowOffsetY=7}
-  if(l==='vertical'){
-    const chars=[...text.replace(/\s+/g,'')].slice(0,12);
-    const maxH=c.height-pad*2,maxW=c.width-pad*2;
-    let fs=Math.min(150,Math.floor(maxH/Math.max(chars.length,1)*0.9),Math.floor(maxW*0.72));
-    fs=Math.max(fs,40);x.font=`${cfg.weight} ${fs}px ${cfg.family}`;x.lineWidth=Math.max(10,fs*0.12);
-    const step=Math.min(fs*0.98,maxH/Math.max(chars.length,1));const total=step*(chars.length-1);const start=c.height/2-total/2;
-    chars.forEach((ch,i)=>{x.strokeText(ch,c.width/2,start+i*step);x.fillText(ch,c.width/2,start+i*step)});
-  }else{
-    const lines=splitBalanced(text);
-    const fit=fitBlock(x,lines,cfg,c.width-pad*2,c.height-pad*2);
-    x.font=`${cfg.weight} ${fit.size}px ${cfg.family}`;x.lineWidth=Math.max(10,fit.size*0.11);
-    const totalH=fit.lineH*lines.length;const firstY=c.height/2-totalH/2+fit.lineH/2;
-    lines.forEach((line,i)=>{const y=firstY+i*fit.lineH;x.strokeText(line,c.width/2,y);x.fillText(line,c.width/2,y)});
-  }
-  if(cfg.stamp){x.shadowColor='transparent';x.strokeStyle='#b91c1c';x.lineWidth=8;x.beginPath();x.roundRect(pad,pad,c.width-pad*2,c.height-pad*2,30);x.stroke()}
-  x.restore();
-}
-function safetyCheck(raw){
-  const text=String(raw||'').normalize('NFKC').trim();if(!text)return{level:'red',reason:'文字を入力してください'};
-  const red=[/(?:https?:\/\/|www\.)/i,/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,/(?:\+?81[- ]?)?0\d{1,4}[- ]?\d{1,4}[- ]?\d{3,4}/,/(?:パスワード|暗証番号|社外秘|機密|極秘|顧客情報|個人情報|口座番号|カード番号|社員番号|契約番号|注文番号)/,/(?:〒?\d{3}[-ー]\d{4})/];
-  if(red.some(p=>p.test(text)))return{level:'red',reason:'個人情報・機密情報の可能性があります'};
-  const yellow=[/\d{4,}/,/[A-Za-z]{2,}\d{2,}|\d{2,}[A-Za-z]{2,}/,/(?:株式会社|有限会社|合同会社|部署|部長|課長|担当者|取引先|クライアント|案件|見積|請求)/,/(?:[一-龯々]{2,8})(?:さん|様|くん|君|ちゃん|氏)/];
-  if(yellow.some(p=>p.test(text)))return{level:'yellow',reason:'固有情報を含む可能性があります'};return{level:'green',reason:'公開可能な範囲と判定しました'};
-}
-function update(){drawStamp();const s=safetyCheck(input.value);safetyEl.className=`status ${s.level}`;safetyEl.textContent=`${s.level.toUpperCase()}：${s.reason}`}
-function notify(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600)}
-function downloadCanvas(c,name='chat-stamp.png'){const a=document.createElement('a');a.download=name;a.href=c.toDataURL('image/png');a.click()}
-input.addEventListener('input',update);
-document.querySelectorAll('[data-style]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-style]').forEach(x=>x.classList.remove('active'));b.classList.add('active');style=b.dataset.style;update()});
-document.querySelectorAll('[data-layout]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-layout]').forEach(x=>x.classList.remove('active'));b.classList.add('active');layout=b.dataset.layout;update()});
-document.getElementById('downloadBtn').onclick=()=>{drawStamp();downloadCanvas(canvas,`stamp-moke-${Date.now()}.png`)};
-
-document.getElementById('publishBtn').onclick=async()=>{
-  const s=safetyCheck(input.value);if(s.level!=='green'){notify('GREEN判定のスタンプだけ公開できます');return}if(!consent.checked){notify('公開への同意チェックが必要です');return}
-  try{const r=await fetch('/api/chat-stamps',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:input.value,style,layout,consent:true})});const data=await r.json();if(!r.ok)throw new Error(data?.safety?.reason||data.error||'公開できません');localStorage.setItem(`chat-stamp-delete-${data.item.id}`,data.deleteToken);document.getElementById('deleteInfo').textContent='公開しました。この端末では、ギャラリーの「削除」ボタンから削除できます。';notify('公開しました');consent.checked=false;loadGallery()}catch(e){notify(e.message||'公開に失敗しました')}
-};
-
-function galleryCanvas(item){const c=document.createElement('canvas');c.width=640;c.height=640;drawStamp(c,item.text,item.style,item.layout);return c}
-async function deleteItem(item){const token=localStorage.getItem(`chat-stamp-delete-${item.id}`);if(!token)return;try{const r=await fetch('/api/chat-stamps',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:item.id,deleteToken:token})});if(!r.ok)throw new Error('削除できませんでした');localStorage.removeItem(`chat-stamp-delete-${item.id}`);notify('削除しました');loadGallery()}catch(e){notify(e.message)}}
-async function loadGallery(){const grid=document.getElementById('galleryGrid');grid.innerHTML='<div class="privacy">読み込み中...</div>';try{const r=await fetch('/api/chat-stamps');const data=await r.json();grid.innerHTML='';if(!data.items?.length){grid.innerHTML='<div class="privacy">まだ公開スタンプはありません。最初の1個を作ってみてください。</div>';return}data.items.forEach(item=>{const card=document.createElement('div');card.className='stamp-card';const c=galleryCanvas(item);card.appendChild(c);const meta=document.createElement('div');meta.className='stamp-meta';const dl=document.createElement('button');dl.className='mini';dl.textContent='PNG保存';dl.onclick=()=>downloadCanvas(c,`stamp-moke-${item.id}.png`);meta.appendChild(dl);const token=localStorage.getItem(`chat-stamp-delete-${item.id}`);if(token){const del=document.createElement('button');del.className='mini';del.textContent='削除';del.onclick=()=>deleteItem(item);meta.appendChild(del)}card.appendChild(meta);grid.appendChild(card)})}catch(e){grid.innerHTML='<div class="privacy">ギャラリーを読み込めませんでした。</div>'}}
-document.getElementById('reloadBtn').onclick=loadGallery;update();loadGallery();
-</script>
-</body>
-</html>
+const canvas=document.getElementById('preview'),input=document.getElementById('stampText'),safetyEl=document.getElementById('safetyStatus'),consent=document.getElementById('publishConsent'),toast=document.getElementById('toast');let style='business';
+const fonts={gothic:{family:'"Arial Black","Noto Sans JP",sans-serif',weight:900},rounded:{family:'"Hiragino Maru Gothic ProN","Yu Gothic",sans-serif',weight:900},mincho:{family:'"Yu Mincho","Hiragino Mincho ProN",serif',weight:900},serif:{family:'"Yu Mincho",serif',weight:900},hand:{family:'"Comic Sans MS","Yu Gothic",sans-serif',weight:800},pop:{family:'"Arial Rounded MT Bold","Noto Sans JP",sans-serif',weight:900},retro:{family:'Impact,"Noto Sans JP",sans-serif',weight:900},bold:{family:'Impact,"Arial Black","Noto Sans JP",sans-serif',weight:900},classic:{family:'Georgia,"Yu Mincho",serif',weight:800},casual:{family:'"Trebuchet MS","Yu Gothic",sans-serif',weight:800}};
+const presets={business:{font:'gothic',textColor:'#111827',strokeColor:'#ffffff',strokeWidth:14,effect:'none',background:'transparent',backgroundColor:'#ffffff'},pop:{font:'pop',textColor:'#ff4f87',strokeColor:'#ffffff',strokeWidth:16,effect:'shadow',background:'color',backgroundColor:'#fff3f7'},stamp:{font:'serif',textColor:'#b91c1c',strokeColor:'#ffffff',strokeWidth:8,effect:'none',background:'transparent',backgroundColor:'#ffffff'},bold:{font:'bold',textColor:'#111111',strokeColor:'#ffffff',strokeWidth:18,effect:'depth',background:'transparent',backgroundColor:'#ffffff'},soft:{font:'rounded',textColor:'#6d5c80',strokeColor:'#ffffff',strokeWidth:12,effect:'none',background:'color',backgroundColor:'#f6f1fb'},mono:{font:'gothic',textColor:'#ffffff',strokeColor:'#111111',strokeWidth:10,effect:'none',background:'color',backgroundColor:'#111111'}};
+const $=id=>document.getElementById(id);function validHex(v){return /^#[0-9a-fA-F]{6}$/.test(v)}function syncPair(colorId,hexId){const c=$(colorId),h=$(hexId);c.oninput=()=>{h.value=c.value;update()};h.oninput=()=>{if(validHex(h.value)){c.value=h.value;update()}}}syncPair('textColor','textHex');syncPair('strokeColor','strokeHex');syncPair('backgroundColor','backgroundHex');
+function settings(){return{lineMode:$('lineMode').value,font:$('font').value,textColor:$('textColor').value,strokeEnabled:$('strokeEnabled').checked,strokeColor:$('strokeColor').value,strokeWidth:Number($('strokeWidth').value),effect:$('effect').value,background:$('background').value,backgroundColor:$('backgroundColor').value}}
+function applySettings(s){$('lineMode').value=s.lineMode||'auto';$('font').value=s.font||'gothic';$('textColor').value=s.textColor||'#111827';$('textHex').value=$('textColor').value;$('strokeEnabled').checked=s.strokeEnabled!==false;$('strokeColor').value=s.strokeColor||'#ffffff';$('strokeHex').value=$('strokeColor').value;$('strokeWidth').value=s.strokeWidth??14;$('strokeValue').textContent=$('strokeWidth').value;$('effect').value=s.effect||'none';$('background').value=s.background||'transparent';$('backgroundColor').value=s.backgroundColor||'#fff3f7';$('backgroundHex').value=$('backgroundColor').value}
+function balanced(text,mode){const manual=String(text).split('\n').map(x=>x.trim()).filter(Boolean);if(manual.length>1)return manual.slice(0,4);const chars=[...String(text).replace(/\s+/g,'')];let rows=mode==='auto'?(chars.length<=4?1:chars.length<=8?2:chars.length<=15?3:4):Number(mode);rows=Math.max(1,Math.min(4,rows));const base=Math.floor(chars.length/rows),extra=chars.length%rows;let i=0;return Array.from({length:rows},(_,r)=>{const n=base+(r<extra?1:0),v=chars.slice(i,i+n).join('');i+=n;return v}).filter(Boolean)}
+function fitBlock(x,lines,f,maxW,maxH){let size=250;while(size>34){x.font=`${f.weight} ${size}px ${f.family}`;const widest=Math.max(...lines.map(v=>x.measureText(v).width)),lh=size*.98;if(widest<=maxW&&lh*lines.length<=maxH)return{size,lh};size-=2}return{size:34,lh:34}}
+function drawStamp(c=canvas,text=input.value.trim()||'確認しました',st=settings(),lay=$('layout').value){const x=c.getContext('2d'),f=fonts[st.font]||fonts.gothic,pad=Math.round(c.width*.055);x.clearRect(0,0,c.width,c.height);x.save();if(st.background!=='transparent'){x.fillStyle=st.background==='white'?'#ffffff':st.backgroundColor;x.beginPath();x.roundRect(pad,pad,c.width-pad*2,c.height-pad*2,42);x.fill()}x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.fillStyle=st.textColor;x.strokeStyle=st.strokeColor;if(st.effect==='shadow'){x.shadowColor='rgba(0,0,0,.35)';x.shadowBlur=12;x.shadowOffsetX=7;x.shadowOffsetY=9}else if(st.effect==='glow'){x.shadowColor=st.textColor;x.shadowBlur=25}else if(st.effect==='depth'){x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=0;x.shadowOffsetX=10;x.shadowOffsetY=10}if(lay==='vertical'){const chars=[...text.replace(/\s+/g,'')].slice(0,12),fs=Math.max(38,Math.min(145,(c.height-pad*2)/Math.max(chars.length,1)*.9));x.font=`${f.weight} ${fs}px ${f.family}`;x.lineWidth=st.strokeEnabled?Math.min(st.strokeWidth,fs*.16):0;const step=Math.min(fs*.96,(c.height-pad*2)/chars.length),start=c.height/2-step*(chars.length-1)/2;chars.forEach((ch,i)=>{if(st.strokeEnabled&&st.strokeWidth>0)x.strokeText(ch,c.width/2,start+i*step);x.fillText(ch,c.width/2,start+i*step)})}else{const lines=balanced(text,st.lineMode),fit=fitBlock(x,lines,f,c.width-pad*2,c.height-pad*2);x.font=`${f.weight} ${fit.size}px ${f.family}`;x.lineWidth=st.strokeEnabled?Math.min(st.strokeWidth,fit.size*.18):0;const first=c.height/2-fit.lh*lines.length/2+fit.lh/2;lines.forEach((line,i)=>{const y=first+i*fit.lh;if(st.strokeEnabled&&st.strokeWidth>0)x.strokeText(line,c.width/2,y);x.fillText(line,c.width/2,y)})}if(style==='stamp'){x.shadowColor='transparent';x.strokeStyle=st.textColor;x.lineWidth=7;x.beginPath();x.roundRect(pad,pad,c.width-pad*2,c.height-pad*2,28);x.stroke()}x.restore()}
+function safetyCheck(raw){const t=String(raw||'').normalize('NFKC').trim(),flat=t.replace(/\n/g,' ');if(!t)return{level:'red',reason:'文字を入力してください'};const red=[/(?:https?:\/\/|www\.)/i,/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,/(?:パスワード|暗証番号|社外秘|機密|極秘|顧客情報|個人情報|口座番号|カード番号)/,/\d{8,}/];if(red.some(p=>p.test(flat)))return{level:'red',reason:'個人情報・機密情報の可能性があります'};const yellow=[/\d{4,}/,/(?:株式会社|有限会社|合同会社|担当者|取引先|クライアント)/];if(yellow.some(p=>p.test(flat)))return{level:'yellow',reason:'固有情報を含む可能性があります'};return{level:'green',reason:'公開可能な範囲と判定しました'}}
+function update(){drawStamp();const s=safetyCheck(input.value);safetyEl.className=`status ${s.level}`;safetyEl.textContent=`${s.level.toUpperCase()}：${s.reason}`;$('strokeValue').textContent=$('strokeWidth').value}function notify(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}function download(c,n){const a=document.createElement('a');a.download=n;a.href=c.toDataURL('image/png');a.click()}
+input.oninput=update;['font','lineMode','layout','effect','background','strokeWidth','strokeEnabled'].forEach(id=>$(id).addEventListener('input',update));document.querySelectorAll('[data-style]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-style]').forEach(x=>x.classList.remove('active'));b.classList.add('active');style=b.dataset.style;applySettings({...presets[style],lineMode:$('lineMode').value,strokeEnabled:true});update()});$('downloadBtn').onclick=()=>{drawStamp();download(canvas,`stamp-moke-${Date.now()}.png`)};
+$('publishBtn').onclick=async()=>{const safe=safetyCheck(input.value);if(safe.level!=='green')return notify('GREEN判定のスタンプだけ公開できます');if(!consent.checked)return notify('公開への同意チェックが必要です');try{const r=await fetch('/api/chat-stamps',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:input.value,style,layout:$('layout').value,settings:settings(),consent:true})}),d=await r.json();if(!r.ok)throw new Error(d?.safety?.reason||d.error||'公開できません');localStorage.setItem(`chat-stamp-delete-${d.item.id}`,d.deleteToken);$('deleteInfo').textContent='公開しました。この端末から削除できます。';consent.checked=false;notify('公開しました');loadGallery()}catch(e){notify(e.message)}};
+function galleryCanvas(item){const c=document.createElement('canvas');c.width=c.height=640;const oldStyle=style;style=item.style||'business';drawStamp(c,item.text,item.settings||presets[item.style]||presets.business,item.layout||'horizontal');style=oldStyle;return c}async function del(item){const token=localStorage.getItem(`chat-stamp-delete-${item.id}`);if(!token)return;const r=await fetch('/api/chat-stamps',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:item.id,deleteToken:token})});if(r.ok){localStorage.removeItem(`chat-stamp-delete-${item.id}`);notify('削除しました');loadGallery()}}
+async function loadGallery(){const g=$('galleryGrid');g.innerHTML='<div class="privacy">読み込み中...</div>';try{const r=await fetch('/api/chat-stamps'),d=await r.json();g.innerHTML='';if(!d.items?.length){g.innerHTML='<div class="privacy">まだ公開スタンプはありません。</div>';return}d.items.forEach(item=>{const card=document.createElement('div');card.className='stamp-card';const c=galleryCanvas(item);card.appendChild(c);const meta=document.createElement('div');meta.className='meta';const dl=document.createElement('button');dl.className='mini';dl.textContent='PNG保存';dl.onclick=()=>download(c,`stamp-moke-${item.id}.png`);meta.appendChild(dl);if(localStorage.getItem(`chat-stamp-delete-${item.id}`)){const b=document.createElement('button');b.className='mini';b.textContent='削除';b.onclick=()=>del(item);meta.appendChild(b)}card.appendChild(meta);g.appendChild(card)})}catch(e){g.innerHTML='<div class="privacy">ギャラリーを読み込めませんでした。</div>'}}$('reloadBtn').onclick=loadGallery;update();loadGallery();
+</script></body></html>
