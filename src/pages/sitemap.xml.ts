@@ -69,6 +69,9 @@ export function GET() {
     if (count >= 2) entries.push(...multilingualTagEntries(tag));
   }
 
+  // Japanese-only utility pages.
+  entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/qr-maker`)}</loc></url>`);
+
   // Category routes currently exist only in Japanese, so do not advertise
   // non-existent localized category URLs to search engines.
   entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/`)}</loc></url>`);
