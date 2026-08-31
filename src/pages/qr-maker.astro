@@ -1,0 +1,94 @@
+---
+const title = "かわいいQRコードメーカー｜色・動物・キャラ入りQRを無料作成 | stamp moke";
+const description = "好きな色と動物キャラを選んで、かわいいQRコードを無料作成。猫・犬・うさぎ・くま・パンダ・ひよこなどのシルエットを中央に配置でき、キャラなしも選択可能。ブラウザ内生成・PNG保存対応。";
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href="https://stamp-moke.jp/qr-maker" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stamp-moke.jp/qr-maker" />
+  <style>
+    :root{--ink:#29252a;--muted:#756d75;--line:#eadfe6;--card:#fff;--pink:#ef7fae;--pink2:#fff0f6;--bg:#fff9fb}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#fff7fb,#fff 45%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.wrap{max-width:1120px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}.brand,.back{color:var(--ink);text-decoration:none;font-weight:900}.brand{font-size:22px}.back{font-size:14px}.hero{text-align:center;padding:28px 12px 24px}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.12em;color:#b55f85}.hero h1{font-size:clamp(30px,5vw,50px);line-height:1.15;margin:8px 0 12px}.hero p{margin:0 auto;max-width:720px;color:var(--muted);line-height:1.8}.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}.badge{background:#fff;border:1px solid var(--line);padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.9fr);gap:20px}.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 14px 40px rgba(126,70,98,.08)}h2{font-size:20px;margin:0 0 18px}.field{margin-bottom:20px}.field label{display:block;font-weight:900;font-size:14px;margin-bottom:9px}.text-input{width:100%;border:2px solid #e5d7df;border-radius:14px;padding:14px 15px;font-size:16px;outline:none}.text-input:focus{border-color:#ef9bc0}.colors{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.color-wrap{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:13px;background:#fff}.color-wrap input{width:34px;height:34px;border:0;padding:0;background:transparent}.presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.swatch{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ddd;cursor:pointer}.characters{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.char{border:1px solid var(--line);background:#fff;border-radius:16px;padding:10px 4px;min-height:78px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-weight:800;font-size:12px}.char.active{border:2px solid var(--pink);background:var(--pink2)}.char svg{width:38px;height:38px;fill:#5c5157}.size-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.size-btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;cursor:pointer;font-weight:800}.size-btn.active{background:#342f33;color:#fff;border-color:#342f33}.preview{display:flex;align-items:center;justify-content:center;min-height:410px;background:linear-gradient(45deg,#fff4f8 25%,#fff 25%,#fff 50%,#fff4f8 50%,#fff4f8 75%,#fff 75%);background-size:28px 28px;border-radius:20px;padding:22px;border:1px solid var(--line)}canvas{display:block;width:min(100%,420px);height:auto;background:#fff;border-radius:18px;box-shadow:0 10px 28px rgba(80,50,65,.12)}.status{font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px}.download{width:100%;margin-top:15px;border:0;border-radius:14px;background:#ef7fae;color:#fff;padding:14px 16px;font-size:16px;font-weight:900;cursor:pointer}.note{margin-top:24px;padding:18px 20px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--muted);line-height:1.8}.note strong{color:var(--ink)}@media(max-width:820px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.characters{grid-template-columns:repeat(4,1fr)}.preview{min-height:330px}.hero{padding-top:14px}}@media(max-width:430px){.characters{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><a class="brand" href="/">stamp moke</a><a class="back" href="/">← サイトへ戻る</a></div>
+  <section class="hero">
+    <div class="eyebrow">CUTE QR MAKER</div>
+    <h1>かわいいQRコードを、<br/>かんたんに。</h1>
+    <p>URLや文字を入れて、好きな色と動物キャラを選ぶだけ。キャラなしのシンプルなQRコードも作れます。</p>
+    <div class="badges"><span class="badge">無料</span><span class="badge">登録不要</span><span class="badge">PNG保存</span><span class="badge">ブラウザ内生成</span></div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>QRコードを作る</h2>
+      <div class="field"><label for="qrText">URL・テキスト</label><input id="qrText" class="text-input" type="text" value="https://stamp-moke.jp/" autocomplete="off" /></div>
+      <div class="field"><label>QRの色</label><div class="colors"><div class="color-wrap"><input id="qrColor" type="color" value="#342f33"/><span id="colorCode">#342f33</span></div></div><div class="presets" id="presets"><button class="swatch" data-color="#342f33" style="background:#342f33" aria-label="ブラック"></button><button class="swatch" data-color="#e66fa1" style="background:#e66fa1" aria-label="ピンク"></button><button class="swatch" data-color="#7e74c9" style="background:#7e74c9" aria-label="ラベンダー"></button><button class="swatch" data-color="#52a99a" style="background:#52a99a" aria-label="ミント"></button><button class="swatch" data-color="#5f8fc8" style="background:#5f8fc8" aria-label="ブルー"></button><button class="swatch" data-color="#aa795d" style="background:#aa795d" aria-label="ブラウン"></button></div></div>
+      <div class="field"><label>真ん中のキャラ</label><div class="characters" id="characters">
+        <button class="char active" data-char="none"><svg viewBox="0 0 64 64"><path d="M14 30h36v5H14zM29 14h6v36h-6z" opacity=".22"/></svg><span>なし</span></button>
+        <button class="char" data-char="cat"><svg viewBox="0 0 64 64"><path d="M17 24 13 10l14 8c3-1 7-1 10 0l14-8-4 14c4 4 6 9 6 15 0 12-9 19-21 19S11 51 11 39c0-6 2-11 6-15Z"/></svg><span>ねこ</span></button>
+        <button class="char" data-char="dog"><svg viewBox="0 0 64 64"><path d="M18 19C8 19 6 10 8 5c9 2 15 7 18 12 4-1 8-1 12 0C41 12 47 7 56 5c2 5 0 14-10 14 5 5 8 11 8 19 0 13-9 20-22 20S10 51 10 38c0-8 3-14 8-19Z"/></svg><span>いぬ</span></button>
+        <button class="char" data-char="rabbit"><svg viewBox="0 0 64 64"><path d="M24 26C14 16 14 3 19 2c6-1 10 12 11 20h4c1-8 5-21 11-20 5 1 5 14-5 24 8 3 13 10 13 18 0 10-9 17-21 17S11 54 11 44c0-8 5-15 13-18Z"/></svg><span>うさぎ</span></button>
+        <button class="char" data-char="bear"><svg viewBox="0 0 64 64"><path d="M16 20a9 9 0 1 1 12-9c3-1 5-1 8 0a9 9 0 1 1 12 9c5 5 8 11 8 19 0 13-10 21-24 21S8 52 8 39c0-8 3-14 8-19Z"/></svg><span>くま</span></button>
+        <button class="char" data-char="panda"><svg viewBox="0 0 64 64"><path d="M16 19a9 9 0 1 1 12-9h8a9 9 0 1 1 12 9c5 5 8 12 8 20 0 13-10 21-24 21S8 52 8 39c0-8 3-15 8-20Zm8 12a6 8 0 1 0 0 16 6 8 0 0 0 0-16Zm16 0a6 8 0 1 0 0 16 6 8 0 0 0 0-16Z"/></svg><span>パンダ</span></button>
+        <button class="char" data-char="chick"><svg viewBox="0 0 64 64"><path d="M33 8c12 0 22 10 22 23 0 4-1 8-3 11l9 4-12 3c-4 5-10 8-16 8-13 0-23-10-23-24S20 8 33 8Z"/></svg><span>ひよこ</span></button>
+        <button class="char" data-char="hedgehog"><svg viewBox="0 0 64 64"><path d="m8 34 6-4-5-6 8-1-2-8 8 3 2-9 7 6 6-8 4 9 9-5v10l8-1-4 9 7 3-7 6c0 13-9 21-23 21S8 49 8 34Z"/></svg><span>ハリネズミ</span></button>
+      </div></div>
+      <div class="field"><label>キャラサイズ</label><div class="size-row" id="sizes"><button class="size-btn" data-size="small">小</button><button class="size-btn active" data-size="medium">中</button><button class="size-btn" data-size="large">大</button></div></div>
+    </div>
+
+    <div class="card">
+      <h2>プレビュー</h2>
+      <div class="preview"><canvas id="qrCanvas" width="720" height="720"></canvas></div>
+      <div class="status" id="status">中央キャラを入れる場合は、読み取りやすさを優先して高い誤り訂正レベルで生成します。</div>
+      <button class="download" id="downloadBtn">PNGで保存</button>
+    </div>
+  </section>
+  <section class="note"><strong>プライバシー：</strong>入力したURLやテキストは保存しません。QRコードの生成とPNG画像の作成はブラウザ内で行います。重要なQRコードは、保存後に実際のスマートフォンで読み取れることをご確認ください。</section>
+</main>
+<script>
+import QRCode from 'qrcode';
+const canvas=document.getElementById('qrCanvas');
+const input=document.getElementById('qrText');
+const color=document.getElementById('qrColor');
+const colorCode=document.getElementById('colorCode');
+const status=document.getElementById('status');
+let currentChar='none';let currentSize='medium';
+const icons={
+cat:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="M17 24 13 10l14 8c3-1 7-1 10 0l14-8-4 14c4 4 6 9 6 15 0 12-9 19-21 19S11 51 11 39c0-6 2-11 6-15Z"/></svg>',
+dog:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="M18 19C8 19 6 10 8 5c9 2 15 7 18 12 4-1 8-1 12 0C41 12 47 7 56 5c2 5 0 14-10 14 5 5 8 11 8 19 0 13-9 20-22 20S10 51 10 38c0-8 3-14 8-19Z"/></svg>',
+rabbit:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="M24 26C14 16 14 3 19 2c6-1 10 12 11 20h4c1-8 5-21 11-20 5 1 5 14-5 24 8 3 13 10 13 18 0 10-9 17-21 17S11 54 11 44c0-8 5-15 13-18Z"/></svg>',
+bear:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="M16 20a9 9 0 1 1 12-9c3-1 5-1 8 0a9 9 0 1 1 12 9c5 5 8 11 8 19 0 13-10 21-24 21S8 52 8 39c0-8 3-14 8-19Z"/></svg>',
+panda:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="M16 19a9 9 0 1 1 12-9h8a9 9 0 1 1 12 9c5 5 8 12 8 20 0 13-10 21-24 21S8 52 8 39c0-8 3-15 8-20Zm8 12a6 8 0 1 0 0 16 6 8 0 0 0 0-16Zm16 0a6 8 0 1 0 0 16 6 8 0 0 0 0-16Z"/></svg>',
+chick:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="M33 8c12 0 22 10 22 23 0 4-1 8-3 11l9 4-12 3c-4 5-10 8-16 8-13 0-23-10-23-24S20 8 33 8Z"/></svg>',
+hedgehog:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="COLOR" d="m8 34 6-4-5-6 8-1-2-8 8 3 2-9 7 6 6-8 4 9 9-5v10l8-1-4 9 7 3-7 6c0 13-9 21-23 21S8 49 8 34Z"/></svg>'};
+const ratios={small:.14,medium:.19,large:.24};
+async function draw(){
+  const text=input.value.trim()||'https://stamp-moke.jp/';
+  colorCode.textContent=color.value;
+  try{
+    await QRCode.toCanvas(canvas,text,{width:720,margin:3,errorCorrectionLevel:currentChar==='none'?'M':'H',color:{dark:color.value,light:'#ffffff'}});
+    if(currentChar!=='none') await overlayIcon();
+    status.textContent=currentSize==='large'&&currentChar!=='none'?'大サイズはデザイン性重視です。保存後に必ず読み取り確認をしてください。':'QRコードを生成しました。保存前にプレビューをご確認ください。';
+  }catch(e){status.textContent='QRコードを生成できませんでした。入力内容をご確認ください。'}
+}
+function overlayIcon(){return new Promise(resolve=>{const ctx=canvas.getContext('2d');const ratio=ratios[currentSize];const box=canvas.width*ratio;const pad=box*.17;const x=(canvas.width-box)/2;const y=x;ctx.save();ctx.fillStyle='#fff';ctx.beginPath();ctx.roundRect(x-pad,y-pad,box+pad*2,box+pad*2,box*.22);ctx.fill();ctx.restore();const svg=icons[currentChar].replaceAll('COLOR',color.value);const img=new Image();img.onload=()=>{ctx.drawImage(img,x,y,box,box);resolve()};img.onerror=resolve;img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)})}
+input.addEventListener('input',draw);color.addEventListener('input',draw);
+document.getElementById('presets').addEventListener('click',e=>{const b=e.target.closest('[data-color]');if(!b)return;color.value=b.dataset.color;draw()});
+document.getElementById('characters').addEventListener('click',e=>{const b=e.target.closest('[data-char]');if(!b)return;document.querySelectorAll('.char').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentChar=b.dataset.char;draw()});
+document.getElementById('sizes').addEventListener('click',e=>{const b=e.target.closest('[data-size]');if(!b)return;document.querySelectorAll('.size-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentSize=b.dataset.size;draw()});
+document.getElementById('downloadBtn').addEventListener('click',()=>{const a=document.createElement('a');a.download='cute-qr-code.png';a.href=canvas.toDataURL('image/png');a.click()});
+draw();
+</script>
+</body>
+</html>
