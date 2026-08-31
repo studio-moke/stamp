@@ -1,9 +1,7 @@
 export const QR_ANIMAL_IDS = ["cat","dog","rabbit","bear","panda","chick","fox","penguin","koala","hedgehog","hamster"] as const;
 export type QrAnimalId = (typeof QR_ANIMAL_IDS)[number];
-const esc=(v:string)=>v.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
-export function renderQrAnimalSvg(id:QrAnimalId,_foreground="#342f33",background="#ffffff"){
-  const bg=esc(background);
+export function renderQrAnimalSvg(id:QrAnimalId,_foreground="#342f33",_background="#ffffff"){
   const outline="#6b452c", eye="#5a3a28", cheek="#f5b6ad";
   const common=`xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true"`;
   const face=(y=38)=>`<circle fill="${eye}" cx="24" cy="${y}" r="1.8"/><circle fill="${eye}" cx="40" cy="${y}" r="1.8"/><circle fill="${cheek}" cx="18.5" cy="${y+5}" r="3.1"/><circle fill="${cheek}" cx="45.5" cy="${y+5}" r="3.1"/><path fill="${eye}" d="M29.4 ${y+4}c0-2.1 5.2-2.1 5.2 0 0 1.5-1.7 2.6-2.6 3-.9-.4-2.6-1.5-2.6-3Z"/><path d="M32 ${y+7}v2m0 0c-2.2 2.2-4.7 2.2-6.5.3m6.5-.3c2.2 2.2 4.7 2.2 6.5.3" fill="none" stroke="${eye}" stroke-width="1.55" stroke-linecap="round"/>`;
@@ -20,5 +18,5 @@ export function renderQrAnimalSvg(id:QrAnimalId,_foreground="#342f33",background
     hedgehog:`<svg ${common}><path fill="#9f7a58" stroke="${outline}" stroke-width="2" stroke-linejoin="round" d="m32 5 5 6 7-4 2 8 8-1-2 8 7 4-5 6 6 6-8 3 2 8-8-1-4 8-7-5-6 6-5-7-8 3 1-8-8-1 5-7-7-5 7-5-3-8 8 1 2-8 7 4 5-6Z"/><path fill="#fff3df" stroke="${outline}" stroke-width="1.6" d="M18 29c4-4 10-6 16-5 7 1 12 5 14 12 2 7-2 16-13 18-10 2-20-3-22-11-2-6 0-10 5-14Z"/>${face(35)}<circle fill="${eye}" cx="48" cy="39" r="2.5"/></svg>`,
     hamster:`<svg ${common}><circle fill="#f4c879" stroke="${outline}" stroke-width="2" cx="17" cy="17" r="8"/><circle fill="#f4c879" stroke="${outline}" stroke-width="2" cx="47" cy="17" r="8"/><circle fill="#ffdca6" cx="17" cy="17" r="4"/><circle fill="#ffdca6" cx="47" cy="17" r="4"/><circle fill="#f6cf86" stroke="${outline}" stroke-width="2" cx="32" cy="38" r="23"/><path fill="#fff7e9" d="M23 18c2 8 1 15-1 22-1 4 3 10 10 10s11-6 10-10c-2-7-3-14-1-22-3-2-6-3-9-3s-6 1-9 3Z"/><circle fill="#fff7e9" cx="19" cy="42" r="5.5"/><circle fill="#fff7e9" cx="45" cy="42" r="5.5"/>${face(35)}<path d="M21 40 15 38m6 5-6 1m28-4 6-2m-6 5 6 1" fill="none" stroke="${outline}" stroke-width="1.2" stroke-linecap="round"/></svg>`
   };
-  return svg[id].replace(/<svg /,`<svg style="background:${bg}" `);
+  return svg[id];
 }
