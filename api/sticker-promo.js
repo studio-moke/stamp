@@ -1,7 +1,21 @@
-import stickers from "../src/data/stickers.json" with { type: "json" };
+import fs from "node:fs";
+import path from "node:path";
+
+function loadStickers(){
+  try{
+    const file=path.join(process.cwd(),"src","data","stickers.json");
+    const raw=fs.readFileSync(file,"utf8");
+    const parsed=JSON.parse(raw);
+    return Array.isArray(parsed)?parsed:[];
+  }catch(error){
+    console.error("sticker promo data load failed",error);
+    return [];
+  }
+}
 
 export default function handler(req,res){
-  const rows=(Array.isArray(stickers)?stickers:[]).slice(0,80).map(s=>({
+  const stickers=loadStickers();
+  const rows=stickers.slice(0,80).map(s=>({
     id:String(s.id||""),
     title:String(s.title||"").replace(/\s*-\s*LINE\s*スタンプ.*$/i,"").replace(/\s*\|\s*LINE STORE.*$/i,"").trim(),
     description:String(s.description||"").trim(),
