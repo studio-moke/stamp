@@ -1,0 +1,7 @@
+---
+import SealMakerPage from "../../components/SealMakerPage.astro";
+import { LOCALES } from "../../lib/i18n";
+export function getStaticPaths(){return LOCALES.filter(locale=>locale!=="ja").map(locale=>({params:{locale},props:{locale}}));}
+const locale=Astro.props.locale;
+---
+<SealMakerPage locale={locale} />
