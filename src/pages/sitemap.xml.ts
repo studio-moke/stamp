@@ -58,6 +58,7 @@ export function GET() {
   entries.push(...multilingualEntries("/qr-maker"));
   entries.push(...multilingualEntries("/chat-stamp-maker"));
   entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/color-palette/`)}</loc></url>`);
+  entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/image-compressor/`)}</loc></url>`);
 
   for (const sticker of stickers) {
     entries.push(...multilingualEntries(`/stickers/${encodeURIComponent(sticker.id)}`));
