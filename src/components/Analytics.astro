@@ -3,7 +3,7 @@ import stickers from "../data/stickers.json";
 import { normalizeLocale, type Locale } from "../lib/i18n";
 import { getCategory, getCategorySlug } from "../lib/stickers";
 import { getStickerPhrases, getTagById, getTagIdsForSticker, getTagPath } from "../lib/sticker-search-tags";
-import { r2GetJson } from "../../api/_r2.js";
+import { r2GetJson } from "../../server/api/_r2.js";
 
 const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || "G-QSXPPLWSB7";
 const enabled = /^G-[A-Z0-9]+$/i.test(measurementId);
