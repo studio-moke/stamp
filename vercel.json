@@ -3,14 +3,12 @@
   "functions": {
     "api/line-author.js": { "regions": ["hnd1"], "maxDuration": 30 },
     "api/free-assets.js": { "regions": ["hnd1"], "maxDuration": 60 },
-    "api/free-upload.js": { "regions": ["hnd1"], "maxDuration": 60 },
-    "api/free-page.js": { "regions": ["hnd1"], "maxDuration": 30 },
     "api/free-page-v2.js": { "regions": ["hnd1"], "maxDuration": 30 },
-    "api/free-download.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/free-preview.js": { "regions": ["hnd1"], "maxDuration": 30 },
     "api/free-sitemap.js": { "regions": ["hnd1"], "maxDuration": 30 }
   },
   "rewrites": [
+    { "source": "/api/free-download", "destination": "/api/free-assets?action=download" },
     { "source": "/en/stickers/:id", "destination": "/stickers/:id" },
     { "source": "/zh-tw/stickers/:id", "destination": "/stickers/:id" },
     { "source": "/th/stickers/:id", "destination": "/stickers/:id" },
