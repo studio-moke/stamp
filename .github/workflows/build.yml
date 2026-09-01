@@ -21,7 +21,7 @@ jobs:
         run: npm ci
       - name: Check sticker discovery scripts
         run: |
-          node --check api/line-author.js
+          node --check server/api/line-author.js
           node --check scripts/fetch-stickers-via-tokyo.mjs
           node --check scripts/discover-new-stickers-by-id.mjs
           node --check scripts/fetch-stickers.mjs
