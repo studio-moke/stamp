@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { r2GetJson } from "../api/_r2.js";
+import { r2GetJson } from "../server/api/_r2.js";
 
 const ROOT = process.cwd();
 const DIST = path.join(ROOT, "dist");
