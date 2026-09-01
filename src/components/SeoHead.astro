@@ -1,7 +1,7 @@
 ---
 import { SITE_NAME, absoluteUrl } from "../lib/seo";
 import { LOCALES, alternateLinks, localeInfo, normalizeLocale } from "../lib/i18n";
-import { r2GetJson } from "../../api/_r2.js";
+import { r2GetJson } from "../../server/api/_r2.js";
 
 const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname, alternatePaths = null } = Astro.props;
 const locale = normalizeLocale(localeProp);
