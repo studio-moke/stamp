@@ -1,0 +1,13 @@
+@media (max-width: 820px){
+  .workspace.show{display:block !important;}
+  .workspace .files-panel,.workspace .settings{width:100% !important;min-width:0 !important;}
+  .workspace .settings{margin-top:12px !important;}
+  .workspace .file-list{max-height:none !important;overflow:visible !important;padding-right:0 !important;}
+  .workspace .file-row{display:grid !important;grid-template-columns:minmax(0,1fr) auto !important;gap:10px !important;align-items:start !important;padding:10px !important;}
+  .workspace .file-row .thumb{grid-column:1/-1 !important;width:100% !important;height:auto !important;max-height:360px !important;object-fit:contain !important;border-radius:12px !important;background-color:#f7f6f2 !important;}
+  .workspace .file-row .file-meta{grid-column:1 !important;min-width:0 !important;}
+  .workspace .file-row .remove{grid-column:2 !important;grid-row:2 !important;align-self:start !important;}
+  .results .result-row{grid-template-columns:minmax(0,1fr) !important;}
+  .results .result-row .thumb{width:100% !important;height:auto !important;max-height:360px !important;object-fit:contain !important;}
+  .results .result-row .download{width:100% !important;}
+}
