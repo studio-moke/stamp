@@ -1,7 +1,7 @@
 ---
-import ImageCompressorPage from "../../components/ImageCompressorPage.astro";
+import SimpleImageToolPage from "../../components/SimpleImageToolPage.astro";
 import { LOCALES } from "../../lib/i18n";
 export function getStaticPaths(){return LOCALES.filter(locale=>locale!=="ja").map(locale=>({params:{locale},props:{locale}}));}
 const locale=Astro.props.locale;
 ---
-<ImageCompressorPage locale={locale} />
+<SimpleImageToolPage locale={locale} tool="compress" />
