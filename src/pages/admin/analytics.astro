@@ -1,0 +1,187 @@
+---
+const title = 'stamp moke 集客分析';
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>{title}</title>
+  <style>
+    :root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #202124; background: #f6f7f9; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1240px; margin: 0 auto; padding: 28px 18px 72px; }
+    header { display:flex; gap:16px; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+    h1 { margin:0 0 6px; font-size:clamp(24px,4vw,38px); letter-spacing:-.03em; }
+    .sub { color:#6b7280; font-size:14px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
+    button, input { border:1px solid #d9dde5; border-radius:10px; background:white; padding:10px 12px; font:inherit; }
+    button { cursor:pointer; font-weight:700; }
+    button.active { background:#202124; color:#fff; border-color:#202124; }
+    .grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:18px 0; }
+    .card { background:#fff; border:1px solid #e6e8ed; border-radius:16px; padding:18px; box-shadow:0 3px 14px rgba(0,0,0,.035); }
+    .metric-label { font-size:13px; color:#737985; }
+    .metric { font-size:30px; font-weight:800; margin-top:6px; }
+    section { margin-top:24px; }
+    section h2 { margin:0 0 5px; font-size:20px; }
+    .hint { margin:0 0 12px; color:#737985; font-size:13px; }
+    .table-wrap { overflow:auto; background:#fff; border:1px solid #e6e8ed; border-radius:16px; }
+    table { border-collapse:collapse; width:100%; min-width:760px; }
+    th, td { padding:11px 12px; border-bottom:1px solid #eef0f3; text-align:left; font-size:13px; vertical-align:top; }
+    th { position:sticky; top:0; background:#fafbfc; color:#5d6470; font-size:12px; }
+    td.num, th.num { text-align:right; white-space:nowrap; }
+    .query { font-weight:700; }
+    .url { color:#69707d; max-width:420px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .badge { display:inline-block; padding:4px 8px; border-radius:999px; background:#f0f2f5; font-size:12px; font-weight:700; }
+    .good { background:#e9f8ef; }
+    .warn { background:#fff3da; }
+    #status { padding:12px 14px; border-radius:12px; background:#fff; border:1px solid #e6e8ed; font-size:14px; }
+    #status.error { border-color:#f2b8b5; background:#fff6f5; }
+    .auth { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .auth input { min-width:260px; }
+    .source-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .empty { padding:26px; color:#737985; text-align:center; }
+    @media (max-width:800px) { .grid { grid-template-columns:repeat(2,1fr); } .source-grid { grid-template-columns:1fr; } header { display:block; } }
+    @media (max-width:480px) { .grid { grid-template-columns:1fr; } .auth input { min-width:0; width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>stamp moke 集客分析</h1>
+      <div class="sub">どこから来た？ → 何と検索した？ → どのページに来た？ を一画面で確認</div>
+    </div>
+    <div class="auth">
+      <input id="token" type="password" autocomplete="off" placeholder="管理トークン" aria-label="管理トークン" />
+      <button id="saveToken">保存して表示</button>
+    </div>
+  </header>
+
+  <div class="toolbar" id="periods">
+    <button data-days="7">7日</button>
+    <button data-days="28" class="active">28日</button>
+    <button data-days="90">90日</button>
+    <input id="filter" type="search" placeholder="検索ワードを絞り込み" />
+  </div>
+
+  <div id="status">管理トークンを入力するとデータを読み込みます。</div>
+
+  <div class="grid">
+    <div class="card"><div class="metric-label">Google検索クリック</div><div class="metric" id="clicks">—</div></div>
+    <div class="card"><div class="metric-label">Google検索での表示回数</div><div class="metric" id="impressions">—</div></div>
+    <div class="card"><div class="metric-label">見つかった検索ワード</div><div class="metric" id="queriesCount">—</div></div>
+    <div class="card"><div class="metric-label">分析期間</div><div class="metric" id="range" style="font-size:20px">—</div></div>
+  </div>
+
+  <section>
+    <h2>🔥 検索ワード</h2>
+    <p class="hint">Google検索から実際にクリックされた順。検索ワードと入口ページをまとめて確認できます。</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>検索ワード</th><th>入口ページ</th><th class="num">クリック</th><th class="num">表示</th><th class="num">CTR</th><th class="num">順位</th></tr></thead>
+      <tbody id="queryRows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>🚀 あと少しで伸びそう</h2>
+    <p class="hint">検索順位8〜20位で表示されているワード。ページ改善の優先候補です。</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>検索ワード</th><th>入口ページ</th><th class="num">表示</th><th class="num">クリック</th><th class="num">順位</th></tr></thead>
+      <tbody id="opportunityRows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>💎 表示されるのにクリックが少ない</h2>
+    <p class="hint">表示30回以上・CTR 3%未満。タイトルや説明文を改善する候補です。</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>検索ワード</th><th>入口ページ</th><th class="num">表示</th><th class="num">CTR</th><th class="num">順位</th></tr></thead>
+      <tbody id="lowCtrRows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>🌐 どこから来た？</h2>
+    <p class="hint">GA4の流入元 / メディア別。GA4_PROPERTY_IDを設定すると表示されます。</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>流入元 / メディア</th><th>入口ページ</th><th class="num">セッション</th><th class="num">ユーザー</th><th class="num">エンゲージ</th></tr></thead>
+      <tbody id="sourceRows"></tbody>
+    </table></div>
+  </section>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  let currentDays = 28;
+  let data = null;
+
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  }
+  const pct = (n) => `${(Number(n || 0) * 100).toFixed(1)}%`;
+  const num = (n) => Number(n || 0).toLocaleString('ja-JP');
+  const pos = (n) => Number(n || 0).toFixed(1);
+  const pathOnly = (url) => { try { const u = new URL(url); return u.pathname + u.search; } catch { return url || '/'; } };
+
+  function emptyRow(cols, text) { return `<tr><td colspan="${cols}" class="empty">${esc(text)}</td></tr>`; }
+
+  function render() {
+    if (!data) return;
+    $('clicks').textContent = num(data.summary?.searchClicks);
+    $('impressions').textContent = num(data.summary?.searchImpressions);
+    $('queriesCount').textContent = num(data.summary?.queryCount);
+    $('range').textContent = `${data.range?.startDate || ''}〜${data.range?.endDate || ''}`;
+
+    const filter = $('filter').value.trim().toLowerCase();
+    const queries = (data.queries || []).filter((q) => !filter || q.query.toLowerCase().includes(filter) || q.page.toLowerCase().includes(filter));
+    $('queryRows').innerHTML = queries.length ? queries.slice(0, 200).map((q) => `<tr><td class="query">${esc(q.query || '(検索語なし)')}</td><td class="url" title="${esc(q.page)}">${esc(pathOnly(q.page))}</td><td class="num">${num(q.clicks)}</td><td class="num">${num(q.impressions)}</td><td class="num">${pct(q.ctr)}</td><td class="num">${pos(q.position)}</td></tr>`).join('') : emptyRow(6, '該当データがありません');
+
+    const opportunities = (data.opportunities || []).filter((q) => !filter || q.query.toLowerCase().includes(filter));
+    $('opportunityRows').innerHTML = opportunities.length ? opportunities.map((q) => `<tr><td class="query">${esc(q.query)}</td><td class="url">${esc(pathOnly(q.page))}</td><td class="num">${num(q.impressions)}</td><td class="num">${num(q.clicks)}</td><td class="num"><span class="badge good">${pos(q.position)}位</span></td></tr>`).join('') : emptyRow(5, '対象ワードはまだありません');
+
+    const lowCtr = (data.lowCtr || []).filter((q) => !filter || q.query.toLowerCase().includes(filter));
+    $('lowCtrRows').innerHTML = lowCtr.length ? lowCtr.map((q) => `<tr><td class="query">${esc(q.query)}</td><td class="url">${esc(pathOnly(q.page))}</td><td class="num">${num(q.impressions)}</td><td class="num"><span class="badge warn">${pct(q.ctr)}</span></td><td class="num">${pos(q.position)}</td></tr>`).join('') : emptyRow(5, '対象ワードはまだありません');
+
+    const sources = data.sources?.rows || [];
+    $('sourceRows').innerHTML = sources.length ? sources.slice(0, 200).map((r) => `<tr><td class="query">${esc(r.sourceMedium)}</td><td class="url">${esc(r.landingPage)}</td><td class="num">${num(r.sessions)}</td><td class="num">${num(r.users)}</td><td class="num">${num(r.engagedSessions)}</td></tr>`).join('') : emptyRow(5, data.sources?.configured ? 'GA4データがありません' : 'GA4_PROPERTY_IDを設定すると表示されます');
+  }
+
+  async function load() {
+    const token = $('token').value || localStorage.getItem('stampAnalyticsToken') || '';
+    if (!token) return;
+    $('status').className = '';
+    $('status').textContent = '読み込み中…';
+    try {
+      const res = await fetch(`/api/analytics?days=${currentDays}`, { headers: { Authorization: `Bearer ${token}` } });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || `HTTP ${res.status}`);
+      data = json;
+      $('status').textContent = `更新完了：${json.range.startDate}〜${json.range.endDate}`;
+      render();
+    } catch (err) {
+      $('status').className = 'error';
+      $('status').textContent = `読み込みエラー：${err.message}`;
+    }
+  }
+
+  $('saveToken').addEventListener('click', () => {
+    const token = $('token').value.trim();
+    if (token) localStorage.setItem('stampAnalyticsToken', token);
+    load();
+  });
+  $('filter').addEventListener('input', render);
+  $('periods').addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-days]');
+    if (!button) return;
+    currentDays = Number(button.dataset.days);
+    document.querySelectorAll('#periods button[data-days]').forEach((b) => b.classList.toggle('active', b === button));
+    load();
+  });
+
+  const saved = localStorage.getItem('stampAnalyticsToken');
+  if (saved) { $('token').value = saved; load(); }
+</script>
+</body>
+</html>
