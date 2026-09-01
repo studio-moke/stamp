@@ -5,6 +5,7 @@ const SITE_URL = "https://stamp-moke.jp";
 const INDEX_KEY = "free-assets/index.json";
 const DOWNLOADS_PER_DAY = 30;
 const DOWNLOADS_PER_HOUR_PER_RUNTIME = 60;
+const AI_TIMEOUT_MS = 45000;
 const runtimeRate = new Map();
 const LOCALES = ["ja", "en", "zh-tw", "th", "id"];
 const MASTER = {
@@ -51,29 +52,51 @@ const metadataSchema={
     locales:{type:"object",additionalProperties:false,required:LOCALES,properties:Object.fromEntries(LOCALES.map(locale=>[locale,localeSchema]))}
   }
 };
+function fallbackMetadata(input={}){
+  const rawName=String(input.filename||"free-asset").replace(/\.[^.]+$/,"").trim()||"free-asset";
+  const character=String(input.characterHint||"").trim();
+  const jaTitle=character?`${character}の無料素材`: `${rawName}の無料素材`;
+  const platform=safeArray(input.platformHint?[input.platformHint]:[],MASTER.platforms);
+  const values={
+    ja:{title:jaTitle,description:`${jaTitle}です。AI解析が時間内に完了しなかったため、仮の説明文で公開しています。個人・非商用の範囲でご利用ください。`,seoTitle:`${jaTitle}｜stamp moke`,metaDescription:`${jaTitle}を無料配布。個人・非商用で利用できます。`,alt:jaTitle,keywords:[rawName,character,"無料素材"].filter(Boolean)},
+    en:{title:`Free asset: ${rawName}`,description:"Free image asset for personal, non-commercial use. Temporary metadata is shown because AI analysis timed out.",seoTitle:`Free asset: ${rawName} | stamp moke`,metaDescription:"Free image asset for personal, non-commercial use.",alt:`Free asset: ${rawName}`,keywords:[rawName,"free asset"]},
+    "zh-tw":{title:`免費素材：${rawName}`,description:"可供個人與非商業用途使用的免費圖片素材。AI 分析逾時，因此目前顯示暫時說明。",seoTitle:`免費素材：${rawName}｜stamp moke`,metaDescription:"個人與非商業用途可使用的免費圖片素材。",alt:`免費素材：${rawName}`,keywords:[rawName,"免費素材"]},
+    th:{title:`素材ฟรี: ${rawName}`,description:"素材รูปภาพฟรีสำหรับการใช้งานส่วนบุคคลและไม่ใช่เชิงพาณิชย์ ขณะนี้ใช้คำอธิบายชั่วคราวเนื่องจากการวิเคราะห์ AI หมดเวลา",seoTitle:`素材ฟรี: ${rawName} | stamp moke`,metaDescription:"素材รูปภาพฟรีสำหรับการใช้งานส่วนบุคคลและไม่ใช่เชิงพาณิชย์",alt:`素材ฟรี: ${rawName}`,keywords:[rawName,"素材ฟรี"]},
+    id:{title:`Aset gratis: ${rawName}`,description:"Aset gambar gratis untuk penggunaan pribadi dan nonkomersial. Metadata sementara digunakan karena analisis AI melewati batas waktu.",seoTitle:`Aset gratis: ${rawName} | stamp moke`,metaDescription:"Aset gambar gratis untuk penggunaan pribadi dan nonkomersial.",alt:`Aset gratis: ${rawName}`,keywords:[rawName,"aset gratis"]}
+  };
+  return {slug:slugify(rawName),platforms:platform,types:["decoration"],motifs:["other"],styles:["simple"],character,transparent:false,locales:values};
+}
 async function analyzeWithOpenAI(input){
   if(!process.env.OPENAI_API_KEY)throw new Error("OPENAI_API_KEY is not configured");
   if(!input.previewKey)throw new Error("previewKey is required");
   const preview=await r2GetBuffer(input.previewKey);if(!preview)throw new Error("AI解析用プレビューが見つかりません");
   const imageDataUrl=`data:${preview.contentType};base64,${preview.buffer.toString("base64")}`;
   const instruction=`You create accurate SEO metadata for stamp-moke.jp free illustration/photo assets.\nUse only the controlled vocabularies allowed by the schema.\nUsage policy: personal/non-commercial use only. Good uses include Pokekara and social media profiles/posts, personal flyers, school/circle/non-commercial print. Commercial use, resale, redistribution and claiming authorship are prohibited. Copyright belongs to stamp-moke.jp.\nDescriptions must describe only what is visible. Do not invent a character name. SEO copy must be natural and useful.`;
-  const response=await fetch("https://api.openai.com/v1/responses",{
-    method:"POST",
-    headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,"Content-Type":"application/json"},
-    body:JSON.stringify({
-      model:process.env.FREE_ASSET_AI_MODEL||"gpt-5.6-luna",
-      input:[{role:"user",content:[
-        {type:"input_text",text:`${instruction}\n\nFilename: ${input.filename||"unknown"}\nSize: ${input.width||"?"}x${input.height||"?"}\nPlatform hint: ${input.platformHint||"none"}\nCharacter hint: ${input.characterHint||"none"}`},
-        {type:"input_image",image_url:imageDataUrl}
-      ]}],
-      text:{format:{type:"json_schema",name:"free_asset_metadata",strict:true,schema:metadataSchema}}
-    })
-  });
-  if(!response.ok)throw new Error(`OpenAI ${response.status}: ${await response.text()}`);
-  const data=await response.json();
-  const text=data.output_text||data.output?.flatMap(o=>o.content||[]).find(c=>c.type==="output_text")?.text;
-  if(!text)throw new Error("AI returned no metadata");
-  try{return JSON.parse(text)}catch(error){console.error("structured metadata parse failed",text,error);throw new Error("AI解析結果のJSONを読み込めませんでした。")}
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),AI_TIMEOUT_MS);
+  try{
+    const response=await fetch("https://api.openai.com/v1/responses",{
+      method:"POST",
+      signal:controller.signal,
+      headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:process.env.FREE_ASSET_AI_MODEL||"gpt-5.6-luna",
+        input:[{role:"user",content:[
+          {type:"input_text",text:`${instruction}\n\nFilename: ${input.filename||"unknown"}\nSize: ${input.width||"?"}x${input.height||"?"}\nPlatform hint: ${input.platformHint||"none"}\nCharacter hint: ${input.characterHint||"none"}`},
+          {type:"input_image",image_url:imageDataUrl,detail:"low"}
+        ]}],
+        text:{format:{type:"json_schema",name:"free_asset_metadata",strict:true,schema:metadataSchema}}
+      })
+    });
+    if(!response.ok)throw new Error(`OpenAI ${response.status}: ${await response.text()}`);
+    const data=await response.json();
+    const text=data.output_text||data.output?.flatMap(o=>o.content||[]).find(c=>c.type==="output_text")?.text;
+    if(!text)throw new Error("AI returned no metadata");
+    try{return JSON.parse(text)}catch(error){console.error("structured metadata parse failed",text,error);throw new Error("AI解析結果のJSONを読み込めませんでした。")}
+  }catch(error){
+    if(controller.signal.aborted){console.warn("free asset AI analysis timed out; using fallback metadata",{filename:input.filename,previewKey:input.previewKey});return fallbackMetadata(input)}
+    throw error;
+  }finally{clearTimeout(timeout)}
 }
 function normalizeLocales(locales={}){return Object.fromEntries(LOCALES.map(locale=>{const v=locales?.[locale]||{};return[locale,{title:String(v.title||"").slice(0,120),description:String(v.description||"").slice(0,700),seoTitle:String(v.seoTitle||"").slice(0,160),metaDescription:String(v.metaDescription||"").slice(0,320),alt:String(v.alt||"").slice(0,180),keywords:[...new Set((Array.isArray(v.keywords)?v.keywords:[]).map(String).map(x=>x.trim()).filter(Boolean))].slice(0,30)}]}))}
 function normalizeMetadata(raw,fallback={}){const locales=normalizeLocales(raw?.locales||fallback.locales||{});const jaTitle=locales.ja.title||fallback.filename?.replace(/\.[^.]+$/,"")||"無料素材";return{slug:slugify(raw?.slug||fallback.slug||jaTitle),platforms:safeArray(raw?.platforms??fallback.platforms,MASTER.platforms),types:safeArray(raw?.types??fallback.types,MASTER.types),motifs:safeArray(raw?.motifs??fallback.motifs,MASTER.motifs),styles:safeArray(raw?.styles??fallback.styles,MASTER.styles),character:String(raw?.character??fallback.characterHint??fallback.character??"").slice(0,60),transparent:Boolean(raw?.transparent??fallback.transparent),locales}}
