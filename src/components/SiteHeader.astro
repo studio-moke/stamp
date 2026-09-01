@@ -1,8 +1,10 @@
 ---
-import { normalizeLocale } from "../lib/i18n";
+import { normalizeLocale, localeInfo } from "../lib/i18n";
 const locale = normalizeLocale(Astro.props.locale);
+const htmlLang = localeInfo[locale].htmlLang;
 ---
 <link rel="stylesheet" href="/site-header.css" />
+<script is:inline define:vars={{ htmlLang }}>document.documentElement.lang=htmlLang;</script>
 <header class="sm-site-header" data-sm-canonical="1" data-locale={locale}></header>
 <script is:inline src="/site-header.js"></script>
 <script is:inline src="/site-extra-nav.js"></script>
