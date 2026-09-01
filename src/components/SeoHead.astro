@@ -24,6 +24,45 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 <link rel="stylesheet" href="/site-header.css" />
 <script is:inline src="/site-header.js"></script>
 <script is:inline src="/site-extra-nav.js"></script>
+<script is:inline>
+  (() => {
+    const normalizePath = (value) => {
+      if (!value || !value.startsWith('/')) return value;
+      const url = new URL(value, location.origin);
+      const pathname = url.pathname;
+      if (
+        pathname === '/' ||
+        pathname.startsWith('/api/') ||
+        pathname.endsWith('/') ||
+        /\/[^/]+\.[a-z0-9]+$/i.test(pathname)
+      ) return value;
+      return `${pathname}/${url.search}${url.hash}`;
+    };
+
+    const normalizeLinks = (root = document) => {
+      root.querySelectorAll?.('a[href^="/"],form[action^="/"]').forEach((el) => {
+        const attr = el.tagName === 'FORM' ? 'action' : 'href';
+        const current = el.getAttribute(attr);
+        const normalized = normalizePath(current);
+        if (normalized && normalized !== current) el.setAttribute(attr, normalized);
+      });
+    };
+
+    const start = () => {
+      normalizeLinks();
+      new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType === 1) normalizeLinks(node);
+          }
+        }
+      }).observe(document.documentElement, { childList: true, subtree: true });
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+    else start();
+  })();
+</script>
 <link rel="canonical" href={url} />
 {alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
 <link rel="alternate" hreflang="x-default" href={xDefault} />
