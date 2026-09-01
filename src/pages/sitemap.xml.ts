@@ -1,57 +1,12 @@
 import stickers from "../data/stickers.json";
 import designs from "../data/suzuri-designs.json";
-import {
-  CATEGORY_DEFINITIONS,
-  getCategory,
-  SITE_URL,
-} from "../lib/stickers";
+import { CATEGORY_DEFINITIONS,getCategory,SITE_URL } from "../lib/stickers";
 import { LOCALES, localeInfo, localizedPath } from "../lib/i18n";
-import { getTagIdsForSticker, getTagPath, tagDefinitions } from "../lib/sticker-search-tags";
-
-const PAGE_SIZE = 24;
-type Locale = (typeof LOCALES)[number];
-
-function escapeXml(value: string) {
-  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&apos;");
-}
-function localizedUrl(locale: Locale, path: string) { return `${SITE_URL}${localizedPath(locale, path)}`; }
-function renderUrlEntry(currentUrl: string, alternatesByLocale: Record<Locale, string>, xDefaultUrl: string) {
-  const alternates = LOCALES.map((locale) => `    <xhtml:link rel="alternate" hreflang="${localeInfo[locale].htmlLang}" href="${escapeXml(alternatesByLocale[locale])}" />`).join("\n");
-  return `  <url>\n    <loc>${escapeXml(currentUrl)}</loc>\n${alternates}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(xDefaultUrl)}" />\n  </url>`;
-}
-function multilingualEntries(path: string) {
-  const urls = Object.fromEntries(LOCALES.map((locale) => [locale, localizedUrl(locale, path)])) as Record<Locale, string>;
-  return LOCALES.map((locale) => renderUrlEntry(urls[locale], urls, urls.ja));
-}
-function multilingualTagEntries(tag: (typeof tagDefinitions)[number]) {
-  const urls = Object.fromEntries(LOCALES.map((locale) => [locale, `${SITE_URL}${getTagPath(locale, tag)}`])) as Record<Locale, string>;
-  return LOCALES.map((locale) => renderUrlEntry(urls[locale], urls, urls.ja));
-}
-
-export function GET() {
-  const entries: string[] = [];
-  entries.push(...multilingualEntries("/"));
-  entries.push(...multilingualEntries("/goods/"));
-  entries.push(...multilingualEntries("/tags/"));
-  entries.push(...multilingualEntries("/qr-maker"));
-  entries.push(...multilingualEntries("/chat-stamp-maker"));
-  entries.push(...multilingualEntries("/image-compressor"));
-  entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/color-palette/`)}</loc></url>`);
-
-  for (const sticker of stickers) entries.push(...multilingualEntries(`/stickers/${encodeURIComponent(sticker.id)}`));
-  for (const design of designs) entries.push(...multilingualEntries(`/goods/${encodeURIComponent(String(design.id))}`));
-  for (const tag of tagDefinitions) {
-    const count = stickers.filter((sticker) => getTagIdsForSticker(sticker).includes(tag.id)).length;
-    if (count >= 2) entries.push(...multilingualTagEntries(tag));
-  }
-
-  entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/`)}</loc></url>`);
-  for (const category of CATEGORY_DEFINITIONS) {
-    const count = stickers.filter((sticker) => getCategory(sticker) === category.name).length;
-    const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
-    for (let page = 1; page <= totalPages; page += 1) entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/${category.slug}/${page}`)}</loc></url>`);
-  }
-
-  const body = entries.join("\n");
-  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>`, {headers:{"Content-Type":"application/xml; charset=utf-8","Cache-Control":"public, max-age=0, s-maxage=3600"}});
-}
+import { getTagIdsForSticker,getTagPath,tagDefinitions } from "../lib/sticker-search-tags";
+const PAGE_SIZE=24; type Locale=(typeof LOCALES)[number];
+function escapeXml(value:string){return value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&apos;");}
+function localizedUrl(locale:Locale,path:string){return `${SITE_URL}${localizedPath(locale,path)}`;}
+function renderUrlEntry(currentUrl:string,alts:Record<Locale,string>,x:string){const links=LOCALES.map(l=>`    <xhtml:link rel="alternate" hreflang="${localeInfo[l].htmlLang}" href="${escapeXml(alts[l])}" />`).join("\n");return `  <url>\n    <loc>${escapeXml(currentUrl)}</loc>\n${links}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(x)}" />\n  </url>`;}
+function multilingualEntries(path:string){const urls=Object.fromEntries(LOCALES.map(l=>[l,localizedUrl(l,path)])) as Record<Locale,string>;return LOCALES.map(l=>renderUrlEntry(urls[l],urls,urls.ja));}
+function multilingualTagEntries(tag:(typeof tagDefinitions)[number]){const urls=Object.fromEntries(LOCALES.map(l=>[l,`${SITE_URL}${getTagPath(l,tag)}`])) as Record<Locale,string>;return LOCALES.map(l=>renderUrlEntry(urls[l],urls,urls.ja));}
+export function GET(){const entries:string[]=[];for(const p of ["/","/goods/","/tags/","/qr-maker","/chat-stamp-maker","/image-compressor","/image-resizer","/convert-to-jpg","/jpg-to-image","/png-transparent"])entries.push(...multilingualEntries(p));entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/color-palette/`)}</loc></url>`);for(const s of stickers)entries.push(...multilingualEntries(`/stickers/${encodeURIComponent(s.id)}`));for(const d of designs)entries.push(...multilingualEntries(`/goods/${encodeURIComponent(String(d.id))}`));for(const tag of tagDefinitions){const count=stickers.filter(s=>getTagIdsForSticker(s).includes(tag.id)).length;if(count>=2)entries.push(...multilingualTagEntries(tag));}entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/`)}</loc></url>`);for(const c of CATEGORY_DEFINITIONS){const count=stickers.filter(s=>getCategory(s)===c.name).length,total=Math.max(1,Math.ceil(count/PAGE_SIZE));for(let p=1;p<=total;p++)entries.push(`  <url><loc>${escapeXml(`${SITE_URL}/categories/${c.slug}/${p}`)}</loc></url>`);}return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join("\n")}\n</urlset>`,{headers:{"Content-Type":"application/xml; charset=utf-8","Cache-Control":"public, max-age=0, s-maxage=3600"}});}
