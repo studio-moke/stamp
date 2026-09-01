@@ -23,6 +23,7 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 <link rel="shortcut icon" href="/favicon.ico" sizes="any" />
 <link rel="stylesheet" href="/site-header.css" />
 <script is:inline src="/site-header.js"></script>
+<script is:inline src="/site-extra-nav.js"></script>
 <link rel="canonical" href={url} />
 {alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
 <link rel="alternate" hreflang="x-default" href={xDefault} />
