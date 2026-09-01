@@ -11,6 +11,10 @@
     "api/free-sitemap.js": { "regions": ["hnd1"], "maxDuration": 30 }
   },
   "rewrites": [
+    { "source": "/en/stickers/:id", "destination": "/stickers/:id" },
+    { "source": "/zh-tw/stickers/:id", "destination": "/stickers/:id" },
+    { "source": "/th/stickers/:id", "destination": "/stickers/:id" },
+    { "source": "/id/stickers/:id", "destination": "/stickers/:id" },
     { "source": "/free-sitemap.xml", "destination": "/api/free-sitemap" },
     { "source": "/free/:slug", "destination": "/api/free-page-v2?slug=:slug&locale=ja" },
     { "source": "/en/free/:slug", "destination": "/api/free-page-v2?slug=:slug&locale=en" },
