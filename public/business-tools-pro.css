@@ -1,6 +1,7 @@
 /* stamp moke business tools pro UI - mobile first */
 body.sm-business-tool-page{--sm-accent:#176b8c;--sm-accent-soft:#eaf6fb;--sm-accent-deep:#0f4f69;--sm-border:#dfe5e8;--sm-muted:#6b7280;--sm-card:#fff;--sm-bg:#f5f7f8;background:linear-gradient(180deg,#f8fafb 0,#f3f5f6 100%);color:#172027;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body.sm-business-tool-page .wrap{max-width:960px;padding:24px 18px 96px}
+body.sm-business-tool-page *,body.sm-business-tool-page *:before,body.sm-business-tool-page *:after{box-sizing:border-box}
+body.sm-business-tool-page .wrap{width:100%;max-width:960px;padding:24px 18px 96px}
 body.sm-business-tool-page .crumb{display:flex;align-items:center;gap:8px;min-height:42px;margin:0 0 18px;padding:0 2px;font-size:13px;font-weight:700;color:#76808a;overflow-x:auto;white-space:nowrap}
 body.sm-business-tool-page .crumb a{display:inline-flex;align-items:center;min-height:38px;color:#4c5964;text-decoration:none;border-radius:10px}
 body.sm-business-tool-page .crumb a:before{content:'⌂';font-size:15px;margin-right:7px;color:var(--sm-accent)}
@@ -9,41 +10,35 @@ body.sm-business-tool-page .hero:after{content:'';position:absolute;width:180px;
 body.sm-business-tool-page .eyebrow{display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;padding:7px 10px;border-radius:999px;background:#fff;color:var(--sm-accent-deep);font-size:11px;font-weight:900;letter-spacing:.12em;box-shadow:0 4px 14px rgba(0,0,0,.05)}
 body.sm-business-tool-page .hero h1{position:relative;z-index:1;margin:0 0 10px;font-size:clamp(34px,6vw,54px);line-height:1.12;letter-spacing:-.045em;font-weight:900;color:#15202a}
 body.sm-business-tool-page .hero p{position:relative;z-index:1;margin:0;max-width:720px;font-size:16px;line-height:1.85;color:#53606c;font-weight:600}
-body.sm-business-tool-page .toolbox{position:relative;padding:28px;border:1px solid var(--sm-border);border-radius:28px;background:var(--sm-card);box-shadow:0 18px 54px rgba(19,36,49,.09)}
+body.sm-business-tool-page .toolbox{position:relative;width:100%;max-width:100%;padding:28px;border:1px solid var(--sm-border);border-radius:28px;background:var(--sm-card);box-shadow:0 18px 54px rgba(19,36,49,.09);overflow:visible}
 body.sm-business-tool-page .toolbox:before{content:'入力してすぐ結果を確認できます';display:flex;align-items:center;min-height:44px;margin:-2px 0 24px;padding:0 14px;border-radius:14px;background:var(--sm-accent-soft);color:var(--sm-accent-deep);font-size:13px;font-weight:900}
-body.sm-business-tool-page .grid2{gap:18px}
-body.sm-business-tool-page .field{margin-bottom:18px}
+body.sm-business-tool-page .grid2{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px;width:100%;max-width:100%}
+body.sm-business-tool-page .grid2>*{min-width:0;max-width:100%}
+body.sm-business-tool-page .field{min-width:0;max-width:100%;margin-bottom:18px}
 body.sm-business-tool-page .field label{margin-bottom:9px;font-size:15px;line-height:1.4;font-weight:900;color:#26323c}
 body.sm-business-tool-page .field input,
 body.sm-business-tool-page .field select,
-body.sm-business-tool-page .field textarea{width:100%;min-height:62px;padding:15px 17px;border:2px solid #dce3e7;border-radius:16px;background:#fff;color:#101820;font-family:inherit;font-size:19px!important;font-weight:700;line-height:1.45;box-shadow:inset 0 1px 2px rgba(17,24,39,.02);transition:border-color .16s,box-shadow .16s,background .16s;-webkit-appearance:none;appearance:none}
+body.sm-business-tool-page .field textarea{display:block;width:100%!important;max-width:100%!important;min-width:0!important;min-height:62px;padding:15px 17px;border:2px solid #dce3e7;border-radius:16px;background:#fff;color:#101820;font-family:inherit;font-size:19px!important;font-weight:700;line-height:1.45;box-shadow:inset 0 1px 2px rgba(17,24,39,.02);transition:border-color .16s,box-shadow .16s,background .16s;-webkit-appearance:none;appearance:none}
 body.sm-business-tool-page .field input::placeholder,
 body.sm-business-tool-page .field textarea::placeholder{color:#a9b1b8;opacity:1;font-weight:600}
 body.sm-business-tool-page .field input:focus,
 body.sm-business-tool-page .field select:focus,
-body.sm-business-tool-page .field textarea:focus{border-color:var(--sm-accent);background:#fff;box-shadow:0 0 0 5px color-mix(in srgb,var(--sm-accent) 14%,transparent);outline:none}
+body.sm-business-tool-page .field textarea:focus{border-color:var(--sm-accent);background:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--sm-accent) 12%,transparent);outline:none}
 body.sm-business-tool-page .field textarea{min-height:220px;resize:vertical;font-size:17px!important;font-weight:600;line-height:1.75}
-body.sm-business-tool-page .field textarea.sm-native-result-hidden{display:none!important}
-body.sm-business-tool-page .field:has(textarea.sm-native-result-hidden)>label{display:none}
 body.sm-business-tool-page .checkrow{gap:10px;margin:8px 0 20px}
 body.sm-business-tool-page .checkrow label{min-height:48px;padding:10px 13px;border:1px solid #e0e5e8;border-radius:13px;background:#fafbfb;font-size:14px;font-weight:800;color:#36424c;cursor:pointer}
 body.sm-business-tool-page .checkrow input{width:22px;height:22px;accent-color:var(--sm-accent)}
 body.sm-business-tool-page .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
-body.sm-business-tool-page #cp{display:none!important}
 body.sm-business-tool-page .btn,
 body.sm-business-tool-page button.btn{min-height:60px;padding:14px 20px;border:0;border-radius:16px;background:linear-gradient(180deg,var(--sm-accent) 0%,var(--sm-accent-deep) 100%);color:#fff;font-size:17px!important;font-weight:900;letter-spacing:.01em;box-shadow:0 10px 22px color-mix(in srgb,var(--sm-accent) 24%,transparent);cursor:pointer;transition:transform .12s,box-shadow .12s}
 body.sm-business-tool-page .btn:active{transform:translateY(2px);box-shadow:0 5px 12px color-mix(in srgb,var(--sm-accent) 20%,transparent)}
 body.sm-business-tool-page .btn.sub{background:#eef2f4;color:#27333d;box-shadow:none}
-body.sm-business-tool-page .result{position:relative;margin-top:22px;min-height:92px;padding:20px 20px 20px 22px;border:2px solid color-mix(in srgb,var(--sm-accent) 20%,#e7ecef);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--sm-accent-soft) 100%);color:#172027;font-size:18px;line-height:1.75;font-weight:700;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text}
+body.sm-business-tool-page .result{position:relative;margin-top:22px;min-height:92px;padding:20px 20px 20px 22px;border:2px solid color-mix(in srgb,var(--sm-accent) 20%,#e7ecef);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--sm-accent-soft) 100%);color:#172027;font-size:18px;line-height:1.75;font-weight:700;overflow-wrap:anywhere}
 body.sm-business-tool-page .result b{font-size:28px;line-height:1.35;color:var(--sm-accent-deep)}
-body.sm-business-tool-page .metrics{gap:12px;margin-top:20px}
-body.sm-business-tool-page .metric{min-height:118px;padding:18px;border:1px solid #e0e6e9;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#fafcfc 100%);box-shadow:0 8px 22px rgba(19,36,49,.05);user-select:text;-webkit-user-select:text}
+body.sm-business-tool-page .metrics{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px;margin-top:20px;width:100%;max-width:100%}
+body.sm-business-tool-page .metric{min-width:0;min-height:118px;padding:18px;border:1px solid #e0e6e9;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#fafcfc 100%);box-shadow:0 8px 22px rgba(19,36,49,.05);display:flex;flex-direction:column;justify-content:center}
 body.sm-business-tool-page .metric small{font-size:13px;font-weight:900;color:#707b85;letter-spacing:.03em}
-body.sm-business-tool-page .metric strong{margin-top:8px;font-size:30px;line-height:1.18;font-weight:900;color:var(--sm-accent-deep);font-variant-numeric:tabular-nums}
-body.sm-business-tool-page .sm-text-result{margin-top:20px;padding:20px;border:2px solid color-mix(in srgb,var(--sm-accent) 22%,#e7ecef);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--sm-accent-soft) 100%);box-shadow:0 8px 24px rgba(19,36,49,.05)}
-body.sm-business-tool-page .sm-text-result-label{margin-bottom:10px;font-size:13px;font-weight:900;letter-spacing:.05em;color:#66727d}
-body.sm-business-tool-page .sm-text-result-value{margin:0;min-height:72px;max-height:420px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:18px;line-height:1.75;font-weight:700;color:#172027;user-select:text;-webkit-user-select:text;cursor:text}
-body.sm-business-tool-page .sm-text-result-value:focus{outline:3px solid color-mix(in srgb,var(--sm-accent) 18%,transparent);outline-offset:5px;border-radius:8px}
+body.sm-business-tool-page .metric strong{margin-top:8px;font-size:30px;line-height:1.18;font-weight:900;color:var(--sm-accent-deep);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 body.sm-business-tool-page .note{margin-top:18px;padding:14px 16px;border-radius:14px;background:#f7f9fa;color:#68737d;font-size:13px;line-height:1.75}
 body.sm-business-tool-page .back{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:22px;padding:0 16px;border:1px solid #dce3e6;border-radius:13px;background:#fff;color:#36424c;text-decoration:none;font-size:14px;font-weight:900}
 body.sm-business-tool-page .age-scroll{border:1px solid #e1e7ea;border-radius:16px;background:#fff;max-height:540px}
@@ -51,11 +46,14 @@ body.sm-business-tool-page .age-table{font-size:14px}
 body.sm-business-tool-page .age-table th{position:sticky;top:0;background:#f4f8fa;color:#34414a;font-weight:900;z-index:1}
 body.sm-business-tool-page .age-table th,body.sm-business-tool-page .age-table td{padding:13px 12px}
 body.sm-business-tool-page .result-item{padding:15px;border-radius:14px;border-color:#dfe6e9;font-size:15px;line-height:1.6}
-body.sm-business-tool-page .sm-copy-result{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:62px;margin-top:16px;border:0;border-radius:17px;background:linear-gradient(180deg,var(--sm-accent) 0%,var(--sm-accent-deep) 100%);color:#fff;font-size:17px;font-weight:900;box-shadow:0 10px 22px color-mix(in srgb,var(--sm-accent) 24%,transparent);cursor:pointer}
-body.sm-business-tool-page .sm-copy-result.is-done{background:var(--sm-accent-deep)}
-body.sm-business-tool-page .sm-copy-icon{font-size:21px;line-height:1}
+body.sm-business-tool-page .sm-copy-result{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;margin-top:14px;border:2px solid var(--sm-accent);border-radius:16px;background:#fff;color:var(--sm-accent-deep);font-size:16px;font-weight:900;cursor:pointer}
+body.sm-business-tool-page .sm-copy-result.is-done{background:var(--sm-accent-soft)}
 body.sm-business-tool-page .sm-tool-tip{display:grid;grid-template-columns:auto 1fr;gap:10px;margin:18px 0 0;padding:15px 16px;border-radius:15px;background:#f8fafb;color:#59656f;font-size:13px;line-height:1.7}
 body.sm-business-tool-page .sm-tool-tip b{color:#2c3943}
+body.sm-business-tool-page .sm-native-result-hidden{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important;padding:0!important;border:0!important}
+body.sm-business-tool-page .sm-text-result{margin-top:18px;padding:18px 20px;border:1px solid #dfe6e9;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#fbfcfd 100%)}
+body.sm-business-tool-page .sm-text-result-label{margin-bottom:9px;font-size:13px;font-weight:900;color:#68737d}
+body.sm-business-tool-page .sm-text-result-value{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text;font:700 17px/1.75 Arial,"Hiragino Sans","Yu Gothic",sans-serif;color:#172027}
 
 body.sm-tool-date-calculator{--sm-accent:#2467b2;--sm-accent-soft:#edf5ff;--sm-accent-deep:#174d88}
 body.sm-tool-password-generator{--sm-accent:#7a4bc2;--sm-accent-soft:#f4efff;--sm-accent-deep:#573091}
@@ -83,19 +81,19 @@ body.sm-tool-text-counter .toolbox:before{content:'文章を貼り付けるだ�
 body.sm-tool-postal-code .toolbox:before{content:'郵便番号から住所、住所から郵便番号を検索できます'}
 body.sm-tool-age-table .toolbox:before{content:'西暦・和暦・年齢を一覧で見やすく確認できます'}
 
-@media(max-width:650px){
+@media(max-width:700px){
  body.sm-business-tool-page .wrap{padding:18px 12px 80px}
  body.sm-business-tool-page .crumb{margin-bottom:12px;font-size:12px}
  body.sm-business-tool-page .hero{padding:23px 18px 21px;border-radius:22px}
  body.sm-business-tool-page .hero h1{font-size:34px;line-height:1.12}
  body.sm-business-tool-page .hero p{font-size:15px;line-height:1.75}
- body.sm-business-tool-page .toolbox{padding:18px 14px;border-radius:22px}
+ body.sm-business-tool-page .toolbox{padding:18px 14px;border-radius:22px;overflow:hidden}
  body.sm-business-tool-page .toolbox:before{margin-bottom:18px;padding:11px 12px;min-height:48px;line-height:1.55}
- body.sm-business-tool-page .grid2,body.sm-business-tool-page .metrics{grid-template-columns:1fr}
+ body.sm-business-tool-page .grid2,body.sm-business-tool-page .metrics{grid-template-columns:1fr!important}
  body.sm-business-tool-page .field{margin-bottom:16px}
  body.sm-business-tool-page .field label{font-size:16px}
  body.sm-business-tool-page .field input,body.sm-business-tool-page .field select{min-height:64px;padding:15px 16px;font-size:20px!important;border-radius:15px}
- body.sm-business-tool-page .field textarea:not(.sm-native-result-hidden){min-height:210px;padding:16px;font-size:18px!important;border-radius:15px}
+ body.sm-business-tool-page .field textarea{min-height:210px;padding:16px;font-size:18px!important;border-radius:15px}
  body.sm-business-tool-page .actions{grid-template-columns:1fr;gap:10px}
  body.sm-business-tool-page .btn,body.sm-business-tool-page button.btn{width:100%;min-height:64px;font-size:18px!important;border-radius:16px}
  body.sm-business-tool-page .result{min-height:100px;margin-top:18px;padding:18px;font-size:18px;border-radius:18px}
@@ -103,9 +101,9 @@ body.sm-tool-age-table .toolbox:before{content:'西暦・和暦・年齢を一�
  body.sm-business-tool-page .metric{min-height:104px;padding:16px}
  body.sm-business-tool-page .metric small{font-size:13px}
  body.sm-business-tool-page .metric strong{font-size:31px}
- body.sm-business-tool-page .sm-text-result{padding:18px 16px;border-radius:18px}
- body.sm-business-tool-page .sm-text-result-value{font-size:18px;line-height:1.7;max-height:360px}
  body.sm-business-tool-page .checkrow{display:grid;grid-template-columns:1fr}
  body.sm-business-tool-page .checkrow label{min-height:52px;font-size:15px}
- body.sm-business-tool-page .sm-copy-result{min-height:64px;font-size:18px}
+ body.sm-business-tool-page .sm-copy-result{min-height:62px;font-size:17px}
+ body.sm-business-tool-page .sm-text-result{padding:16px}
+ body.sm-business-tool-page .sm-text-result-value{font-size:16px;line-height:1.7}
 }
