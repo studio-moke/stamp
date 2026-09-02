@@ -18,6 +18,7 @@ function json(res, status, payload) { res.status(status).json(payload); }
 function isAdmin(req) { const expected = process.env.FREE_ADMIN_TOKEN; return Boolean(expected && req.headers["x-admin-token"] === expected); }
 function slugify(value = "") { return String(value).normalize("NFKC").toLowerCase().trim().replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 90) || `asset-${Date.now()}`; }
 function safeArray(values, allowed) { return [...new Set((Array.isArray(values) ? values : []).filter((v) => allowed.includes(v)))]; }
+function cleanStringArray(values, maxItems = 8, maxLength = 40) { return [...new Set((Array.isArray(values) ? values : []).map(v => String(v || "").normalize("NFKC").trim().replace(/\s+/g, " ").slice(0, maxLength)).filter(Boolean))].slice(0, maxItems); }
 function cleanHash(value = "") { const v = String(value).toLowerCase().replace(/[^a-f0-9]/g, ""); return v.length === 64 ? v : ""; }
 function extFor(contentType = "") { if (/webp/i.test(contentType)) return ".webp"; if (/jpe?g/i.test(contentType)) return ".jpg"; return ".png"; }
 function publicCode() { return crypto.randomBytes(6).toString("hex"); }
@@ -62,6 +63,8 @@ function normalizeMetadata(raw, fallback = {}) {
     slug: slugify(raw?.slug || fallback.slug || jaTitle), platforms: safeArray(raw?.platforms ?? fallback.platforms, MASTER.platforms),
     types: safeArray(raw?.types ?? fallback.types, MASTER.types), motifs: safeArray(raw?.motifs ?? fallback.motifs, MASTER.motifs),
     styles: safeArray(raw?.styles ?? fallback.styles, MASTER.styles), character: String(raw?.character ?? fallback.characterHint ?? fallback.character ?? "").slice(0, 60),
+    useCategories: cleanStringArray(raw?.useCategories ?? fallback.useCategories, 4, 32),
+    usageIntent: String(raw?.usageIntent ?? fallback.usageHint ?? fallback.usageIntent ?? "").normalize("NFKC").trim().slice(0, 400),
     transparent: Boolean(raw?.transparent ?? fallback.transparent), locales,
   };
 }
@@ -130,7 +133,7 @@ export default async function handler(req, res) {
         const slug = slugify(req.body?.slug || ""); const current = await findBySlug(slug); if (!current) return json(res, 404, { error: "Not found" });
         const patch = req.body?.patch || {}, locales = normalizeLocales({ ...current.locales, ...(patch.locales || {}) });
         const status = patch.status === "published" ? "published" : patch.status === "unpublished" ? "unpublished" : current.status;
-        const updated = { ...current, platforms: safeArray(patch.platforms ?? current.platforms, MASTER.platforms), types: safeArray(patch.types ?? current.types, MASTER.types), motifs: safeArray(patch.motifs ?? current.motifs, MASTER.motifs), styles: safeArray(patch.styles ?? current.styles, MASTER.styles), character: String(patch.character ?? current.character ?? "").slice(0, 60), locales, status, updatedAt: new Date().toISOString() };
+        const updated = { ...current, platforms: safeArray(patch.platforms ?? current.platforms, MASTER.platforms), types: safeArray(patch.types ?? current.types, MASTER.types), motifs: safeArray(patch.motifs ?? current.motifs, MASTER.motifs), styles: safeArray(patch.styles ?? current.styles, MASTER.styles), character: String(patch.character ?? current.character ?? "").slice(0, 60), useCategories: cleanStringArray(patch.useCategories ?? current.useCategories, 4, 32), usageIntent: String(patch.usageIntent ?? current.usageIntent ?? "").normalize("NFKC").trim().slice(0, 400), locales, status, updatedAt: new Date().toISOString() };
         await persistRecord(updated); return json(res, 200, { asset: updated });
       }
       if (action === "delete" || action === "unpublish") { const slug = slugify(req.body?.slug || ""); const current = await findBySlug(slug); if (!current) return json(res, 404, { error: "Not found" }); const updated = { ...current, status: "unpublished", updatedAt: new Date().toISOString() }; await persistRecord(updated); return json(res, 200, { ok: true, asset: updated }); }
