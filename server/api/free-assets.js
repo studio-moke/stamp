@@ -125,6 +125,10 @@ export default async function handler(req, res) {
       if (action === "publish") {
         const body = req.body || {}; const meta = normalizeMetadata(body.metadata || {}, body); if (!body.originalKey || !body.previewKey) return json(res, 400, { error: "originalKey and previewKey are required" });
         const now = new Date().toISOString(), id = body.id || crypto.randomUUID(), code = body.publicCode || publicCode(), hash = cleanHash(body.contentHash || "");
+        if (hash) {
+          const existingHash = await r2GetJson(hashKey(hash), null);
+          if (existingHash && existingHash.slug !== meta.slug && existingHash.id !== id) return json(res, 409, { error: "同じ元画像はすでに登録されています。", duplicate: true, asset: existingHash });
+        }
         const record = { ...meta, id, publicCode: code, originalKey: body.originalKey, previewKey: body.previewKey, thumbKey: body.thumbKey || "", contentHash: hash, width: Number(body.width || 0), height: Number(body.height || 0), contentType: body.contentType || "image/png", license: "personal-noncommercial", copyright: "© stamp-moke.jp", downloads: Number(body.downloads || 0), status: "published", publishedAt: body.publishedAt || now, updatedAt: now, canonicalUrl: `${SITE_URL}/free/${encodeURIComponent(meta.slug)}` };
         await persistRecord(record); if (hash) await r2PutJson(hashKey(hash), { slug: record.slug, id: record.id, title: record.locales?.ja?.title || "" }); return json(res, 200, { asset: record });
       }
