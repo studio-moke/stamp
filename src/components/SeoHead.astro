@@ -19,9 +19,20 @@ const finalDescription=seoLocale?.metaDescription||description;
 const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 ---
 <meta name="description" content={finalDescription} />
+<meta name="robots" content="index,follow,max-image-preview:large" />
 {keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="shortcut icon" href="/favicon.ico" sizes="any" />
+<script is:inline>
+  (() => {
+    try {
+      const p = window.location.pathname;
+      if (p === '/' || (!/^\/(en|zh-tw|th|id)(\/|$)/.test(p) && !p.startsWith('/api/'))) {
+        localStorage.setItem('stamp-moke-locale', 'ja');
+      }
+    } catch (_) {}
+  })();
+</script>
 <link rel="stylesheet" href="/site-header.css" />
 <script is:inline src="/site-header.js"></script>
 <script is:inline src="/site-extra-nav.js"></script>
