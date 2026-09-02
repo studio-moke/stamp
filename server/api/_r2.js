@@ -102,11 +102,10 @@ async function signedFetch(method, key, { body, contentType, query = {} } = {}) 
   const canonicalHeaders = signedNames.map((name) => `${name}:${headers[name].trim()}\n`).join("");
   const signedHeaders = signedNames.join(";");
   const canonicalRequest = [method, uri, canonicalQ, canonicalHeaders, signedHeaders, payloadHash].join("\n");
-  const scope = `${dateStamp}/${REGION}/${SERVICE/aws4_request"}`;
-  const normalizedScope = `${dateStamp}/${REGION}/${SERVICE}/aws4_request`;
-  const stringToSign = ["AWS4-HMAC-SHA256", date, normalizedScope, sha256(canonicalRequest)].join("\n");
+  const scope = `${dateStamp}/${REGION}/${SERVICE}/aws4_request`;
+  const stringToSign = ["AWS4-HMAC-SHA256", date, scope, sha256(canonicalRequest)].join("\n");
   const signature = hmac(signingKey(secret, dateStamp), stringToSign, "hex");
-  const authorization = `AWS4-HMAC-SHA256 Credential=${accessKey}/${normalizedScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
+  const authorization = `AWS4-HMAC-SHA256 Credential=${accessKey}/${scope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
   const url = `https://${host}${uri}${canonicalQ ? `?${canonicalQ}` : ""}`;
   const requestHeaders = { Authorization: authorization, "x-amz-content-sha256": payloadHash, "x-amz-date": date };
   if (contentType) requestHeaders["Content-Type"] = contentType;
