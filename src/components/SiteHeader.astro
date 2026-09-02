@@ -5,8 +5,8 @@ const htmlLang = localeInfo[locale].htmlLang;
 const headerVersion = "20260901-2";
 ---
 <link rel="stylesheet" href={`/site-header.css?v=${headerVersion}`} />
+<link rel="stylesheet" href="/share-buttons.css?v=20260902-1" />
 <link rel="stylesheet" href="/image-compressor-mobile-fix.css" />
-<link rel="stylesheet" href="/free-gallery-cleanup.css" />
 <script is:inline define:vars={{ htmlLang }}>document.documentElement.lang=htmlLang;</script>
 <header class="sm-site-header" data-sm-canonical="1" data-locale={locale}></header>
 <script is:inline src="/site-extra-nav.js"></script>
@@ -18,6 +18,7 @@ const headerVersion = "20260901-2";
 <script is:inline src="/auto-free-manga-assets.js"></script>
 <script is:inline src="/image-save-ux-global.js"></script>
 <script is:inline src={`/site-header.js?v=${headerVersion}`}></script>
+<script is:inline src="/share-buttons.js?v=20260902-1"></script>
 <script is:inline>
 (()=>{const clean=()=>{const h=document.querySelector('.sm-site-header'),nav=h?.querySelector('.sm-site-actions');if(!nav)return;nav.querySelectorAll(':scope > .sm-site-tool,:scope > .sm-tools-menu').forEach(x=>x.remove());nav.querySelectorAll(':scope > a.sm-site-link').forEach(a=>{if(!a.classList.contains('sm-nav-stickers')&&!a.classList.contains('sm-nav-tools')&&!a.classList.contains('sm-nav-free'))a.remove()})};const start=()=>{clean();const h=document.querySelector('.sm-site-header');if(!h)return;const mo=new MutationObserver(clean);mo.observe(h,{childList:true,subtree:true});setTimeout(clean,100);setTimeout(clean,400);setTimeout(clean,1000)};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start()})();
 </script>
