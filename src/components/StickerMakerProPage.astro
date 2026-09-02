@@ -1,0 +1,121 @@
+---
+import SiteHeader from "./SiteHeader.astro";
+const { locale="ja" } = Astro.props;
+const prefix = locale === "ja" ? "" : `/${locale}`;
+const ja = locale === "ja";
+const t = ja ? {
+  title:"ペット写真をステッカーに",
+  sub:"犬・猫などの写真をAIで切り抜き、白フチ付きの透過PNGに。",
+  upload:"写真をアップロード", drop:"JPG / PNG / WebP・ドラッグ＆ドロップ対応",
+  sticker:"ステッカー", cutout:"切り抜きのみ", original:"元写真",
+  transparent:"透過", white:"白", dark:"濃色",
+  mode:"切り抜きモード", standard:"AI自動（おすすめ）", standardSub:"犬・猫・人物・小物を自動検出", high:"高精度モード", highSub:"毛先・細かい部分を精密に（PC推奨）",
+  finish:"仕上げオプション", outline:"フチの太さ", outlineColor:"フチの色", shadow:"影の強さ", padding:"余白", scale:"大きさ", rotate:"回転",
+  compact:"ぴったり", normal:"標準", wide:"広め",
+  refine:"切り抜きを補正", erase:"消す", restore:"戻す", brush:"ブラシサイズ", refineHint:"切り抜きタブで画像をなぞると、背景の残りを消したり、消えた毛先を戻せます。",
+  rerun:"AIで再切り抜き", undo:"補正を元に戻す", reset:"設定をリセット",
+  done:"切り抜き完了！", doneSub:"フチや余白を調整してPNG保存できます。",
+  save:"PNG保存", multi:"複数サイズで保存", share:"シェア", shareSub:"対応端末では画像を直接共有できます。",
+  working:"AIが被写体を切り抜いています", first:"初回のみAIモデルの読み込みに少し時間がかかります。", retry:"別のモデル配信元で再試行しています…",
+  error:"AI切り抜きに失敗しました。通信状態を確認して、再切り抜きをお試しください。",
+  noPhoto:"写真を選ぶと、ここに完成イメージが表示されます。",
+  privacy:"写真はこの端末のブラウザ内で処理します。stamp moke のサーバーへ写真をアップロードしません。",
+  step1:"1 写真を選ぶ",step2:"2 AIで切り抜く",step3:"3 フチを調整",step4:"4 PNG保存",
+  sample:"使い方", sampleText:"①写真を選択 → ②AIが背景を削除 → ③白フチや影を調整 → ④透過PNGで保存。"
+} : {
+  title:"Turn photos into stickers", sub:"AI removes the background and turns pets and other subjects into outlined transparent PNG stickers.",
+  upload:"Upload photo", drop:"JPG / PNG / WebP · drag & drop", sticker:"Sticker", cutout:"Cutout", original:"Original", transparent:"Transparent", white:"White", dark:"Dark",
+  mode:"Cutout mode", standard:"AI automatic", standardSub:"Recommended for pets, people and objects", high:"High quality", highSub:"More detail, desktop recommended",
+  finish:"Finish options", outline:"Outline width", outlineColor:"Outline color", shadow:"Shadow", padding:"Padding", scale:"Scale", rotate:"Rotation", compact:"Tight", normal:"Normal", wide:"Wide",
+  refine:"Refine cutout", erase:"Erase", restore:"Restore", brush:"Brush size", refineHint:"Use the Cutout tab and paint to erase leftovers or restore missing edges.", rerun:"Run AI again", undo:"Undo refinement", reset:"Reset settings",
+  done:"Cutout complete!", doneSub:"Adjust the outline and save your PNG.", save:"Save PNG", multi:"Save multiple sizes", share:"Share", shareSub:"Share the generated image directly on supported devices.",
+  working:"AI is cutting out the subject", first:"The AI model is downloaded on first use.", retry:"Retrying with another model source…", error:"Background removal failed. Check your connection and try again.", noPhoto:"Choose a photo to preview your sticker.", privacy:"Your photo is processed locally in your browser and is not uploaded to stamp moke.",
+  step1:"1 Choose photo",step2:"2 AI cutout",step3:"3 Adjust",step4:"4 Save PNG", sample:"How it works", sampleText:"Choose a photo → AI removes the background → adjust outline/shadow → save a transparent PNG."
+};
+---
+<!doctype html>
+<html lang={locale}>
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{t.title}｜無料AIステッカーメーカー | stamp moke</title>
+<meta name="description" content={t.sub}/><link rel="canonical" href={`https://stamp-moke.jp${prefix}/sticker-maker/`}/>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.23.0/dist/ort.min.js"></script>
+<script src="https://unpkg.com/@bunnio/rembg-web@1.0.2/dist/index.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#14213a;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.wrap{max-width:1400px;margin:auto;padding:20px 16px 72px}.hero{text-align:center;padding:8px 0 18px}.hero h1{margin:0 0 7px;font-size:clamp(34px,5vw,58px);letter-spacing:-.055em}.hero p{margin:0;color:#687386;font-size:13px}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:1000px;margin:0 auto 16px}.step{background:#fff;border:1px solid #dce3ed;color:#7d8796;border-radius:13px;padding:11px 6px;text-align:center;font-size:10px;font-weight:900}.step.on{background:#14213a;color:#fff;border-color:#14213a}.studio{display:grid;grid-template-columns:270px minmax(0,1fr) 290px;gap:14px;align-items:start}.card{background:#fff;border:1px solid #dfe5ee;border-radius:20px;box-shadow:0 14px 42px rgba(24,38,64,.06)}.side{padding:15px}.upload{display:block;border:2px dashed #b9c5d5;border-radius:15px;padding:11px;text-align:center;cursor:pointer;background:#fbfcfe}.upload input{display:none}.upload strong{display:block;padding:15px 10px;border-radius:11px;background:#1677ee;color:#fff;font-size:13px}.upload span{display:block;margin-top:8px;color:#7c8797;font-size:9px}.thumb{margin-top:11px;border-radius:12px;overflow:hidden;background:#eef2f7}.thumb img{display:block;width:100%;height:150px;object-fit:cover}.section{padding-top:15px;margin-top:15px;border-top:1px solid #edf0f4}.section:first-child{border-top:0;margin-top:0;padding-top:0}.section h2{font-size:13px;margin:0 0 11px}.mode-card{display:block;border:1px solid #dae1eb;border-radius:12px;padding:10px;margin-bottom:7px;cursor:pointer}.mode-card:has(input:checked){border-color:#1677ee;background:#f0f6ff}.mode-card input{margin-right:6px}.mode-card b{font-size:10px}.mode-card small{display:block;color:#758095;font-size:8px;margin:4px 0 0 21px;line-height:1.5}.preview{padding:12px}.toolbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}.tabs,.bgs,.brushes{display:flex;gap:5px;flex-wrap:wrap}.toolbar button,.brushes button{border:0;border-radius:999px;background:#eef2f7;padding:8px 11px;font-size:9px;font-weight:900;cursor:pointer}.toolbar button.on,.brushes button.on{background:#1677ee;color:#fff}.stage{position:relative;min-height:650px;border-radius:15px;overflow:hidden;display:grid;place-items:center;background-color:#fff;background-image:linear-gradient(45deg,#e6eaf0 25%,transparent 25%),linear-gradient(-45deg,#e6eaf0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e6eaf0 75%),linear-gradient(-45deg,transparent 75%,#e6eaf0 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}.stage.white{background:#fff;background-image:none}.stage.dark{background:#27303d;background-image:none}.stage canvas{display:block;width:100%;height:auto;touch-action:none}.empty{position:absolute;color:#7e8999;font-size:11px;font-weight:800;text-align:center;padding:24px}.busy{position:absolute;inset:0;background:rgba(255,255,255,.94);display:none;place-items:center;text-align:center;z-index:10;padding:20px}.busy.show{display:grid}.spinner{width:46px;height:46px;border-radius:50%;border:4px solid #dfe9f7;border-top-color:#1677ee;animation:spin 1s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}.busy strong{font-size:13px}.busy p{font-size:9px;color:#6f7b8d}.progress{width:230px;max-width:70vw;height:7px;border-radius:999px;background:#e4e9f0;overflow:hidden;margin:10px auto}.progress i{display:block;width:5%;height:100%;background:#1677ee;transition:width .2s}.row{margin-bottom:13px}.rowhead{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:9px;font-weight:900}.row input[type=range]{width:100%;accent-color:#1677ee}.colorrow{display:flex;align-items:center;gap:7px}.colorrow input[type=color]{width:42px;height:34px;padding:2px;border:1px solid #d9e0e8;border-radius:9px;background:#fff}.swatch{width:25px;height:25px;border-radius:50%;border:1px solid #d6dce5;cursor:pointer}.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.seg button{border:1px solid #dce2eb;background:#fff;border-radius:9px;padding:8px 3px;font-size:8px;font-weight:900;cursor:pointer}.seg button.on{background:#1677ee;color:#fff;border-color:#1677ee}.hint,.privacy{font-size:8px;line-height:1.65;color:#7d8795}.btn{width:100%;border:0;border-radius:11px;padding:12px 8px;font-size:9px;font-weight:900;cursor:pointer;margin-top:7px}.btn.primary{background:#1677ee;color:#fff;font-size:11px}.btn.dark{background:#14213a;color:#fff}.btn.light{background:#edf1f6;color:#14213a}.btn:disabled{opacity:.45;cursor:not-allowed}.complete{display:none;padding:11px;border-radius:12px;background:#eef9f1;color:#256b39;margin-bottom:11px}.complete.show{display:block}.complete b{display:block;font-size:12px}.complete small{font-size:8px}.sharegrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.status{display:none;margin-top:9px;border-radius:10px;padding:9px;background:#eef9f1;color:#246c3a;font-size:8px;font-weight:800;line-height:1.5}.status.show{display:block}.status.error{background:#fff0f0;color:#b42318}.how{margin-top:14px;padding:13px;border-radius:13px;background:#f6f8fb}.how b{font-size:10px}.how p{font-size:8px;color:#778293;line-height:1.6;margin:5px 0 0}@media(max-width:1000px){.studio{grid-template-columns:1fr}.preview{order:1}.left{order:2}.right{order:3}.stage{min-height:430px}.wrap{padding:15px 9px 60px}.hero{padding-top:4px}}@media(max-width:520px){.steps{gap:4px}.step{font-size:7px;padding:9px 2px}.preview{padding:7px}.stage{min-height:310px}.side{padding:12px}.hero h1{font-size:38px}.toolbar button{padding:7px 8px;font-size:8px}}
+</style>
+</head><body><SiteHeader locale={locale}/><main class="wrap">
+<section class="hero"><h1>{t.title}</h1><p>{t.sub}</p></section>
+<div class="steps"><div class="step on" data-step="1">{t.step1}</div><div class="step" data-step="2">{t.step2}</div><div class="step" data-step="3">{t.step3}</div><div class="step" data-step="4">{t.step4}</div></div>
+<section class="studio">
+<aside class="card side left">
+<label class="upload"><input id="file" type="file" accept="image/png,image/jpeg,image/webp"/><strong>{t.upload}</strong><span>{t.drop}</span></label>
+<div class="thumb" id="thumbWrap" hidden><img id="thumb" alt=""/></div>
+<div class="section"><h2>{t.mode}</h2>
+<label class="mode-card"><input type="radio" name="quality" value="u2netp" checked/><b>{t.standard}</b><small>{t.standardSub}</small></label>
+<label class="mode-card"><input type="radio" name="quality" value="isnet-general-use"/><b>{t.high}</b><small>{t.highSub}</small></label>
+<button class="btn dark" id="rerun">{t.rerun}</button>
+</div>
+<div class="section"><h2>{t.refine}</h2><div class="brushes"><button class="on" data-brush="erase">{t.erase}</button><button data-brush="restore">{t.restore}</button></div>
+<div class="row" style="margin-top:10px"><div class="rowhead"><span>{t.brush}</span><b id="brushV">36</b></div><input id="brush" type="range" min="8" max="120" value="36"/></div><p class="hint">{t.refineHint}</p><button class="btn light" id="undo" disabled>{t.undo}</button></div>
+<p class="privacy">{t.privacy}</p></aside>
+
+<div class="card preview"><div class="toolbar"><div class="tabs"><button class="on" id="stickerTab">{t.sticker}</button><button id="cutoutTab">{t.cutout}</button><button id="originalTab">{t.original}</button></div><div class="bgs"><button class="on" data-bg="transparent">{t.transparent}</button><button data-bg="white">{t.white}</button><button data-bg="dark">{t.dark}</button></div></div>
+<div class="stage" id="stage"><canvas id="canvas" width="900" height="900"></canvas><div class="empty" id="empty">{t.noPhoto}</div><div class="busy" id="busy"><div><div class="spinner"></div><strong id="busyTitle">{t.working}</strong><p id="busyText">{t.first}</p><div class="progress"><i id="bar"></i></div><b id="pct">0%</b></div></div></div></div>
+
+<aside class="card side right"><div id="complete" class="complete"><b>✨ {t.done}</b><small>{t.doneSub}</small></div><div class="section"><h2>{t.finish}</h2>
+<div class="row"><div class="rowhead"><span>{t.outline}</span><b id="outlineV">18 px</b></div><input id="outline" type="range" min="0" max="50" value="18"/></div>
+<div class="row"><div class="rowhead"><span>{t.outlineColor}</span></div><div class="colorrow"><input id="outlineColor" type="color" value="#ffffff"/><button class="swatch" data-color="#ffffff" style="background:#fff"></button><button class="swatch" data-color="#111111" style="background:#111"></button><button class="swatch" data-color="#f7b6d2" style="background:#f7b6d2"></button><button class="swatch" data-color="#3da5ff" style="background:#3da5ff"></button><button class="swatch" data-color="#ffe06b" style="background:#ffe06b"></button></div></div>
+<div class="row"><div class="rowhead"><span>{t.shadow}</span><b id="shadowV">10</b></div><input id="shadow" type="range" min="0" max="35" value="10"/></div>
+<div class="row"><div class="rowhead"><span>{t.padding}</span></div><div class="seg"><button data-pad="25">{t.compact}</button><button class="on" data-pad="50">{t.normal}</button><button data-pad="90">{t.wide}</button></div><input id="padding" type="hidden" value="50"/></div>
+<div class="row"><div class="rowhead"><span>{t.scale}</span><b id="scaleV">100%</b></div><input id="scale" type="range" min="70" max="125" value="100"/></div>
+<div class="row"><div class="rowhead"><span>{t.rotate}</span><b id="rotateV">0°</b></div><input id="rotate" type="range" min="-20" max="20" value="0"/></div>
+<button class="btn light" id="reset">{t.reset}</button></div>
+<div class="section"><button class="btn primary" id="save">↓ {t.save}</button><button class="btn light" id="multi">{t.multi}<br/><small>512 / 1024 / 2048 px</small></button><div class="sharegrid"><button class="btn light" id="share">{t.share}</button><button class="btn light" id="copyImage">PNG 1024</button></div><p class="hint">{t.shareSub}</p><div id="status" class="status"></div></div>
+<div class="how"><b>{t.sample}</b><p>{t.sampleText}</p></div></aside>
+</section></main>
+<script is:inline define:vars={{t}}>
+(()=>{
+const $=id=>document.getElementById(id), file=$('file'), canvas=$('canvas'), ctx=canvas.getContext('2d'), stage=$('stage'), busy=$('busy'), status=$('status');
+let original=null, originalUrl='', cutout=null, mode='sticker', brushMode='erase', painting=false, undoData=null, activeBox=null;
+const modelUrls={
+ 'u2netp':['https://huggingface.co/baby2008/u2net-onnx/resolve/main/u2netp.onnx?download=true','https://github.com/bunn-io/rembg-web/releases/download/base-models/u2netp.onnx'],
+ 'isnet-general-use':['https://huggingface.co/SacredNoir/isnet-general-use-onnx/resolve/main/isnet-general-use.onnx?download=true','https://github.com/bunn-io/rembg-web/releases/download/base-models/isnet-general-use.onnx']
+};
+function msg(s,err=false){status.textContent=s;status.classList.add('show');status.classList.toggle('error',err)}
+function setStep(n){document.querySelectorAll('[data-step]').forEach(x=>x.classList.toggle('on',+x.dataset.step<=n))}
+function progress(n,text=''){const p=Math.max(3,Math.min(100,Math.round(Number(n)||0)));$('bar').style.width=p+'%';$('pct').textContent=p+'%';if(text)$('busyText').textContent=text}
+function quality(){return document.querySelector('input[name=quality]:checked')?.value||'u2netp'}
+function bbox(c){const cx=c.getContext('2d',{willReadFrequently:true}),d=cx.getImageData(0,0,c.width,c.height).data;let x0=c.width,y0=c.height,x1=-1,y1=-1;for(let y=0;y<c.height;y+=2)for(let x=0;x<c.width;x+=2)if(d[(y*c.width+x)*4+3]>12){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y)}return x1<0?{x:0,y:0,w:c.width,h:c.height}:{x:Math.max(0,x0-2),y:Math.max(0,y0-2),w:Math.min(c.width-x0,x1-x0+5),h:Math.min(c.height-y0,y1-y0+5)}}
+function render(target,size=900,which=mode){const tc=target.getContext('2d');target.width=target.height=size;tc.clearRect(0,0,size,size);if(!original)return null;if(which==='original'){const w=original.naturalWidth,h=original.naturalHeight,r=Math.min(size*.9/w,size*.9/h);tc.drawImage(original,(size-w*r)/2,(size-h*r)/2,w*r,h*r);return null}if(!cutout)return null;const b=bbox(cutout);if(which==='cutout'){const r=Math.min(size*.9/b.w,size*.9/b.h),w=b.w*r,h=b.h*r,x=(size-w)/2,y=(size-h)/2;tc.drawImage(cutout,b.x,b.y,b.w,b.h,x,y,w,h);return{x,y,w,h,b,r}}
+const ratio=size/900,outline=+$('outline').value*ratio,pad=+$('padding').value*ratio,shadow=+$('shadow').value*ratio,sc=+$('scale').value/100,rot=+$('rotate').value*Math.PI/180,usable=Math.max(size*.18,size-pad*2-outline*2-shadow*2),r=Math.min(usable/b.w,usable/b.h)*sc,w=b.w*r,h=b.h*r,x=(size-w)/2,y=(size-h)/2,bc=$('outlineColor').value;
+const temp=document.createElement('canvas');temp.width=temp.height=size;const tx=temp.getContext('2d');tx.translate(size/2,size/2);tx.rotate(rot);tx.translate(-size/2,-size/2);
+if(shadow>0){tx.save();tx.shadowColor='rgba(0,0,0,.30)';tx.shadowBlur=shadow*1.5;tx.shadowOffsetY=shadow*.7;tx.drawImage(cutout,b.x,b.y,b.w,b.h,x,y,w,h);tx.restore()}
+if(outline>0){const outlineLayer=document.createElement('canvas');outlineLayer.width=outlineLayer.height=size;const ox=outlineLayer.getContext('2d');const rings=Math.max(2,Math.ceil(outline/3)),steps=48;for(let rr=outline;rr>0;rr-=outline/rings)for(let i=0;i<steps;i++){const a=i/steps*Math.PI*2;ox.drawImage(cutout,b.x,b.y,b.w,b.h,x+Math.cos(a)*rr,y+Math.sin(a)*rr,w,h)}ox.globalCompositeOperation='source-in';ox.fillStyle=bc;ox.fillRect(0,0,size,size);tx.drawImage(outlineLayer,0,0)}
+tx.drawImage(cutout,b.x,b.y,b.w,b.h,x,y,w,h);tc.drawImage(temp,0,0);return{x,y,w,h,b,r,rot}}
+function draw(){activeBox=render(canvas,900,mode)}
+function syncTabs(){$('stickerTab').classList.toggle('on',mode==='sticker');$('cutoutTab').classList.toggle('on',mode==='cutout');$('originalTab').classList.toggle('on',mode==='original')}
+function updateLabels(){$('outlineV').textContent=$('outline').value+' px';$('shadowV').textContent=$('shadow').value;$('scaleV').textContent=$('scale').value+'%';$('rotateV').textContent=$('rotate').value+'°';$('brushV').textContent=$('brush').value}
+async function makeSession(model){if(!window.rembgWeb)throw new Error('rembg library unavailable');let last;for(let i=0;i<modelUrls[model].length;i++){try{if(i){$('busyText').textContent=t.retry;window.rembgWeb.rembgConfig.setSessionCacheBypass?.(true);window.rembgWeb.rembgConfig.setModelCacheBypass?.(true)}window.rembgWeb.rembgConfig.setCustomModelPath(model,modelUrls[model][i]);const s=await window.rembgWeb.newSession(model,undefined,{onProgress:info=>progress(info?.progress||12,info?.message||t.first)});window.rembgWeb.rembgConfig.setSessionCacheBypass?.(false);window.rembgWeb.rembgConfig.setModelCacheBypass?.(false);return s}catch(e){last=e;console.warn('model source failed',modelUrls[model][i],e)}}throw last||new Error('model unavailable')}
+async function runCutout(){const f=file.files?.[0];if(!f)return;busy.classList.add('show');$('busyTitle').textContent=t.working;$('busyText').textContent=t.first;progress(5);status.classList.remove('show');setStep(2);try{const session=await makeSession(quality());progress(70,t.working);const blob=await window.rembgWeb.remove(f,{session,postProcessMask:true,onProgress:info=>progress(70+(Number(info?.progress)||0)*.3,t.working)});const url=URL.createObjectURL(blob),im=new Image;await new Promise((res,rej)=>{im.onload=res;im.onerror=rej;im.src=url});cutout=document.createElement('canvas');cutout.width=im.naturalWidth;cutout.height=im.naturalHeight;cutout.getContext('2d').drawImage(im,0,0);URL.revokeObjectURL(url);undoData=null;$('undo').disabled=true;mode='sticker';syncTabs();$('empty').hidden=true;$('complete').classList.add('show');setStep(3);progress(100);msg(t.doneSub);draw()}catch(e){console.error('AI cutout failed',e);msg(t.error,true)}finally{busy.classList.remove('show')}}
+function loadPhoto(f){if(!f)return;if(originalUrl)URL.revokeObjectURL(originalUrl);originalUrl=URL.createObjectURL(f);const im=new Image;im.onload=()=>{original=im;$('thumb').src=originalUrl;$('thumbWrap').hidden=false;$('empty').hidden=true;mode='original';syncTabs();draw();runCutout()};im.onerror=()=>msg(t.error,true);im.src=originalUrl}
+function getPoint(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*900/r.width,y:(e.clientY-r.top)*900/r.height}}
+function cutoutMap(e){if(!cutout)return null;mode='cutout';syncTabs();const box=render(canvas,900,'cutout');if(!box)return null;const p=getPoint(e);if(p.x<box.x||p.x>box.x+box.w||p.y<box.y||p.y>box.y+box.h)return null;return{sx:box.b.x+(p.x-box.x)/box.w*box.b.w,sy:box.b.y+(p.y-box.y)/box.h*box.b.h,r:box.r}}
+function paint(e){const m=cutoutMap(e);if(!m)return;const cx=cutout.getContext('2d'),rad=+$('brush').value/Math.max(.01,m.r);cx.save();cx.beginPath();cx.arc(m.sx,m.sy,rad,0,Math.PI*2);cx.clip();if(brushMode==='erase')cx.clearRect(m.sx-rad,m.sy-rad,rad*2,rad*2);else if(original)cx.drawImage(original,0,0,cutout.width,cutout.height);cx.restore();draw()}
+function snapshotUndo(){if(!cutout)return;const cx=cutout.getContext('2d');undoData=cx.getImageData(0,0,cutout.width,cutout.height);$('undo').disabled=false}
+function exportBlob(size=1024){const c=document.createElement('canvas');render(c,size,'sticker');return new Promise(res=>c.toBlob(res,'image/png'))}
+async function download(size=1024,name=`stamp-moke-sticker-${size}.png`){if(!cutout)return;const blob=await exportBlob(size),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1200);setStep(4)}
+file.onchange=()=>loadPhoto(file.files?.[0]);['dragenter','dragover'].forEach(n=>document.addEventListener(n,e=>e.preventDefault()));document.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files?.[0];if(!f)return;const dt=new DataTransfer();dt.items.add(f);file.files=dt.files;loadPhoto(f)});
+$('rerun').onclick=runCutout;$('stickerTab').onclick=()=>{mode='sticker';syncTabs();draw()};$('cutoutTab').onclick=()=>{mode='cutout';syncTabs();draw()};$('originalTab').onclick=()=>{mode='original';syncTabs();draw()};
+document.querySelectorAll('[data-bg]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-bg]').forEach(x=>x.classList.toggle('on',x===b));stage.classList.toggle('white',b.dataset.bg==='white');stage.classList.toggle('dark',b.dataset.bg==='dark')});
+document.querySelectorAll('[data-brush]').forEach(b=>b.onclick=()=>{brushMode=b.dataset.brush;document.querySelectorAll('[data-brush]').forEach(x=>x.classList.toggle('on',x===b));mode='cutout';syncTabs();draw()});
+document.querySelectorAll('[data-pad]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-pad]').forEach(x=>x.classList.toggle('on',x===b));$('padding').value=b.dataset.pad;draw()});document.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{$('outlineColor').value=b.dataset.color;draw()});
+['outline','outlineColor','shadow','scale','rotate','brush'].forEach(id=>$(id).addEventListener('input',()=>{updateLabels();if(id!=='brush')draw()}));
+canvas.addEventListener('pointerdown',e=>{if(!cutout||mode==='original')return;snapshotUndo();painting=true;canvas.setPointerCapture?.(e.pointerId);paint(e)});canvas.addEventListener('pointermove',e=>{if(painting)paint(e)});['pointerup','pointercancel','pointerleave'].forEach(n=>canvas.addEventListener(n,()=>painting=false));
+$('undo').onclick=()=>{if(!undoData||!cutout)return;cutout.getContext('2d').putImageData(undoData,0,0);undoData=null;$('undo').disabled=true;draw()};
+$('reset').onclick=()=>{$('outline').value=18;$('outlineColor').value='#ffffff';$('shadow').value=10;$('padding').value=50;$('scale').value=100;$('rotate').value=0;document.querySelectorAll('[data-pad]').forEach(x=>x.classList.toggle('on',x.dataset.pad==='50'));updateLabels();draw()};
+$('save').onclick=()=>download(1024,'stamp-moke-sticker.png');$('copyImage').onclick=()=>download(1024,'stamp-moke-sticker-1024.png');$('multi').onclick=async()=>{for(const s of [512,1024,2048]){await download(s);await new Promise(r=>setTimeout(r,350))}};
+$('share').onclick=async()=>{if(!cutout)return;const blob=await exportBlob(1024),f=new File([blob],'stamp-moke-sticker.png',{type:'image/png'});try{if(navigator.canShare?.({files:[f]}))await navigator.share({files:[f],title:'stamp moke sticker'});else await download(1024)}catch(e){if(e?.name!=='AbortError')await download(1024)}};
+updateLabels();
+})();
+</script></body></html>
