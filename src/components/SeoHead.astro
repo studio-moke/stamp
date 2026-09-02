@@ -26,9 +26,12 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 <script is:inline>
   (() => {
     try {
-      const p = window.location.pathname;
-      if (p === '/' || (!/^\/(en|zh-tw|th|id)(\/|$)/.test(p) && !p.startsWith('/api/'))) {
+      const p = window.location.pathname || '/';
+      const localized = /^\/(en|zh-tw|th|id)(\/|$)/.test(p);
+      if (!localized && !p.startsWith('/api/')) {
         localStorage.setItem('stamp-moke-locale', 'ja');
+        document.documentElement.dataset.stampMokeLocale = 'ja';
+        window.__STAMP_MOKE_EXPLICIT_LOCALE__ = 'ja';
       }
     } catch (_) {}
   })();
