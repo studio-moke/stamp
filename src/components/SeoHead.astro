@@ -6,6 +6,7 @@ import { r2GetJson } from "../../server/api/_r2.js";
 const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname, alternatePaths = null } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const url = canonical || absoluteUrl(Astro.url.pathname);
+const socialImage = image ? absoluteUrl(image) : null;
 const alternates = alternatePaths
   ? LOCALES.map((item) => ({ locale: item, href: absoluteUrl(alternatePaths[item]) }))
   : alternateLinks(path);
@@ -73,9 +74,12 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:locale" content={localeInfo[locale].ogLocale} />
 {alternates.filter((item) => item.locale !== locale).map((item) => <meta property="og:locale:alternate" content={localeInfo[item.locale].ogLocale} />)}
-{image && <meta property="og:image" content={image} />}
+{socialImage && <meta property="og:image" content={socialImage} />}
+{socialImage && <meta property="og:image:secure_url" content={socialImage} />}
+{socialImage && <meta property="og:image:alt" content={title} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={finalDescription} />
-{image && <meta name="twitter:image" content={image} />}
-{seoLocale && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CreativeWork",name:title,url,description:seoLocale.overview||finalDescription,abstract:seoLocale.concept||undefined,audience:seoLocale.target?{"@type":"Audience",audienceType:seoLocale.target}:undefined,keywords,usageInfo:seoLocale.usageIntro||undefined,inLanguage:localeInfo[locale].htmlLang,image:image?absoluteUrl(image):undefined})} />}
+{socialImage && <meta name="twitter:image" content={socialImage} />}
+{socialImage && <meta name="twitter:image:alt" content={title} />}
+{seoLocale && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CreativeWork",name:title,url,description:seoLocale.overview||finalDescription,abstract:seoLocale.concept||undefined,audience:seoLocale.target?{"@type":"Audience",audienceType:seoLocale.target}:undefined,keywords,usageInfo:seoLocale.usageIntro||undefined,inLanguage:localeInfo[locale].htmlLang,image:socialImage||undefined})} />}
