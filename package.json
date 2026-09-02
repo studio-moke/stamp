@@ -6,8 +6,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "node scripts/prepare-incremental-build.mjs && astro build && node scripts/inject-seo-content.mjs",
+    "dev": "node scripts/fix-tool-routes.mjs && astro dev",
+    "build": "node scripts/fix-tool-routes.mjs && node scripts/prepare-incremental-build.mjs && astro build && node scripts/inject-seo-content.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
