@@ -42,8 +42,13 @@ const title = 'stamp moke 集客分析';
     .auth { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .auth input { min-width:260px; }
     .source-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .insight-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .insight-card { background:#fff; border:1px solid #e6e8ed; border-radius:16px; padding:16px; }
+    .insight-card strong { display:block; margin-top:5px; font-size:24px; }
+    .insight-card small { color:#737985; }
+    .language-name { font-weight:800; white-space:nowrap; }
     .empty { padding:26px; color:#737985; text-align:center; }
-    @media (max-width:800px) { .grid { grid-template-columns:repeat(2,1fr); } .source-grid { grid-template-columns:1fr; } header { display:block; } }
+    @media (max-width:800px) { .grid { grid-template-columns:repeat(2,1fr); } .source-grid,.insight-grid { grid-template-columns:1fr; } header { display:block; } }
     @media (max-width:480px) { .grid { grid-template-columns:1fr; } .auth input { min-width:0; width:100%; } }
   </style>
 </head>
@@ -77,6 +82,25 @@ const title = 'stamp moke 集客分析';
   </div>
 
   <section>
+    <h2>🔎 キーワード分析</h2>
+    <p class="hint">指名検索と新規キーワードを分け、クリックにつながっていない検索語を優先して確認します。</p>
+    <div class="insight-grid">
+      <div class="insight-card"><div class="metric-label">指名検索</div><strong id="brandQueries">—</strong><small id="brandDetail">—</small></div>
+      <div class="insight-card"><div class="metric-label">新規キーワード</div><strong id="nonBrandQueries">—</strong><small id="nonBrandDetail">—</small></div>
+      <div class="insight-card"><div class="metric-label">表示されたがクリックなし</div><strong id="noClickQueries">—</strong><small>タイトル・説明文の改善候補</small></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🌏 多言語の成果</h2>
+    <p class="hint">言語別にGoogle検索での発見と、GA4の訪問・反応を比較します。表示0の言語はSEOの見直し候補です。</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>言語</th><th class="num">検索語</th><th class="num">Google表示</th><th class="num">クリック</th><th class="num">CTR</th><th class="num">平均順位</th><th class="num">セッション</th><th class="num">ユーザー</th><th class="num">反応率</th></tr></thead>
+      <tbody id="languageRows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
     <h2>🔥 検索ワード</h2>
     <p class="hint">Google検索から実際にクリックされた順。検索ワードと入口ページをまとめて確認できます。</p>
     <div class="table-wrap"><table>
@@ -104,6 +128,15 @@ const title = 'stamp moke 集客分析';
   </section>
 
   <section>
+    <h2>📝 表示されたが未クリックの検索語</h2>
+    <p class="hint">少ない表示回数も含め、Googleに認識され始めたキーワードを早めに確認できます。</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>検索ワード</th><th>入口ページ</th><th class="num">表示</th><th class="num">順位</th></tr></thead>
+      <tbody id="noClickRows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
     <h2>🌐 どこから来た？</h2>
     <p class="hint">GA4の流入元 / メディア別。GA4_PROPERTY_IDを設定すると表示されます。</p>
     <div class="table-wrap"><table>
@@ -123,7 +156,7 @@ const title = 'stamp moke 集客分析';
   const pct = (n) => `${(Number(n || 0) * 100).toFixed(1)}%`;
   const num = (n) => Number(n || 0).toLocaleString('ja-JP');
   const pos = (n) => Number(n || 0).toFixed(1);
-  const pathOnly = (url) => { try { const u = new URL(url); return u.pathname + u.search; } catch { return url || '/'; } };
+  const pathOnly = (url) => { try { const u = new URL(url); return decodeURIComponent(u.pathname + u.search); } catch { try { return decodeURIComponent(url || '/'); } catch { return url || '/'; } } };
 
   function emptyRow(cols, text) { return `<tr><td colspan="${cols}" class="empty">${esc(text)}</td></tr>`; }
 
@@ -134,6 +167,16 @@ const title = 'stamp moke 集客分析';
     $('queriesCount').textContent = num(data.summary?.queryCount);
     $('range').textContent = `${data.range?.startDate || ''}〜${data.range?.endDate || ''}`;
 
+    const keyword = data.keywordInsights || {};
+    $('brandQueries').textContent = `${num(keyword.branded?.queryCount)}語`;
+    $('brandDetail').textContent = `表示 ${num(keyword.branded?.impressions)}・クリック ${num(keyword.branded?.clicks)}`;
+    $('nonBrandQueries').textContent = `${num(keyword.nonBranded?.queryCount)}語`;
+    $('nonBrandDetail').textContent = `表示 ${num(keyword.nonBranded?.impressions)}・クリック ${num(keyword.nonBranded?.clicks)}`;
+    $('noClickQueries').textContent = `${num(keyword.noClick?.length)}語`;
+
+    const languages = data.languages || [];
+    $('languageRows').innerHTML = languages.length ? languages.map((r) => `<tr><td class="language-name">${esc(r.label)}</td><td class="num">${num(r.queryCount)}</td><td class="num">${num(r.searchImpressions)}</td><td class="num">${num(r.searchClicks)}</td><td class="num">${pct(r.searchCtr)}</td><td class="num">${r.searchImpressions ? pos(r.position) : '—'}</td><td class="num">${num(r.sessions)}</td><td class="num">${num(r.users)}</td><td class="num">${pct(r.engagementRate)}</td></tr>`).join('') : emptyRow(9, '言語別データがありません');
+
     const filter = $('filter').value.trim().toLowerCase();
     const queries = (data.queries || []).filter((q) => !filter || q.query.toLowerCase().includes(filter) || q.page.toLowerCase().includes(filter));
     $('queryRows').innerHTML = queries.length ? queries.slice(0, 200).map((q) => `<tr><td class="query">${esc(q.query || '(検索語なし)')}</td><td class="url" title="${esc(q.page)}">${esc(pathOnly(q.page))}</td><td class="num">${num(q.clicks)}</td><td class="num">${num(q.impressions)}</td><td class="num">${pct(q.ctr)}</td><td class="num">${pos(q.position)}</td></tr>`).join('') : emptyRow(6, '該当データがありません');
@@ -143,6 +186,9 @@ const title = 'stamp moke 集客分析';
 
     const lowCtr = (data.lowCtr || []).filter((q) => !filter || q.query.toLowerCase().includes(filter));
     $('lowCtrRows').innerHTML = lowCtr.length ? lowCtr.map((q) => `<tr><td class="query">${esc(q.query)}</td><td class="url">${esc(pathOnly(q.page))}</td><td class="num">${num(q.impressions)}</td><td class="num"><span class="badge warn">${pct(q.ctr)}</span></td><td class="num">${pos(q.position)}</td></tr>`).join('') : emptyRow(5, '対象ワードはまだありません');
+
+    const noClick = (data.keywordInsights?.noClick || []).filter((q) => !filter || q.query.toLowerCase().includes(filter) || q.page.toLowerCase().includes(filter));
+    $('noClickRows').innerHTML = noClick.length ? noClick.map((q) => `<tr><td class="query">${esc(q.query || '(検索語なし)')}</td><td class="url">${esc(pathOnly(q.page))}</td><td class="num">${num(q.impressions)}</td><td class="num">${pos(q.position)}</td></tr>`).join('') : emptyRow(4, '未クリックの検索語はありません');
 
     const sources = data.sources?.rows || [];
     $('sourceRows').innerHTML = sources.length ? sources.slice(0, 200).map((r) => `<tr><td class="query">${esc(r.sourceMedium)}</td><td class="url">${esc(r.landingPage)}</td><td class="num">${num(r.sessions)}</td><td class="num">${num(r.users)}</td><td class="num">${num(r.engagedSessions)}</td></tr>`).join('') : emptyRow(5, data.sources?.configured ? 'GA4データがありません' : 'GA4_PROPERTY_IDを設定すると表示されます');
