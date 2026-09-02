@@ -31,14 +31,23 @@ async function analyzeAsset(body, adminToken) {
       body: JSON.stringify(body),
       signal: controller.signal,
     });
-    if (!response.ok) throw new Error(`Worker HTTP ${response.status}`);
+    if (!response.ok) throw new Error(`AI解析Workerがエラーを返しました (HTTP ${response.status})。時間をおいて再度お試しください。`);
     const result = await response.json();
-    if (result.error || !result.metadata || typeof result.metadata !== "object" || Array.isArray(result.metadata)) {
-      throw new Error("Worker returned invalid metadata");
+    if (!result || result.error || !result.metadata || typeof result.metadata !== "object" || Array.isArray(result.metadata)) {
+      throw new Error("AI解析Workerから有効な解析結果を取得できませんでした。再度お試しください。");
     }
     return result;
-  } catch {
-    return api("analyze", body, adminToken);
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error("AI解析Workerへの接続がタイムアウトしました。時間をおいて再度お試しください。");
+    }
+    if (error instanceof SyntaxError) {
+      throw new Error("AI解析Workerの応答を読み込めませんでした。再度お試しください。");
+    }
+    if (error instanceof TypeError) {
+      throw new Error("AI解析Workerに接続できませんでした。通信状態を確認して再度お試しください。");
+    }
+    throw error;
   } finally {
     clearTimeout(timeout);
   }
