@@ -23,20 +23,27 @@ body.sm-business-tool-page .field input:focus,
 body.sm-business-tool-page .field select:focus,
 body.sm-business-tool-page .field textarea:focus{border-color:var(--sm-accent);background:#fff;box-shadow:0 0 0 5px color-mix(in srgb,var(--sm-accent) 14%,transparent);outline:none}
 body.sm-business-tool-page .field textarea{min-height:220px;resize:vertical;font-size:17px!important;font-weight:600;line-height:1.75}
+body.sm-business-tool-page .field textarea.sm-native-result-hidden{display:none!important}
+body.sm-business-tool-page .field:has(textarea.sm-native-result-hidden)>label{display:none}
 body.sm-business-tool-page .checkrow{gap:10px;margin:8px 0 20px}
 body.sm-business-tool-page .checkrow label{min-height:48px;padding:10px 13px;border:1px solid #e0e5e8;border-radius:13px;background:#fafbfb;font-size:14px;font-weight:800;color:#36424c;cursor:pointer}
 body.sm-business-tool-page .checkrow input{width:22px;height:22px;accent-color:var(--sm-accent)}
 body.sm-business-tool-page .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+body.sm-business-tool-page #cp{display:none!important}
 body.sm-business-tool-page .btn,
 body.sm-business-tool-page button.btn{min-height:60px;padding:14px 20px;border:0;border-radius:16px;background:linear-gradient(180deg,var(--sm-accent) 0%,var(--sm-accent-deep) 100%);color:#fff;font-size:17px!important;font-weight:900;letter-spacing:.01em;box-shadow:0 10px 22px color-mix(in srgb,var(--sm-accent) 24%,transparent);cursor:pointer;transition:transform .12s,box-shadow .12s}
 body.sm-business-tool-page .btn:active{transform:translateY(2px);box-shadow:0 5px 12px color-mix(in srgb,var(--sm-accent) 20%,transparent)}
 body.sm-business-tool-page .btn.sub{background:#eef2f4;color:#27333d;box-shadow:none}
-body.sm-business-tool-page .result{position:relative;margin-top:22px;min-height:92px;padding:20px 20px 20px 22px;border:2px solid color-mix(in srgb,var(--sm-accent) 20%,#e7ecef);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--sm-accent-soft) 100%);color:#172027;font-size:18px;line-height:1.75;font-weight:700;overflow-wrap:anywhere}
+body.sm-business-tool-page .result{position:relative;margin-top:22px;min-height:92px;padding:20px 20px 20px 22px;border:2px solid color-mix(in srgb,var(--sm-accent) 20%,#e7ecef);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--sm-accent-soft) 100%);color:#172027;font-size:18px;line-height:1.75;font-weight:700;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text}
 body.sm-business-tool-page .result b{font-size:28px;line-height:1.35;color:var(--sm-accent-deep)}
 body.sm-business-tool-page .metrics{gap:12px;margin-top:20px}
-body.sm-business-tool-page .metric{min-height:118px;padding:18px;border:1px solid #e0e6e9;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#fafcfc 100%);box-shadow:0 8px 22px rgba(19,36,49,.05)}
+body.sm-business-tool-page .metric{min-height:118px;padding:18px;border:1px solid #e0e6e9;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#fafcfc 100%);box-shadow:0 8px 22px rgba(19,36,49,.05);user-select:text;-webkit-user-select:text}
 body.sm-business-tool-page .metric small{font-size:13px;font-weight:900;color:#707b85;letter-spacing:.03em}
 body.sm-business-tool-page .metric strong{margin-top:8px;font-size:30px;line-height:1.18;font-weight:900;color:var(--sm-accent-deep);font-variant-numeric:tabular-nums}
+body.sm-business-tool-page .sm-text-result{margin-top:20px;padding:20px;border:2px solid color-mix(in srgb,var(--sm-accent) 22%,#e7ecef);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--sm-accent-soft) 100%);box-shadow:0 8px 24px rgba(19,36,49,.05)}
+body.sm-business-tool-page .sm-text-result-label{margin-bottom:10px;font-size:13px;font-weight:900;letter-spacing:.05em;color:#66727d}
+body.sm-business-tool-page .sm-text-result-value{margin:0;min-height:72px;max-height:420px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:18px;line-height:1.75;font-weight:700;color:#172027;user-select:text;-webkit-user-select:text;cursor:text}
+body.sm-business-tool-page .sm-text-result-value:focus{outline:3px solid color-mix(in srgb,var(--sm-accent) 18%,transparent);outline-offset:5px;border-radius:8px}
 body.sm-business-tool-page .note{margin-top:18px;padding:14px 16px;border-radius:14px;background:#f7f9fa;color:#68737d;font-size:13px;line-height:1.75}
 body.sm-business-tool-page .back{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:22px;padding:0 16px;border:1px solid #dce3e6;border-radius:13px;background:#fff;color:#36424c;text-decoration:none;font-size:14px;font-weight:900}
 body.sm-business-tool-page .age-scroll{border:1px solid #e1e7ea;border-radius:16px;background:#fff;max-height:540px}
@@ -44,12 +51,12 @@ body.sm-business-tool-page .age-table{font-size:14px}
 body.sm-business-tool-page .age-table th{position:sticky;top:0;background:#f4f8fa;color:#34414a;font-weight:900;z-index:1}
 body.sm-business-tool-page .age-table th,body.sm-business-tool-page .age-table td{padding:13px 12px}
 body.sm-business-tool-page .result-item{padding:15px;border-radius:14px;border-color:#dfe6e9;font-size:15px;line-height:1.6}
-body.sm-business-tool-page .sm-copy-result{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;margin-top:14px;border:2px solid var(--sm-accent);border-radius:16px;background:#fff;color:var(--sm-accent-deep);font-size:16px;font-weight:900;cursor:pointer}
-body.sm-business-tool-page .sm-copy-result.is-done{background:var(--sm-accent-soft)}
+body.sm-business-tool-page .sm-copy-result{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:62px;margin-top:16px;border:0;border-radius:17px;background:linear-gradient(180deg,var(--sm-accent) 0%,var(--sm-accent-deep) 100%);color:#fff;font-size:17px;font-weight:900;box-shadow:0 10px 22px color-mix(in srgb,var(--sm-accent) 24%,transparent);cursor:pointer}
+body.sm-business-tool-page .sm-copy-result.is-done{background:var(--sm-accent-deep)}
+body.sm-business-tool-page .sm-copy-icon{font-size:21px;line-height:1}
 body.sm-business-tool-page .sm-tool-tip{display:grid;grid-template-columns:auto 1fr;gap:10px;margin:18px 0 0;padding:15px 16px;border-radius:15px;background:#f8fafb;color:#59656f;font-size:13px;line-height:1.7}
 body.sm-business-tool-page .sm-tool-tip b{color:#2c3943}
 
-/* tool-specific visual identities */
 body.sm-tool-date-calculator{--sm-accent:#2467b2;--sm-accent-soft:#edf5ff;--sm-accent-deep:#174d88}
 body.sm-tool-password-generator{--sm-accent:#7a4bc2;--sm-accent-soft:#f4efff;--sm-accent-deep:#573091}
 body.sm-tool-gross-profit{--sm-accent:#19735f;--sm-accent-soft:#eaf8f4;--sm-accent-deep:#105746}
@@ -69,7 +76,6 @@ body.sm-tool-roas{--sm-accent:#246b54;--sm-accent-soft:#edf8f4;--sm-accent-deep:
 body.sm-tool-roi{--sm-accent:#4d5fa7;--sm-accent-soft:#eef1fb;--sm-accent-deep:#35447e}
 body.sm-tool-marketing-kpi{--sm-accent:#8c4f9f;--sm-accent-soft:#f8effa;--sm-accent-deep:#663574}
 
-/* signature arrangements */
 body.sm-tool-password-generator .toolbox:before{content:'① 条件を選ぶ　② 生成　③ ワンタップでコピー'}
 body.sm-tool-date-calculator .toolbox:before{content:'開始日・終了日、または基準日と日数を入力してください'}
 body.sm-tool-gross-profit .toolbox:before{content:'売価と原価を入力すると粗利額・粗利率・原価率をすぐ計算'}
@@ -89,7 +95,7 @@ body.sm-tool-age-table .toolbox:before{content:'西暦・和暦・年齢を一�
  body.sm-business-tool-page .field{margin-bottom:16px}
  body.sm-business-tool-page .field label{font-size:16px}
  body.sm-business-tool-page .field input,body.sm-business-tool-page .field select{min-height:64px;padding:15px 16px;font-size:20px!important;border-radius:15px}
- body.sm-business-tool-page .field textarea{min-height:210px;padding:16px;font-size:18px!important;border-radius:15px}
+ body.sm-business-tool-page .field textarea:not(.sm-native-result-hidden){min-height:210px;padding:16px;font-size:18px!important;border-radius:15px}
  body.sm-business-tool-page .actions{grid-template-columns:1fr;gap:10px}
  body.sm-business-tool-page .btn,body.sm-business-tool-page button.btn{width:100%;min-height:64px;font-size:18px!important;border-radius:16px}
  body.sm-business-tool-page .result{min-height:100px;margin-top:18px;padding:18px;font-size:18px;border-radius:18px}
@@ -97,7 +103,9 @@ body.sm-tool-age-table .toolbox:before{content:'西暦・和暦・年齢を一�
  body.sm-business-tool-page .metric{min-height:104px;padding:16px}
  body.sm-business-tool-page .metric small{font-size:13px}
  body.sm-business-tool-page .metric strong{font-size:31px}
+ body.sm-business-tool-page .sm-text-result{padding:18px 16px;border-radius:18px}
+ body.sm-business-tool-page .sm-text-result-value{font-size:18px;line-height:1.7;max-height:360px}
  body.sm-business-tool-page .checkrow{display:grid;grid-template-columns:1fr}
  body.sm-business-tool-page .checkrow label{min-height:52px;font-size:15px}
- body.sm-business-tool-page .sm-copy-result{min-height:62px;font-size:17px}
+ body.sm-business-tool-page .sm-copy-result{min-height:64px;font-size:18px}
 }
