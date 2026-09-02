@@ -59,6 +59,13 @@ const phraseText = {
   th:{label:"คำและการใช้งาน",title:"ข้อความในชุดสติกเกอร์นี้",lead:"ข้อความภาษาญี่ปุ่นที่ตรวจพบจากภาพ พร้อมแท็กการใช้งานที่แปลให้เหมาะกับภาษาไทย",tags:"ค้นหาตามการใช้งาน",all:"ดูคำและการใช้งานทั้งหมด →"},
   id:{label:"FRASA & KEGUNAAN",title:"Frasa dalam set stiker ini",lead:"Frasa bahasa Jepang yang terdeteksi pada gambar stiker, dilengkapi tag kegunaan yang dilokalkan.",tags:"Cari berdasarkan kegunaan",all:"Lihat semua frasa & kegunaan →"},
 }[locale];
+const shareText = {
+  ja:{title:"このスタンプを共有",note:"気になるスタンプを友だちに送れます",copy:"URLをコピー",copied:"URLをコピーしました"},
+  en:{title:"Share this sticker",note:"Send this sticker page to friends",copy:"Copy URL",copied:"URL copied"},
+  "zh-tw":{title:"分享此貼圖",note:"將這組貼圖分享給朋友",copy:"複製網址",copied:"網址已複製"},
+  th:{title:"แชร์สติกเกอร์นี้",note:"ส่งหน้าสติกเกอร์นี้ให้เพื่อน",copy:"คัดลอก URL",copied:"คัดลอก URL แล้ว"},
+  id:{title:"Bagikan stiker ini",note:"Kirim halaman stiker ini ke teman",copy:"Salin URL",copied:"URL disalin"}
+}[locale];
 const related = stickers.filter((item) => item.id !== sticker.id && getCategory(item) === category).slice(0, 6);
 const sheetUrl = `/images/sticker-sheets/${sticker.id}.webp`;
 const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sticker-sheets", `${sticker.id}.webp`));
@@ -275,6 +282,17 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
         </ul>
       </section>
     )}
+
+    <section class="sm-share" aria-label={shareText.title} data-sticker-share>
+      <div class="sm-share-head"><h2 class="sm-share-title">{shareText.title}</h2><span class="sm-share-note">{shareText.note}</span></div>
+      <div class="sm-share-actions">
+        <a class="sm-share-button" data-share="x" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(canonical)}&text=${encodeURIComponent(cleanTitle)}`} target="_blank" rel="noopener noreferrer"><span class="sm-share-icon">X</span><span>X</span></a>
+        <button class="sm-share-button" data-share="instagram" type="button"><span class="sm-share-icon">◎</span><span>Instagram</span></button>
+        <a class="sm-share-button" data-share="facebook" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonical)}`} target="_blank" rel="noopener noreferrer"><span class="sm-share-icon">f</span><span>Facebook</span></a>
+        <a class="sm-share-button" data-share="line" href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}`} target="_blank" rel="noopener noreferrer"><span class="sm-share-icon">L</span><span>LINE</span></a>
+        <button class="sm-share-button" data-share="copy" type="button"><span class="sm-share-icon">↗</span><span>{shareText.copy}</span></button>
+      </div>
+    </section>
   </main>
 
   <footer class="footer"><div class="footer-inner"><div class="footer-brand">stamp moke</div><p class="footer-copy">{pageText.footer}</p><div class="footer-links"><a href={localizedPath(locale, "/")}>{pageText.list}</a><a href={localizedPath(locale,"/tags/")}>{phraseText.all}</a><a href="https://x.com/stampmoke" rel="noopener">公式X @stampmoke</a></div><div class="copyright">© stamp moke</div></div></footer>
@@ -285,6 +303,9 @@ const hasSheet = fs.existsSync(path.join(process.cwd(), "public", "images", "sti
     document.addEventListener("dragstart", (event) => {
       if (event.target.closest(".protected-preview")) event.preventDefault();
     });
+  </script>
+  <script is:inline define:vars={{ canonical, cleanTitle, copiedMessage: shareText.copied }}>
+    (()=>{const root=document.querySelector('[data-sticker-share]');if(!root)return;const copy=async()=>{try{await navigator.clipboard.writeText(canonical)}catch{const el=document.createElement('textarea');el.value=canonical;el.style.position='fixed';el.style.opacity='0';document.body.appendChild(el);el.select();document.execCommand('copy');el.remove()}let toast=document.querySelector('.sm-share-toast');if(!toast){toast=document.createElement('div');toast.className='sm-share-toast';toast.setAttribute('role','status');document.body.appendChild(toast)}toast.textContent=copiedMessage;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200)};root.querySelector('[data-share="copy"]')?.addEventListener('click',copy);root.querySelector('[data-share="instagram"]')?.addEventListener('click',async()=>{if(navigator.share){try{await navigator.share({title:cleanTitle,url:canonical});return}catch(e){if(e?.name==='AbortError')return}}await copy()})})();
   </script>
 </body>
 </html>
