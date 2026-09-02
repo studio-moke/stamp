@@ -4,6 +4,10 @@
 
   const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const isImageHref=href=>href.startsWith('blob:')||href.startsWith('data:image/');
+  const isFreeDownloadForm=form=>{
+    if(!(form instanceof HTMLFormElement))return false;
+    try{return new URL(form.action||location.href,location.href).pathname.endsWith('/api/free-download')}catch{return false}
+  };
 
   async function hrefToBlob(href){
     if(!isImageHref(href))return null;
@@ -42,9 +46,7 @@
           await navigator.share({files:[file],title:safeName});
           return;
         }
-      }catch(err){
-        if(err?.name==='AbortError')return;
-      }
+      }catch(err){if(err?.name==='AbortError')return}
     }
     preview(blob,safeName,pokekara);
   }
@@ -54,12 +56,45 @@
     const href=a.href||'';
     if(!isImageHref(href))return false;
     const blob=await hrefToBlob(href);
-    const name=a.getAttribute('download')||'';
-    await saveBlob(blob,name,{pokekara:location.pathname.includes('/free/')});
+    await saveBlob(blob,a.getAttribute('download')||'',{pokekara:location.pathname.includes('/free/')});
+    return true;
+  }
+
+  async function handleFreeDownload(form,submitter){
+    if(!isFreeDownloadForm(form)||!form.checkValidity())return false;
+    const action=new URL(form.action||location.href,location.href);
+    const data=new FormData(form,submitter||undefined);
+    const method=String(form.method||'get').toUpperCase();
+    let requestUrl=action.href,options={credentials:'same-origin'};
+    if(method==='GET'){
+      const params=new URLSearchParams(data);
+      action.search=params.toString();
+      requestUrl=action.href;
+    }else{
+      options.method=method;
+      options.body=data;
+    }
+    const r=await fetch(requestUrl,options);
+    if(!r.ok)throw new Error(`download failed: ${r.status}`);
+    const blob=await r.blob();
+    if(!String(blob.type||'').startsWith('image/'))throw new Error('download response is not image');
+    const slug=String(data.get('slug')||'stamp-moke-free-asset');
+    const fallback=`${slug}.${blob.type.includes('jpeg')?'jpg':blob.type.includes('webp')?'webp':'png'}`;
+    const name=filenameFromDisposition(r.headers.get('content-disposition'),fallback);
+    await saveBlob(blob,name,{pokekara:true});
     return true;
   }
 
   document.addEventListener('click',async e=>{
+    const submitter=e.target.closest?.('button,input[type="submit"],input[type="image"]');
+    const form=submitter?.form;
+    if(form&&isFreeDownloadForm(form)){
+      if(!form.checkValidity())return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      try{await handleFreeDownload(form,submitter)}catch(err){console.error('[stamp-moke] iOS photo save failed',err);previewError(form)}
+      return;
+    }
     const a=e.target.closest?.('a[download]');
     if(!a||a.dataset.smIosFallback==='1'||!isImageHref(a.href||''))return;
     e.preventDefault();
@@ -67,36 +102,25 @@
     try{await handleAnchor(a)}catch{location.href=a.href}
   },true);
 
+  function previewError(form){
+    const old=document.getElementById('sm-ios-save-error');old?.remove();
+    const box=document.createElement('div');box.id='sm-ios-save-error';box.style.cssText='position:fixed;left:12px;right:12px;bottom:20px;z-index:2147483647;background:#171717;color:#fff;padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6';
+    box.textContent='写真への保存準備に失敗しました。ページを再読み込みして、もう一度お試しください。';document.body.appendChild(box);setTimeout(()=>box.remove(),5000);
+  }
+
   const nativeAnchorClick=HTMLAnchorElement.prototype.click;
   HTMLAnchorElement.prototype.click=function(){
     if(this.dataset.smIosFallback!=='1'&&this.hasAttribute('download')&&isImageHref(this.href||'')){
-      handleAnchor(this).catch(()=>nativeAnchorClick.call(this));
-      return;
+      handleAnchor(this).catch(()=>nativeAnchorClick.call(this));return;
     }
     return nativeAnchorClick.call(this);
   };
 
   document.addEventListener('submit',async e=>{
     const form=e.target;
-    if(!(form instanceof HTMLFormElement))return;
-    const action=new URL(form.action||location.href,location.href);
-    if(!action.pathname.endsWith('/api/free-download'))return;
-    if(!form.checkValidity())return;
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    try{
-      const params=new URLSearchParams(new FormData(form));
-      const url=`${action.pathname}?${params.toString()}`;
-      const r=await fetch(url,{credentials:'same-origin'});
-      if(!r.ok)throw new Error('download failed');
-      const blob=await r.blob();
-      const slug=params.get('slug')||'stamp-moke-free-asset';
-      const fallback=`${slug}.${blob.type.includes('jpeg')?'jpg':blob.type.includes('webp')?'webp':'png'}`;
-      const name=filenameFromDisposition(r.headers.get('content-disposition'),fallback);
-      await saveBlob(blob,name,{pokekara:true});
-    }catch(_){
-      HTMLFormElement.prototype.submit.call(form);
-    }
+    if(!isFreeDownloadForm(form)||!form.checkValidity())return;
+    e.preventDefault();e.stopImmediatePropagation();
+    try{await handleFreeDownload(form,e.submitter)}catch(err){console.error('[stamp-moke] iOS photo save failed',err);previewError(form)}
   },true);
 
   window.stampMokeSaveImage=saveBlob;
