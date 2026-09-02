@@ -131,6 +131,71 @@ function aggregateQueries(rows) {
   });
 }
 
+const LANGUAGE_META = {
+  ja: '日本語',
+  en: '英語',
+  'zh-tw': '台湾語（繁体字）',
+  th: 'タイ語',
+  id: 'インドネシア語',
+};
+
+function localeFromPage(page = '') {
+  let pathname = String(page || '');
+  try { pathname = new URL(pathname, 'https://stamp-moke.jp').pathname; } catch {}
+  const first = pathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  return ['en', 'zh-tw', 'th', 'id'].includes(first) ? first : 'ja';
+}
+
+function aggregateLanguages(searchRows, gaRows) {
+  const map = new Map(Object.entries(LANGUAGE_META).map(([locale, label]) => [locale, {
+    locale, label, searchClicks: 0, searchImpressions: 0, weightedPosition: 0,
+    queries: new Set(), pages: new Set(), sessions: 0, users: 0, engagedSessions: 0,
+  }]));
+
+  for (const row of searchRows) {
+    const item = map.get(localeFromPage(row.page));
+    item.searchClicks += row.clicks;
+    item.searchImpressions += row.impressions;
+    item.weightedPosition += row.position * Math.max(row.impressions, 1);
+    if (row.query) item.queries.add(row.query);
+    if (row.page) item.pages.add(row.page);
+  }
+  for (const row of gaRows) {
+    const item = map.get(localeFromPage(row.landingPage));
+    item.sessions += row.sessions;
+    item.users += row.users;
+    item.engagedSessions += row.engagedSessions;
+    if (row.landingPage && row.landingPage !== '(not set)') item.pages.add(row.landingPage);
+  }
+
+  return [...map.values()].map((item) => ({
+    locale: item.locale,
+    label: item.label,
+    searchClicks: item.searchClicks,
+    searchImpressions: item.searchImpressions,
+    searchCtr: item.searchImpressions ? item.searchClicks / item.searchImpressions : 0,
+    position: item.searchImpressions ? item.weightedPosition / item.searchImpressions : 0,
+    queryCount: item.queries.size,
+    pageCount: item.pages.size,
+    sessions: item.sessions,
+    users: item.users,
+    engagedSessions: item.engagedSessions,
+    engagementRate: item.sessions ? item.engagedSessions / item.sessions : 0,
+  }));
+}
+
+function isBrandQuery(query = '') {
+  const normalized = String(query).toLowerCase().replace(/[\s\-_・]/g, '');
+  return ['stampmoke', 'studiomoke', 'スタンプもけ', 'スタンプモケ', 'スタンプもけぇ', 'スタジオモケ', 'スタジオもけぇ']
+    .some((term) => normalized.includes(term.replace(/[\s\-_・]/g, '').toLowerCase()));
+}
+
+function summarizeKeywordGroup(rows) {
+  const impressions = rows.reduce((sum, row) => sum + row.impressions, 0);
+  const clicks = rows.reduce((sum, row) => sum + row.clicks, 0);
+  return { queryCount: rows.length, clicks, impressions, ctr: impressions ? clicks / impressions : 0 };
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'GET') return send(res, 405, { error: 'Method not allowed' });
   const configuredToken = process.env.ANALYTICS_ADMIN_TOKEN;
@@ -157,6 +222,13 @@ export default async function handler(req, res) {
       .filter((q) => q.impressions >= 30 && q.ctr < 0.03)
       .sort((a, b) => b.impressions - a.impressions)
       .slice(0, 30);
+    const branded = queries.filter((q) => isBrandQuery(q.query));
+    const nonBranded = queries.filter((q) => !isBrandQuery(q.query));
+    const noClick = queries
+      .filter((q) => q.impressions > 0 && q.clicks === 0)
+      .sort((a, b) => b.impressions - a.impressions || a.position - b.position)
+      .slice(0, 50);
+    const languages = aggregateLanguages(searchRows, ga4.rows || []);
 
     return send(res, 200, {
       range: { startDate, endDate, days },
@@ -168,6 +240,12 @@ export default async function handler(req, res) {
       queries: queries.slice(0, 500),
       opportunities,
       lowCtr,
+      keywordInsights: {
+        branded: summarizeKeywordGroup(branded),
+        nonBranded: summarizeKeywordGroup(nonBranded),
+        noClick,
+      },
+      languages,
       sources: ga4,
     });
   } catch (error) {
