@@ -18,10 +18,12 @@ body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Kaku 
 .panel{background:#fff;border:1px solid #deddd8;border-radius:22px;padding:20px;margin-bottom:18px;box-shadow:0 15px 40px rgba(42,40,32,.05)}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
 .field{display:grid;gap:6px}
+.field-wide{grid-column:1/-1}
 label{font-size:13px;font-weight:800}
 input,select,textarea,button{font:inherit}
 input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d8d7d2;border-radius:11px;background:#fff}
 textarea{min-height:82px;resize:vertical}
+.usage-hint{min-height:96px}
 button{border:0;border-radius:999px;padding:11px 16px;font-weight:800;cursor:pointer}
 button:disabled{opacity:.45;cursor:not-allowed}
 .primary{background:#161616;color:#fff}
@@ -56,6 +58,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .manage-actions{display:flex;gap:7px;flex-wrap:wrap;max-width:240px}
 .thumb-placeholder{width:110px;height:110px;border-radius:11px;background:#f3f2ee;display:grid;place-items:center;color:#888;font-size:11px;text-align:center;padding:8px}
 .tagline{font-size:11px;color:#777;line-height:1.45}
+.usage-line{font-size:11px;line-height:1.55;background:#f7f6f2;border-radius:9px;padding:7px 9px;color:#555}
 .status-published{color:#176b2c;font-weight:900}.status-hidden{color:#8a5b00;font-weight:900}
 @media(max-width:820px){
  .manager-toolbar{grid-template-columns:1fr 1fr}.manager-toolbar input{grid-column:1/-1}
@@ -64,7 +67,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
  .manage-actions{grid-column:2/-1;max-width:none}
 }
 @media(max-width:720px){
- .row{grid-template-columns:1fr}.queue{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ .row{grid-template-columns:1fr}.field-wide{grid-column:auto}.queue{grid-template-columns:repeat(3,minmax(0,1fr))!important}
  .item{max-width:none!important}.item img{height:88px!important;min-height:88px!important;max-height:88px!important;max-width:140px!important}
  .top{align-items:flex-start;flex-direction:column}.section-title{align-items:flex-start;flex-direction:column}
 }
@@ -89,9 +92,12 @@ button:disabled{opacity:.45;cursor:not-allowed}
 <section class="panel">
 <div class="row">
 <div class="field"><label>管理トークン</label><input id="adminToken" type="password" placeholder="FREE_ADMIN_TOKEN"></div>
-<div class="field"><label>共通キャラクター（任意）</label><input id="characterHint" placeholder="例：くろねこ"></div>
-<div class="field"><label>主な用途（任意）</label><select id="platformHint"><option value="">AIに任せる</option><option value="pokekara">ポケカラ</option><option value="x">X</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="line">LINE</option><option value="youtube">YouTube</option></select></div>
 <div class="field"><label>透かし文字</label><input id="watermark" value="stamp-moke.jp"></div>
+<div class="field field-wide">
+<label>用途・紹介文への反映（任意）</label>
+<textarea id="usageHint" class="usage-hint" placeholder="例：音楽ライブのチラシ背景用。ポスターや印刷物にも使いやすい素材として紹介してほしい"></textarea>
+<div class="meta">自由に書いてください。GPTが画像内容とこの用途を合わせて紹介文・SEO・用途カテゴリへ反映します。既存カテゴリを優先し、合うカテゴリが無い場合だけ大きな括りの新カテゴリを追加します。</div>
+</div>
 </div>
 <p class="notice">長辺最大2560px・縦横比維持で保存（切り抜きなし）。JPEGは品質82%、PNGは透過・形式を維持。2560px以内で変換後の容量が増える場合は元ファイルを使用します。別途バックアップは保存せず、圧縮前SHA-256を重複判定に使用します。</p>
 </section>
@@ -106,7 +112,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 <section class="panel">
 <div class="section-title"><h2>素材の管理</h2><div class="section-buttons"><button class="sub" id="optimizeThumbs">既存サムネを一括軽量化</button><button class="sub" id="loadManager">一覧を読み込む</button></div></div>
 <div class="manager-toolbar">
-<input id="managerSearch" placeholder="タイトル・説明・slug・タグ・キャラクターを検索">
+<input id="managerSearch" placeholder="タイトル・説明・slug・タグ・用途カテゴリを検索">
 <select id="statusFilter"><option value="all">すべての状態</option><option value="published">公開中</option><option value="unpublished">非公開</option></select>
 <select id="typeFilter"><option value="all">すべての形式</option><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="transparent">透過あり</option><option value="opaque">透過なし</option></select>
 </div>
@@ -125,7 +131,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 <script>
 const $=id=>document.getElementById(id);
 const filesInput=$("files"),drop=$("drop"),queueEl=$("queue"),run=$("run"),clear=$("clear"),progress=$("progress"),queueNote=$("queueNote");
-const tokenEl=$("adminToken"),characterEl=$("characterHint"),platformEl=$("platformHint"),watermarkEl=$("watermark");
+const tokenEl=$("adminToken"),usageHintEl=$("usageHint"),watermarkEl=$("watermark");
 const manager=$("manager"),loadManager=$("loadManager"),optimizeThumbs=$("optimizeThumbs"),managerSearch=$("managerSearch"),statusFilter=$("statusFilter"),typeFilter=$("typeFilter");
 const selectVisible=$("selectVisible"),clearSelection=$("clearSelection"),bulkUnpublish=$("bulkUnpublish"),bulkHardDelete=$("bulkHardDelete"),managerCount=$("managerCount"),selectedCount=$("selectedCount");
 tokenEl.value=sessionStorage.getItem("sm_free_admin")||"";
@@ -215,6 +221,7 @@ run.onclick=async()=>{
  try{setProgress("設定確認中…");await api("health",{},adminToken);setProgress(`重複チェック開始：${targets.length}枚`)}
  catch(e){setProgress(`設定エラー：${e?.message||e}`,true);run.disabled=false;clear.disabled=false;return}
  let done=0,skipped=queue.filter(q=>q.state==="重複").length;
+ const usageHint=usageHintEl.value.trim();
  for(let i=0;i<targets.length;i++){
   const q=targets[i];
   try{
@@ -228,11 +235,11 @@ run.onclick=async()=>{
    setProgress(`${i+1}/${targets.length} R2へ保存中…`);q.state="R2保存中";render();
    const [previewKey,thumbKey]=await Promise.all([uploadR2("preview",previewBlob,adminToken),uploadR2("thumb",thumbBlob,adminToken)]);
    setProgress(`${i+1}/${targets.length} AI解析中…`);q.state="AI解析中";render();
-   const analyzed=await analyzeAsset({filename:q.file.name,width:storedInfo.width,height:storedInfo.height,previewKey,characterHint:characterEl.value.trim(),platformHint:platformEl.value},adminToken);
+   const analyzed=await analyzeAsset({filename:q.file.name,width:storedInfo.width,height:storedInfo.height,previewKey,usageHint},adminToken);
    q.title=analyzed.metadata?.locales?.ja?.title||"";
    setProgress(`${i+1}/${targets.length} 原本保存・公開中…`);q.state="原本保存中";render();
    const originalKey=await uploadR2("original",storedBlob,adminToken);q.state="公開中";render();
-   await api("publish",{metadata:analyzed.metadata,originalKey,previewKey,thumbKey,contentHash:q.contentHash,width:storedInfo.width,height:storedInfo.height,contentType:storedBlob.type,characterHint:characterEl.value.trim()},adminToken);
+   await api("publish",{metadata:analyzed.metadata,originalKey,previewKey,thumbKey,contentHash:q.contentHash,width:storedInfo.width,height:storedInfo.height,contentType:storedBlob.type,usageHint},adminToken);
    q.state="公開済み";done++;render();
   }catch(e){console.error(e);q.state="エラー";q.title=e?.message||String(e);render();setProgress(`エラー：${q.title}`,true);run.disabled=false;clear.disabled=false;return}
  }
@@ -241,7 +248,7 @@ run.onclick=async()=>{
 
 function searchText(asset){
  return [
-  asset.slug,asset.character,(asset.platforms||[]).join(" "),(asset.types||[]).join(" "),(asset.motifs||[]).join(" "),(asset.styles||[]).join(" "),
+  asset.slug,asset.character,asset.usageIntent,(asset.useCategories||[]).join(" "),(asset.platforms||[]).join(" "),(asset.types||[]).join(" "),(asset.motifs||[]).join(" "),(asset.styles||[]).join(" "),
   ...Object.values(asset.locales||{}).flatMap(v=>[v?.title,v?.description,v?.seoTitle,v?.metaDescription,v?.alt,(v?.keywords||[]).join(" ")])
  ].filter(Boolean).join(" ").toLowerCase();
 }
@@ -265,7 +272,7 @@ function updateSelectedUi(){
 function renderManager(){
  if(!visibleAssets.length){manager.innerHTML='<div class="meta">条件に一致する素材はありません。</div>';updateSelectedUi();return}
  manager.innerHTML=visibleAssets.map(a=>{
-  const ja=a.locales?.ja||{},tags=[...(a.platforms||[]),...(a.types||[]),...(a.motifs||[]),...(a.styles||[])].join(", ");
+  const ja=a.locales?.ja||{},tags=[...(a.useCategories||[]),...(a.platforms||[]),...(a.types||[]),...(a.motifs||[]),...(a.styles||[])].join(", ");
   const published=isPublished(a);const img=published?`<img src="/api/free-preview?variant=thumb&slug=${encodeURIComponent(a.slug)}" alt="">`:`<div class="thumb-placeholder" data-admin-thumb="${esc(a.slug)}">非公開画像<br>読込中</div>`;
   return `<article class="manage-card ${published?"":"unpublished"}" data-slug="${esc(a.slug)}">
    <input class="manage-check" type="checkbox" ${selected.has(a.slug)?"checked":""} aria-label="${esc(ja.title||a.slug)}を選択">
@@ -274,6 +281,7 @@ function renderManager(){
     <div class="${published?"status-published":"status-hidden"}">${published?"公開中":"非公開"}</div>
     <input class="m-title" value="${esc(ja.title||"")}">
     <textarea class="m-desc">${esc(ja.description||"")}</textarea>
+    ${a.usageIntent?`<div class="usage-line"><b>指定用途：</b>${esc(a.usageIntent)}</div>`:""}
     <div class="tagline">${esc(tags)}</div>
     <div class="meta">DL ${Number(a.downloads||0)} / ${esc(a.contentType||"")} / ${a.width||0}×${a.height||0} / ${a.transparent?"透過あり":"透過なし"}<br>${esc(a.slug)}</div>
    </div>
