@@ -1,0 +1,102 @@
+---
+import SiteHeader from "../../components/SiteHeader.astro";
+
+const tools = [
+  {slug:"date-calculator",title:"日付計算ツール",desc:"日付の加減算・2つの日付の差・営業日目安をすばやく計算します。"},
+  {slug:"gross-profit",title:"粗利計算ツール",desc:"売価・原価から粗利額、粗利率、原価率をリアルタイム計算します。"},
+  {slug:"text-counter",title:"文字数・行数カウント",desc:"広告文・提案書・SNS原稿の文字数、行数、空白除外文字数をリアルタイム表示します。"},
+  {slug:"dedupe-lines",title:"重複行の削除",desc:"テキストの重複行を削除し、元の順番を保ったまま整形します。"},
+  {slug:"postal-code",title:"郵便番号検索ツール",desc:"郵便番号から住所、住所から郵便番号を検索できます。"},
+  {slug:"mojibake",title:"文字化け変換",desc:"UTF-8・Shift_JIS系の典型的な文字化けをブラウザ上で修復します。"},
+  {slug:"password-generator",title:"パスワード生成ツール",desc:"長さや文字種を指定して安全性の高いランダムパスワードを生成します。"},
+  {slug:"html-entities",title:"HTMLエンティティ変換",desc:"HTMLエンティティをエンコード・デコードします。"},
+  {slug:"age-table",title:"年齢早見表",desc:"西暦・和暦・年齢を一覧で確認できます。"},
+  {slug:"text-sort",title:"テキストソートツール",desc:"行単位で昇順・降順・数値順・ランダムに並べ替えます。"},
+  {slug:"sku-generator",title:"連番付きSKUコード生成",desc:"接頭辞・開始番号・桁数・件数を指定してSKUを一括生成します。"},
+  {slug:"zenkaku-hankaku",title:"全角英数字・スペースを半角に統一",desc:"全角英数字と全角スペースを半角へ一括変換します。"},
+  {slug:"trim-spaces",title:"余分なスペースの除去",desc:"前後の空白・連続スペース・行末空白をまとめて除去します。"},
+  {slug:"tax-calculator",title:"税込・税抜計算ツール",desc:"税率を指定して税込・税抜・消費税額を計算します。"},
+  {slug:"price-change-rate",title:"値上げ・値下げ率計算",desc:"変更前後の価格から値上げ率・値下げ率と差額を計算します。"},
+  {slug:"roas",title:"ROAS計算ツール",desc:"広告費と広告経由売上からROASを計算します。"},
+  {slug:"roi",title:"ROI計算ツール",desc:"投資額と利益からROIを計算します。"},
+  {slug:"marketing-kpi",title:"CPA・CVR・CTR計算ツール",desc:"広告運用でよく使うCPA・CVR・CTRをまとめて計算します。"}
+];
+export function getStaticPaths(){return tools.map(tool=>({params:{slug:tool.slug},props:{tool}}));}
+const {tool}=Astro.props;
+---
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{tool.title} | 無料ツール | stamp moke</title><meta name="description" content={tool.desc}/><link rel="canonical" href={`https://stamp-moke.jp/tools/${tool.slug}/`}/>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.wrap{max-width:1040px;margin:auto;padding:38px 18px 90px}.crumb{font-size:11px;color:#777;margin-bottom:18px}.crumb a{color:#555}.hero{margin-bottom:22px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.18em;color:#888}.hero h1{margin:8px 0 9px;font-size:clamp(30px,5vw,48px);letter-spacing:-.04em}.hero p{margin:0;max-width:760px;color:#666;font-size:13px;line-height:1.8}.toolbox{background:#fff;border:1px solid #deddd8;border-radius:20px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.035)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #d8d7d2;border-radius:12px;padding:12px 13px;background:#fff;color:#171717;font:inherit;font-size:14px;outline:none}.field textarea{min-height:180px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:#777}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}.btn{border:0;border-radius:12px;padding:11px 16px;background:#171717;color:#fff;font-weight:800;cursor:pointer}.btn.sub{background:#ecebe6;color:#222}.result{margin-top:17px;padding:16px;border-radius:15px;background:#f2f1ed;min-height:58px;line-height:1.8;font-size:14px;overflow-wrap:anywhere}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{padding:15px;border:1px solid #e2e1dc;border-radius:14px;background:#fff}.metric small{display:block;color:#777;font-size:10px}.metric strong{display:block;margin-top:5px;font-size:23px}.note{font-size:11px;color:#777;line-height:1.7;margin-top:12px}.back{display:inline-flex;margin-top:22px;color:#333;font-weight:800;font-size:12px}.results-list{display:grid;gap:8px;margin-top:10px}.result-item{padding:11px;background:#fff;border:1px solid #dddcd8;border-radius:10px}.result-item b{display:block}.checkrow{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 14px;font-size:12px}.checkrow label{display:flex;gap:6px;align-items:center}.age-table{width:100%;border-collapse:collapse;font-size:12px}.age-table th,.age-table td{padding:8px;border-bottom:1px solid #e3e2de;text-align:left}.age-scroll{max-height:460px;overflow:auto}
+@media(max-width:650px){.wrap{padding:24px 11px 70px}.toolbox{padding:14px;border-radius:16px}.grid2,.metrics{grid-template-columns:1fr}.hero h1{font-size:34px}.metric strong{font-size:20px}.field textarea{min-height:160px}}
+</style></head><body><SiteHeader locale="ja"/><main class="wrap"><div class="crumb"><a href="/tools/">無料で使えるツール</a> / {tool.title}</div><section class="hero"><div class="eyebrow">FREE BUSINESS TOOL / stamp moke</div><h1>{tool.title}</h1><p>{tool.desc}</p></section><section class="toolbox" id="app" data-slug={tool.slug}></section><a class="back" href="/tools/">← 無料ツール一覧へ戻る</a></main>
+<script is:inline>
+(()=>{
+const app=document.getElementById('app'),slug=app.dataset.slug;
+const fmt=n=>Number.isFinite(n)?new Intl.NumberFormat('ja-JP',{maximumFractionDigits:2}).format(n):'-';
+const num=id=>parseFloat(document.getElementById(id)?.value||0);
+const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+const copy=async t=>{try{await navigator.clipboard.writeText(t)}catch{const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove()}};
+const result=(html)=>document.getElementById('result').innerHTML=html;
+const bindInputs=(fn)=>app.querySelectorAll('input,textarea,select').forEach(x=>x.addEventListener('input',fn));
+
+if(slug==='date-calculator'){
+ app.innerHTML=`<div class="grid2"><div><div class="field"><label>基準日</label><input id="base" type="date"></div><div class="field"><label>日数を加算・減算</label><input id="days" type="number" value="30"></div><div class="actions"><button class="btn" id="add">計算</button></div></div><div><div class="field"><label>開始日</label><input id="from" type="date"></div><div class="field"><label>終了日</label><input id="to" type="date"></div><div class="actions"><button class="btn" id="diff">差を計算</button></div></div></div><div class="result" id="result">日付を入力してください。</div>`;
+ const today=new Date().toISOString().slice(0,10);base.value=from.value=today;to.value=today;add.onclick=()=>{const d=new Date(base.value+'T00:00:00');d.setDate(d.getDate()+Number(days.value||0));result(`<b>${d.toLocaleDateString('ja-JP')}</b>（${d.toLocaleDateString('ja-JP',{weekday:'long'})}）`)};diff.onclick=()=>{const a=new Date(from.value+'T00:00:00'),b=new Date(to.value+'T00:00:00');const days=Math.round((b-a)/86400000);result(`<b>${fmt(Math.abs(days))}日</b> ${days<0?'（終了日が開始日より前です）':''}`)};
+}
+else if(slug==='gross-profit'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>売価</label><input id="sales" type="number" value="10000"></div><div class="field"><label>原価</label><input id="cost" type="number" value="6000"></div></div><div class="metrics"><div class="metric"><small>粗利額</small><strong id="m1">-</strong></div><div class="metric"><small>粗利率</small><strong id="m2">-</strong></div><div class="metric"><small>原価率</small><strong id="m3">-</strong></div></div>`;const calc=()=>{const s=num('sales'),c=num('cost'),g=s-c;m1.textContent=fmt(g)+'円';m2.textContent=s?fmt(g/s*100)+'%':'-';m3.textContent=s?fmt(c/s*100)+'%':'-'};bindInputs(calc);calc();
+}
+else if(slug==='text-counter'){
+ app.innerHTML=`<div class="field"><label>テキスト</label><textarea id="text" placeholder="広告文や提案書を貼り付けてください"></textarea></div><div class="metrics"><div class="metric"><small>文字数</small><strong id="m1">0</strong></div><div class="metric"><small>空白除外</small><strong id="m2">0</strong></div><div class="metric"><small>行数</small><strong id="m3">0</strong></div></div>`;text.oninput=()=>{m1.textContent=text.value.length;m2.textContent=text.value.replace(/\s/g,'').length;m3.textContent=text.value?text.value.split(/\r?\n/).length:0};
+}
+else if(slug==='dedupe-lines'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>入力</label><textarea id="text"></textarea></div><div class="field"><label>結果</label><textarea id="out" readonly></textarea></div></div><div class="checkrow"><label><input id="empty" type="checkbox" checked>空行を除去</label><label><input id="trim" type="checkbox" checked>前後空白を無視して重複判定</label></div><div class="actions"><button class="btn" id="run">重複を削除</button><button class="btn sub" id="cp">結果をコピー</button></div><div class="result" id="result">0行</div>`;run.onclick=()=>{const seen=new Set(),rows=[];for(const raw of text.value.split(/\r?\n/)){const key=trim.checked?raw.trim():raw;if(empty.checked&&!key)continue;if(seen.has(key))continue;seen.add(key);rows.push(raw)}out.value=rows.join('\n');result(`${rows.length}行になりました。`)};cp.onclick=()=>copy(out.value);
+}
+else if(slug==='postal-code'){
+ app.innerHTML=`<div class="grid2"><div><div class="field"><label>郵便番号 → 住所</label><input id="zip" placeholder="例 1600023"></div><button class="btn" id="ziprun">住所を検索</button></div><div><div class="field"><label>住所 → 郵便番号</label><input id="addr" placeholder="例 東京都 新宿区 西新宿"></div><button class="btn" id="addrrun">郵便番号を検索</button></div></div><div class="result" id="result">検索結果がここに表示されます。</div><p class="note">郵便番号データは「ポストくん」の公開APIを利用します。</p>`;
+ ziprun.onclick=async()=>{const z=zip.value.replace(/\D/g,'');if(z.length!==7)return result('7桁の郵便番号を入力してください。');result('検索中…');try{const r=await fetch(`https://postcode.teraren.com/postcodes/${z}.json`);if(!r.ok)throw 0;const d=await r.json();result(`<b>〒${esc(d.new||d.postcode||z)}</b><br>${esc(d.prefecture||'')}${esc(d.city||'')}${esc(d.suburb||d.town||'')}`)}catch{result('該当する住所が見つかりませんでした。')}};
+ addrrun.onclick=async()=>{const q=addr.value.trim();if(!q)return result('住所を入力してください。');result('検索中…');try{const r=await fetch(`https://postcode.teraren.com/postcodes.json?s=${encodeURIComponent(q)}&per=20`);if(!r.ok)throw 0;const a=await r.json();result(a.length?`<div class="results-list">${a.map(x=>`<div class="result-item"><b>〒${esc(x.new)}</b>${esc(x.prefecture)}${esc(x.city)}${esc(x.suburb)}</div>`).join('')}</div>`:'該当する郵便番号が見つかりませんでした。')}catch{result('検索に失敗しました。時間をおいて再度お試しください。')}};
+}
+else if(slug==='mojibake'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>文字化けしたテキスト</label><textarea id="text" placeholder="例: ã“ã‚“ã«ã¡ã¯"></textarea></div><div class="field"><label>変換結果</label><textarea id="out" readonly></textarea></div></div><div class="actions"><button class="btn" id="run">修復を試す</button><button class="btn sub" id="cp">コピー</button></div><p class="note">典型的な「UTF-8をLatin-1として読んだ」文字化けを修復します。すべての文字化けを自動判定できるわけではありません。</p>`;run.onclick=()=>{try{const bytes=Uint8Array.from([...text.value].map(c=>c.charCodeAt(0)&255));out.value=new TextDecoder('utf-8',{fatal:false}).decode(bytes)}catch{out.value=text.value}};cp.onclick=()=>copy(out.value);
+}
+else if(slug==='password-generator'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>長さ</label><input id="len" type="number" min="4" max="128" value="20"></div><div class="field"><label>生成数</label><input id="count" type="number" min="1" max="20" value="5"></div></div><div class="checkrow"><label><input id="lower" type="checkbox" checked>英小文字</label><label><input id="upper" type="checkbox" checked>英大文字</label><label><input id="digit" type="checkbox" checked>数字</label><label><input id="symbol" type="checkbox" checked>記号</label></div><div class="actions"><button class="btn" id="run">生成</button><button class="btn sub" id="cp">全部コピー</button></div><div class="field" style="margin-top:14px"><textarea id="out" readonly></textarea></div>`;run.onclick=()=>{let chars=(lower.checked?'abcdefghijkmnopqrstuvwxyz':'')+(upper.checked?'ABCDEFGHJKLMNPQRSTUVWXYZ':'')+(digit.checked?'23456789':'')+(symbol.checked?'!@#$%&*+-_=?:':'');if(!chars)return;const arr=[];for(let k=0;k<Math.min(20,count.value);k++){const b=new Uint32Array(Math.min(128,len.value));crypto.getRandomValues(b);arr.push([...b].map(x=>chars[x%chars.length]).join(''))}out.value=arr.join('\n')};cp.onclick=()=>copy(out.value);run.click();
+}
+else if(slug==='html-entities'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>入力</label><textarea id="text"></textarea></div><div class="field"><label>結果</label><textarea id="out" readonly></textarea></div></div><div class="actions"><button class="btn" id="enc">エンコード</button><button class="btn sub" id="dec">デコード</button><button class="btn sub" id="cp">コピー</button></div>`;enc.onclick=()=>out.value=text.value.replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));dec.onclick=()=>{const d=document.createElement('textarea');d.innerHTML=text.value;out.value=d.value};cp.onclick=()=>copy(out.value);
+}
+else if(slug==='age-table'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>基準年</label><input id="year" type="number" value="${new Date().getFullYear()}"></div><div class="field"><label>表示する年齢</label><select id="range"><option value="100">0〜100歳</option><option value="80">0〜80歳</option><option value="60">0〜60歳</option></select></div></div><div class="age-scroll"><table class="age-table"><thead><tr><th>年齢</th><th>西暦</th><th>和暦</th></tr></thead><tbody id="tbody"></tbody></table></div><p class="note">誕生日を迎えている前提の簡易早見表です。</p>`;const wareki=y=>y>=2019?`令和${y===2019?'元':y-2018}年`:y>=1989?`平成${y===1989?'元':y-1988}年`:y>=1926?`昭和${y===1926?'元':y-1925}年`:`${y}年`;const draw=()=>{tbody.innerHTML=Array.from({length:Number(range.value)+1},(_,age)=>{const y=Number(year.value)-age;return `<tr><td>${age}歳</td><td>${y}年</td><td>${wareki(y)}</td></tr>`}).join('')};bindInputs(draw);draw();
+}
+else if(slug==='text-sort'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>入力</label><textarea id="text"></textarea></div><div class="field"><label>結果</label><textarea id="out" readonly></textarea></div></div><div class="actions"><button class="btn" data-sort="asc">昇順</button><button class="btn sub" data-sort="desc">降順</button><button class="btn sub" data-sort="num">数値順</button><button class="btn sub" data-sort="random">ランダム</button><button class="btn sub" id="cp">コピー</button></div>`;app.querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{let a=text.value.split(/\r?\n/);if(b.dataset.sort==='asc')a.sort((x,y)=>x.localeCompare(y,'ja'));if(b.dataset.sort==='desc')a.sort((x,y)=>y.localeCompare(x,'ja'));if(b.dataset.sort==='num')a.sort((x,y)=>parseFloat(x)-parseFloat(y));if(b.dataset.sort==='random')a.sort(()=>Math.random()-.5);out.value=a.join('\n')});cp.onclick=()=>copy(out.value);
+}
+else if(slug==='sku-generator'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>接頭辞</label><input id="pre" value="ITEM-"></div><div class="field"><label>開始番号</label><input id="start" type="number" value="1"></div><div class="field"><label>桁数</label><input id="digits" type="number" min="1" max="12" value="4"></div><div class="field"><label>件数</label><input id="count" type="number" min="1" max="1000" value="20"></div></div><div class="actions"><button class="btn" id="run">生成</button><button class="btn sub" id="cp">コピー</button></div><div class="field" style="margin-top:14px"><textarea id="out" readonly></textarea></div>`;run.onclick=()=>out.value=Array.from({length:Math.min(1000,Number(count.value))},(_,i)=>pre.value+String(Number(start.value)+i).padStart(Number(digits.value),'0')).join('\n');cp.onclick=()=>copy(out.value);run.click();
+}
+else if(slug==='zenkaku-hankaku'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>入力</label><textarea id="text"></textarea></div><div class="field"><label>結果</label><textarea id="out" readonly></textarea></div></div><div class="actions"><button class="btn" id="run">半角に統一</button><button class="btn sub" id="cp">コピー</button></div>`;run.onclick=()=>out.value=text.value.replace(/[！-～]/g,s=>String.fromCharCode(s.charCodeAt(0)-0xFEE0)).replace(/　/g,' ');cp.onclick=()=>copy(out.value);
+}
+else if(slug==='trim-spaces'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>入力</label><textarea id="text"></textarea></div><div class="field"><label>結果</label><textarea id="out" readonly></textarea></div></div><div class="actions"><button class="btn" id="run">余分な空白を除去</button><button class="btn sub" id="cp">コピー</button></div>`;run.onclick=()=>out.value=text.value.split(/\r?\n/).map(x=>x.trim().replace(/[ \t　]+/g,' ')).join('\n');cp.onclick=()=>copy(out.value);
+}
+else if(slug==='tax-calculator'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>金額</label><input id="amount" type="number" value="1000"></div><div class="field"><label>税率</label><select id="rate"><option value="10">10%</option><option value="8">8%</option></select></div></div><div class="metrics"><div class="metric"><small>税込</small><strong id="m1">-</strong></div><div class="metric"><small>税抜</small><strong id="m2">-</strong></div><div class="metric"><small>税額</small><strong id="m3">-</strong></div></div><p class="note">入力金額を「税抜」とみなした税込額と、「税込」とみなした税抜額を同時表示します。端数は四捨五入です。</p>`;const calc=()=>{const a=num('amount'),r=num('rate')/100;const inc=Math.round(a*(1+r)),exc=Math.round(a/(1+r));m1.textContent=fmt(inc)+'円';m2.textContent=fmt(exc)+'円';m3.textContent=fmt(inc-a)+'円'};bindInputs(calc);calc();
+}
+else if(slug==='price-change-rate'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>変更前価格</label><input id="old" type="number" value="1000"></div><div class="field"><label>変更後価格</label><input id="now" type="number" value="1200"></div></div><div class="metrics"><div class="metric"><small>変化率</small><strong id="m1">-</strong></div><div class="metric"><small>差額</small><strong id="m2">-</strong></div><div class="metric"><small>判定</small><strong id="m3">-</strong></div></div>`;const calc=()=>{const o=num('old'),n=num('now'),d=n-o;m1.textContent=o?fmt(d/o*100)+'%':'-';m2.textContent=fmt(d)+'円';m3.textContent=d>0?'値上げ':d<0?'値下げ':'変更なし'};bindInputs(calc);calc();
+}
+else if(slug==='roas'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>広告経由売上</label><input id="sales" type="number" value="500000"></div><div class="field"><label>広告費</label><input id="ad" type="number" value="100000"></div></div><div class="metrics"><div class="metric"><small>ROAS</small><strong id="m1">-</strong></div><div class="metric"><small>売上 ÷ 広告費</small><strong id="m2">-</strong></div><div class="metric"><small>広告費率</small><strong id="m3">-</strong></div></div>`;const calc=()=>{const s=num('sales'),a=num('ad');m1.textContent=a?fmt(s/a*100)+'%':'-';m2.textContent=a?fmt(s/a)+'倍':'-';m3.textContent=s?fmt(a/s*100)+'%':'-'};bindInputs(calc);calc();
+}
+else if(slug==='roi'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>利益</label><input id="profit" type="number" value="150000"></div><div class="field"><label>投資額</label><input id="investment" type="number" value="100000"></div></div><div class="metrics"><div class="metric"><small>ROI</small><strong id="m1">-</strong></div><div class="metric"><small>利益</small><strong id="m2">-</strong></div><div class="metric"><small>投資額</small><strong id="m3">-</strong></div></div><p class="note">ROI = 利益 ÷ 投資額 × 100 で計算します。</p>`;const calc=()=>{const p=num('profit'),i=num('investment');m1.textContent=i?fmt(p/i*100)+'%':'-';m2.textContent=fmt(p)+'円';m3.textContent=fmt(i)+'円'};bindInputs(calc);calc();
+}
+else if(slug==='marketing-kpi'){
+ app.innerHTML=`<div class="grid2"><div class="field"><label>広告費</label><input id="cost" type="number" value="100000"></div><div class="field"><label>表示回数（Impression）</label><input id="imp" type="number" value="100000"></div><div class="field"><label>クリック数</label><input id="clicks" type="number" value="2000"></div><div class="field"><label>コンバージョン数</label><input id="cv" type="number" value="100"></div></div><div class="metrics"><div class="metric"><small>CPA</small><strong id="m1">-</strong></div><div class="metric"><small>CVR</small><strong id="m2">-</strong></div><div class="metric"><small>CTR</small><strong id="m3">-</strong></div></div>`;const calc=()=>{const c=num('cost'),i=num('imp'),cl=num('clicks'),cv=num('cv');m1.textContent=cv?fmt(c/cv)+'円':'-';m2.textContent=cl?fmt(cv/cl*100)+'%':'-';m3.textContent=i?fmt(cl/i*100)+'%':'-'};bindInputs(calc);calc();
+}
+})();
+</script></body></html>
