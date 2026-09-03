@@ -17,6 +17,7 @@ on:
       - "scripts/discover-new-stickers-by-id.mjs"
       - "scripts/discover-new-stickers.mjs"
       - "scripts/generate-sticker-sheets.mjs"
+      - "scripts/generate-chat-icons.mjs"
       - "scripts/extract-sticker-phrases.mjs"
       - "scripts/fetch-suzuri-designs.mjs"
       - "src/lib/sticker-search-tags.ts"
@@ -32,7 +33,7 @@ concurrency:
 jobs:
   update-stickers:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout
@@ -95,6 +96,9 @@ jobs:
       - name: Generate protected sticker preview sheets
         run: node scripts/generate-sticker-sheets.mjs
 
+      - name: Generate square Slack Teams Discord icons
+        run: node scripts/generate-chat-icons.mjs
+
       - name: Extract safe sticker phrases
         run: node scripts/extract-sticker-phrases.mjs
 
@@ -118,12 +122,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json public/images/stickers public/images/sticker-sheets
+          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json public/images/stickers public/images/sticker-sheets public/images/chat-icons
           if git diff --cached --quiet; then
             echo "No sticker changes detected."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update stickers and phrase tags"
+            git commit -m "Update stickers, chat icons and phrase tags"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
