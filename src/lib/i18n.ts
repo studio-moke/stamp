@@ -1,10 +1,12 @@
-export const LOCALES = ["ja", "en", "zh-tw", "th", "id"] as const;
+export const LOCALES = ["ja", "en", "zh-tw", "zh-cn", "ko", "th", "id"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const localeInfo: Record<Locale, { label: string; htmlLang: string; ogLocale: string; lineLocale: string }> = {
   ja: { label: "日本語", htmlLang: "ja", ogLocale: "ja_JP", lineLocale: "ja" },
   en: { label: "English", htmlLang: "en", ogLocale: "en_US", lineLocale: "en" },
   "zh-tw": { label: "繁體中文", htmlLang: "zh-Hant-TW", ogLocale: "zh_TW", lineLocale: "zh-Hant" },
+  "zh-cn": { label: "简体中文", htmlLang: "zh-Hans-CN", ogLocale: "zh_CN", lineLocale: "zh-Hans" },
+  ko: { label: "한국어", htmlLang: "ko", ogLocale: "ko_KR", lineLocale: "ko" },
   th: { label: "ไทย", htmlLang: "th", ogLocale: "th_TH", lineLocale: "th" },
   id: { label: "Bahasa Indonesia", htmlLang: "id", ogLocale: "id_ID", lineLocale: "id" },
 };
@@ -100,6 +102,66 @@ export const messages = {
     suzuriOpen: "前往SUZURI查看 ↗",
     taxIncluded: "含稅",
   },
+  "zh-cn": {
+    siteTitle: "stamp moke｜可爱又实用的LINE贴图",
+    siteDescription: "发现studio moke创作的可爱、有趣又实用的LINE贴图，适合日常问候、工作、情侣、家人和朋友聊天。",
+    brandSub: "原创LINE贴图网站",
+    shop: "角色周边 ↗",
+    viewStickers: "浏览贴图 ↓",
+    heroLead: "可爱、有趣、每天都好用。从不同系列中找到最适合你的LINE贴图。",
+    heroCta: "寻找贴图 →",
+    heroTitles: ["新贴图，\n持续上线。", "可爱角色，\n等你发现。", "让每次聊天，\n多一点笑容。", "让日常聊天，\n更轻松。"],
+    all: "全部",
+    stickers: "LINE贴图",
+    details: "查看详情 →",
+    noStickers: "没有找到符合条件的贴图。",
+    goodsTitle: "角色周边商店",
+    goodsLead: "来自LINE贴图的原创角色现已推出T恤、贴纸等周边商品。",
+    goodsLink: "查看角色和周边 →",
+    allGoods: "在SUZURI查看全部商品 ↗",
+    aboutTitle: "让每天的一句话，\n更有趣一点。",
+    aboutText: "stamp moke是studio moke运营的原创LINE贴图网站，按用途和类别整理，方便查找适合日常、工作、情侣、家人和朋友的贴图。",
+    footerCopy: "原创LINE贴图网站\n找到你喜欢的贴图。",
+    categories: "贴图分类",
+    categoryDescription: "按动物、可爱、幽默、工作、问候等分类浏览stamp moke的LINE贴图。",
+    buy: "前往LINE STORE购买",
+    gift: "赠送给朋友",
+    back: "返回贴图列表",
+    productAbout: "贴图介绍",
+    goodsProducts: "在售周边",
+    suzuriOpen: "前往SUZURI查看 ↗",
+    taxIncluded: "含税",
+  },
+  ko: {
+    siteTitle: "stamp moke | 귀엽고 실용적인 LINE 스티커",
+    siteDescription: "studio moke의 귀엽고 재미있고 실용적인 오리지널 LINE 스티커를 만나보세요. 일상, 업무, 연인, 가족, 친구 대화에 잘 어울립니다.",
+    brandSub: "오리지널 LINE 스티커 사이트",
+    shop: "캐릭터 굿즈 ↗",
+    viewStickers: "스티커 보기 ↓",
+    heroLead: "귀엽고 재미있고 매일 쓰기 좋은 LINE 스티커. 다양한 시리즈에서 내 대화에 딱 맞는 스티커를 찾아보세요.",
+    heroCta: "스티커 찾기 →",
+    heroTitles: ["새 스티커가\n계속 등장해요.", "귀여운 캐릭터를\n만나보세요.", "대화마다\n작은 웃음을.", "매일의 대화를\n더 편리하게."],
+    all: "전체",
+    stickers: "LINE 스티커",
+    details: "자세히 보기 →",
+    noStickers: "조건에 맞는 스티커가 없습니다.",
+    goodsTitle: "캐릭터 굿즈 숍",
+    goodsLead: "LINE 스티커에서 탄생한 오리지널 캐릭터를 티셔츠, 스티커 등 다양한 굿즈로 만나보세요.",
+    goodsLink: "캐릭터 굿즈 보기 →",
+    allGoods: "SUZURI에서 전체 보기 ↗",
+    aboutTitle: "매일의 한마디를\n조금 더 즐겁게.",
+    aboutText: "stamp moke는 studio moke가 운영하는 오리지널 LINE 스티커 사이트입니다. 일상, 업무, 연인, 가족, 친구용 스티커를 쉽게 찾을 수 있도록 정리해 소개합니다.",
+    footerCopy: "오리지널 LINE 스티커 사이트\n마음에 드는 스티커를 찾아보세요.",
+    categories: "카테고리",
+    categoryDescription: "동물, 귀여움, 유머, 업무, 인사 등 카테고리별로 stamp moke의 LINE 스티커를 찾아보세요.",
+    buy: "LINE STORE에서 구매",
+    gift: "친구에게 선물",
+    back: "목록으로 돌아가기",
+    productAbout: "이 스티커 세트 소개",
+    goodsProducts: "판매 중인 굿즈",
+    suzuriOpen: "SUZURI에서 보기 ↗",
+    taxIncluded: "세금 포함",
+  },
   th: {
     siteTitle: "stamp moke | สติกเกอร์ LINE น่ารักและใช้ได้ทุกวัน",
     siteDescription: "พบกับสติกเกอร์ LINE ต้นฉบับจาก studio moke ทั้งน่ารัก ตลก และใช้งานง่าย เหมาะกับแชตประจำวัน ที่ทำงาน คู่รัก ครอบครัว และเพื่อน",
@@ -166,6 +228,8 @@ export const categoryLabels: Record<Locale, Record<string, string>> = {
   ja: { "すべて":"すべて","仕事":"仕事","日常":"日常","その他":"その他","恋愛":"恋愛","かわいい":"かわいい","動物":"動物","方言":"方言","おもしろ":"おもしろ","食べ物":"食べ物","あいさつ":"あいさつ" },
   en: { "すべて":"All","仕事":"Work","日常":"Daily","その他":"Other","恋愛":"Love","かわいい":"Cute","動物":"Animals","方言":"Dialects","おもしろ":"Funny","食べ物":"Food","あいさつ":"Greetings" },
   "zh-tw": { "すべて":"全部","仕事":"工作","日常":"日常","その他":"其他","恋愛":"戀愛","かわいい":"可愛","動物":"動物","方言":"方言","おもしろ":"幽默","食べ物":"美食","あいさつ":"問候" },
+  "zh-cn": { "すべて":"全部","仕事":"工作","日常":"日常","その他":"其他","恋愛":"恋爱","かわいい":"可爱","動物":"动物","方言":"方言","おもしろ":"幽默","食べ物":"美食","あいさつ":"问候" },
+  ko: { "すべて":"전체","仕事":"업무","日常":"일상","その他":"기타","恋愛":"연애","かわいい":"귀여움","動物":"동물","方言":"사투리","おもしろ":"유머","食べ物":"음식","あいさつ":"인사" },
   th: { "すべて":"ทั้งหมด","仕事":"ที่ทำงาน","日常":"ประจำวัน","その他":"อื่น ๆ","恋愛":"ความรัก","かわいい":"น่ารัก","動物":"สัตว์","方言":"ภาษาถิ่น","おもしろ":"ตลก","食べ物":"อาหาร","あいさつ":"คำทักทาย" },
   id: { "すべて":"Semua","仕事":"Pekerjaan","日常":"Sehari-hari","その他":"Lainnya","恋愛":"Cinta","かわいい":"Lucu","動物":"Hewan","方言":"Dialek","おもしろ":"Humor","食べ物":"Makanan","あいさつ":"Sapaan" },
 };
@@ -186,5 +250,5 @@ export function alternateLinks(path = "/") {
 export function localizeLineUrl(url: string, locale: Locale) {
   if (!url) return url;
   const code = localeInfo[locale].lineLocale;
-  return url.replace(/\/(ja|en|zh-Hant|th|id)(?=\?|$)/, `/${code}`);
+  return url.replace(/\/(ja|en|zh-Hant|zh-Hans|ko|th|id)(?=\?|$)/, `/${code}`);
 }
