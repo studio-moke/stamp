@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "node scripts/fix-tool-routes.mjs && astro dev",
-    "build": "node scripts/fix-tool-routes.mjs && node scripts/prepare-incremental-build.mjs && astro build && node scripts/inject-seo-content.mjs && node scripts/ensure-global-favicon.mjs",
+    "build": "node scripts/fix-tool-routes.mjs && node scripts/prepare-incremental-build.mjs && astro build && node scripts/inject-home-news.mjs && node scripts/inject-seo-content.mjs && node scripts/ensure-global-favicon.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
