@@ -29,9 +29,24 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
       const p = window.location.pathname || '/';
       const localized = /^\/(en|zh-tw|zh-cn|ko|th|id)(\/|$)/.test(p);
       if (!localized && !p.startsWith('/api/')) {
-        localStorage.setItem('stamp-moke-locale', 'ja');
-        document.documentElement.dataset.stampMokeLocale = 'ja';
-        window.__STAMP_MOKE_EXPLICIT_LOCALE__ = 'ja';
+        if (p === '/') {
+          const saved = localStorage.getItem('stamp-moke-locale');
+          if (!saved) {
+            const language = (navigator.languages?.[0] || navigator.language || 'ja').toLowerCase();
+            const preferred = language.startsWith('ko') ? 'ko'
+              : (language.startsWith('zh-cn') || language.startsWith('zh-sg') || language.startsWith('zh-hans')) ? 'zh-cn'
+              : language.startsWith('zh') ? 'zh-tw'
+              : language.startsWith('id') || language.startsWith('in') ? 'id'
+              : language.startsWith('th') ? 'th'
+              : language.startsWith('en') ? 'en'
+              : 'ja';
+            localStorage.setItem('stamp-moke-locale', preferred);
+          }
+        } else {
+          localStorage.setItem('stamp-moke-locale', 'ja');
+          document.documentElement.dataset.stampMokeLocale = 'ja';
+          window.__STAMP_MOKE_EXPLICIT_LOCALE__ = 'ja';
+        }
       }
     } catch (_) {}
   })();
