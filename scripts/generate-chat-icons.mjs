@@ -6,7 +6,8 @@ const DATA_FILE = path.resolve("src/data/stickers.json");
 const OUTPUT_ROOT = path.resolve("public/images/chat-icons");
 const VERSION = "1";
 const VERSION_FILE = path.join(OUTPUT_ROOT, ".version");
-const CONCURRENCY = 2;
+const PRODUCT_CONCURRENCY = 2;
+const IMAGE_BATCH_SIZE = 8;
 const headers = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
   "Accept-Language": "ja-JP,ja;q=0.9",
@@ -97,6 +98,13 @@ async function makeSquarePng(source) {
     .toBuffer();
 }
 
+async function writeIcon(product, item, index, dir) {
+  const source = await fetchBuffer(item.url, { Referer: product.url, Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8" });
+  const square = await makeSquarePng(source);
+  const filename = `${String(index + 1).padStart(2, "0")}-${item.id}.png`;
+  fs.writeFileSync(path.join(dir, filename), square);
+}
+
 async function generateProduct(product, regenerateAll = false) {
   const dir = path.join(OUTPUT_ROOT, String(product.id));
   const existing = fs.existsSync(dir) ? fs.readdirSync(dir).filter((name) => name.endsWith(".png")) : [];
@@ -107,12 +115,10 @@ async function generateProduct(product, regenerateAll = false) {
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
 
-  for (let index = 0; index < items.length; index++) {
-    const item = items[index];
-    const source = await fetchBuffer(item.url, { Referer: product.url, Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8" });
-    const square = await makeSquarePng(source);
-    const filename = `${String(index + 1).padStart(2, "0")}-${item.id}.png`;
-    fs.writeFileSync(path.join(dir, filename), square);
+  for (let offset = 0; offset < items.length; offset += IMAGE_BATCH_SIZE) {
+    const batch = items.slice(offset, offset + IMAGE_BATCH_SIZE);
+    await Promise.all(batch.map((item, batchIndex) => writeIcon(product, item, offset + batchIndex, dir)));
+    if (offset + IMAGE_BATCH_SIZE < items.length) await new Promise((resolve) => setTimeout(resolve, 120));
   }
   return { status: "created", id: product.id, count: items.length };
 }
@@ -124,8 +130,8 @@ async function main() {
   let created = 0;
   let failed = 0;
 
-  for (let offset = 0; offset < products.length; offset += CONCURRENCY) {
-    const batch = products.slice(offset, offset + CONCURRENCY);
+  for (let offset = 0; offset < products.length; offset += PRODUCT_CONCURRENCY) {
+    const batch = products.slice(offset, offset + PRODUCT_CONCURRENCY);
     const results = await Promise.allSettled(batch.map((product) => generateProduct(product, regenerateAll)));
     for (const result of results) {
       if (result.status === "fulfilled") {
@@ -136,7 +142,7 @@ async function main() {
         console.error(`生成失敗: ${result.reason?.message || result.reason}`);
       }
     }
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   }
 
   if (failed > 0) throw new Error(`${failed}件のチャット用アイコンを生成できませんでした`);
