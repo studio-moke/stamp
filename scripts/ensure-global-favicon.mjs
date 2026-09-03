@@ -1,7 +1,8 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const DIST_DIR = new URL('../dist/', import.meta.url);
+const DIST_DIR = fileURLToPath(new URL('../dist/', import.meta.url));
 const FAVICON_TAGS = `  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />\n  <link rel="shortcut icon" href="/favicon.ico" sizes="any" />`;
 
 async function walk(dir) {
