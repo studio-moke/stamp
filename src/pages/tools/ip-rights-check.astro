@@ -1,0 +1,64 @@
+---
+import SiteHeader from "../../components/SiteHeader.astro";
+---
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>商標・特許・意匠チェック＆ネーミング提案 | 無料ツール | stamp moke</title>
+<meta name="description" content="商品名・ブランド名・会社名から、商標・特許・意匠の確認ポイントを整理し、J-PlatPatで確認しやすい表記ゆれと代替ネーミング候補を提案する無料ツールです。" />
+<link rel="canonical" href="https://stamp-moke.jp/tools/ip-rights-check/" />
+<link rel="icon" href="/favicon.svg?v=20260902" type="image/svg+xml" />
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.wrap{max-width:1100px;margin:auto;padding:36px 16px 86px}.crumb{font-size:11px;color:#777;margin-bottom:18px}.crumb a{color:#555}.hero{margin-bottom:22px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.18em;color:#888}.hero h1{margin:8px 0 10px;font-size:clamp(32px,5vw,52px);letter-spacing:-.045em}.hero p{margin:0;max-width:820px;color:#666;font-size:13px;line-height:1.85}.toolbox{background:#fff;border:1px solid #deddd8;border-radius:22px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.035)}.field label{display:block;font-size:12px;font-weight:900;margin-bottom:8px}.mega{display:grid;grid-template-columns:1fr auto;gap:10px}.mega input{width:100%;min-height:58px;border:2px solid #d8d7d2;border-radius:15px;padding:0 16px;font:inherit;font-size:18px;outline:none}.mega input:focus{border-color:#171717}.btn{border:0;border-radius:14px;padding:0 20px;min-height:58px;background:#171717;color:#fff;font-weight:900;cursor:pointer;font-size:15px}.btn.sub{background:#ecebe6;color:#222;min-height:44px;padding:0 14px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 8px}.tab{border:1px solid #d8d7d2;background:#fff;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:900;cursor:pointer}.tab.active{background:#171717;color:#fff;border-color:#171717}.panel{margin-top:18px;padding:18px;border-radius:17px;background:#f3f2ee}.panel h2{font-size:18px;margin:0 0 10px}.muted{color:#6f6f6f;font-size:12px;line-height:1.75}.variants{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.chip{border:1px solid #d8d7d2;border-radius:999px;background:#fff;padding:7px 10px;font-size:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.card{background:#fff;border:1px solid #deddd8;border-radius:15px;padding:15px}.card h3{font-size:14px;margin:0 0 8px}.card p{font-size:12px;line-height:1.75;color:#666;margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.linkbtn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:12px;padding:11px 14px;background:#171717;color:#fff;font-weight:900;font-size:12px}.linkbtn.alt{background:#ecebe6;color:#222}.proposal-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.proposal{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #deddd8;border-radius:13px;padding:11px 12px;background:#fff}.proposal b{font-size:13px}.proposal button{border:0;border-radius:9px;padding:7px 9px;background:#171717;color:#fff;font-size:11px;font-weight:900;cursor:pointer}.warn{margin-top:18px;padding:14px 15px;border-radius:14px;background:#fff7df;border:1px solid #ead9a4;font-size:11px;line-height:1.8;color:#5b5136}.status{margin-top:12px;font-size:12px;color:#666}.back{display:inline-flex;margin-top:22px;color:#333;font-weight:800;font-size:12px}@media(max-width:700px){.wrap{padding:24px 11px 70px}.toolbox{padding:14px}.mega{grid-template-columns:1fr}.btn{width:100%}.grid,.proposal-list{grid-template-columns:1fr}.hero h1{font-size:36px}.mega input{font-size:16px}}
+</style>
+</head>
+<body>
+<SiteHeader locale="ja" />
+<main class="wrap">
+<div class="crumb"><a href="/tools/">無料で使えるツール</a> / 商標・特許・意匠チェック</div>
+<section class="hero"><div class="eyebrow">IP / NAMING CHECK TOOL</div><h1>商標・特許・意匠チェック＆提案</h1><p>商品名・ブランド名・サービス名を入力すると、確認すべき表記ゆれを自動生成し、商標・特許・意匠ごとの調べ方と代替ネーミング候補を整理します。</p></section>
+<section class="toolbox">
+<div class="field"><label for="q">調べたい名前・キーワード</label><div class="mega"><input id="q" placeholder="例：stamp moke / ふわりタオル / 新商品名" autocomplete="off" /><button class="btn" id="run">検索候補を作る</button></div></div>
+<div class="tabs"><button class="tab active" data-kind="trademark">商標</button><button class="tab" data-kind="patent">特許</button><button class="tab" data-kind="design">意匠</button></div>
+<div id="result" class="panel"><h2>名前を入力してください</h2><p class="muted">完全一致だけでなく、ひらがな・カタカナ・英字・スペース違いなども確認できるように候補を展開します。</p></div>
+<div class="warn"><b>注意：</b>このツールは権利侵害の有無や登録可能性を法的に断定するものではありません。最終判断はJ-PlatPatの原情報、必要に応じて弁理士等へ確認してください。特許庁の特許情報取得APIは利用登録・認証が必要で、自由語の横断検索APIではなく、主に出願番号等から詳細情報を取得する用途です。</div>
+</section>
+<a class="back" href="/tools/">← 無料ツール一覧へ戻る</a>
+</main>
+<script is:inline>
+(()=>{
+ const q=document.getElementById('q'),run=document.getElementById('run'),result=document.getElementById('result');
+ let kind='trademark';
+ const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c));
+ const kataToHira=s=>s.replace(/[ァ-ン]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0x60));
+ const hiraToKata=s=>s.replace(/[ぁ-ん]/g,ch=>String.fromCharCode(ch.charCodeAt(0)+0x60));
+ const romaji=s=>{
+  const map={'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko','さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to','な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho','ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo','ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro','わ':'wa','を':'o','ん':'n'};
+  let h=kataToHira(s),out='';for(const ch of h)out+=map[ch]||ch;return out.replace(/\s+/g,'');
+ };
+ const variants=s=>{
+   const raw=s.trim(); if(!raw)return[];
+   const arr=[raw,raw.replace(/\s+/g,''),raw.toLowerCase(),raw.toUpperCase(),kataToHira(raw),hiraToKata(raw),romaji(raw),romaji(raw).toUpperCase()];
+   return [...new Set(arr.filter(Boolean))].slice(0,10);
+ };
+ const proposals=s=>{
+   const base=romaji(s).replace(/[^a-z0-9]/gi,'')||s.replace(/\s+/g,'');
+   const seeds=['neo','plus','lab','one','ly','ia','nex','moco','lino','via'];
+   return [...new Set(seeds.map((x,i)=>i<5?`${base}${x}`:`${x}${base}`))].slice(0,10);
+ };
+ const kindText={trademark:{title:'商標チェック',lead:'同一・類似する名称、称呼、指定商品・役務の区分を中心に確認します。',points:['完全一致・表記ゆれ','称呼が近い名称','同一・近接する区分','権利者・出願人・ステータス']},patent:{title:'特許チェック',lead:'商品名そのものより、技術内容・機能・構造に近いキーワードで調べるのが有効です。',points:['発明の名称','要約・請求項に近い技術語','出願人・競合名','公開番号・権利状態']},design:{title:'意匠チェック',lead:'製品の形状・模様・画像UIなど、外観に関する登録を確認します。',points:['物品名・用途','形状や部分意匠','画像・GUI','出願人・登録状態']}};
+ const render=()=>{
+  const s=q.value.trim(); if(!s){result.innerHTML='<h2>名前を入力してください</h2><p class="muted">商品名やブランド名を入力すると、検索候補と提案を表示します。</p>';return}
+  const v=variants(s),p=proposals(s),k=kindText[kind];
+  result.innerHTML=`<h2>${k.title}</h2><p class="muted">${k.lead}</p><div class="variants">${v.map(x=>`<span class="chip">${esc(x)}</span>`).join('')}</div><div class="grid"><div class="card"><h3>確認ポイント</h3><p>${k.points.map(x=>'・'+esc(x)).join('<br>')}</p></div><div class="card"><h3>検索のコツ</h3><p>${kind==='trademark'?'上の候補を1つずつJ-PlatPatで確認し、特に称呼と区分の近さを見てください。':kind==='patent'?'名前だけでなく、機能・素材・構造などの一般語に分解して検索すると精度が上がります。':'商品カテゴリ名と外観・用途を組み合わせて検索すると見つけやすくなります。'}</p></div></div><div class="actions"><a class="linkbtn" href="https://www.j-platpat.inpit.go.jp/" target="_blank" rel="noopener">J-PlatPatで確認する</a><button class="btn sub" id="copy">候補をコピー</button></div><div class="card" style="margin-top:14px"><h3>代替ネーミング提案</h3><p>候補名も必ず再検索してください。ここでは機械的に識別性を高めやすい形へ変形しています。</p><div class="proposal-list">${p.map(x=>`<div class="proposal"><b>${esc(x)}</b><button data-name="${esc(x)}">再検索</button></div>`).join('')}</div></div><div class="status">入力語：${esc(s)} / モード：${k.title}</div>`;
+  document.getElementById('copy')?.addEventListener('click',()=>navigator.clipboard?.writeText(v.join('\n')));
+  result.querySelectorAll('[data-name]').forEach(b=>b.addEventListener('click',()=>{q.value=b.dataset.name;render();window.scrollTo({top:q.getBoundingClientRect().top+window.scrollY-90,behavior:'smooth'})}));
+ };
+ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');kind=t.dataset.kind;render()}));
+ run.addEventListener('click',render);q.addEventListener('keydown',e=>{if(e.key==='Enter')render()});
+})();
+</script>
+</body>
+</html>
