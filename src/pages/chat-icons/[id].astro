@@ -1,0 +1,79 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import stickers from "../../data/stickers.json";
+import SeoHead from "../../components/SeoHead.astro";
+import Analytics from "../../components/Analytics.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { absoluteUrl } from "../../lib/seo";
+
+export function getStaticPaths() {
+  return stickers.map((sticker) => ({ params: { id: String(sticker.id) }, props: { sticker } }));
+}
+
+const { sticker } = Astro.props;
+const iconDir = path.join(process.cwd(), "public", "images", "chat-icons", String(sticker.id));
+const iconFiles = fs.existsSync(iconDir)
+  ? fs.readdirSync(iconDir).filter((name) => /^\d{2}-\d+\.png$/.test(name)).sort((a,b) => a.localeCompare(b, "ja", { numeric:true }))
+  : [];
+const pageTitle = `${sticker.title}｜Slack・Teams・Discord用アイコン`;
+const description = `${sticker.title}をSlack・Microsoft Teams・Discordで使える正方形の透過PNGとして無料配布。画像を切らず、透明余白を追加して正方形に整えています。`;
+const canonicalPath = `/chat-icons/${sticker.id}/`;
+const canonical = absoluteUrl(canonicalPath);
+const linePage = `/stickers/${sticker.id}/`;
+const lineStoreUrl = sticker.purchaseUrl || sticker.url;
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <SeoHead title={pageTitle} description={description} canonical={canonical} image={sticker.image} type="article" locale="ja" path={canonicalPath} />
+  <Analytics />
+  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:pageTitle,url:canonical,description,image:absoluteUrl(sticker.image),isPartOf:{"@type":"WebSite",name:"stamp moke",url:absoluteUrl("/")}})} />
+  <style>
+    *{box-sizing:border-box} body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.wrap{width:min(1180px,92vw);margin:0 auto;padding:34px 0 88px}.crumb{font-size:13px;color:#666;margin:0 0 22px}.crumb a{color:inherit}.hero{display:grid;grid-template-columns:minmax(220px,360px) 1fr;gap:34px;align-items:center;background:#fff;border:1px solid #e3e0d9;border-radius:28px;padding:30px;box-shadow:0 14px 40px rgba(0,0,0,.05)}.hero-image{aspect-ratio:1/1;border-radius:20px;background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;display:grid;place-items:center;padding:12%}.hero-image img{width:100%;height:100%;object-fit:contain}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.15em;color:#616875;margin:0 0 9px}.hero h1{font-size:clamp(25px,4vw,42px);line-height:1.28;margin:0}.hero p{font-size:15px;line-height:1.85;color:#555;margin:15px 0 0}.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.badges span{background:#171717;color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800}.line-cta{display:inline-flex;margin-top:20px;align-items:center;justify-content:center;background:#06c755;color:#fff;text-decoration:none;font-weight:900;border-radius:14px;padding:15px 18px;min-height:52px}.guide{margin:28px 0;background:#fff5d7;border:1px solid #ead797;border-radius:20px;padding:20px}.guide h2{font-size:18px;margin:0 0 8px}.guide p{margin:0;color:#5c5132;line-height:1.8;font-size:14px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:38px 0 16px}.section-head h2{font-size:25px;margin:0}.count{font-size:13px;color:#777}.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.icon-card{background:#fff;border:1px solid #e3e0d9;border-radius:18px;padding:12px}.icon-stage{aspect-ratio:1/1;border-radius:12px;background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);background-size:18px 18px;background-position:0 0,0 9px,9px -9px,-9px 0;display:grid;place-items:center;overflow:hidden}.icon-stage img{display:block;width:100%;height:100%;object-fit:contain;-webkit-touch-callout:default;user-select:auto}.num{text-align:center;font-size:11px;color:#888;margin-top:9px}.empty{background:#fff;border:1px solid #e3e0d9;border-radius:18px;padding:26px;color:#666}.bottom-cta{margin-top:42px;background:#171717;color:#fff;border-radius:24px;padding:28px;text-align:center}.bottom-cta h2{margin:0 0 8px;font-size:24px}.bottom-cta p{margin:0 auto 18px;color:#ddd;line-height:1.8}.bottom-cta a{display:inline-flex;background:#06c755;color:#fff;text-decoration:none;font-weight:900;border-radius:14px;padding:15px 20px}@media(max-width:900px){.hero{grid-template-columns:220px 1fr}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:680px){.wrap{padding-top:22px}.hero{grid-template-columns:1fr;padding:22px}.hero-image{width:min(72vw,300px);margin:0 auto}.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.icon-card{padding:8px}.guide{padding:17px}.section-head{align-items:center}}@media(max-width:430px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+  <SiteHeader locale="ja" />
+  <main class="wrap">
+    <nav class="crumb"><a href="/">TOP</a> / <a href="/chat-icons/">Slack・Teams・Discord用アイコン</a> / {sticker.title}</nav>
+
+    <section class="hero">
+      <div class="hero-image"><img src={sticker.image} alt={sticker.title} /></div>
+      <div>
+        <p class="eyebrow">SLACK / TEAMS / DISCORD VERSION</p>
+        <h1>{sticker.title}</h1>
+        <p>LINEスタンプとして作ったこのシリーズを、Slack・Microsoft Teams・Discordなどでも使える正方形の透過PNGにしました。元画像は切らず、足りない部分だけ透明な余白を追加しています。</p>
+        <div class="badges"><span>Slack</span><span>Microsoft Teams</span><span>Discord</span><span>透過PNG</span></div>
+        <a class="line-cta" href={linePage}>この画像のLINEスタンプ版を見る →</a>
+      </div>
+    </section>
+
+    <aside class="guide">
+      <h2>画像の保存方法</h2>
+      <p><strong>PC：</strong>使いたい画像を右クリックして保存してください。<br /><strong>スマートフォン：</strong>画像を長押しして、端末の「写真に保存」「画像を保存」などを選択してください。端末やブラウザによって表示名は異なります。</p>
+    </aside>
+
+    <div class="section-head"><h2>アイコン一覧</h2><div class="count">{iconFiles.length} images</div></div>
+    {iconFiles.length > 0 ? (
+      <div class="grid">
+        {iconFiles.map((file, index) => (
+          <article class="icon-card">
+            <div class="icon-stage"><img src={`/images/chat-icons/${sticker.id}/${file}`} alt={`${sticker.title} ${index + 1}`} loading="lazy" /></div>
+            <div class="num">{String(index + 1).padStart(2,"0")}</div>
+          </article>
+        ))}
+      </div>
+    ) : <div class="empty">このシリーズの正方形アイコンを準備しています。自動更新後に画像が表示されます。</div>}
+
+    <section class="bottom-cta">
+      <h2>LINEではスタンプとして使えます</h2>
+      <p>同じシリーズのLINEスタンプ版も公開しています。作品情報や購入先はこちらから確認できます。</p>
+      <a href={linePage}>LINEスタンプ版を見る →</a>
+    </section>
+  </main>
+</body>
+</html>
