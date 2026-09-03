@@ -7,11 +7,18 @@ import Analytics from "../../components/Analytics.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import { absoluteUrl } from "../../lib/seo";
 
-const chatTitle = (title = "") => title
-  .replace(/\s*[|｜]\s*LINEスタンプ\s*[|｜]\s*LINE STORE.*$/i, "")
-  .replace(/\s*[|｜]\s*LINE STORE.*$/i, "")
-  .replace(/\s*[|｜]\s*LINEスタンプ.*$/i, "")
-  .trim();
+const chatTitle = (title = "") => {
+  const cleaned = String(title)
+    .replace(/LINE\s*STORE/gi, "")
+    .replace(/LINE\s*スタンプ/gi, "")
+    .replace(/\bLINE\b/gi, "")
+    .replace(/\s*([|｜\-–—:：])\s*([|｜\-–—:：])+\s*/g, " $1 ")
+    .replace(/\s*[|｜\-–—:：]\s*$/g, "")
+    .replace(/^\s*[|｜\-–—:：]\s*/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  return cleaned || "無料カスタム絵文字";
+};
 
 const available = stickers.filter((sticker) => {
   const dir = path.join(process.cwd(), "public", "images", "chat-icons", String(sticker.id));
