@@ -3,7 +3,8 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const DIST_DIR = fileURLToPath(new URL('../dist/', import.meta.url));
-const FAVICON_TAGS = `  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />\n  <link rel="shortcut icon" href="/favicon.ico" sizes="any" />`;
+// Cache-bust the icon URL so browsers stop reusing the old/default Astro favicon.
+const FAVICON_TAGS = `  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=green-m-20260903" />\n  <link rel="alternate icon" type="image/x-icon" href="/favicon.ico?v=green-m-20260903" />\n  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=green-m-20260903" />`;
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -25,9 +26,9 @@ for (const file of htmlFiles) {
   const original = await readFile(file, 'utf8');
   if (!/<head(?:\s[^>]*)?>/i.test(original)) continue;
 
-  // Remove any page-specific favicon declarations so every page uses one source of truth.
-  let html = original.replace(/\s*<link\b[^>]*\brel=["'][^"']*(?:icon|shortcut icon)[^"']*["'][^>]*>\s*/gi, '\n');
-
+  // Remove every existing icon declaration (including framework/page defaults)
+  // and then inject the stamp moke green-m favicon as the single source of truth.
+  let html = original.replace(/\s*<link\b[^>]*\brel=["'][^"']*icon[^"']*["'][^>]*>\s*/gi, '\n');
   html = html.replace(/<\/head>/i, `${FAVICON_TAGS}\n</head>`);
 
   if (html !== original) {
@@ -36,4 +37,4 @@ for (const file of htmlFiles) {
   }
 }
 
-console.log(`[favicon] unified favicon markup in ${updated}/${htmlFiles.length} HTML files`);
+console.log(`[favicon] forced green-m favicon in ${updated}/${htmlFiles.length} HTML files`);
