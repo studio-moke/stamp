@@ -11,13 +11,20 @@ export function getStaticPaths() {
   return stickers.map((sticker) => ({ params: { id: String(sticker.id) }, props: { sticker } }));
 }
 
+const chatTitle = (title = "") => title
+  .replace(/\s*[|｜]\s*LINEスタンプ\s*[|｜]\s*LINE STORE.*$/i, "")
+  .replace(/\s*[|｜]\s*LINE STORE.*$/i, "")
+  .replace(/\s*[|｜]\s*LINEスタンプ.*$/i, "")
+  .trim();
+
 const { sticker } = Astro.props;
+const displayTitle = chatTitle(sticker.title);
 const iconDir = path.join(process.cwd(), "public", "images", "chat-icons", String(sticker.id));
 const iconFiles = fs.existsSync(iconDir)
   ? fs.readdirSync(iconDir).filter((name) => /^\d{2}-\d+\.png$/.test(name)).sort((a,b) => a.localeCompare(b, "ja", { numeric:true }))
   : [];
-const pageTitle = `${sticker.title}｜Slack・Teams・Discord用 無料カスタム絵文字`;
-const description = `${sticker.title}のSlack・Microsoft Teams・Discord用無料カスタム絵文字・リアクションアイコン。正方形の透過PNGで、仕事のチャットやコミュニティに使いやすい素材を個別保存できます。`;
+const pageTitle = `${displayTitle}｜Slack・Microsoft Teams・Discord用 無料カスタム絵文字`;
+const description = `${displayTitle}のSlack・Microsoft Teams・Discord用無料カスタム絵文字・リアクションアイコン。正方形の透過PNGで、仕事のチャットやコミュニティに使いやすい素材を個別保存できます。`;
 const canonicalPath = `/chat-icons/${sticker.id}/`;
 const canonical = absoluteUrl(canonicalPath);
 const linePage = `/stickers/${sticker.id}/`;
@@ -38,13 +45,13 @@ const linePage = `/stickers/${sticker.id}/`;
 <body>
   <SiteHeader locale="ja" />
   <main class="wrap">
-    <nav class="crumb"><a href="/">TOP</a> / <a href="/chat-icons/">Slack・Teams・Discord用アイコン</a> / {sticker.title}</nav>
+    <nav class="crumb"><a href="/">TOP</a> / <a href="/chat-icons/">Slack・Teams・Discord用アイコン</a> / {displayTitle}</nav>
 
     <section class="hero">
-      <div class="hero-image"><img src={sticker.image} alt={`${sticker.title} Slack・Teams・Discord用カスタム絵文字`} /></div>
+      <div class="hero-image"><img src={sticker.image} alt={`${displayTitle} Slack・Microsoft Teams・Discord用カスタム絵文字`} /></div>
       <div>
         <p class="eyebrow">FREE CUSTOM EMOJI & REACTION ICONS</p>
-        <h1>{sticker.title}</h1>
+        <h1>{displayTitle}</h1>
         <p>Slack・Microsoft Teams・Discordなどのチャットで使える、正方形の透過PNGカスタム絵文字・リアクションアイコンです。仕事の返事、気づかい、コミュニティでのリアクションなど、用途に合わせて好きな画像を1枚ずつ保存して使えます。</p>
         <div class="badges"><span>Slack</span><span>Microsoft Teams</span><span>Discord</span><span>カスタム絵文字</span><span>透過PNG</span></div>
       </div>
@@ -55,12 +62,12 @@ const linePage = `/stickers/${sticker.id}/`;
       <p><strong>PC：</strong>使いたい画像を右クリックして保存してください。<br /><strong>スマートフォン：</strong>画像を長押しして、端末の「写真に保存」「画像を保存」などを選択してください。端末やブラウザによって表示名は異なります。</p>
     </aside>
 
-    <div class="section-head"><h2>無料カスタム絵文字・アイコン一覧</h2><div class="count">{iconFiles.length} images</div></div>
+    <div class="section-head"><h2>Slack・Teams・Discord用 無料カスタム絵文字</h2><div class="count">{iconFiles.length} images</div></div>
     {iconFiles.length > 0 ? (
       <div class="grid">
         {iconFiles.map((file, index) => (
           <article class="icon-card">
-            <div class="icon-stage"><img src={`/images/chat-icons/${sticker.id}/${file}`} alt={`${sticker.title} カスタム絵文字 ${index + 1}`} loading="lazy" /></div>
+            <div class="icon-stage"><img src={`/images/chat-icons/${sticker.id}/${file}`} alt={`${displayTitle} Slack・Teams・Discord カスタム絵文字 ${index + 1}`} loading="lazy" /></div>
             <div class="num">{String(index + 1).padStart(2,"0")}</div>
           </article>
         ))}
@@ -69,8 +76,8 @@ const linePage = `/stickers/${sticker.id}/`;
 
     <section class="bottom-cta">
       <h2>関連コンテンツ</h2>
-      <p>このシリーズにはLINEで使えるスタンプ版もあります。</p>
-      <a href={linePage}>LINE版を見る →</a>
+      <p>同じデザインをLINEでも使いたい方はこちらから確認できます。</p>
+      <a href={linePage}>関連するLINE版を見る →</a>
     </section>
   </main>
 </body>
