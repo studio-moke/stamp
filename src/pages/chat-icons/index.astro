@@ -11,8 +11,8 @@ const available = stickers.filter((sticker) => {
   const dir = path.join(process.cwd(), "public", "images", "chat-icons", String(sticker.id));
   return fs.existsSync(dir) && fs.readdirSync(dir).some((name) => name.endsWith(".png"));
 });
-const title = "Slack・Teams・Discordで使える無料アイコン｜stamp moke";
-const description = "stamp mokeのオリジナルLINEスタンプを、Slack・Microsoft Teams・Discordで使いやすい正方形PNGにして無料配布。画像を切らず、透明余白を追加したアイコンです。";
+const title = "Slack・Teams・Discord用 無料カスタム絵文字・アイコン｜stamp moke";
+const description = "Slack・Microsoft Teams・Discordで使える無料カスタム絵文字・リアクションアイコンを配布。正方形の透過PNGで、仕事のチャットやコミュニティ、チーム内コミュニケーションに使いやすい素材をシリーズ別に掲載しています。";
 const canonical = absoluteUrl("/chat-icons/");
 ---
 <!doctype html>
@@ -24,7 +24,7 @@ const canonical = absoluteUrl("/chat-icons/");
   <SeoHead title={title} description={description} canonical={canonical} locale="ja" path="/chat-icons/" />
   <Analytics />
   <style>
-    *{box-sizing:border-box} body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.wrap{width:min(1180px,92vw);margin:0 auto;padding:42px 0 80px}.crumb{font-size:13px;color:#666;margin:0 0 24px}.crumb a{color:inherit}.hero{background:#fff;border:1px solid #e3e0d9;border-radius:28px;padding:34px;box-shadow:0 14px 40px rgba(0,0,0,.05)}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.16em;color:#5c6470;margin:0 0 10px}.hero h1{font-size:clamp(28px,5vw,48px);line-height:1.15;margin:0}.hero p{font-size:16px;line-height:1.9;color:#555;max-width:760px;margin:18px 0 0}.service{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.service span{background:#171717;color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800}.section-title{font-size:24px;margin:42px 0 18px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #e3e0d9;border-radius:22px;overflow:hidden;transition:.18s ease}.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.08)}.thumb{aspect-ratio:1/1;background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;display:grid;place-items:center;padding:12%}.thumb img{width:100%;height:100%;object-fit:contain}.card-body{padding:18px}.card h2{font-size:17px;line-height:1.55;margin:0}.meta{font-size:12px;color:#777;margin-top:8px}.empty{background:#fff;border:1px solid #e3e0d9;border-radius:18px;padding:24px;color:#666}@media(max-width:800px){.wrap{padding-top:24px}.hero{padding:24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card-body{padding:14px}.card h2{font-size:14px}}@media(max-width:480px){.grid{grid-template-columns:1fr 1fr}.thumb{padding:9%}}
+    *{box-sizing:border-box} body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.wrap{width:min(1180px,92vw);margin:0 auto;padding:42px 0 80px}.crumb{font-size:13px;color:#666;margin:0 0 24px}.crumb a{color:inherit}.hero{background:#fff;border:1px solid #e3e0d9;border-radius:28px;padding:34px;box-shadow:0 14px 40px rgba(0,0,0,.05)}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.16em;color:#5c6470;margin:0 0 10px}.hero h1{font-size:clamp(28px,5vw,48px);line-height:1.15;margin:0}.hero p{font-size:16px;line-height:1.9;color:#555;max-width:820px;margin:18px 0 0}.service{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.service span{background:#171717;color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800}.section-title{font-size:24px;margin:42px 0 18px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #e3e0d9;border-radius:22px;overflow:hidden;transition:.18s ease}.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.08)}.thumb{aspect-ratio:1/1;background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;display:grid;place-items:center;padding:12%}.thumb img{width:100%;height:100%;object-fit:contain}.card-body{padding:18px}.card h2{font-size:17px;line-height:1.55;margin:0}.meta{font-size:12px;color:#777;margin-top:8px}.empty{background:#fff;border:1px solid #e3e0d9;border-radius:18px;padding:24px;color:#666}@media(max-width:800px){.wrap{padding-top:24px}.hero{padding:24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card-body{padding:14px}.card h2{font-size:14px}}@media(max-width:480px){.grid{grid-template-columns:1fr 1fr}.thumb{padding:9%}}
   </style>
 </head>
 <body>
@@ -32,19 +32,19 @@ const canonical = absoluteUrl("/chat-icons/");
   <main class="wrap">
     <nav class="crumb"><a href="/">TOP</a> / Slack・Teams・Discord用アイコン</nav>
     <section class="hero">
-      <p class="eyebrow">FREE CHAT ICONS</p>
-      <h1>LINEスタンプを<br />仕事やコミュニティでも。</h1>
-      <p>stamp mokeのオリジナル作品を、Slack・Microsoft Teams・Discordで使いやすい正方形PNGにしました。元の絵や文字は切らず、足りない部分だけ透明な余白を追加しています。</p>
-      <div class="service"><span>Slack</span><span>Microsoft Teams</span><span>Discord</span><span>透過PNG</span></div>
+      <p class="eyebrow">FREE CUSTOM EMOJI & REACTION ICONS</p>
+      <h1>Slack・Teams・Discordで使える<br />無料カスタム絵文字・アイコン</h1>
+      <p>仕事のチャット、チーム内コミュニケーション、オンラインコミュニティで使える正方形の透過PNG素材です。Slackのカスタム絵文字、Microsoft Teamsの絵文字・リアクション用途、Discordのカスタム絵文字などに使いやすいデザインをシリーズ別に配布しています。</p>
+      <div class="service"><span>Slack</span><span>Microsoft Teams</span><span>Discord</span><span>カスタム絵文字</span><span>透過PNG</span></div>
     </section>
 
-    <h2 class="section-title">配布中のアイコンシリーズ</h2>
+    <h2 class="section-title">無料カスタム絵文字・アイコン一覧</h2>
     {available.length > 0 ? (
       <div class="grid">
         {available.map((sticker) => (
           <a class="card" href={`/chat-icons/${sticker.id}/`}>
-            <div class="thumb"><img src={sticker.image} alt={sticker.title} loading="lazy" /></div>
-            <div class="card-body"><h2>{sticker.title}</h2><div class="meta">Slack・Teams・Discord版 →</div></div>
+            <div class="thumb"><img src={sticker.image} alt={`${sticker.title} Slack・Teams・Discord用カスタム絵文字`} loading="lazy" /></div>
+            <div class="card-body"><h2>{sticker.title}</h2><div class="meta">Slack・Teams・Discord用 無料アイコン →</div></div>
           </a>
         ))}
       </div>
