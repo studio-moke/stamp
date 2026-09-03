@@ -7,6 +7,12 @@ import Analytics from "../../components/Analytics.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import { absoluteUrl } from "../../lib/seo";
 
+const chatTitle = (title = "") => title
+  .replace(/\s*[|｜]\s*LINEスタンプ\s*[|｜]\s*LINE STORE.*$/i, "")
+  .replace(/\s*[|｜]\s*LINE STORE.*$/i, "")
+  .replace(/\s*[|｜]\s*LINEスタンプ.*$/i, "")
+  .trim();
+
 const available = stickers.filter((sticker) => {
   const dir = path.join(process.cwd(), "public", "images", "chat-icons", String(sticker.id));
   return fs.existsSync(dir) && fs.readdirSync(dir).some((name) => name.endsWith(".png"));
@@ -41,12 +47,15 @@ const canonical = absoluteUrl("/chat-icons/");
     <h2 class="section-title">無料カスタム絵文字・アイコン一覧</h2>
     {available.length > 0 ? (
       <div class="grid">
-        {available.map((sticker) => (
+        {available.map((sticker) => {
+          const displayTitle = chatTitle(sticker.title);
+          return (
           <a class="card" href={`/chat-icons/${sticker.id}/`}>
-            <div class="thumb"><img src={sticker.image} alt={`${sticker.title} Slack・Teams・Discord用カスタム絵文字`} loading="lazy" /></div>
-            <div class="card-body"><h2>{sticker.title}</h2><div class="meta">Slack・Teams・Discord用 無料アイコン →</div></div>
+            <div class="thumb"><img src={sticker.image} alt={`${displayTitle} Slack・Teams・Discord用カスタム絵文字`} loading="lazy" /></div>
+            <div class="card-body"><h2>{displayTitle}</h2><div class="meta">Slack・Microsoft Teams・Discord用 無料カスタム絵文字 →</div></div>
           </a>
-        ))}
+          );
+        })}
       </div>
     ) : <div class="empty">アイコン画像を準備しています。自動更新後に作品一覧が表示されます。</div>}
   </main>
