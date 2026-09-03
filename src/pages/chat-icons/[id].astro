@@ -11,11 +11,18 @@ export function getStaticPaths() {
   return stickers.map((sticker) => ({ params: { id: String(sticker.id) }, props: { sticker } }));
 }
 
-const chatTitle = (title = "") => title
-  .replace(/\s*[|｜]\s*LINEスタンプ\s*[|｜]\s*LINE STORE.*$/i, "")
-  .replace(/\s*[|｜]\s*LINE STORE.*$/i, "")
-  .replace(/\s*[|｜]\s*LINEスタンプ.*$/i, "")
-  .trim();
+const chatTitle = (title = "") => {
+  const cleaned = String(title)
+    .replace(/LINE\s*STORE/gi, "")
+    .replace(/LINE\s*スタンプ/gi, "")
+    .replace(/\bLINE\b/gi, "")
+    .replace(/\s*([|｜\-–—:：])\s*([|｜\-–—:：])+\s*/g, " $1 ")
+    .replace(/\s*[|｜\-–—:：]\s*$/g, "")
+    .replace(/^\s*[|｜\-–—:：]\s*/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  return cleaned || "無料カスタム絵文字";
+};
 
 const { sticker } = Astro.props;
 const displayTitle = chatTitle(sticker.title);
@@ -27,7 +34,7 @@ const pageTitle = `${displayTitle}｜Slack・Microsoft Teams・Discord用 無料
 const description = `${displayTitle}のSlack・Microsoft Teams・Discord用無料カスタム絵文字・リアクションアイコン。正方形の透過PNGで、仕事のチャットやコミュニティに使いやすい素材を個別保存できます。`;
 const canonicalPath = `/chat-icons/${sticker.id}/`;
 const canonical = absoluteUrl(canonicalPath);
-const linePage = `/stickers/${sticker.id}/`;
+const relatedPage = `/stickers/${sticker.id}/`;
 ---
 <!doctype html>
 <html lang="ja">
@@ -76,8 +83,8 @@ const linePage = `/stickers/${sticker.id}/`;
 
     <section class="bottom-cta">
       <h2>関連コンテンツ</h2>
-      <p>同じデザインをLINEでも使いたい方はこちらから確認できます。</p>
-      <a href={linePage}>関連するLINE版を見る →</a>
+      <p>同じデザインの別バージョンも確認できます。</p>
+      <a href={relatedPage}>関連する別バージョンを見る →</a>
     </section>
   </main>
 </body>
