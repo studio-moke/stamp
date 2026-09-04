@@ -3,7 +3,9 @@
   "functions": {
     "api/free.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/tools.js": { "regions": ["hnd1"], "maxDuration": 60 },
-    "api/insights.js": { "regions": ["hnd1"], "maxDuration": 60 }
+    "api/insights.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/news.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/feed.js": { "regions": ["hnd1"], "maxDuration": 60 }
   },
   "rewrites": [
     { "source": "/api/free-assets", "destination": "/api/free?route=assets" },
@@ -18,6 +20,7 @@
     { "source": "/api/site-search", "destination": "/api/tools?route=site-search" },
     { "source": "/api/analytics", "destination": "/api/insights?route=analytics" },
     { "source": "/api/sticker-seo", "destination": "/api/insights?route=sticker-seo" },
+    { "source": "/feed.xml", "destination": "/api/feed" },
     { "source": "/en/stickers/:id", "destination": "/stickers/:id" },
     { "source": "/zh-tw/stickers/:id", "destination": "/stickers/:id" },
     { "source": "/th/stickers/:id", "destination": "/stickers/:id" },
