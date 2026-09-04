@@ -5,8 +5,12 @@
     "api/tools.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/insights.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/news.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/note-drafts.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/feed.js": { "regions": ["hnd1"], "maxDuration": 60 }
   },
+  "crons": [
+    { "path": "/api/note-drafts?action=generate", "schedule": "15 22 * * *" }
+  ],
   "rewrites": [
     { "source": "/api/free-assets", "destination": "/api/free?route=assets" },
     { "source": "/api/free-list", "destination": "/api/free?route=list" },
