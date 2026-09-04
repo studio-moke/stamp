@@ -34,7 +34,8 @@ const canonical = absoluteUrl("/news/");
     const labelClass=t=>t==='sticker'?'smn-label-sticker':t==='free'?'smn-label-free':t==='suzuri'?'smn-label-suzuri':'smn-label-tool';
     const thumbClass=t=>t==='sticker'?'smn-thumb-sticker':t==='free'?'smn-thumb-free':t==='suzuri'?'smn-thumb-suzuri':'smn-thumb-tool';
     const thumbIcon=t=>t==='sticker'?'☺':t==='free'?'▧':t==='suzuri'?'m':t==='tool'?'⌘':'•';
-    const imageUrl=n=>n?.image||n?.thumbnail||n?.imageUrl||n?.ogImage||'';
+    const freeSlug=n=>{if(n?.type!=='free')return'';const id=String(n?.id||'');if(id.startsWith('free:'))return id.slice(5);const url=String(n?.url||'').split('?')[0].replace(/\/+$/,'');const m=url.match(/\/free\/([^/]+)$/);if(!m)return'';try{return decodeURIComponent(m[1])}catch{return m[1]}};
+    const imageUrl=n=>{const direct=n?.image||n?.thumbnail||n?.imageUrl||n?.ogImage||n?.previewUrl||n?.preview||'';if(direct)return direct;const slug=freeSlug(n);return slug?`/api/free?route=preview&slug=${encodeURIComponent(slug)}&variant=thumb`:''};
     const qs=new URLSearchParams(location.search);let all=[];
     async function load(){try{const r=await fetch('/api/news?limit=80&sync=0');const d=await r.json();all=d.items||[];const slug=qs.get('slug');if(slug)return showArticle(all.find(x=>x.slug===slug));renderFilters();render(all)}catch(e){listEl.innerHTML='<div class="smn-empty">お知らせを読み込めませんでした。</div>'}}
     function renderFilters(){const types=[['all','すべて'],['sticker','LINEスタンプ'],['suzuri','SUZURI'],['tool','無料ツール'],['free','フリー素材']];filtersEl.innerHTML=types.map(([v,l],i)=>`<button class="smn-filter${i===0?' smn-on':''}" data-type="${v}">${l}</button>`).join('');filtersEl.addEventListener('click',e=>{const b=e.target.closest('.smn-filter');if(!b)return;filtersEl.querySelectorAll('.smn-filter').forEach(x=>x.classList.remove('smn-on'));b.classList.add('smn-on');render(b.dataset.type==='all'?all:all.filter(x=>x.type===b.dataset.type))})}
