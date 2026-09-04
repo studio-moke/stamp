@@ -3,8 +3,8 @@ import ChatStampMakerPage from "../../components/ChatStampMakerPage.astro";
 import { LOCALES } from "../../lib/i18n";
 export function getStaticPaths(){return LOCALES.filter(locale=>locale!=="ja").map(locale=>({params:{locale},props:{locale}}));}
 const locale=Astro.props.locale;
-// ChatStampMakerPage currently has Traditional Chinese copy but no zh-cn copy.
-// Use it as a safe fallback so the Simplified Chinese route can build instead of crashing the whole site.
-const contentLocale=locale==="zh-cn"?"zh-tw":locale;
+// ChatStampMakerPage currently provides ja/en/zh-tw/th/id copy.
+// Keep every public locale buildable until dedicated zh-cn/ko copy is added.
+const contentLocale=locale==="zh-cn"?"zh-tw":locale==="ko"?"en":locale;
 ---
 <ChatStampMakerPage locale={contentLocale} />
