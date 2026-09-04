@@ -7,7 +7,7 @@ const FREE_INDEX_KEY = "free-assets/index.json";
 const MAX_ITEMS = 80;
 const site = "https://stamp-moke.jp";
 
-const clean = (value = "") => String(value).replace(/\s+/g, " ").trim();
+const clean = (value = "") => String(value ?? "").replace(/\s+/g, " ").trim();
 const slugify = (value = "") => clean(value).toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 90);
 const jstDate = (value) => {
   const d = value ? new Date(value) : new Date();
@@ -23,7 +23,7 @@ const stripLinkBlurb = (value = "") => clean(value)
 function normalizeRecord(record = {}) {
   const type = clean(record.type);
   let url = clean(record.url);
-  if (type === "free") url = url.replace(/\/+$/, "");
+  if (type === "free" || type === "free-day") url = url.replace(/\/+$/, "") || "/free";
   return {
     id: clean(record.id),
     slug: clean(record.slug),
@@ -41,6 +41,14 @@ function normalizeRecord(record = {}) {
   };
 }
 
+function getAuth(req) {
+  const auth = clean(req.headers?.authorization || "");
+  const bearer = auth.toLowerCase().startsWith("bearer ") ? auth.slice(7).trim() : "";
+  const adminKey = clean(req.headers?.["x-admin-key"] || req.query?.key || "");
+  const secret = clean(process.env.NEWS_ADMIN_KEY || process.env.NOTE_DRAFT_ADMIN_KEY || process.env.CRON_SECRET || "");
+  return { configured:Boolean(secret), ok:Boolean(secret && ((adminKey && adminKey === secret) || (bearer && bearer === secret))) };
+}
+
 function candidateFromSticker(item) {
   const sourceTitle = stripLineSuffix(item.title || "新作LINEスタンプ");
   return { id:`sticker:${item.id}`, type:"sticker", label:"LINEスタンプ", sourceTitle, sourceDescription:clean(item.description), url:`/stickers/${item.id}`, image:clean(item.image), date:"" };
@@ -50,9 +58,33 @@ function candidateFromSuzuri(item) {
   return { id:`suzuri:${item.id}`, type:"suzuri", label:"SUZURI", sourceTitle:clean(item.title || "新しいグッズ"), sourceDescription:clean(item.description), url:`/goods/${item.id}`, image:clean(item.image), date:jstDate(item.publishedAt) };
 }
 
-function candidateFromFree(item) {
-  const ja = item?.locales?.ja || {};
-  return { id:`free:${item.slug}`, type:"free", label:"フリー素材", sourceTitle:clean(ja.title || item.slug || "新しいフリー素材"), sourceDescription:clean(ja.description || ja.alt || ""), url:`/free/${encodeURIComponent(item.slug)}`, image:clean(item.previewUrl || item.image || item.thumbnail || ""), date:jstDate(item.publishedAt) };
+function dailyFreeCandidates(items) {
+  const groups = new Map();
+  for (const item of asArray(items).filter(x => x?.status === "published")) {
+    const date = jstDate(item.publishedAt);
+    const ja = item?.locales?.ja || {};
+    const row = {
+      title: clean(ja.title || item.slug || "フリー素材"),
+      description: clean(ja.description || ja.alt || ""),
+      image: clean(item.previewUrl || item.image || item.thumbnail || ""),
+    };
+    if (!groups.has(date)) groups.set(date, []);
+    groups.get(date).push(row);
+  }
+  return [...groups.entries()]
+    .sort((a,b) => b[0].localeCompare(a[0]))
+    .slice(0, 14)
+    .map(([date, rows]) => ({
+      id:`free-day:${date}`,
+      type:"free-day",
+      label:"フリー素材",
+      sourceTitle:`${date.replaceAll("-", "/")}のフリー素材 ${rows.length}点`,
+      sourceDescription:rows.slice(0, 12).map(x => x.title).join("、"),
+      url:"/free/",
+      image:rows.find(x => x.image)?.image || "",
+      date,
+      count:rows.length,
+    }));
 }
 
 async function discoverTools() {
@@ -77,42 +109,59 @@ async function discoverTools() {
   } catch { return []; }
 }
 
+function officialLogoCandidate() {
+  return {
+    id:"site:official-logo-2026-09-05",
+    type:"site",
+    label:"お知らせ",
+    sourceTitle:"stamp mokeの正式ロゴが決まりました",
+    sourceDescription:"大きなmを主役に、植物のツルにも細い小文字のsにも見える形を組み合わせた正式ロゴ。s + mでstamp mokeを表し、作ったものが少しずつ育ち、広がっていくイメージを込めています。",
+    url:"/",
+    image:"",
+    date:"2026-09-05",
+    fixedCopy:{
+      title:"stamp mokeの正式ロゴが決まりました",
+      lead:"これからのstamp mokeを表す、正式ロゴが決まりました。",
+      body:"ロゴの主役は、大きく見える小文字の「m」。そのそばに伸びるツルは、植物が巻き付いているようにも、細い小文字の「s」にも見える形にしました。s + mで「stamp moke」。遠くからはmが印象に残り、近くで見るとsが寄り添って育っている。作ったものが少しずつ育ち、広がっていく、stamp mokeのこれからを重ねたロゴです。",
+    },
+  };
+}
+
 async function candidates() {
   const free = await r2GetJson(FREE_INDEX_KEY, []).catch(() => []);
-  const freePublished = asArray(free).filter(x => x?.status === "published").sort((a,b) => String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 12).map(candidateFromFree);
   const tools = await discoverTools();
-  return [...asArray(stickers).slice(0,12).map(candidateFromSticker), ...asArray(suzuriDesigns).slice(0,12).map(candidateFromSuzuri), ...freePublished, ...tools];
+  return [
+    officialLogoCandidate(),
+    ...asArray(stickers).slice(0,12).map(candidateFromSticker),
+    ...asArray(suzuriDesigns).slice(0,12).map(candidateFromSuzuri),
+    ...dailyFreeCandidates(free),
+    ...tools,
+  ];
 }
 
 function fallbackCopy(c, initial = false) {
-  const title = c.type === "sticker" ? `「${c.sourceTitle}」${initial ? "を掲載しました" : "をリリースしました！"}` : c.type === "suzuri" ? `SUZURIに「${c.sourceTitle}」を追加しました！` : c.type === "tool" ? `無料ツール「${c.sourceTitle}」を追加しました！` : `フリー素材「${c.sourceTitle}」を追加しました！`;
-  if (c.type === "sticker") return {
-    title,
-    lead:"stamp mokeに新しいLINEスタンプが加わりました。",
-    body:`今回のお知らせは「${c.sourceTitle}」。普段のトークで使う場面を想像しながら、気軽に選べる新作として紹介します。スタンプの詳しい内容や収録デザインは作品ページでご覧いただけます。`,
-  };
-  if (c.type === "suzuri") return {
-    title,
-    lead:"stamp mokeのデザインを、グッズでも楽しめるようになりました。",
-    body:`「${c.sourceTitle}」をSUZURIのラインナップに追加しました。NEWSでは更新情報としてポイントだけを紹介しています。アイテムの種類や仕様など、詳しい内容は商品ページでチェックしてみてください。`,
-  };
-  if (c.type === "tool") return {
-    title,
-    lead:"日々のちょっとした作業を軽くする無料ツールを追加しました。",
-    body:`今回追加したのは「${c.sourceTitle}」。必要なときにすぐ使えることを意識して、stamp mokeの無料ツール集に加えています。機能や使い方はツールページでお試しください。`,
-  };
-  return {
-    title,
-    lead:"フリー素材コーナーに新しい一枚を追加しました。",
-    body:`今回追加したのは「${c.sourceTitle}」。NEWSでは素材そのものの説明を繰り返さず、新着情報として短くご紹介します。画像の雰囲気や利用条件、ダウンロードについては素材ページで確認できます。`,
-  };
+  if (c.fixedCopy) return c.fixedCopy;
+  if (c.type === "free-day") {
+    const count = Number(c.count || 0);
+    return {
+      title:`本日のフリー素材を${count || "複数"}点追加しました`,
+      lead:"今日追加したフリー素材を、ひとつのNEWSにまとめてお知らせします。",
+      body:`フリー素材コーナーに本日分の新しい素材を追加しました。追加したのは「${c.sourceDescription || c.sourceTitle}」。素材ごとにNEWSを分けず、その日の追加分はひとつの記事にまとめてお知らせしていきます。用途や利用条件、ダウンロードはフリー素材一覧から確認できます。`,
+    };
+  }
+  const title = c.type === "sticker" ? `「${c.sourceTitle}」${initial ? "を掲載しました" : "をリリースしました！"}` : c.type === "suzuri" ? `SUZURIに「${c.sourceTitle}」を追加しました！` : c.type === "tool" ? `無料ツール「${c.sourceTitle}」を追加しました！` : c.sourceTitle;
+  if (c.type === "sticker") return { title, lead:"stamp mokeに新しいLINEスタンプが加わりました。", body:`今回のお知らせは「${c.sourceTitle}」。普段のトークで使う場面を想像しながら、気軽に選べる新作として紹介します。スタンプの詳しい内容や収録デザインは作品ページでご覧いただけます。` };
+  if (c.type === "suzuri") return { title, lead:"stamp mokeのデザインを、グッズでも楽しめるようになりました。", body:`「${c.sourceTitle}」をSUZURIのラインナップに追加しました。NEWSでは更新情報としてポイントだけを紹介しています。アイテムの種類や仕様など、詳しい内容は商品ページでチェックしてみてください。` };
+  if (c.type === "tool") return { title, lead:"日々のちょっとした作業を軽くする無料ツールを追加しました。", body:`今回追加したのは「${c.sourceTitle}」。必要なときにすぐ使えることを意識して、stamp mokeの無料ツール集に加えています。機能や使い方はツールページでお試しください。` };
+  return { title, lead:"stamp mokeからのお知らせです。", body:c.sourceDescription || "サイトの更新情報をお知らせします。" };
 }
 
 function parseText(data) { return data?.output_text || data?.output?.flatMap(x => x.content || []).find(x => x.type === "output_text")?.text || ""; }
 
 async function aiCopy(c, initial = false) {
+  if (c.fixedCopy) return c.fixedCopy;
   if (!process.env.OPENAI_API_KEY) return fallbackCopy(c, initial);
-  const prompt = `stamp-moke.jpのNEWS記事を書いてください。これはリンク先ページの要約ではなく、サイト運営者が更新を紹介する独立した編集記事です。企業プレスリリースほど堅くせず、個人クリエイターが新作を紹介するような少しフランクな日本語にしてください。全体で180〜320文字程度。\n\n最重要ルール:\n- 「説明」欄は事実確認の参考資料にすぎません。文章・文節・語順をコピーしないでください。\n- リンク先ページと同じ文章、近い言い換え、冒頭文の流用を避け、NEWS独自の切り口で書いてください。\n- NEWSでは「何が追加されたか」「どんな場面で役立ちそうか」「今回の更新の見どころ」を編集者目線で短く紹介してください。\n- URL、パス文字列、「詳しくはこちら：〜」は本文に絶対に書かないでください。CTAボタンを別途表示します。\n- 入力にない事実、売上、人気、制作背景、機能を創作しないでください。\n- 「この度」「販売開始いたしました」など硬すぎる定型文は避けてください。\n- title / lead / body のJSONだけを返してください。\n\n種別: ${c.label}\nタイトル: ${c.sourceTitle}\n参考用の元ページ説明（転載禁止）: ${c.sourceDescription || "説明なし"}\nリンク先: ${c.url}\n初回掲載データか: ${initial ? "はい。リリース日を断定せず『掲載しました』程度にする" : "いいえ。新規検知として紹介してよい"}\n\nJSON形式: {"title":"","lead":"","body":""}`;
+  const prompt = `stamp-moke.jpのNEWS記事を書いてください。これはリンク先ページの要約ではなく、サイト運営者が更新を紹介する独立した編集記事です。企業プレスリリースほど堅くせず、個人クリエイターが新作を紹介するような少しフランクな日本語にしてください。全体で180〜320文字程度。\n\n最重要ルール:\n- 「説明」欄は事実確認の参考資料にすぎません。文章・文節・語順をコピーしないでください。\n- リンク先ページと同じ文章、近い言い換え、冒頭文の流用を避け、NEWS独自の切り口で書いてください。\n- NEWSでは「何が追加されたか」「どんな場面で役立ちそうか」「今回の更新の見どころ」を編集者目線で短く紹介してください。\n- URL、パス文字列、「詳しくはこちら：〜」は本文に絶対に書かないでください。CTAボタンを別途表示します。\n- 入力にない事実、売上、人気、制作背景、機能を創作しないでください。\n- 「この度」「販売開始いたしました」など硬すぎる定型文は避けてください。\n- フリー素材が複数ある場合は素材ごとに記事を分けず、その日の追加分を1本の記事として自然にまとめてください。\n- title / lead / body のJSONだけを返してください。\n\n種別: ${c.label}\nタイトル: ${c.sourceTitle}\n参考用の元ページ説明（転載禁止）: ${c.sourceDescription || "説明なし"}\nリンク先: ${c.url}\n初回掲載データか: ${initial ? "はい。リリース日を断定せず『掲載しました』程度にする" : "いいえ。新規検知として紹介してよい"}\n\nJSON形式: {"title":"","lead":"","body":""}`;
   try {
     const response = await fetch("https://api.openai.com/v1/responses", { method:"POST", headers:{ Authorization:`Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type":"application/json" }, body:JSON.stringify({ model:process.env.NEWS_AI_MODEL || process.env.STICKER_SEO_AI_MODEL || "gpt-5.6-luna", input:prompt }) });
     if (!response.ok) return fallbackCopy(c, initial);
@@ -122,10 +171,7 @@ async function aiCopy(c, initial = false) {
   } catch { return fallbackCopy(c, initial); }
 }
 
-function compactForCompare(value = "") {
-  return clean(value).replace(/[、。！？!?・\s]/g, "").toLowerCase();
-}
-
+function compactForCompare(value = "") { return clean(value).replace(/[、。！？!?・\s]/g, "").toLowerCase(); }
 function isTooCloseToSource(record = {}, candidate = {}) {
   const body = compactForCompare(record.body);
   const source = compactForCompare(candidate.sourceDescription || record.sourceDescription);
@@ -135,15 +181,49 @@ function isTooCloseToSource(record = {}, candidate = {}) {
   return sample.length >= 18 && body.includes(sample);
 }
 
+function collapseLegacyFree(records) {
+  const list = asArray(records).map(normalizeRecord);
+  const grouped = new Map();
+  const keep = [];
+  for (const item of list) {
+    if (item.type === "free" && item.date) {
+      if (!grouped.has(item.date)) grouped.set(item.date, []);
+      grouped.get(item.date).push(item);
+    } else keep.push(item);
+  }
+  for (const [date, rows] of grouped) {
+    const alreadyDaily = keep.some(x => x.id === `free-day:${date}`);
+    if (alreadyDaily) continue;
+    const titles = rows.map(x => x.sourceTitle || x.title).filter(Boolean);
+    const first = rows.sort((a,b) => String(b.generatedAt).localeCompare(String(a.generatedAt)))[0];
+    keep.push(normalizeRecord({
+      id:`free-day:${date}`,
+      slug:`${date}-free-daily`,
+      type:"free-day",
+      label:"フリー素材",
+      date,
+      title:`${date.replaceAll("-", "/")}のフリー素材を${rows.length}点追加しました`,
+      lead:"この日に追加したフリー素材を、ひとつのNEWSにまとめました。",
+      body:`フリー素材コーナーに${rows.length}点を追加しました。${titles.length ? `追加した素材は「${titles.join("」「")}」です。` : ""}今後、フリー素材の追加情報は1日1記事にまとめてお知らせします。`,
+      sourceTitle:`${date.replaceAll("-", "/")}のフリー素材 ${rows.length}点`,
+      sourceDescription:titles.join("、"),
+      url:"/free/",
+      image:first?.image || "",
+      generatedAt:first?.generatedAt || new Date().toISOString(),
+    }));
+  }
+  return keep;
+}
+
 async function syncNews(existing, { rewriteExisting = false } = {}) {
-  const list = asArray(existing).map(normalizeRecord);
+  const list = collapseLegacyFree(existing);
   const all = await candidates();
   const candidateMap = new Map(all.map(x => [x.id, x]));
   const known = new Set(list.map(x => x.id));
   const initial = list.length === 0;
   const missing = all.filter(x => !known.has(x.id));
   const created = [];
-  for (const c of missing.slice(0, initial ? 8 : 4)) {
+  for (const c of missing.slice(0, initial ? 8 : 6)) {
     const copy = await aiCopy(c, initial);
     const date = c.date || jstDate();
     created.push(normalizeRecord({ ...c, date, title:copy.title, lead:copy.lead, body:copy.body, slug:`${date}-${slugify(c.type)}-${slugify(c.sourceTitle || c.id)}`, generatedAt:new Date().toISOString() }));
@@ -154,23 +234,57 @@ async function syncNews(existing, { rewriteExisting = false } = {}) {
   for (const item of list) {
     const c = candidateMap.get(item.id);
     const shouldRewrite = rewriteExisting && c && rewritten < 12 && (isTooCloseToSource(item, c) || /詳しくはこちら|詳細はこちら/.test(item.body));
-    if (!shouldRewrite) {
-      refreshed.push(item);
-      continue;
-    }
+    if (!shouldRewrite) { refreshed.push(item); continue; }
     const copy = await aiCopy(c, false);
     rewritten += 1;
     refreshed.push(normalizeRecord({ ...item, ...c, title:copy.title, lead:copy.lead, body:copy.body, generatedAt:new Date().toISOString() }));
   }
 
   const next = [...created, ...refreshed].sort((a,b) => `${b.date}${b.generatedAt}`.localeCompare(`${a.date}${a.generatedAt}`)).slice(0, MAX_ITEMS);
-  if (created.length || rewritten) await r2PutJson(INDEX_KEY, next);
+  const changedByCollapse = next.length !== asArray(existing).length || asArray(existing).some(x => x?.type === "free");
+  if (created.length || rewritten || changedByCollapse) await r2PutJson(INDEX_KEY, next);
   return next;
 }
 
+async function createManualNews(body) {
+  const title = clean(body.title).slice(0, 120);
+  if (!title) throw new Error("タイトルを入力してください");
+  const date = clean(body.date) || jstDate();
+  const now = new Date().toISOString();
+  const item = normalizeRecord({
+    id:`manual:${Date.now()}`,
+    slug:`${date}-manual-${slugify(title) || Date.now()}`,
+    type:"manual",
+    label:clean(body.label || "お知らせ").slice(0, 30),
+    date,
+    title,
+    lead:clean(body.lead).slice(0, 180),
+    body:String(body.body || "").trim().slice(0, 4000),
+    sourceTitle:title,
+    sourceDescription:"",
+    url:clean(body.url || "/news/"),
+    image:clean(body.image),
+    generatedAt:now,
+  });
+  const existing = collapseLegacyFree(await r2GetJson(INDEX_KEY, []).catch(() => []));
+  const next = [item, ...existing].sort((a,b) => `${b.date}${b.generatedAt}`.localeCompare(`${a.date}${a.generatedAt}`)).slice(0, MAX_ITEMS);
+  await r2PutJson(INDEX_KEY, next);
+  return item;
+}
+
 export default async function handler(req, res) {
-  if (req.method !== "GET") return res.status(405).json({ error:"Method not allowed" });
   try {
+    if (req.method === "POST") {
+      const auth = getAuth(req);
+      if (!auth.configured) return res.status(503).json({ error:"NEWS_ADMIN_KEY / NOTE_DRAFT_ADMIN_KEY / CRON_SECRET のいずれかを設定してください" });
+      if (!auth.ok) return res.status(401).json({ error:"Unauthorized" });
+      const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
+      const item = await createManualNews(body);
+      res.setHeader("Cache-Control", "private, no-store");
+      return res.status(201).json({ ok:true, item });
+    }
+    if (req.method !== "GET") return res.status(405).json({ error:"Method not allowed" });
+
     let index = asArray(await r2GetJson(INDEX_KEY, [])).map(normalizeRecord);
     const shouldSync = String(req.query?.sync || "0") === "1";
     const rewriteExisting = String(req.query?.rewrite || "0") === "1";
