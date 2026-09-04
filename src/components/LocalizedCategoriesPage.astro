@@ -1,0 +1,32 @@
+---
+import stickers from "../data/stickers.json";
+import SiteHeader from "./SiteHeader.astro";
+import { CATEGORY_DEFINITIONS,getCategory } from "../lib/stickers";
+import { categoryLabels,localizedPath,normalizeLocale } from "../lib/i18n";
+import { localizedStickerTitle } from "../lib/sticker-content";
+const {locale:localeProp,categorySlug="",page=0}=Astro.props;
+const locale=normalizeLocale(localeProp);
+const prefix=`/${locale}`;
+const copy={
+ en:{index:"Categories",hero:"Browse LINE stickers by category",lead:"Explore stamp moke stickers organized by theme.",works:"stickers",back:"Back to sticker collection",prev:"Previous",next:"Next",published:"stickers available"},
+ "zh-tw":{index:"分類",hero:"依分類尋找 LINE 貼圖",lead:"依主題整理 stamp moke 的貼圖，快速找到喜歡的作品。",works:"組貼圖",back:"返回貼圖列表",prev:"上一頁",next:"下一頁",published:"組作品"},
+ "zh-cn":{index:"分类",hero:"按分类寻找 LINE 贴图",lead:"按主题整理 stamp moke 贴图，快速找到喜欢的作品。",works:"组贴图",back:"返回贴图列表",prev:"上一页",next:"下一页",published:"组作品"},
+ ko:{index:"카테고리",hero:"카테고리로 LINE 스티커 찾기",lead:"stamp moke 스티커를 테마별로 정리했습니다.",works:"개 스티커",back:"스티커 목록으로",prev:"이전",next:"다음",published:"개 작품"},
+ th:{index:"หมวดหมู่",hero:"ค้นหาสติกเกอร์ LINE ตามหมวดหมู่",lead:"สำรวจสติกเกอร์ stamp moke ที่จัดตามธีม",works:"ชุด",back:"กลับไปรายการสติกเกอร์",prev:"ก่อนหน้า",next:"ถัดไป",published:"ชุด"},
+ id:{index:"Kategori",hero:"Cari stiker LINE berdasarkan kategori",lead:"Jelajahi stiker stamp moke yang dikelompokkan berdasarkan tema.",works:"stiker",back:"Kembali ke koleksi stiker",prev:"Sebelumnya",next:"Berikutnya",published:"stiker tersedia"}
+}[locale]||null;
+if(!copy) throw new Error(`Unsupported category locale: ${locale}`);
+const counts=new Map(CATEGORY_DEFINITIONS.map(c=>[c.name,0]));for(const s of stickers){const c=getCategory(s);counts.set(c,(counts.get(c)||0)+1)}
+const category=CATEGORY_DEFINITIONS.find(c=>c.slug===categorySlug);
+const pageSize=24;
+const items=category?stickers.filter(s=>getCategory(s)===category.name):[];
+const totalPages=Math.max(1,Math.ceil(items.length/pageSize));
+const current=Math.max(1,Number(page)||1);
+const visible=items.slice((current-1)*pageSize,current*pageSize);
+const catName=category?(categoryLabels?.[locale]?.[category.name]||category.name):"";
+const isIndex=!category;
+const title=isIndex?copy.hero:`${catName} LINE Stickers`;
+const desc=isIndex?copy.lead:`${items.length} ${copy.published}`;
+const canonical=isIndex?`https://stamp-moke.jp${prefix}/categories/`:`https://stamp-moke.jp${prefix}/categories/${category.slug}/${current}`;
+---
+<!doctype html><html lang={locale}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title} | stamp moke</title><meta name="description" content={desc}/><link rel="canonical" href={canonical}/><link rel="icon" href="/favicon.svg?v=20260902" type="image/svg+xml"/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}a{color:inherit}.main{max-width:1180px;margin:auto;padding:48px 5vw 100px}.crumb{font-size:12px;color:#777;margin-bottom:30px}.head{margin-bottom:34px}.head h1{font-size:clamp(36px,5vw,62px);line-height:1.08;margin:0 0 15px}.head p{color:#666;line-height:1.8}.catgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.cat{display:block;text-decoration:none;background:#fff;border:1px solid #e2e0da;border-radius:18px;padding:25px}.cat h2{font-size:24px;margin:8px 0}.cat small{color:#777}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.card{display:block;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden;text-decoration:none}.media{aspect-ratio:1;background:#7696c4;display:flex;align-items:center;justify-content:center}.media img{width:100%;height:100%;object-fit:contain;padding:18px}.card h2{margin:0;padding:15px;font-size:14px;line-height:1.5}.pager{display:flex;justify-content:center;gap:18px;margin-top:45px}.pager a{padding:10px 15px;border:1px solid #d9d8d4;border-radius:999px;background:#fff;text-decoration:none}@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:640px){.main{padding:30px 18px 70px}.grid{grid-template-columns:repeat(2,1fr);gap:11px}.media img{padding:10px}}</style></head><body><SiteHeader locale={locale}/><main class="main"><nav class="crumb"><a href={prefix+"/"}>stamp moke</a> / {isIndex?copy.index:<><a href={prefix+"/categories/"}>{copy.index}</a> / {catName}</>}</nav>{isIndex?(<><section class="head"><h1>{copy.hero}</h1><p>{copy.lead}</p></section><section class="catgrid">{CATEGORY_DEFINITIONS.map(c=><a class="cat" href={`${prefix}/categories/${c.slug}/1`}><small>CATEGORY</small><h2>{categoryLabels?.[locale]?.[c.name]||c.name}</h2><small>{counts.get(c.name)||0} {copy.works} →</small></a>)}</section></>):(<><section class="head"><h1>{catName}</h1><p>{items.length} {copy.published}</p></section><section class="grid">{visible.map(s=><a class="card" href={localizedPath(locale,`/stickers/${s.id}`)}><div class="media"><img src={s.image} alt={localizedStickerTitle(s,locale)} loading="lazy"/></div><h2>{localizedStickerTitle(s,locale)}</h2></a>)}</section><nav class="pager">{current>1&&<a href={`${prefix}/categories/${category.slug}/${current-1}`}>{copy.prev}</a>}<span>{current} / {totalPages}</span>{current<totalPages&&<a href={`${prefix}/categories/${category.slug}/${current+1}`}>{copy.next}</a>}</nav></>)}</main></body></html>
