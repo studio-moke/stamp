@@ -10,13 +10,13 @@ const title = 'note記事候補 | stamp moke 管理';
   <title>{title}</title>
   <style>
     :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f5f4ef}
-    *{box-sizing:border-box}body{margin:0}.wrap{width:min(1080px,calc(100% - 28px));margin:36px auto 64px}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:22px}.kicker{font-size:11px;font-weight:900;letter-spacing:.16em;color:#777}.head h1{margin:5px 0 0;font-size:32px;letter-spacing:-.04em}.lead{margin:8px 0 0;color:#666;font-size:14px}.panel,.card{background:#fff;border:1px solid #deddd8;border-radius:20px;box-shadow:0 10px 30px rgba(30,30,24,.05)}.panel{padding:18px;margin-bottom:18px}.auth{display:grid;grid-template-columns:1fr auto auto;gap:10px}.auth input{width:100%;padding:14px 16px;border:1px solid #d8d6cf;border-radius:12px;font-size:16px}.btn{appearance:none;border:0;border-radius:12px;background:#171717;color:#fff;padding:13px 16px;font-weight:900;cursor:pointer}.btn.sub{background:#eeece6;color:#171717}.status{margin-top:10px;color:#666;font-size:12px}.list{display:grid;gap:16px}.card{padding:20px}.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#f0efe9;font-size:11px;font-weight:900}.pill.draft{background:#e6f5e9}.pill.skipped{background:#f3eee2}.pill.published{background:#e9eef8}.score{font-size:12px;color:#666}.card h2{margin:0 0 10px;font-size:22px;line-height:1.35}.reason{margin:0 0 14px;color:#666;font-size:13px}.body{white-space:pre-wrap;line-height:1.9;font-size:14px;padding:16px;border-radius:14px;background:#faf9f6}.tags{margin-top:12px;font-size:12px;color:#666}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.empty{padding:26px;text-align:center;color:#777}.source{margin-top:14px;padding-top:14px;border-top:1px solid #eceae4;font-size:12px;color:#777}.source a{color:#171717}.small{font-size:12px;color:#777}@media(max-width:700px){.wrap{width:min(100% - 18px,1080px);margin-top:20px}.head{display:block}.auth{grid-template-columns:1fr}.head h1{font-size:27px}.card{padding:16px}.body{font-size:13px}}
+    *{box-sizing:border-box}body{margin:0}.wrap{width:min(1080px,calc(100% - 28px));margin:36px auto 64px}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:22px}.kicker{font-size:11px;font-weight:900;letter-spacing:.16em;color:#777}.head h1{margin:5px 0 0;font-size:32px;letter-spacing:-.04em}.lead{margin:8px 0 0;color:#666;font-size:14px}.panel,.card{background:#fff;border:1px solid #deddd8;border-radius:20px;box-shadow:0 10px 30px rgba(30,30,24,.05)}.panel{padding:18px;margin-bottom:18px}.auth{display:grid;grid-template-columns:1fr auto auto auto;gap:10px}.auth input{width:100%;padding:14px 16px;border:1px solid #d8d6cf;border-radius:12px;font-size:16px}.btn{appearance:none;border:0;border-radius:12px;background:#171717;color:#fff;padding:13px 16px;font-weight:900;cursor:pointer}.btn.sub{background:#eeece6;color:#171717}.status{margin-top:10px;color:#666;font-size:12px}.list{display:grid;gap:16px}.card{padding:20px}.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#f0efe9;font-size:11px;font-weight:900}.pill.draft{background:#e6f5e9}.pill.skipped{background:#f3eee2}.pill.published{background:#e9eef8}.score{font-size:12px;color:#666}.card h2{margin:0 0 10px;font-size:22px;line-height:1.35}.reason{margin:0 0 14px;color:#666;font-size:13px}.body{white-space:pre-wrap;line-height:1.9;font-size:14px;padding:16px;border-radius:14px;background:#faf9f6}.tags{margin-top:12px;font-size:12px;color:#666}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.empty{padding:26px;text-align:center;color:#777}.source{margin-top:14px;padding-top:14px;border-top:1px solid #eceae4;font-size:12px;color:#777}.source a{color:#171717}.small{font-size:12px;color:#777}@media(max-width:700px){.wrap{width:min(100% - 18px,1080px);margin-top:20px}.head{display:block}.auth{grid-template-columns:1fr}.head h1{font-size:27px}.card{padding:16px}.body{font-size:13px}}
   </style>
 </head>
 <body>
   <main class="wrap">
     <div class="head">
-      <div><div class="kicker">STAMP MOKE / NOTE EDITOR</div><h1>note記事候補</h1><p class="lead">毎朝AIが更新履歴を見て、書く価値がある日だけ下書きを作ります。公開は自動では行いません。</p></div>
+      <div><div class="kicker">STAMP MOKE / NOTE EDITOR</div><h1>note記事候補</h1><p class="lead">毎朝AIが新スタンプ・無料ツール・フリー素材・SUZURI・サイト改善を見て、書く価値がある日だけ下書きを作ります。公開は自動では行いません。</p></div>
       <a href="/admin/analytics" class="small">アクセス解析へ →</a>
     </div>
     <section class="panel">
@@ -24,6 +24,7 @@ const title = 'note記事候補 | stamp moke 管理';
         <input id="key" type="password" autocomplete="current-password" placeholder="管理キーを入力" />
         <button class="btn" id="load">候補を読み込む</button>
         <button class="btn sub" id="generate">今日の候補を生成</button>
+        <button class="btn sub" id="regenerate">今日を再判定</button>
       </div>
       <div class="status" id="status">管理キーはこのブラウザ内だけに保存されます。</div>
     </section>
@@ -32,7 +33,7 @@ const title = 'note記事候補 | stamp moke 管理';
   <script>
     const keyEl=document.getElementById('key');const listEl=document.getElementById('list');const statusEl=document.getElementById('status');
     keyEl.value=localStorage.getItem('sm-note-admin-key')||'';
-    const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
     const key=()=>keyEl.value.trim();
     const headers=()=>({'x-admin-key':key(),'content-type':'application/json'});
     async function api(url,opts={}){if(!key())throw new Error('管理キーを入力してください');localStorage.setItem('sm-note-admin-key',key());const r=await fetch(url,{...opts,headers:{...headers(),...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||`API error ${r.status}`);return d}
@@ -42,8 +43,10 @@ const title = 'note記事候補 | stamp moke 管理';
       listEl.querySelectorAll('[data-status]').forEach(b=>b.addEventListener('click',async()=>{try{await api('/api/note-drafts',{method:'POST',body:JSON.stringify({action:'status',id:b.closest('.card').dataset.id,status:b.dataset.status})});await load()}catch(e){statusEl.textContent=e.message}}));
     }
     async function load(){statusEl.textContent='読み込み中…';try{const d=await api('/api/note-drafts?limit=30');render(d.items||[]);statusEl.textContent='最新の候補を表示しています。'}catch(e){statusEl.textContent=e.message}}
+    async function generate(force=false){statusEl.textContent=force?'今日の候補を再判定しています…':'今日の候補を生成しています…';try{const d=await api('/api/note-drafts',{method:'POST',body:JSON.stringify({action:'generate',force})});statusEl.textContent=d.reason==='already-generated-today'?'今日はすでに判定済みです。新しい更新が入れば自動で再判定できます。':force?'今日の再判定が完了しました。':'今日の判定が完了しました。';await load()}catch(e){statusEl.textContent=e.message}}
     document.getElementById('load').addEventListener('click',load);
-    document.getElementById('generate').addEventListener('click',async()=>{statusEl.textContent='今日の候補を生成しています…';try{const d=await api('/api/note-drafts',{method:'POST',body:JSON.stringify({action:'generate'})});statusEl.textContent=d.reason==='already-generated-today'?'今日はすでに判定済みです。':'今日の判定が完了しました。';await load()}catch(e){statusEl.textContent=e.message}});
+    document.getElementById('generate').addEventListener('click',()=>generate(false));
+    document.getElementById('regenerate').addEventListener('click',()=>generate(true));
   </script>
 </body>
 </html>
