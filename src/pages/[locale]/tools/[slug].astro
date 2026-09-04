@@ -1,0 +1,8 @@
+---
+import LocalizedBusinessToolPage from "../../../components/LocalizedBusinessToolPage.astro";
+import { LOCALES } from "../../../lib/i18n";
+import { BUSINESS_TOOL_SLUGS } from "../../../lib/business-tools-i18n";
+export function getStaticPaths(){return LOCALES.filter(locale=>locale!=="ja").flatMap(locale=>BUSINESS_TOOL_SLUGS.map(slug=>({params:{locale,slug},props:{locale,slug}})));}
+const { locale,slug }=Astro.props;
+---
+<LocalizedBusinessToolPage locale={locale} slug={slug} />
