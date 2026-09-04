@@ -70,7 +70,7 @@ function candidateFromFree(item) {
     sourceTitle: clean(ja.title || item.slug || "新しいフリー素材"),
     sourceDescription: clean(ja.description || ja.alt || ""),
     url: `/free/${encodeURIComponent(item.slug)}/`,
-    image: clean(item.previewUrl || item.image || item.thumbnail || ""),
+    image: clean(item.previewUrl || item.image || item.thumbnail || item.thumbUrl || ""),
     date: jstDate(item.publishedAt),
   };
 }
@@ -110,11 +110,11 @@ async function discoverTools() {
 
 async function candidates() {
   const free = await r2GetJson(FREE_INDEX_KEY, []).catch(() => []);
-  const freePublished = asArray(free).filter(x => x?.status === "published").sort((a,b) => String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 12).map(candidateFromFree);
+  const freePublished = asArray(free).filter(x => x?.status === "published").sort((a,b) => String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 40).map(candidateFromFree);
   const tools = await discoverTools();
   return [
-    ...asArray(stickers).slice(0, 12).map(candidateFromSticker),
-    ...asArray(suzuriDesigns).slice(0, 12).map(candidateFromSuzuri),
+    ...asArray(stickers).slice(0, 20).map(candidateFromSticker),
+    ...asArray(suzuriDesigns).slice(0, 20).map(candidateFromSuzuri),
     ...freePublished,
     ...tools,
   ];
@@ -165,7 +165,7 @@ async function syncNews(existing) {
   const all = await candidates();
   const initial = list.length === 0;
   const missing = all.filter(x => !known.has(x.id));
-  const limit = initial ? 8 : 4;
+  const limit = initial ? 8 : 8;
   const selected = missing.slice(0, limit);
   if (!selected.length) return list;
   const created = [];
@@ -185,6 +185,11 @@ async function syncNews(existing) {
   const next = [...created, ...list].sort((a,b) => `${b.date}${b.generatedAt}`.localeCompare(`${a.date}${a.generatedAt}`)).slice(0, MAX_ITEMS);
   await r2PutJson(INDEX_KEY, next);
   return next;
+}
+
+export async function syncNewsNow() {
+  const existing = await r2GetJson(INDEX_KEY, []);
+  return syncNews(existing);
 }
 
 export default async function handler(req, res) {
