@@ -13,3 +13,12 @@ for(const rel of homes){
     await fs.writeFile(file,html);
   }catch{}
 }
+
+// NEWS詳細: 保存済み本文の古い「詳しくはこちら：/free/...」行を表示時に除去し、
+// フリー素材の記事ではリンク先素材のプレビュー画像を本文サムネイルとして表示する。
+try{
+  const file=path.join(dist,"news/index.html");
+  let html=await fs.readFile(file,"utf8");
+  if(!html.includes('/news-detail-enhance.js'))html=html.replace('</body>','<script src="/news-detail-enhance.js" defer></script></body>');
+  await fs.writeFile(file,html);
+}catch{}
