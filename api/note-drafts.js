@@ -1,4 +1,4 @@
-import noteDrafts from "../server/api/note-drafts.js";
+import noteDrafts from "../server/api/note-drafts-v2.js";
 
 export default async function handler(req, res) {
   // Admin fallback: reuse the already-established analytics admin token only
