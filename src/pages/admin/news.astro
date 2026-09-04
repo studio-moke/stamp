@@ -1,0 +1,50 @@
+---
+const title = 'NEWS投稿 | stamp moke 管理';
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>{title}</title>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f5f4ef}
+    *{box-sizing:border-box}body{margin:0}.wrap{width:min(980px,calc(100% - 28px));margin:36px auto 64px}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:22px}.kicker{font-size:11px;font-weight:900;letter-spacing:.16em;color:#777}.head h1{margin:5px 0 0;font-size:32px;letter-spacing:-.04em}.lead{margin:8px 0 0;color:#666;font-size:14px}.nav{display:flex;gap:12px;flex-wrap:wrap;font-size:12px}.nav a{color:#171717}.panel,.card{background:#fff;border:1px solid #deddd8;border-radius:20px;box-shadow:0 10px 30px rgba(30,30,24,.05)}.panel{padding:20px;margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:900}.field input,.field textarea,.field select{width:100%;padding:12px 14px;border:1px solid #d8d6cf;border-radius:12px;font:inherit;background:#fff}.field textarea{min-height:110px;resize:vertical}.field textarea.body{min-height:220px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{appearance:none;border:0;border-radius:12px;background:#171717;color:#fff;padding:13px 16px;font-weight:900;cursor:pointer}.btn.sub{background:#eeece6;color:#171717}.status{margin-top:10px;color:#666;font-size:12px;min-height:1.5em}.list{display:grid;gap:12px}.card{padding:16px}.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#777;font-size:11px}.pill{display:inline-flex;padding:4px 8px;border-radius:999px;background:#f0efe9;font-weight:900}.card h2{font-size:17px;margin:8px 0 5px}.card p{font-size:12px;color:#666;margin:0;line-height:1.6}@media(max-width:700px){.wrap{width:min(100% - 18px,980px);margin-top:20px}.head{display:block}.nav{margin-top:12px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.head h1{font-size:27px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="head">
+      <div><div class="kicker">STAMP MOKE / NEWS EDITOR</div><h1>NEWS投稿</h1><p class="lead">自動生成されないお知らせを、ここから手動で追加できます。</p></div>
+      <nav class="nav"><a href="/admin/analytics">アクセス解析</a><a href="/admin/note">note記事候補</a><a href="/news/" target="_blank" rel="noopener">公開NEWS</a></nav>
+    </div>
+
+    <section class="panel">
+      <div class="grid">
+        <div class="field full"><label for="key">管理キー</label><input id="key" type="password" autocomplete="current-password" placeholder="NEWS_ADMIN_KEY または note管理キー" /></div>
+        <div class="field"><label for="date">日付</label><input id="date" type="date" /></div>
+        <div class="field"><label for="label">カテゴリ</label><input id="label" value="お知らせ" maxlength="30" /></div>
+        <div class="field full"><label for="titleInput">タイトル</label><input id="titleInput" maxlength="120" placeholder="例：stamp mokeの正式ロゴが決まりました" /></div>
+        <div class="field full"><label for="lead">導入文</label><textarea id="lead" maxlength="180" placeholder="一覧の先に表示する短い導入文"></textarea></div>
+        <div class="field full"><label for="body">本文</label><textarea id="body" class="body" maxlength="4000" placeholder="NEWS本文"></textarea></div>
+        <div class="field"><label for="url">リンク先</label><input id="url" value="/news/" placeholder="/ または https://..." /></div>
+        <div class="field"><label for="image">画像URL（任意）</label><input id="image" placeholder="/images/... または https://..." /></div>
+      </div>
+      <div class="actions"><button class="btn" id="publish">NEWSを追加</button><button class="btn sub" id="clear">入力をクリア</button><button class="btn sub" id="reload">最新NEWSを再読込</button></div>
+      <div class="status" id="status">管理キーはこのブラウザ内だけに保存されます。</div>
+    </section>
+
+    <section class="list" id="list"><div class="card"><p>最新NEWSを読み込んでいます…</p></div></section>
+  </main>
+  <script>
+    const $=id=>document.getElementById(id);const keyEl=$('key'),statusEl=$('status'),listEl=$('list');
+    keyEl.value=localStorage.getItem('sm-news-admin-key')||localStorage.getItem('sm-note-admin-key')||'';
+    $('date').value=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    async function load(){try{const r=await fetch('/api/news?limit=12&sync=0',{cache:'no-store'});const d=await r.json();const items=d.items||[];listEl.innerHTML=items.length?items.map(n=>`<article class="card"><div class="meta"><span>${esc((n.date||'').replaceAll('-','/'))}</span><span class="pill">${esc(n.label||'NEWS')}</span></div><h2>${esc(n.title)}</h2><p>${esc(n.lead||n.body||'')}</p></article>`).join(''):'<div class="card"><p>まだNEWSはありません。</p></div>'}catch(e){listEl.innerHTML=`<div class="card"><p>${esc(e.message)}</p></div>`}}
+    async function publish(){const key=keyEl.value.trim();if(!key){statusEl.textContent='管理キーを入力してください。';return}const payload={date:$('date').value,label:$('label').value,title:$('titleInput').value,lead:$('lead').value,body:$('body').value,url:$('url').value,image:$('image').value};if(!payload.title.trim()){statusEl.textContent='タイトルを入力してください。';return}statusEl.textContent='追加しています…';localStorage.setItem('sm-news-admin-key',key);try{const r=await fetch('/api/news',{method:'POST',headers:{'content-type':'application/json','x-admin-key':key},body:JSON.stringify(payload)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||`API error ${r.status}`);statusEl.textContent='NEWSを追加しました。';$('titleInput').value='';$('lead').value='';$('body').value='';$('image').value='';await load()}catch(e){statusEl.textContent=e.message}}
+    $('publish').addEventListener('click',publish);$('reload').addEventListener('click',load);$('clear').addEventListener('click',()=>{$('titleInput').value='';$('lead').value='';$('body').value='';$('image').value='';statusEl.textContent='入力をクリアしました。'});load();
+  </script>
+</body>
+</html>
