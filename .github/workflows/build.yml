@@ -18,7 +18,8 @@ jobs:
           node-version: 24
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        timeout-minutes: 3
+        run: npm ci --no-audit --no-fund --prefer-offline
       - name: Check sticker discovery scripts
         run: |
           node --check server/api/line-author.js
