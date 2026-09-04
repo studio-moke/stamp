@@ -1,0 +1,8 @@
+---
+import LocalizedChatIconsPage from "../../../components/LocalizedChatIconsPage.astro";
+import stickers from "../../../data/stickers.json";
+import { LOCALES } from "../../../lib/i18n";
+export function getStaticPaths(){return LOCALES.filter(locale=>locale!=="ja").flatMap(locale=>stickers.map(sticker=>({params:{locale,id:String(sticker.id)},props:{locale,id:String(sticker.id)}})));}
+const {locale,id}=Astro.props;
+---
+<LocalizedChatIconsPage locale={locale} id={id} />
