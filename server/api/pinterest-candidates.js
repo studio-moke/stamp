@@ -46,8 +46,9 @@ function candidateFor(asset, state = {}) {
 }
 
 export default async function handler(req, res) {
-  res.setHeader("Cache-Control", "private, no-store");
-  if (!isAdmin(req)) return json(res, 401, { error: "管理トークンが一致しません。" });
+  if (req.method === "GET") res.setHeader("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
+  else res.setHeader("Cache-Control", "private, no-store");
+  if (req.method !== "GET" && !isAdmin(req)) return json(res, 401, { error: "管理トークンが一致しません。" });
   try {
     if (req.method === "GET") {
       const index = await r2GetJson(INDEX_KEY, []);
