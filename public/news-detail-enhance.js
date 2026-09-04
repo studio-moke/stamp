@@ -1,13 +1,13 @@
 (()=>{
   const cleanBody=body=>{
     if(!body)return;
-    const cleaned=(body.textContent||'')
-      .split(/\r?\n/)
-      .filter(line=>!/^\s*詳しくはこちら\s*[：:]\s*\/free\//.test(line))
-      .join('\n')
+    const before=body.textContent||'';
+    const cleaned=before
+      .replace(/\s*詳しくはこちら\s*[：:]\s*(?:https?:\/\/\S+|\/\S+)\s*/giu,' ')
+      .replace(/[ \t]{2,}/g,' ')
       .replace(/\n{3,}/g,'\n\n')
       .trim();
-    if(body.textContent!==cleaned)body.textContent=cleaned;
+    if(before!==cleaned)body.textContent=cleaned;
   };
 
   const enhance=()=>{
@@ -38,6 +38,6 @@
   const style=document.createElement('style');
   style.textContent='.smn-detail-thumb{margin:26px 0 24px}.smn-detail-thumb img{display:block;width:100%;max-height:520px;object-fit:contain;background:#f5f6f5;border:1px solid #e1e7e3;border-radius:18px}';
   document.head.appendChild(style);
-  new MutationObserver(enhance).observe(document.documentElement,{subtree:true,childList:true});
+  new MutationObserver(enhance).observe(document.documentElement,{subtree:true,childList:true,characterData:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
 })();
