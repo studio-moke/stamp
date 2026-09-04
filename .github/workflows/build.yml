@@ -26,5 +26,15 @@ jobs:
           node --check scripts/discover-new-stickers-by-id.mjs
           node --check scripts/fetch-stickers.mjs
           node --check scripts/discover-new-stickers.mjs
-      - name: Build Astro site
-        run: npm run build
+      - name: Fix tool routes
+        run: node scripts/fix-tool-routes.mjs
+      - name: Prepare incremental build
+        run: node scripts/prepare-incremental-build.mjs
+      - name: Astro build
+        run: npx astro build
+      - name: Inject home news
+        run: node scripts/inject-home-news.mjs
+      - name: Inject SEO content
+        run: node scripts/inject-seo-content.mjs
+      - name: Ensure global favicon
+        run: node scripts/ensure-global-favicon.mjs
