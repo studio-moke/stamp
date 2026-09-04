@@ -17,10 +17,13 @@ const stripLineSuffix = (title = "") => clean(title).replace(/\s*-\s*LINE\s*ス�
 const asArray = (v) => Array.isArray(v) ? v : [];
 
 function normalizeRecord(record = {}) {
+  const type = clean(record.type);
+  let url = clean(record.url);
+  if (type === "free") url = url.replace(/\/+$/, "");
   return {
     id: clean(record.id),
     slug: clean(record.slug),
-    type: clean(record.type),
+    type,
     label: clean(record.label),
     date: clean(record.date),
     title: clean(record.title),
@@ -28,7 +31,7 @@ function normalizeRecord(record = {}) {
     body: clean(record.body),
     sourceTitle: clean(record.sourceTitle),
     sourceDescription: clean(record.sourceDescription),
-    url: clean(record.url),
+    url,
     image: clean(record.image),
     generatedAt: clean(record.generatedAt || new Date().toISOString()),
   };
@@ -45,7 +48,7 @@ function candidateFromSuzuri(item) {
 
 function candidateFromFree(item) {
   const ja = item?.locales?.ja || {};
-  return { id:`free:${item.slug}`, type:"free", label:"フリー素材", sourceTitle:clean(ja.title || item.slug || "新しいフリー素材"), sourceDescription:clean(ja.description || ja.alt || ""), url:`/free/${encodeURIComponent(item.slug)}/`, image:clean(item.previewUrl || item.image || item.thumbnail || ""), date:jstDate(item.publishedAt) };
+  return { id:`free:${item.slug}`, type:"free", label:"フリー素材", sourceTitle:clean(ja.title || item.slug || "新しいフリー素材"), sourceDescription:clean(ja.description || ja.alt || ""), url:`/free/${encodeURIComponent(item.slug)}`, image:clean(item.previewUrl || item.image || item.thumbnail || ""), date:jstDate(item.publishedAt) };
 }
 
 async function discoverTools() {
@@ -119,20 +122,20 @@ async function syncNews(existing) {
 export default async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).json({ error:"Method not allowed" });
   try {
-    let index = await r2GetJson(INDEX_KEY, []);
+    let index = asArray(await r2GetJson(INDEX_KEY, [])).map(normalizeRecord);
     const shouldSync = String(req.query?.sync || "0") === "1";
     if (shouldSync) index = await syncNews(index);
     const id = clean(req.query?.id || "");
     const slug = clean(req.query?.slug || "");
     if (id || slug) {
-      const item = asArray(index).find(x => (id && x.id === id) || (slug && x.slug === slug));
+      const item = index.find(x => (id && x.id === id) || (slug && x.slug === slug));
       if (!item) return res.status(404).json({ error:"News not found" });
       res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=3600");
       return res.status(200).json({ item });
     }
     const limit = Math.min(Math.max(Number(req.query?.limit || 20), 1), 80);
     res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=3600");
-    return res.status(200).json({ items:asArray(index).slice(0,limit) });
+    return res.status(200).json({ items:index.slice(0,limit) });
   } catch (error) {
     console.error("news api failed", error);
     return res.status(500).json({ error:error instanceof Error ? error.message : String(error) });
