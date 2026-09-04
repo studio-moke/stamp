@@ -1,0 +1,9 @@
+---
+import LocalizedCategoriesPage from "../../../../../components/LocalizedCategoriesPage.astro";
+import stickers from "../../../../../data/stickers.json";
+import { LOCALES } from "../../../../../lib/i18n";
+import { CATEGORY_DEFINITIONS,getCategory } from "../../../../../lib/stickers";
+export function getStaticPaths(){const out=[];for(const locale of LOCALES.filter(x=>x!=="ja")){for(const category of CATEGORY_DEFINITIONS){const count=stickers.filter(s=>getCategory(s)===category.name).length;const total=Math.max(1,Math.ceil(count/24));for(let page=1;page<=total;page++)out.push({params:{locale,category:category.slug,page:String(page)},props:{locale,category:category.slug,page}})}}return out;}
+const {locale,category,page}=Astro.props;
+---
+<LocalizedCategoriesPage locale={locale} categorySlug={category} page={page} />
