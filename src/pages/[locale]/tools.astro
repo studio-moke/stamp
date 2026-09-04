@@ -1,7 +1,7 @@
 ---
-import ToolsHubPage from "../../components/ToolsHubPage.astro";
+import LocalizedToolsHubPage from "../../components/LocalizedToolsHubPage.astro";
 import { LOCALES } from "../../lib/i18n";
 export function getStaticPaths(){return LOCALES.filter(locale=>locale!=="ja").map(locale=>({params:{locale},props:{locale}}));}
 const locale=Astro.props.locale;
 ---
-<ToolsHubPage locale={locale} />
+<LocalizedToolsHubPage locale={locale} />
