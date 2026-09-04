@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { presignR2Put, r2Configured, r2Delete, r2GetBuffer, r2GetJson, r2Key, r2ListKeys, r2PutJson } from "./_r2.js";
+import { syncNewsNow } from "./news.js";
 
 const SITE_URL = "https://stamp-moke.jp";
 const INDEX_KEY = "free-assets/index.json";
@@ -130,7 +131,11 @@ export default async function handler(req, res) {
           if (existingHash && existingHash.slug !== meta.slug && existingHash.id !== id) return json(res, 409, { error: "同じ元画像はすでに登録されています。", duplicate: true, asset: existingHash });
         }
         const record = { ...meta, id, publicCode: code, originalKey: body.originalKey, previewKey: body.previewKey, thumbKey: body.thumbKey || "", contentHash: hash, width: Number(body.width || 0), height: Number(body.height || 0), contentType: body.contentType || "image/png", license: "personal-noncommercial", copyright: "© stamp-moke.jp", downloads: Number(body.downloads || 0), status: "published", publishedAt: body.publishedAt || now, updatedAt: now, canonicalUrl: `${SITE_URL}/free/${encodeURIComponent(meta.slug)}` };
-        await persistRecord(record); if (hash) await r2PutJson(hashKey(hash), { slug: record.slug, id: record.id, title: record.locales?.ja?.title || "" }); return json(res, 200, { asset: record });
+        await persistRecord(record);
+        if (hash) await r2PutJson(hashKey(hash), { slug: record.slug, id: record.id, title: record.locales?.ja?.title || "" });
+        let newsUpdated = false;
+        try { await syncNewsNow(); newsUpdated = true; } catch (error) { console.error("NEWS immediate sync failed after free asset publish", error); }
+        return json(res, 200, { asset: record, newsUpdated });
       }
       if (action === "attach-thumb") { const slug = slugify(req.body?.slug || ""); const thumbKey = String(req.body?.thumbKey || ""); if (!thumbKey.startsWith("free-assets/thumbs/")) return json(res, 400, { error: "Invalid thumbKey" }); const current = await findBySlug(slug); if (!current) return json(res, 404, { error: "Not found" }); const updated = { ...current, thumbKey, updatedAt: new Date().toISOString() }; await persistRecord(updated); return json(res, 200, { asset: updated }); }
       if (action === "update") {
