@@ -15,7 +15,7 @@
     th:{title:'ข่าวล่าสุด',all:'ดูทั้งหมด →',loading:'กำลังโหลดข่าว…',empty:'ยังไม่มีข่าว',error:'โหลดข่าวไม่ได้'},
     id:{title:'Berita terbaru',all:'Lihat semua →',loading:'Memuat berita…',empty:'Belum ada berita.',error:'Berita tidak dapat dimuat.'}
   }[loc];
-  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
   const CACHE_KEY=`stamp-moke-home-news-v3-${loc}`;
   const newsUrl=slug=>`${prefix}/news/?slug=${encodeURIComponent(slug)}`;
   function style(){
@@ -51,6 +51,10 @@
     `;
     document.head.appendChild(s);
   }
+  function announce(sec){
+    document.dispatchEvent(new CustomEvent('sm:content-ready',{detail:{root:sec}}));
+    document.dispatchEvent(new CustomEvent('sm:news-ready',{detail:{root:sec}}));
+  }
   function render(box,rows){
     box.innerHTML=rows.length?rows.map(n=>`<a class="sm-news-row" href="${newsUrl(n.slug)}" title="${esc(n.title)}"><span class="sm-news-date">${esc((n.date||'').replaceAll('-','/'))}</span><span class="sm-news-label">${esc(n.label)}</span><span class="sm-news-text">${esc(n.title)}</span><span class="sm-news-arrow">→</span></a>`).join(''):`<div class="sm-news-empty">${esc(COPY.empty)}</div>`;
   }
@@ -61,6 +65,7 @@
     sec.className='sm-news-home';
     sec.innerHTML=`<div class="sm-news-head"><div><span class="sm-news-k">NEWS / stamp moke</span><h2 class="sm-news-title">${esc(COPY.title)}</h2></div><div class="sm-news-actions"><a class="sm-news-rss" href="/feed.xml" type="application/rss+xml" aria-label="stamp moke NEWS RSS">RSS</a><a class="sm-news-all" href="${prefix}/news/">${esc(COPY.all)}</a></div></div><div class="sm-news-list"><div class="sm-news-empty">${esc(COPY.loading)}</div></div>`;
     anchor.replaceWith(sec);
+    announce(sec);
     const box=sec.querySelector('.sm-news-list');
     try{const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||'[]');if(Array.isArray(cached)&&cached.length)render(box,cached)}catch{}
     try{
@@ -68,6 +73,7 @@
       const d=await r.json();
       const rows=d.items||[];
       render(box,rows);
+      document.dispatchEvent(new CustomEvent('sm:content-ready',{detail:{root:sec}}));
       try{localStorage.setItem(CACHE_KEY,JSON.stringify(rows))}catch{}
     }catch{if(!box.querySelector('.sm-news-row'))box.innerHTML=`<div class="sm-news-empty">${esc(COPY.error)}</div>`}
   }
