@@ -2,6 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /free-admin/
+Disallow: /*/admin/
 Disallow: /api/
+Disallow: /*?*key=
+Disallow: /*?*token=
 
 Sitemap: https://stamp-moke.jp/sitemap.xml
+Sitemap: https://stamp-moke.jp/free-sitemap.xml
