@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /free-admin/
+Disallow: /api/
+
+Sitemap: https://stamp-moke.jp/sitemap.xml
