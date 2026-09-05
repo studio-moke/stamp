@@ -1,0 +1,64 @@
+---
+import stickers from "../data/stickers.json";
+import Analytics from "./Analytics.astro";
+import SeoHead from "./SeoHead.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { localeInfo, localizedPath, messages, normalizeLocale } from "../lib/i18n";
+import { absoluteUrl } from "../lib/seo";
+import { localizedStickerDescription, localizedStickerTitle } from "../lib/sticker-content";
+
+const locale = normalizeLocale(Astro.props.locale || "ja");
+const t = messages[locale];
+const copy = {
+  ja:{title:"LINEスタンプ一覧",lead:"stamp mokeのLINEスタンプをまとめて探せるメインページです。キーワード検索やカテゴリから、お好みのスタンプを見つけられます。",search:"タイトル・説明文から検索",home:"トップへ戻る",empty:"該当するLINEスタンプが見つかりませんでした。"},
+  en:{title:"LINE Sticker Collection",lead:"Browse all original LINE stickers by stamp moke. Search by title, description, or category to find the right set for your chats.",search:"Search titles and descriptions",home:"Back to home",empty:"No LINE stickers found."},
+  "zh-tw":{title:"LINE貼圖一覽",lead:"在這裡瀏覽stamp moke的所有原創LINE貼圖。可依標題、說明或分類搜尋最適合你的貼圖。",search:"搜尋標題與說明",home:"返回首頁",empty:"找不到符合條件的LINE貼圖。"},
+  "zh-cn":{title:"LINE贴图一览",lead:"在这里浏览stamp moke的全部原创LINE贴图。可按标题、说明或分类查找适合你的贴图。",search:"搜索标题和说明",home:"返回首页",empty:"没有找到符合条件的LINE贴图。"},
+  ko:{title:"LINE 스티커 모음",lead:"stamp moke의 모든 오리지널 LINE 스티커를 한곳에서 찾아보세요. 제목, 설명, 카테고리로 검색할 수 있습니다.",search:"제목과 설명 검색",home:"홈으로",empty:"조건에 맞는 LINE 스티커가 없습니다."},
+  th:{title:"รวมสติกเกอร์ LINE",lead:"ค้นหาสติกเกอร์ LINE ต้นฉบับทั้งหมดของ stamp moke ได้ที่นี่ ค้นหาจากชื่อ คำอธิบาย หรือหมวดหมู่ได้ง่าย ๆ",search:"ค้นหาชื่อและคำอธิบาย",home:"กลับหน้าหลัก",empty:"ไม่พบสติกเกอร์ LINE ที่ตรงกับเงื่อนไข"},
+  id:{title:"Koleksi Stiker LINE",lead:"Temukan semua stiker LINE orisinal stamp moke di satu tempat. Cari berdasarkan judul, deskripsi, atau kategori.",search:"Cari judul dan deskripsi",home:"Kembali ke beranda",empty:"Stiker LINE tidak ditemukan."}
+}[locale];
+
+function getCategory(sticker){
+  const text=`${sticker.title||""} ${sticker.description||""}`;
+  if(/博多|福岡|筑後|方言|関西弁|九州弁/.test(text)) return "方言";
+  if(/猫|ねこ|ネコ|犬|いぬ|イヌ|柴犬|コーギー|ポメラニアン|うさぎ|ウサギ|兎|くま|クマ|パンダ|鳥|すずめ|ペンギン|アザラシ|猿|サル|タヌキ|たぬき|ねずみ|動物/.test(text)) return "動物";
+  if(/ハート|恋|恋愛|カップル|彼氏|彼女|好き|愛/.test(text)) return "恋愛";
+  if(/仕事|ビジネス|敬語|丁寧|会社|職場|マーケター|バイト|働く/.test(text)) return "仕事";
+  if(/食べ物|料理|ごはん|肉まん|ビール|お酒|ジョッキ|パン|ケーキ|お菓子/.test(text)) return "食べ物";
+  if(/面白|おもしろ|ネタ|シュール|ギャグ|ツッコミ|あるある|ウザい|正論|本音/.test(text)) return "おもしろ";
+  if(/挨拶|ありがとう|おはよう|こんにちは|こんばんは|おやすみ|よろしく|おつかれ/.test(text)) return "あいさつ";
+  if(/かわいい|可愛い|キュート|癒し|ほんわか|ゆるかわ|もふもふ/.test(text)) return "かわいい";
+  if(/日常|毎日|返信|返事|会話|リアクション|気持ち/.test(text)) return "日常";
+  return "その他";
+}
+const categoryMap={
+ ja:{"すべて":"すべて","方言":"方言","動物":"動物","恋愛":"恋愛","仕事":"仕事","食べ物":"食べ物","おもしろ":"おもしろ","あいさつ":"あいさつ","かわいい":"かわいい","日常":"日常","その他":"その他"},
+ en:{"すべて":"All","方言":"Dialects","動物":"Animals","恋愛":"Love","仕事":"Work","食べ物":"Food","おもしろ":"Funny","あいさつ":"Greetings","かわいい":"Cute","日常":"Daily","その他":"Other"},
+ "zh-tw":{"すべて":"全部","方言":"方言","動物":"動物","恋愛":"戀愛","仕事":"工作","食べ物":"食物","おもしろ":"幽默","あいさつ":"問候","かわいい":"可愛","日常":"日常","その他":"其他"},
+ "zh-cn":{"すべて":"全部","方言":"方言","動物":"动物","恋愛":"恋爱","仕事":"工作","食べ物":"食物","おもしろ":"幽默","あいさつ":"问候","かわいい":"可爱","日常":"日常","その他":"其他"},
+ ko:{"すべて":"전체","方言":"사투리","動物":"동물","恋愛":"연애","仕事":"업무","食べ物":"음식","おもしろ":"유머","あいさつ":"인사","かわいい":"귀여움","日常":"일상","その他":"기타"},
+ th:{"すべて":"ทั้งหมด","方言":"ภาษาถิ่น","動物":"สัตว์","恋愛":"ความรัก","仕事":"งาน","食べ物":"อาหาร","おもしろ":"ตลก","あいさつ":"คำทักทาย","かわいい":"น่ารัก","日常":"ประจำวัน","その他":"อื่น ๆ"},
+ id:{"すべて":"Semua","方言":"Dialek","動物":"Hewan","恋愛":"Cinta","仕事":"Kerja","食べ物":"Makanan","おもしろ":"Lucu","あいさつ":"Sapaan","かわいい":"Imut","日常":"Harian","その他":"Lainnya"}
+}[locale];
+const items=stickers.map(sticker=>({...sticker,category:getCategory(sticker),localizedTitle:localizedStickerTitle(sticker,locale),localizedDescription:localizedStickerDescription(sticker,locale)}));
+const categories=["すべて",...Array.from(new Set(items.map(item=>item.category)))];
+const canonicalPath="/stickers/";
+const canonical=absoluteUrl(localizedPath(locale,canonicalPath));
+const title=`${copy.title} | stamp moke`;
+const description=copy.lead;
+---
+<!doctype html>
+<html lang={localeInfo[locale].htmlLang}>
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>{title}</title>
+<SeoHead title={title} description={description} canonical={canonical} locale={locale} path={canonicalPath}/><Analytics/>
+<style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}a{color:inherit}.header{min-height:86px;background:rgba(255,255,255,.96);border-bottom:1px solid #e4e3df;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 5vw;position:sticky;top:0;z-index:20}.brand{text-decoration:none}.brand-title{font-size:21px;font-weight:900;letter-spacing:.1em}.brand-sub{margin-top:6px;font-size:11px;color:#777}.actions{display:flex;align-items:center;gap:9px}.home{padding:11px 16px;border:1px solid #d9d8d4;background:#fff;border-radius:999px;text-decoration:none;font-size:12px;font-weight:800}.main{max-width:1180px;margin:0 auto;padding:56px 5vw 110px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#777;margin-bottom:12px}.title{margin:0;font-size:clamp(38px,6vw,68px);line-height:1;font-weight:900;letter-spacing:-.045em}.lead{max-width:760px;margin:22px 0 0;color:#666;font-size:14px;line-height:1.9}.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:18px;align-items:center;margin:42px 0 28px;padding:20px;background:#fff;border:1px solid #e3e2de;border-radius:18px}.search{width:100%;height:46px;border:1px solid #d8d7d2;border-radius:12px;padding:0 15px;font:inherit;font-size:14px}.count{font-size:12px;color:#777;white-space:nowrap}.categories{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}.cat{border:1px solid #d8d7d2;background:#fff;border-radius:999px;padding:9px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}.cat.is-active{background:#161616;color:#fff;border-color:#161616}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}.card{display:block;text-decoration:none;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden;transition:.22s}.card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.07)}.image-wrap{aspect-ratio:1;background:#7696c4;overflow:hidden}.image{display:block;width:100%;height:100%;object-fit:contain;padding:18px}.content{padding:17px}.card-title{margin:0;font-size:15px;line-height:1.5;font-weight:800;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.category{margin-top:10px;color:#777;font-size:10px}.empty{display:none;padding:60px 20px;text-align:center;color:#777}.footer{padding:45px 5vw;background:#181818;color:#999;text-align:center;font-size:11px}.card[hidden]{display:none}@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:640px){.header{min-height:72px;padding:10px 18px}.brand-title{font-size:17px}.home{display:none}.main{padding:34px 18px 70px}.toolbar{grid-template-columns:1fr;gap:10px;margin-top:30px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.image{padding:9px}.content{padding:12px}.card-title{font-size:13px}}</style>
+</head><body>
+<header class="header"><a class="brand" href={localizedPath(locale,"/")}><div class="brand-title">stamp moke</div><div class="brand-sub">{t.brandSub}</div></a><div class="actions"><LanguageSwitcher locale={locale} path="/stickers/"/><a class="home" href={localizedPath(locale,"/")}>{copy.home}</a></div></header>
+<main class="main"><div class="eyebrow">LINE STICKER COLLECTION</div><h1 class="title">{copy.title}</h1><p class="lead">{copy.lead}</p>
+<div class="toolbar"><input id="search" class="search" type="search" placeholder={copy.search} aria-label={copy.search}/><div id="count" class="count">{items.length} STICKERS</div></div>
+<div class="categories" aria-label={t.categories}>{categories.map(category=><button class={`cat${category==="すべて"?" is-active":""}`} type="button" data-category={category}>{categoryMap[category]||category}</button>)}</div>
+<div id="grid" class="grid">{items.map((sticker,index)=><a class="card" href={localizedPath(locale,`/stickers/${sticker.id}/`)} data-category={sticker.category} data-search={`${sticker.localizedTitle||""} ${sticker.localizedDescription||""} ${sticker.title||""} ${sticker.description||""}`.toLowerCase()}><div class="image-wrap"><img class="image" src={sticker.image} alt={sticker.localizedTitle} loading={index<12?"eager":"lazy"}/></div><div class="content"><h2 class="card-title">{sticker.localizedTitle}</h2><div class="category">{categoryMap[sticker.category]||sticker.category}</div></div></a>)}</div><div id="empty" class="empty">{copy.empty}</div></main><footer class="footer">© stamp moke</footer>
+<script is:inline>(()=>{const cards=[...document.querySelectorAll('.card')],buttons=[...document.querySelectorAll('.cat')],search=document.getElementById('search'),count=document.getElementById('count'),empty=document.getElementById('empty');let category='すべて';const update=()=>{const q=(search.value||'').trim().toLowerCase();let visible=0;cards.forEach(card=>{const okCategory=category==='すべて'||card.dataset.category===category;const okSearch=!q||(card.dataset.search||'').includes(q);card.hidden=!(okCategory&&okSearch);if(!card.hidden)visible++});count.textContent=`${visible} STICKERS`;empty.style.display=visible?'none':'block'};buttons.forEach(button=>button.addEventListener('click',()=>{category=button.dataset.category;buttons.forEach(item=>item.classList.toggle('is-active',item===button));update()}));search.addEventListener('input',update)})();</script>
+</body></html>
