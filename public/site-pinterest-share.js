@@ -10,7 +10,6 @@
 
   const addPinterestButton = (actions) => {
     if (!actions || actions.querySelector('[data-share="pinterest"]')) return;
-
     const link = document.createElement('a');
     link.className = 'sm-share-button';
     link.dataset.share = 'pinterest';
@@ -19,7 +18,6 @@
     link.rel = 'noopener noreferrer';
     link.setAttribute('aria-label', 'Pinterestで保存');
     link.innerHTML = '<span class="sm-share-icon" aria-hidden="true">P</span><span>Pinterest</span>';
-
     const copyButton = actions.querySelector('[data-share="copy"]');
     if (copyButton) actions.insertBefore(link, copyButton);
     else actions.appendChild(link);
@@ -29,8 +27,18 @@
     root.querySelectorAll?.('.sm-share-actions').forEach(addPinterestButton);
   };
 
+  const loadOnce = (src, key) => {
+    if (document.querySelector(`script[data-sm-consistency="${key}"]`)) return;
+    const s = document.createElement('script');
+    s.src = src;
+    s.dataset.smConsistency = key;
+    document.head.appendChild(s);
+  };
+
   const start = () => {
     init();
+    loadOnce('/breadcrumb-global.js?v=20260905-2', 'breadcrumb');
+    loadOnce('/sticker-promo-global.js?v=20260905-2', 'sticker-promo');
     new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
