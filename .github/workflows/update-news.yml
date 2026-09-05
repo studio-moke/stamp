@@ -1,0 +1,74 @@
+name: Update NEWS
+
+on:
+  schedule:
+    # 毎日 18:40 UTC = 翌日 03:40 JST
+    # LINEスタンプ/SUZURI更新（03:13 JST）の後にNEWSを同期する
+    - cron: "40 18 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: update-news
+  cancel-in-progress: true
+
+jobs:
+  sync-news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Sync NEWS API
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://stamp-moke.jp/api/news?sync=1"
+          echo "Syncing NEWS: $url"
+
+          # Vercelの一時的なデプロイ/ネットワーク遅延を考慮して再試行する
+          response="$(curl --fail-with-body --silent --show-error \
+            --retry 4 \
+            --retry-delay 15 \
+            --retry-all-errors \
+            --max-time 120 \
+            "$url")"
+
+          echo "$response" | node -e '
+            let raw = "";
+            process.stdin.on("data", d => raw += d);
+            process.stdin.on("end", () => {
+              const data = JSON.parse(raw);
+              if (!Array.isArray(data.items)) {
+                console.error("NEWS API did not return items[]");
+                process.exit(1);
+              }
+              console.log(`NEWS sync OK: ${data.items.length} items returned`);
+              if (data.items[0]) {
+                console.log(`Latest: ${data.items[0].date || ""} ${data.items[0].title || data.items[0].id || ""}`);
+              }
+            });
+          '
+
+      - name: Verify cached NEWS API
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --silent --show-error \
+            --retry 3 \
+            --retry-delay 10 \
+            --max-time 60 \
+            "https://stamp-moke.jp/api/news?limit=3" \
+            | node -e '
+              let raw = "";
+              process.stdin.on("data", d => raw += d);
+              process.stdin.on("end", () => {
+                const data = JSON.parse(raw);
+                if (!Array.isArray(data.items) || data.items.length === 0) {
+                  console.error("NEWS verification failed: no items");
+                  process.exit(1);
+                }
+                console.log("NEWS verification OK");
+                for (const item of data.items) {
+                  console.log(`${item.date || ""} | ${item.title || item.id || ""}`);
+                }
+              });
+            '
