@@ -2,7 +2,7 @@
 import { normalizeLocale, localeInfo } from "../lib/i18n";
 const locale = normalizeLocale(Astro.props.locale);
 const htmlLang = localeInfo[locale].htmlLang;
-const headerVersion = "20260905-3";
+const headerVersion = "20260905-4";
 ---
 <link rel="icon" href={`/favicon.svg?v=${headerVersion}`} type="image/svg+xml" />
 <link rel="stylesheet" href={`/site-header.css?v=${headerVersion}`} />
@@ -21,7 +21,7 @@ const headerVersion = "20260905-3";
 <script is:inline src="/seal-maker-nav.js"></script>
 <script is:inline src="/image-tool-nav.js"></script>
 <script is:inline src="/image-compressor-enhance.js"></script>
-<script is:inline src="/sticker-promo-global.js"></script>
+<script is:inline src="/sticker-promo-global.js?v=20260905-2"></script>
 <script is:inline src="/creative-tools-nav.js"></script>
 <script is:inline src="/auto-free-manga-assets.js"></script>
 <script is:inline src="/image-save-ux-global.js"></script>
@@ -29,3 +29,4 @@ const headerVersion = "20260905-3";
 <script is:inline src={`/site-logo-sync.js?v=${headerVersion}`}></script>
 <script is:inline src={`/trailing-slash-links.js?v=${headerVersion}`}></script>
 <script is:inline src="/share-buttons.js?v=20260902-1"></script>
+<script is:inline src="/breadcrumb-global.js?v=20260905-1"></script>
