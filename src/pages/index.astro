@@ -4,7 +4,7 @@ import suzuriDesigns from "../data/suzuri-designs.json";
 import Analytics from "../components/Analytics.astro";
 import SeoHead from "../components/SeoHead.astro";
 import LanguageSwitcher from "../components/LanguageSwitcher.astro";
-import { localeInfo, localizedPath, messages, normalizeLocale } from "../lib/i18n";
+import { categoryLabels, localeInfo, localizedPath, messages, normalizeLocale } from "../lib/i18n";
 import { absoluteUrl } from "../lib/seo";
 import { localizedStickerDescription, localizedStickerPrice, localizedStickerTitle } from "../lib/sticker-content";
 
@@ -35,12 +35,25 @@ const categorizedStickers = stickers.map((sticker) => ({
   localizedDescription: localizedStickerDescription(sticker, locale),
   localizedPrice: localizedStickerPrice(sticker.price, locale),
 }));
-
 const latestStickers = categorizedStickers.slice(0, 4);
-const pickupStickers = categorizedStickers.slice(4, 7);
-const isJa = locale === "ja";
-const heroTitle = isJa ? "日常をちょっと\n楽しく。" : t.heroTitles?.[0] || t.stickers;
-const heroLead = isJa ? "LINEスタンプ・グッズ・無料フリー素材で、毎日に小さな『楽しい』を。" : t.heroLead;
+const pickupStickers = categorizedStickers.slice(4, 8);
+const discoverStickers = categorizedStickers.slice(8, 16);
+const categoryKeys = ["仕事", "日常", "動物", "おもしろ"];
+const copy = {
+  ja:{hero:"日常をちょっと\n楽しく。",lead:"LINEスタンプを中心に、無料フリー素材や便利なツール、キャラクターグッズまで。毎日に小さな『楽しい』を。",primary:"LINEスタンプを探す",secondary:"無料で使えるものを見る",find:"スタンプを探す",findLead:"まずは使いたい場面や雰囲気から。TOPでは選びやすく、一覧は専用ページにまとめました。",new:"新着スタンプ",pickup:"ピックアップ",more:"スタンプをもっと見る",all:"スタンプ一覧へ",free:"無料で使える",freeLead:"素材とツールはここから。スタンプ探しを邪魔しない位置にまとめました。",goods:"キャラクターグッズ",news:"お知らせ",newsLead:"新作、サイト更新、stamp mokeからのお知らせ。",newsLink:"お知らせを見る",categories:"カテゴリーから探す"},
+  en:{hero:"Make every message\na little more fun.",lead:"Discover original LINE stickers first, plus free assets, useful tools and character goods from stamp moke.",primary:"Find LINE stickers",secondary:"Browse free resources",find:"Find your stickers",findLead:"Start with a mood or use case. The home page stays focused; the full collection lives on its own page.",new:"New stickers",pickup:"Featured",more:"More stickers",all:"View all stickers",free:"Free resources",freeLead:"Free assets and tools, grouped together below the main sticker sections.",goods:"Character goods",news:"News",newsLead:"New releases, site updates and announcements from stamp moke.",newsLink:"View news",categories:"Browse categories"},
+  "zh-tw":{hero:"讓每天的一句話，\n更有趣一點。",lead:"以原創LINE貼圖為主，也能找到免費素材、實用工具與角色周邊。",primary:"尋找LINE貼圖",secondary:"查看免費內容",find:"尋找貼圖",findLead:"先從用途或氣氛開始。首頁專注於好找、好選，完整列表放在專用頁面。",new:"最新貼圖",pickup:"精選",more:"更多貼圖",all:"查看全部貼圖",free:"免費使用",freeLead:"免費素材與工具集中在這裡，不打斷主要的貼圖瀏覽動線。",goods:"角色周邊",news:"最新消息",newsLead:"新作、網站更新與stamp moke公告。",newsLink:"查看最新消息",categories:"依分類尋找"},
+  "zh-cn":{hero:"让每天的一句话，\n更有趣一点。",lead:"以原创LINE贴图为主，也可以找到免费素材、实用工具和角色周边。",primary:"寻找LINE贴图",secondary:"查看免费内容",find:"寻找贴图",findLead:"先从用途或氛围开始。首页专注于好找、好选，完整列表放在专用页面。",new:"最新贴图",pickup:"精选",more:"更多贴图",all:"查看全部贴图",free:"免费使用",freeLead:"免费素材和工具集中在这里，不打断主要的贴图浏览动线。",goods:"角色周边",news:"最新消息",newsLead:"新作、网站更新与stamp moke公告。",newsLink:"查看最新消息",categories:"按分类寻找"},
+  ko:{hero:"매일의 한마디를\n조금 더 즐겁게.",lead:"오리지널 LINE 스티커를 중심으로 무료 소재, 편리한 도구, 캐릭터 굿즈까지 만나보세요.",primary:"LINE 스티커 찾기",secondary:"무료 콘텐츠 보기",find:"스티커 찾기",findLead:"용도나 분위기부터 골라보세요. 홈은 선택하기 쉽게, 전체 목록은 전용 페이지에 모았습니다.",new:"새 스티커",pickup:"추천",more:"스티커 더 보기",all:"스티커 전체 보기",free:"무료로 사용하기",freeLead:"무료 소재와 도구는 스티커 탐색을 방해하지 않도록 한곳에 정리했습니다.",goods:"캐릭터 굿즈",news:"소식",newsLead:"신작, 사이트 업데이트, stamp moke의 새로운 소식입니다.",newsLink:"소식 보기",categories:"카테고리로 찾기"},
+  th:{hero:"ทำให้ทุกข้อความ\nสนุกขึ้นอีกนิด",lead:"ค้นหาสติกเกอร์ LINE ต้นฉบับ พร้อม素材ฟรี เครื่องมือที่มีประโยชน์ และสินค้าคาแรกเตอร์",primary:"ค้นหาสติกเกอร์ LINE",secondary:"ดูของใช้ฟรี",find:"ค้นหาสติกเกอร์",findLead:"เริ่มจากอารมณ์หรือการใช้งาน หน้าแรกเน้นเลือกง่าย ส่วนรายการทั้งหมดอยู่ในหน้าสติกเกอร์",new:"สติกเกอร์ใหม่",pickup:"แนะนำ",more:"ดูสติกเกอร์เพิ่ม",all:"ดูสติกเกอร์ทั้งหมด",free:"ใช้ฟรี",freeLead:"รวม素材และเครื่องมือฟรีไว้ด้านล่าง โดยไม่รบกวนการค้นหาสติกเกอร์",goods:"สินค้าคาแรกเตอร์",news:"ข่าวสาร",newsLead:"ผลงานใหม่ การอัปเดตเว็บไซต์ และข่าวจาก stamp moke",newsLink:"ดูข่าวสาร",categories:"ค้นหาตามหมวดหมู่"},
+  id:{hero:"Buat setiap pesan\nlebih menyenangkan.",lead:"Temukan stiker LINE orisinal, aset gratis, alat praktis, dan produk karakter dari stamp moke.",primary:"Cari stiker LINE",secondary:"Lihat yang gratis",find:"Cari stiker",findLead:"Mulai dari suasana atau kebutuhan. Beranda dibuat ringkas; koleksi lengkap ada di halaman khusus.",new:"Stiker terbaru",pickup:"Pilihan",more:"Stiker lainnya",all:"Lihat semua stiker",free:"Gratis digunakan",freeLead:"Aset dan alat gratis dikelompokkan di bawah bagian utama stiker.",goods:"Produk karakter",news:"Berita",newsLead:"Rilis baru, pembaruan situs, dan kabar dari stamp moke.",newsLink:"Lihat berita",categories:"Cari berdasarkan kategori"}
+}[locale];
+const toolCards = [
+  {icon:"Aa",title: locale === "ja" ? "チャットスタンプ" : locale === "ko" ? "채팅 스탬프" : locale === "zh-cn" ? "聊天贴图" : locale === "zh-tw" ? "聊天貼圖" : "Chat Stamp",path:"/chat-stamp-maker/"},
+  {icon:"QR",title: locale === "ja" ? "QRコード" : locale === "ko" ? "QR 코드" : locale === "zh-cn" ? "二维码" : locale === "zh-tw" ? "QR Code" : "QR Code",path:"/qr-maker/"},
+  {icon:"#",title: locale === "ja" ? "カラーパレット" : locale === "ko" ? "컬러 팔레트" : locale === "zh-cn" ? "配色生成器" : locale === "zh-tw" ? "配色產生器" : "Color Palette",path:"/color-palette/"},
+  {icon:"PNG",title: locale === "ja" ? "背景透過" : locale === "ko" ? "배경 투명화" : locale === "zh-cn" ? "背景透明" : locale === "zh-tw" ? "背景透明" : "Transparent PNG",path:"/png-transparent/"},
+];
 ---
 <html lang={localeInfo[locale].htmlLang}>
 <head>
@@ -48,197 +61,70 @@ const heroLead = isJa ? "LINEスタンプ・グッズ・無料フリー素材で
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{siteTitle}</title>
   <SeoHead title={siteTitle} description={siteDescription} canonical={canonical} locale={locale} path="/" />
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    name:"stamp moke",
-    alternateName:["スタンプもけ","スタンプモケ","スタンプもけぇ","studio moke","スタジオモケ","スタジオもけぇ"],
-    url:canonical,
-    description:siteDescription
-  })} />
+  <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"stamp moke",alternateName:["スタンプもけ","スタンプモケ","スタンプもけぇ","studio moke","スタジオモケ","スタジオもけぇ"],url:canonical,description:siteDescription})} />
   <Analytics />
   <style>
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:#f6f3ed;color:#151515;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;-webkit-font-smoothing:antialiased}
-    a{color:inherit}
-    .site-header{position:sticky;top:0;z-index:30;height:104px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.96);border-bottom:1px solid #e6e3dd;backdrop-filter:blur(16px)}
-    .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
-    .brand-mark{width:48px;height:48px;border-radius:18px;display:grid;place-items:center;font-weight:1000;font-size:23px;letter-spacing:-.14em;color:#166a3a;background:linear-gradient(145deg,#dff6ce,#f4fff0);border:1px solid #d5e9cf;box-shadow:0 8px 24px rgba(38,109,65,.12)}
-    .brand-name{font-size:24px;font-weight:900;letter-spacing:.08em;color:#15243a}
-    .header-actions{display:flex;align-items:center;gap:10px}
-    .menu{position:relative}
-    .menu summary{list-style:none;width:56px;height:56px;border:1px solid #d9dee1;border-radius:50%;background:#fff;display:grid;place-items:center;cursor:pointer;font-size:0}
-    .menu summary::-webkit-details-marker{display:none}
-    .menu summary::before{content:"☰";font-size:28px;line-height:1;color:#172536}
-    .menu[open] summary::before{content:"×"}
-    .menu-panel{position:absolute;right:0;top:68px;width:min(330px,86vw);padding:18px;background:#fff;border:1px solid #dfded9;border-radius:22px;box-shadow:0 22px 60px rgba(0,0,0,.12)}
-    .menu-panel a{display:block;text-decoration:none;padding:12px 10px;border-bottom:1px solid #efeee9;font-weight:800}
-    .menu-panel a:last-of-type{border-bottom:0}
-    .menu-language{padding-top:12px}
-    .main{max-width:1180px;margin:0 auto;padding:0 5vw 100px}
-    .hero{position:relative;padding:68px 0 42px;display:grid;grid-template-columns:1.08fr .92fr;gap:32px;align-items:center}
-    .hero::before{content:"";position:absolute;inset:20px -4vw -8px;z-index:-1;background:radial-gradient(circle at 72% 40%,rgba(205,237,188,.65),transparent 30%),radial-gradient(circle at 30% 60%,rgba(255,255,255,.95),transparent 42%)}
-    .hero-copy{padding:24px 0}
-    .hero-title{margin:0;font-size:clamp(52px,7vw,92px);line-height:1.03;letter-spacing:-.05em;font-weight:950;white-space:pre-line}
-    .hero-rule{width:62px;height:4px;border-radius:99px;background:#2ca45f;margin:28px 0 20px}
-    .hero-lead{max-width:620px;margin:0;color:#6e6e6a;font-size:17px;line-height:2}
-    .hero-art{min-height:330px;display:flex;justify-content:center;align-items:center}
-    .clover{position:relative;width:min(360px,100%);aspect-ratio:1;border-radius:50%;background:#fff;border:1px solid #e7e4de;box-shadow:0 24px 60px rgba(68,92,65,.12);display:grid;place-items:center}
-    .clover::before{content:"☘";font-size:190px;filter:saturate(.9);transform:rotate(-10deg)}
-    .clover::after{content:"いいこと\Aあるよ!";white-space:pre;position:absolute;right:-8px;top:52px;font-weight:950;font-size:28px;line-height:1.05;transform:rotate(-8deg)}
-    .search{margin-top:28px;background:#fff;border:1px solid #e2e0da;border-radius:999px;display:flex;align-items:center;padding:0 24px;height:66px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
-    .search input{width:100%;border:0;outline:0;background:transparent;font-size:17px;color:#333}
-    .search::before{content:"⌕";font-size:34px;margin-right:12px;line-height:1}
-    .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .tag{padding:9px 16px;border-radius:999px;background:#fff;border:1px solid #eeece7;text-decoration:none;font-size:13px;font-weight:700}
-    .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:22px 0 38px}
-    .quick-card{min-height:140px;padding:22px 18px;border-radius:22px;background:#fff;border:1px solid #e6e3dd;text-decoration:none;box-shadow:0 12px 28px rgba(0,0,0,.035);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-    .quick-icon{font-size:34px;margin-bottom:9px}
-    .quick-title{font-size:17px;font-weight:900}
-    .quick-sub{margin-top:7px;color:#8a8984;font-size:12px;line-height:1.5}
-    .section-card{background:#fff;border:1px solid #e4e1db;border-radius:28px;padding:26px;margin-top:28px;box-shadow:0 18px 40px rgba(0,0,0,.035)}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:20px}
-    .section-kicker{display:inline-flex;padding:7px 15px;border-radius:999px;background:#ef6684;color:#fff;font-size:12px;font-weight:900;letter-spacing:.08em}
-    .section-title{margin:8px 0 0;font-size:34px;line-height:1;font-weight:950}
-    .section-more{color:#2d9e61;text-decoration:none;font-weight:800;white-space:nowrap}
-    .latest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-    .mini-sticker{display:block;text-decoration:none;border:1px solid #ece9e4;border-radius:18px;overflow:hidden;background:#faf9f6}
-    .mini-sticker img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff}
-    .mini-sticker strong{display:block;padding:12px 12px 14px;font-size:13px;line-height:1.5}
-    .pickup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .pickup-card{display:block;text-decoration:none;border-radius:20px;overflow:hidden;background:#edf7ed;border:1px solid #dfebdd}
-    .pickup-card img{width:100%;aspect-ratio:1.25;object-fit:contain;background:#fff}
-    .pickup-card div{padding:15px;font-weight:900}
-    .collection{margin-top:56px}
-    .collection-head{display:flex;justify-content:space-between;align-items:end;padding-bottom:18px;border-bottom:1px solid #ddd9d3;margin-bottom:18px}
-    .collection-label{font-size:11px;letter-spacing:.18em;color:#777;margin-bottom:8px}
-    .collection-title{margin:0;font-size:38px;font-weight:950}
-    .section-count{color:#777;font-size:13px}
-    .controls{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:28px}
-    .category-button{border:1px solid #d8d7d2;background:#fff;border-radius:999px;padding:9px 15px;font-size:12px;font-weight:700;cursor:pointer}
-    .category-button.is-active{background:#161616;color:#fff}
-    .sticker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
-    .sticker-card{display:block;text-decoration:none;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden}
-    .sticker-card[hidden]{display:none}
-    .sticker-image-wrap{aspect-ratio:1;background:#f4f3ef}
-    .sticker-image{width:100%;height:100%;object-fit:contain}
-    .sticker-info{padding:16px}
-    .sticker-title{margin:0;font-size:14px}
-    .sticker-description{font-size:11px;color:#777;line-height:1.7}
-    .sticker-link{font-size:11px;font-weight:800}
-    .goods-section,.about-section{margin-top:70px}
-    .goods-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-    .goods-card{text-decoration:none;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden}
-    .goods-image{width:100%;aspect-ratio:1;object-fit:contain}
-    .goods-info{padding:14px}
-    .goods-title{font-size:13px;font-weight:800}
-    .goods-price{font-size:11px;color:#777}
-    .about-section{padding:48px;border-radius:28px;background:#16261e;color:#fff}
-    .about-title{font-size:40px;white-space:pre-line;margin-top:0}
-    .about-text{max-width:700px;line-height:2;color:#d7dfd9}
-    .footer{padding:40px 5vw;border-top:1px solid #ddd9d3;background:#fff}
-    .footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:30px}
-    .footer-links{display:flex;gap:18px;flex-wrap:wrap}
-    @media(max-width:850px){
-      .site-header{height:88px}.brand-mark{width:42px;height:42px}.brand-name{font-size:22px}
-      .hero{grid-template-columns:1fr;padding-top:44px}.hero-title{font-size:58px}.hero-art{min-height:250px}.clover{width:260px}.clover::before{font-size:140px}.clover::after{font-size:22px;right:-16px;top:42px}
-      .quick-grid{grid-template-columns:repeat(2,1fr)}.latest-grid{grid-template-columns:repeat(2,1fr)}.pickup-grid{grid-template-columns:1fr}.sticker-grid,.goods-grid{grid-template-columns:repeat(2,1fr)}
-      .footer-inner{display:block}.section-title,.collection-title{font-size:30px}
-    }
-    @media(max-width:520px){
-      .site-header{padding:0 20px}.main{padding-left:20px;padding-right:20px}.brand-name{font-size:20px}.menu summary{width:50px;height:50px}
-      .hero-title{font-size:52px}.hero-lead{font-size:15px}.hero-art{min-height:220px}.clover{width:230px}.clover::before{font-size:126px}.clover::after{font-size:20px;right:-10px}
-      .quick-grid{gap:12px}.quick-card{min-height:125px;padding:16px 10px}.quick-title{font-size:15px}.latest-grid{gap:10px}.section-card{padding:20px}.sticker-grid,.goods-grid{gap:12px}
-    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f6f3ed;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit}
+    .site-header{position:sticky;top:0;z-index:30;height:92px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.96);border-bottom:1px solid #e6e3dd;backdrop-filter:blur(16px)}.brand{display:flex;align-items:center;gap:13px;text-decoration:none}.brand-mark{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:950;color:#156b3b;background:#eaf7df;border:1px solid #d5e9cf}.brand-name{font-size:22px;font-weight:950;letter-spacing:.07em;color:#15243a}.header-actions{display:flex;align-items:center;gap:10px}.menu{position:relative}.menu summary{list-style:none;width:52px;height:52px;border:1px solid #d9dee1;border-radius:50%;background:#fff;display:grid;place-items:center;cursor:pointer;font-size:0}.menu summary::-webkit-details-marker{display:none}.menu summary::before{content:"☰";font-size:25px}.menu[open] summary::before{content:"×"}.menu-panel{position:absolute;right:0;top:64px;width:min(330px,86vw);padding:18px;background:#fff;border:1px solid #dfded9;border-radius:22px;box-shadow:0 22px 60px rgba(0,0,0,.12)}.menu-panel a{display:block;text-decoration:none;padding:12px 10px;border-bottom:1px solid #efeee9;font-weight:800}.menu-language{padding-top:12px}
+    .main{max-width:1180px;margin:0 auto;padding:0 5vw 96px}.hero{position:relative;padding:68px 0 54px;display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}.hero::before{content:"";position:absolute;inset:22px -4vw 0;z-index:-1;background:radial-gradient(circle at 73% 43%,rgba(205,237,188,.7),transparent 31%),radial-gradient(circle at 28% 58%,rgba(255,255,255,.94),transparent 44%)}.hero-title{margin:0;font-size:clamp(54px,7vw,88px);line-height:1.02;letter-spacing:-.055em;font-weight:950;white-space:pre-line}.hero-rule{width:64px;height:4px;border-radius:99px;background:#2ca45f;margin:28px 0 20px}.hero-lead{max-width:650px;margin:0;color:#66655f;font-size:16px;line-height:1.95}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 22px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:900}.btn-primary{background:#171717;color:#fff}.btn-secondary{background:#fff;border:1px solid #d9d7d1}.hero-art{min-height:310px;display:flex;justify-content:center;align-items:center}.clover{position:relative;width:min(330px,100%);aspect-ratio:1;border-radius:50%;background:#fff;border:1px solid #e7e4de;box-shadow:0 24px 60px rgba(68,92,65,.12);display:grid;place-items:center}.clover::before{content:"☘";font-size:172px;transform:rotate(-10deg)}.clover::after{content:"stamp\A moke";white-space:pre;position:absolute;right:20px;top:54px;font-weight:950;font-size:19px;line-height:1.05;transform:rotate(-7deg)}
+    .section{margin-top:64px}.section-surface{padding:30px;border:1px solid #e2dfd8;border-radius:28px;background:#fff;box-shadow:0 16px 40px rgba(0,0,0,.035)}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}.eyebrow{display:block;margin-bottom:8px;color:#777;font-size:10px;font-weight:900;letter-spacing:.18em}.section-title{margin:0;font-size:34px;line-height:1.1;font-weight:950;letter-spacing:-.025em}.section-lead{max-width:590px;margin:8px 0 0;color:#72716c;font-size:13px;line-height:1.7}.more{color:#26935b;text-decoration:none;font-size:13px;font-weight:900;white-space:nowrap}
+    .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.category-card{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:88px;padding:18px;border-radius:20px;background:#f7f6f2;border:1px solid #e8e5df;text-decoration:none}.category-card strong{font-size:18px}.category-card span{width:34px;height:34px;border-radius:50%;background:#171717;color:#fff;display:grid;place-items:center}
+    .sticker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.sticker-card{display:block;text-decoration:none;border:1px solid #e7e4de;border-radius:18px;overflow:hidden;background:#faf9f6}.sticker-card img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff}.sticker-card strong{display:block;padding:12px 13px 15px;font-size:13px;line-height:1.5}.pickup-card{background:#edf7ed}.preview-note{display:flex;align-items:center;justify-content:center;margin-top:24px}
+    .free-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.free-card{display:flex;align-items:center;gap:14px;padding:18px;border:1px solid #e4e1db;border-radius:18px;text-decoration:none;background:#faf9f6}.free-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:#fff;border:1px solid #e5e2dc;font-weight:950}.free-card strong{font-size:14px}.free-card b{margin-left:auto}
+    .goods-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.goods-card{text-decoration:none;background:#fff;border:1px solid #e3e2de;border-radius:18px;overflow:hidden}.goods-image{width:100%;aspect-ratio:1;object-fit:contain}.goods-info{padding:13px}.goods-title{font-size:13px;font-weight:850}.goods-price{font-size:11px;color:#777;margin-top:5px}.news-callout{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:30px;border:1px solid #dfddd7;border-radius:24px;background:#fff}.news-callout p{margin:7px 0 0;color:#6e6d68;font-size:13px;line-height:1.7}.about{padding:46px;border-radius:28px;background:#16261e;color:#fff}.about h2{font-size:38px;white-space:pre-line;margin:0 0 16px}.about p{max-width:720px;margin:0;line-height:2;color:#d7dfd9}.language-row{margin-top:26px}.footer{padding:38px 5vw;border-top:1px solid #ddd9d3;background:#fff}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:30px}.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+    @media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:46px}.hero-art{min-height:240px}.clover{width:250px}.clover::before{font-size:132px}.category-grid,.sticker-grid,.free-grid,.goods-grid{grid-template-columns:repeat(2,1fr)}.section-head{align-items:flex-start}.footer-inner{display:block}}
+    @media(max-width:520px){.site-header{height:82px;padding:0 20px}.main{padding-left:20px;padding-right:20px}.brand-name{font-size:19px}.hero{padding-top:38px;gap:22px}.hero-title{font-size:50px}.hero-lead{font-size:14px}.hero-actions{display:grid}.btn{width:100%}.hero-art{min-height:205px}.clover{width:210px}.clover::before{font-size:112px}.clover::after{font-size:15px;right:12px;top:42px}.section{margin-top:48px}.section-surface{padding:20px}.section-head{display:block}.more{display:inline-block;margin-top:12px}.section-title{font-size:28px}.category-grid,.sticker-grid,.free-grid,.goods-grid{gap:10px}.category-card{min-height:76px;padding:14px}.category-card strong{font-size:15px}.free-card{display:grid;grid-template-columns:44px 1fr;padding:13px}.free-card b{display:none}.free-icon{width:44px;height:44px}.news-callout{display:block;padding:22px}.news-callout .btn{margin-top:18px}.about{padding:30px}.about h2{font-size:31px}}
   </style>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href={localizedPath(locale,"/")} aria-label="stamp moke home">
-      <span class="brand-mark">sm</span>
-      <span class="brand-name">stamp moke</span>
-    </a>
-    <div class="header-actions">
-      <details class="menu">
-        <summary aria-label="menu"></summary>
-        <div class="menu-panel">
-          <a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a>
-          <a href={localizedPath(locale,"/free/")}>{isJa ? "無料フリー素材" : "Free materials"}</a>
-          <a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a>
-          <a href={localizedPath(locale,"/categories/")}>{t.categories}</a>
-          <div class="menu-language"><LanguageSwitcher locale={locale}/></div>
-        </div>
-      </details>
-    </div>
+    <a class="brand" href={localizedPath(locale,"/")} aria-label="stamp moke home"><span class="brand-mark">sm</span><span class="brand-name">stamp moke</span></a>
+    <div class="header-actions"><details class="menu"><summary aria-label="menu"></summary><div class="menu-panel"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/free/")}>{locale === "ja" ? "無料フリー素材" : copy.free}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><div class="menu-language"><LanguageSwitcher locale={locale}/></div></div></details></div>
   </header>
 
   <main class="main">
     <section class="hero">
-      <div class="hero-copy">
-        <h1 class="hero-title">{heroTitle}</h1>
-        <div class="hero-rule"></div>
-        <p class="hero-lead">{heroLead}</p>
-        <form class="search" action={localizedPath(locale,"/search/")} method="get">
-          <input name="q" type="search" placeholder={isJa ? "スタンプ・素材・グッズを検索..." : "Search stamp moke..."} aria-label="search" />
-        </form>
-        <div class="tags">
-          <a class="tag" href={localizedPath(locale,"/stickers/")}># LINEスタンプ</a>
-          <a class="tag" href={localizedPath(locale,"/free/")}># フリー素材</a>
-          <a class="tag" href={localizedPath(locale,"/goods/")}># グッズ</a>
-          <a class="tag" href={localizedPath(locale,"/free-tools/")}># 無料ツール</a>
-        </div>
-      </div>
+      <div><h1 class="hero-title">{copy.hero}</h1><div class="hero-rule"></div><p class="hero-lead">{copy.lead}</p><div class="hero-actions"><a class="btn btn-primary" href={localizedPath(locale,"/stickers/")}>{copy.primary} →</a><a class="btn btn-secondary" href={localizedPath(locale,"/free/")}>{copy.secondary}</a></div></div>
       <div class="hero-art"><div class="clover" aria-hidden="true"></div></div>
     </section>
 
-    <nav class="quick-grid" aria-label="main navigation">
-      <a class="quick-card" href={localizedPath(locale,"/stickers/")}><span class="quick-icon">🐕</span><span class="quick-title">{isJa ? "スタンプ一覧" : t.stickers}</span><span class="quick-sub">{isJa ? "LINEスタンプを見る" : t.details}</span></a>
-      <a class="quick-card" href={localizedPath(locale,"/free/")}><span class="quick-icon">🎨</span><span class="quick-title">{isJa ? "無料フリー素材" : "Free materials"}</span><span class="quick-sub">{isJa ? "イラスト・背景・アイコンなど" : "Illustrations and assets"}</span></a>
-      <a class="quick-card" href={localizedPath(locale,"/goods/")}><span class="quick-icon">🛒</span><span class="quick-title">{isJa ? "グッズショップ" : t.goodsTitle}</span><span class="quick-sub">SUZURI</span></a>
-      <a class="quick-card" href="#language"><span class="quick-icon">🌐</span><span class="quick-title">Language</span><span class="quick-sub">{isJa ? "言語を切り替える" : "Change language"}</span></a>
-    </nav>
-
-    <section class="section-card">
-      <div class="section-head">
-        <div><span class="section-kicker">NEW</span><h2 class="section-title">{isJa ? "新着スタンプ" : t.stickers}</h2></div>
-        <a class="section-more" href={localizedPath(locale,"/stickers/")}>{isJa ? "もっと見る →" : t.details}</a>
-      </div>
-      <div class="latest-grid">
-        {latestStickers.map(sticker => <a class="mini-sticker" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="eager" /><strong>{sticker.localizedTitle}</strong></a>)}
-      </div>
+    <section class="section section-surface" aria-labelledby="find-heading">
+      <div class="section-head"><div><span class="eyebrow">DISCOVER</span><h2 class="section-title" id="find-heading">{copy.find}</h2><p class="section-lead">{copy.findLead}</p></div><a class="more" href={localizedPath(locale,"/categories/")}>{copy.categories} →</a></div>
+      <div class="category-grid">{categoryKeys.map(key => <a class="category-card" href={localizedPath(locale,`/categories/${encodeURIComponent(key)}/`)}><strong>{categoryLabels[locale][key] || key}</strong><span>→</span></a>)}</div>
     </section>
 
-    <section class="section-card">
-      <div class="section-head"><div><h2 class="section-title">{isJa ? "ピックアップ" : "Pickup"}</h2></div><a class="section-more" href={localizedPath(locale,"/stickers/")}>{isJa ? "もっと見る →" : t.details}</a></div>
-      <div class="pickup-grid">
-        {pickupStickers.map(sticker => <a class="pickup-card" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="lazy" /><div>{sticker.localizedTitle}</div></a>)}
-      </div>
+    <section class="section section-surface">
+      <div class="section-head"><div><span class="eyebrow">NEW</span><h2 class="section-title">{copy.new}</h2></div><a class="more" href={localizedPath(locale,"/stickers/")}>{copy.all} →</a></div>
+      <div class="sticker-grid">{latestStickers.map(sticker => <a class="sticker-card" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="eager" /><strong>{sticker.localizedTitle}</strong></a>)}</div>
     </section>
 
-    <section class="collection" id="stickers">
-      <div class="collection-head"><div><div class="collection-label">COLLECTION</div><h2 class="collection-title">{t.stickers}</h2></div><div class="section-count">{categorizedStickers.length}</div></div>
-      <div class="controls"><button class="category-button is-active" data-category="すべて">{t.all}</button>{[...new Set(categorizedStickers.map(s=>s.category))].map(category=><button class="category-button" data-category={category}>{category}</button>)}</div>
-      <div class="sticker-grid">{categorizedStickers.map(sticker=><a class="sticker-card" data-sticker-category={sticker.category} href={localizedPath(locale,`/stickers/${sticker.id}/`)}><div class="sticker-image-wrap"><img class="sticker-image" src={sticker.image} alt={sticker.localizedTitle} loading="lazy" /></div><div class="sticker-info"><h3 class="sticker-title">{sticker.localizedTitle}</h3><p class="sticker-description">{sticker.localizedDescription}</p><span class="sticker-link">{t.details}</span></div></a>)}</div>
+    <section class="section section-surface">
+      <div class="section-head"><div><span class="eyebrow">PICK UP</span><h2 class="section-title">{copy.pickup}</h2></div><a class="more" href={localizedPath(locale,"/stickers/")}>{copy.all} →</a></div>
+      <div class="sticker-grid">{pickupStickers.map(sticker => <a class="sticker-card pickup-card" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="lazy" /><strong>{sticker.localizedTitle}</strong></a>)}</div>
     </section>
 
-    <section class="goods-section">
-      <div class="collection-head"><div><div class="collection-label">CHARACTER GOODS</div><h2 class="collection-title">{t.goodsTitle}</h2><p>{t.goodsLead}</p></div><a class="section-more" href={localizedPath(locale,"/goods/")}>{t.goodsLink}</a></div>
-      <div class="goods-grid">{suzuriDesigns.slice(0,4).map(item=><a class="goods-card" href={item.url} rel="noopener noreferrer"><img class="goods-image" src={item.image} alt={item.title} loading="lazy"/><div class="goods-info"><div class="goods-title">{item.title}</div><div class="goods-price">{item.price}</div></div></a>)}</div>
+    <section class="section" id="stickers">
+      <div class="section-head"><div><span class="eyebrow">COLLECTION · {categorizedStickers.length}</span><h2 class="section-title">{copy.more}</h2></div><a class="more" href={localizedPath(locale,"/stickers/")}>{copy.all} →</a></div>
+      <div class="sticker-grid">{discoverStickers.map(sticker => <a class="sticker-card" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="lazy" /><strong>{sticker.localizedTitle}</strong></a>)}</div>
+      <div class="preview-note"><a class="btn btn-primary" href={localizedPath(locale,"/stickers/")}>{copy.all} →</a></div>
     </section>
 
-    <section class="about-section"><h2 class="about-title">{t.aboutTitle}</h2><p class="about-text">{t.aboutText}</p></section>
-    <div id="language" style="margin-top:28px"><LanguageSwitcher locale={locale}/></div>
+    <section class="section section-surface">
+      <div class="section-head"><div><span class="eyebrow">FREE</span><h2 class="section-title">{copy.free}</h2><p class="section-lead">{copy.freeLead}</p></div><a class="more" href={localizedPath(locale,"/tools/")}>{locale === "ja" ? "無料ツール一覧" : copy.free} →</a></div>
+      <div class="free-grid">{toolCards.map(tool => <a class="free-card" href={localizedPath(locale,tool.path)}><span class="free-icon">{tool.icon}</span><strong>{tool.title}</strong><b>→</b></a>)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><span class="eyebrow">CHARACTER GOODS</span><h2 class="section-title">{copy.goods}</h2><p class="section-lead">{t.goodsLead}</p></div><a class="more" href={localizedPath(locale,"/goods/")}>{t.goodsLink}</a></div>
+      <div class="goods-grid">{suzuriDesigns.slice(0,4).map(item => <a class="goods-card" href={item.url} rel="noopener noreferrer"><img class="goods-image" src={item.image} alt={item.title} loading="lazy"/><div class="goods-info"><div class="goods-title">{item.title}</div><div class="goods-price">{item.price}</div></div></a>)}</div>
+    </section>
+
+    <section class="section news-callout"><div><span class="eyebrow">NEWS</span><h2 class="section-title">{copy.news}</h2><p>{copy.newsLead}</p></div><a class="btn btn-secondary" href={localizedPath(locale,"/news/")}>{copy.newsLink} →</a></section>
+
+    <section class="section about"><h2>{t.aboutTitle}</h2><p>{t.aboutText}</p></section>
+    <div class="language-row"><LanguageSwitcher locale={locale}/></div>
   </main>
 
-  <footer class="footer"><div class="footer-inner"><div><strong>stamp moke</strong><p>{t.footerCopy}</p></div><nav class="footer-links"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a></nav></div></footer>
-  <script is:inline>
-    document.querySelectorAll('[data-category]').forEach(btn=>btn.addEventListener('click',()=>{
-      document.querySelectorAll('[data-category]').forEach(b=>b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      const cat=btn.dataset.category;
-      document.querySelectorAll('[data-sticker-category]').forEach(card=>card.hidden=cat!=='すべて'&&card.dataset.stickerCategory!==cat);
-    }));
-  </script>
+  <footer class="footer"><div class="footer-inner"><div><strong>stamp moke</strong><p>{t.footerCopy}</p></div><nav class="footer-links"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><a href={localizedPath(locale,"/news/")}>{copy.news}</a></nav></div></footer>
 </body>
 </html>
