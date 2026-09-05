@@ -1,0 +1,16 @@
+---
+import stickers from "../data/stickers.json";
+import SiteHeader from "./SiteHeader.astro";
+import SeoHead from "./SeoHead.astro";
+import Analytics from "./Analytics.astro";
+import { localeInfo, localizedPath, normalizeLocale } from "../lib/i18n";
+import { absoluteUrl } from "../lib/seo";
+import { getTagIdsForSticker, tagDefinitions } from "../lib/sticker-search-tags";
+import { tagLabel, tagSlug } from "../lib/zhko-tags";
+const locale=normalizeLocale(Astro.props.locale);
+if(locale!=="zh-cn"&&locale!=="ko") throw new Error(`Unsupported locale: ${locale}`);
+const copy={"zh-cn":{title:"按语句与用途寻找 LINE 贴图",lead:"可按贴图中的语句、工作、家人、方言、动物和日常用途寻找 stamp moke 的 LINE 贴图。",count:"组"},ko:{title:"문구와 용도로 LINE 스티커 찾기",lead:"스티커 문구, 업무, 가족, 일본 사투리, 동물, 일상 용도 등으로 stamp moke의 LINE 스티커를 찾아보세요.",count:"개"}}[locale];
+const tags=tagDefinitions.map(tag=>({tag,count:stickers.filter(s=>getTagIdsForSticker(s).includes(tag.id)).length})).filter(x=>x.count>=2).filter((x,i,a)=>a.findIndex(y=>y.tag.id===x.tag.id)===i);
+const path="/tags/",canonical=absoluteUrl(localizedPath(locale,path)),title=`${copy.title} | stamp moke`;
+---
+<!doctype html><html lang={localeInfo[locale].htmlLang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title}</title><SeoHead title={title} description={copy.lead} canonical={canonical} locale={locale} path={path}/><Analytics/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.main{max-width:1050px;margin:auto;padding:60px 5vw 100px}.main h1{font-size:clamp(36px,6vw,62px);margin:0 0 18px}.lead{color:#666;line-height:1.9}.tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}.tag{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:999px;padding:13px 18px;text-decoration:none;font-weight:800}.num{color:#888;font-size:11px}@media(max-width:640px){.main{padding:42px 18px 70px}.tag{padding:11px 14px}}</style></head><body><SiteHeader locale={locale} path={path}/><main class="main"><h1>{copy.title}</h1><p class="lead">{copy.lead}</p><div class="tags">{tags.map(({tag,count})=><a class="tag" href={localizedPath(locale,`/tags/${tagSlug(locale,tag)}/`)}><span>{tagLabel(locale,tag)}</span><span class="num">{count} {copy.count}</span></a>)}</div></main></body></html>

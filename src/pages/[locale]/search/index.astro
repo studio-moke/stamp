@@ -1,0 +1,7 @@
+---
+import ZhKoSearchPage from "../../../components/ZhKoSearchPage.astro";
+const supported=["zh-cn","ko"];
+export function getStaticPaths(){return supported.map(locale=>({params:{locale},props:{locale}}));}
+const {locale}=Astro.props;
+---
+<ZhKoSearchPage locale={locale}/>

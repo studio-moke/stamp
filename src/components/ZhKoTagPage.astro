@@ -1,0 +1,18 @@
+---
+import stickers from "../data/stickers.json";
+import SiteHeader from "./SiteHeader.astro";
+import SeoHead from "./SeoHead.astro";
+import Analytics from "./Analytics.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { LOCALES, localeInfo, localizedPath, normalizeLocale } from "../lib/i18n";
+import { absoluteUrl } from "../lib/seo";
+import { safeStickerTitle } from "../lib/sticker-content-safe";
+import { getTagIdsForSticker, tagDefinitions } from "../lib/sticker-search-tags";
+import { tagDescription, tagLabel, tagSlug } from "../lib/zhko-tags";
+const locale=normalizeLocale(Astro.props.locale),tag=Astro.props.tag;
+if((locale!=="zh-cn"&&locale!=="ko")||!tag) throw new Error("Invalid tag page");
+const items=stickers.filter(s=>getTagIdsForSticker(s).includes(tag.id)),label=tagLabel(locale,tag),description=tagDescription(locale,tag),slug=tagSlug(locale,tag),path=`/tags/${slug}/`,canonical=absoluteUrl(localizedPath(locale,path));
+const titleLabel=locale==="ko"?`${label} LINE 스티커`:`${label} LINE 贴图`,title=`${titleLabel} | stamp moke`,ui=locale==="ko"?{back:"스티커 목록",eyebrow:"문구・용도로 찾기",count:"해당 스티커"}:{back:"贴图列表",eyebrow:"按语句・用途查找",count:"符合条件的贴图"};
+const localePaths=Object.fromEntries(LOCALES.map(loc=>[loc,localizedPath(loc,`/tags/${tagSlug(loc,tag)}/`)]));
+---
+<!doctype html><html lang={localeInfo[locale].htmlLang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title}</title><SeoHead title={title} description={description} canonical={canonical} locale={locale} path={path} alternatePaths={localePaths}/><Analytics/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.header{min-height:82px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:10px 5vw;position:sticky;top:0;z-index:20}.brand{text-decoration:none;font-weight:900}.actions{display:flex;gap:9px;align-items:center}.back{padding:11px 15px;border:1px solid #ddd;border-radius:999px;text-decoration:none;font-size:12px}.main{max-width:1180px;margin:auto;padding:55px 5vw 100px}.eyebrow{font-size:11px;color:#777}.main h1{font-size:clamp(36px,6vw,68px);margin:12px 0 18px}.lead{max-width:760px;color:#666;line-height:1.9}.count{margin:38px 0 16px;color:#777;font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid #ddd;border-radius:18px;overflow:hidden;text-decoration:none}.card img{width:100%;aspect-ratio:1;object-fit:contain;background:#7696c4;padding:18px}.name{padding:15px;font-size:13px;font-weight:800}@media(max-width:760px){.main{padding:38px 18px 70px}.grid{grid-template-columns:repeat(2,1fr)}.back{display:none}}</style></head><body><header class="header"><a class="brand" href={localizedPath(locale,"/")}>stamp moke</a><div class="actions"><LanguageSwitcher locale={locale} paths={localePaths}/><a class="back" href={localizedPath(locale,"/stickers/")}>{ui.back}</a></div></header><main class="main"><div class="eyebrow">{ui.eyebrow}</div><h1>{titleLabel}</h1><p class="lead">{description}</p><div class="count">{ui.count}: {items.length}</div><div class="grid">{items.map(s=><a class="card" href={localizedPath(locale,`/stickers/${s.id}/`)}><img src={s.image} alt={safeStickerTitle(s,locale)} loading="lazy"/><div class="name">{safeStickerTitle(s,locale)}</div></a>)}</div></main></body></html>

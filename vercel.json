@@ -8,13 +8,7 @@
     "api/note-drafts.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/feed.js": { "regions": ["hnd1"], "maxDuration": 60 }
   },
-  "redirects": [
-    {
-      "source": "/:path((?!api(?:/|$))(?!.*\\.[^/]+$).+[^/])",
-      "destination": "/:path/",
-      "permanent": true
-    }
-  ],
+  "redirects": [{"source":"/:path((?!api(?:/|$))(?!.*\\.[^/]+$).+[^/])","destination":"/:path/","permanent":true}],
   "crons": [
     { "path": "/api/news?sync=1", "schedule": "5 22 * * *" },
     { "path": "/api/note-drafts?action=generate", "schedule": "15 22 * * *" }
@@ -37,6 +31,8 @@
     { "source": "/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=ja" },
     { "source": "/en/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=en" },
     { "source": "/zh-tw/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=zh-tw" },
+    { "source": "/zh-cn/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=zh-cn" },
+    { "source": "/ko/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=ko" },
     { "source": "/th/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=th" },
     { "source": "/id/free/:slug/", "destination": "/api/free?route=page&slug=:slug&locale=id" }
   ]

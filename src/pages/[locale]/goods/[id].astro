@@ -1,0 +1,8 @@
+---
+import designs from "../../../data/suzuri-designs.json";
+import ZhKoGoodsDetailPage from "../../../components/ZhKoGoodsDetailPage.astro";
+const supported=["zh-cn","ko"];
+export function getStaticPaths(){return supported.flatMap(locale=>designs.map(design=>({params:{locale,id:String(design.id)},props:{locale,design}})));}
+const {locale,design}=Astro.props;
+---
+<ZhKoGoodsDetailPage locale={locale} design={design}/>
