@@ -7,7 +7,7 @@ const PAGES_OUT = path.join(ROOT, "sitemap-pages.xml");
 const FREE_OUT = path.join(ROOT, "free-sitemap.xml");
 const PARENT_SITEMAP = path.join(ROOT, "sitemap.xml");
 const STICKERS_SOURCE = path.resolve("src/data/stickers.json");
-const PAGES_SOURCE = path.resolve("src/pages");
+const I18N_SOURCE = path.resolve("src/lib/i18n.ts");
 const EXCLUDED_SEGMENTS = new Set(["admin", "free-admin", "api"]);
 
 function escapeXml(value) {
@@ -114,31 +114,27 @@ function renderUrlset(urls) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
-async function discoverStickerPrefixes() {
-  const prefixes = [];
-  try {
-    await fs.access(path.join(PAGES_SOURCE, "stickers", "[id].astro"));
-    prefixes.push("");
-  } catch {}
-
-  for (const entry of await fs.readdir(PAGES_SOURCE, { withFileTypes: true })) {
-    if (!entry.isDirectory() || entry.name === "stickers") continue;
-    try {
-      await fs.access(path.join(PAGES_SOURCE, entry.name, "stickers", "[id].astro"));
-      prefixes.push(entry.name);
-    } catch {}
+async function supportedStickerPrefixes() {
+  const source = await fs.readFile(I18N_SOURCE, "utf8");
+  const match = source.match(/export\s+const\s+LOCALES\s*=\s*\[([\s\S]*?)\]\s*as\s+const/);
+  if (!match) {
+    throw new Error("[sitemap] could not read LOCALES from src/lib/i18n.ts");
   }
-  return prefixes.sort();
+
+  const locales = [...match[1].matchAll(/["']([^"']+)["']/g)].map((item) => item[1]);
+  if (!locales.includes("ja")) {
+    throw new Error("[sitemap] LOCALES must include ja");
+  }
+
+  const unique = [...new Set(locales)];
+  return unique.map((locale) => locale === "ja" ? "" : locale);
 }
 
 async function validateStickerCoverage(allUrls) {
   const stickers = JSON.parse(await fs.readFile(STICKERS_SOURCE, "utf8"));
-  const prefixes = await discoverStickerPrefixes();
+  const prefixes = await supportedStickerPrefixes();
   if (!Array.isArray(stickers) || stickers.length === 0) {
     throw new Error("[sitemap] src/data/stickers.json is empty or invalid");
-  }
-  if (prefixes.length === 0) {
-    throw new Error("[sitemap] no sticker route templates were found");
   }
 
   const missing = [];
@@ -156,7 +152,7 @@ async function validateStickerCoverage(allUrls) {
     throw new Error(`[sitemap] ${missing.length} sticker URLs are missing from sitemap coverage:\n  ${sample}${missing.length > 20 ? "\n  ..." : ""}`);
   }
 
-  console.log(`[sitemap] sticker coverage OK: ${stickers.length} stickers x ${prefixes.length} route locales`);
+  console.log(`[sitemap] sticker coverage OK: ${stickers.length} stickers x ${prefixes.length} supported locales`);
 }
 
 async function validateParentSitemap() {
@@ -204,10 +200,8 @@ for (const file of files) {
   const explicitCanonical = canonicalHref(html);
   const canonical = validateCanonical(explicitCanonical || actual, file);
 
-  // A sitemap must contain canonical URLs only. If this rendered page deliberately
-  // points to another canonical URL (for example, an untranslated locale mirror),
-  // do not submit the mirror URL and do not treat that legitimate relationship as
-  // a duplicate-canonical build error.
+  // Only self-canonical pages belong in a sitemap. Mirrors that intentionally
+  // canonicalize elsewhere are excluded, not treated as duplicate sitemap URLs.
   if (canonical !== actual) {
     skippedNonCanonical += 1;
     continue;
@@ -249,4 +243,4 @@ console.log(`[sitemap] total canonical indexable public URLs: ${allUrls.size}`);
 console.log(`[sitemap] excluded private/admin HTML: ${skippedExcluded}`);
 console.log(`[sitemap] excluded noindex HTML: ${skippedNoindex}`);
 console.log(`[sitemap] excluded non-self-canonical HTML: ${skippedNonCanonical}`);
-console.log("[sitemap] validation OK: canonical-only URLs, host/protocol, trailing slash, query/hash, double slash, sticker coverage, parent index");
+console.log("[sitemap] validation OK: canonical-only URLs, host/protocol, trailing slash, query/hash, double slash, supported-locale sticker coverage, parent index");
