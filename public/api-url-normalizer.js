@@ -3,13 +3,15 @@
   window.__stampMokeApiUrlNormalizer = true;
 
   function normalizeApiUrl(value) {
+    const raw = String(value);
+    const absoluteInput = /^https?:\/\//i.test(raw);
     let url;
-    try { url = new URL(String(value), location.href); } catch { return value; }
+    try { url = new URL(raw, location.href); } catch { return value; }
     if (url.origin !== location.origin) return value;
     if (!(url.pathname === "/api" || url.pathname.startsWith("/api/"))) return value;
     if (url.pathname === "/api/" || url.pathname.endsWith("/")) return value;
     url.pathname += "/";
-    return `${url.pathname}${url.search}${url.hash}`;
+    return absoluteInput ? url.href : `${url.pathname}${url.search}${url.hash}`;
   }
 
   const originalFetch = window.fetch?.bind(window);
