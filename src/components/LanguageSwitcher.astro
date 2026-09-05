@@ -51,9 +51,35 @@ const hrefFor = (item) => paths?.[item] || localizedPath(item, path);
   .language-option { display:block; padding:10px 12px; border-radius:10px; color:#333; font-size:12px; font-weight:700; text-decoration:none; white-space:nowrap; }
   .language-option:hover { background:#f4f3ef; }
   .language-option.active { background:#171717; color:#fff; }
+
+  /* Breadcrumbs use one visual treatment across detail pages. */
+  :global(body .breadcrumb),
+  :global(body .crumb) {
+    margin:0 0 28px !important;
+    color:#888 !important;
+    font-size:11px !important;
+    font-weight:400 !important;
+    line-height:1.7 !important;
+  }
+  :global(body .breadcrumb a),
+  :global(body .crumb a) {
+    color:inherit !important;
+    text-decoration:none !important;
+  }
+  :global(body .breadcrumb a:hover),
+  :global(body .crumb a:hover) {
+    text-decoration:underline !important;
+  }
+
   @media (max-width:640px) {
     .language-switcher summary { min-height:34px; padding:7px 9px; gap:5px; }
     .language-current { max-width:92px; overflow:hidden; text-overflow:ellipsis; font-size:11px; }
     .language-menu { min-width:170px; }
+    :global(body .breadcrumb),
+    :global(body .crumb) {
+      margin-bottom:20px !important;
+      font-size:11px !important;
+      line-height:1.7 !important;
+    }
   }
 </style>
