@@ -2,7 +2,7 @@ import type { Locale } from "./i18n";
 
 type StickerTranslation = { en: string; "zh-tw": string; th: string };
 
-// Product names are creator-authored Japanese on LINE STORE.  These curated
+// Product names are creator-authored Japanese on LINE STORE. These curated
 // display names keep the original character/idea while making the catalogue
 // understandable in every supported language.
 const titles: Record<string, StickerTranslation> = {
@@ -124,6 +124,8 @@ const titles: Record<string, StickerTranslation> = {
 const genericTitles = {
   en: (id: string) => `Original LINE Sticker Set ${id}`,
   "zh-tw": (id: string) => `原創LINE貼圖系列 ${id}`,
+  "zh-cn": (id: string) => `原创LINE贴图系列 ${id}`,
+  ko: (id: string) => `오리지널 LINE 스티커 세트 ${id}`,
   th: (id: string) => `ชุดสติกเกอร์ LINE ต้นฉบับ ${id}`,
   id: (id: string) => `Set Stiker LINE Orisinal ${id}`,
 };
@@ -172,6 +174,12 @@ export function localizedStickerTitle(sticker: { id: string; title?: string }, l
     const english = titles[String(sticker.id)]?.en;
     return english ? indonesianTitle(english) : genericTitles.id(String(sticker.id));
   }
+  if (locale === "zh-cn") {
+    return titles[String(sticker.id)]?.en || genericTitles["zh-cn"](String(sticker.id));
+  }
+  if (locale === "ko") {
+    return titles[String(sticker.id)]?.en || genericTitles.ko(String(sticker.id));
+  }
   return titles[String(sticker.id)]?.[locale] || genericTitles[locale](String(sticker.id));
 }
 
@@ -180,6 +188,8 @@ export function localizedStickerDescription(sticker: { id: string; title?: strin
   const title = localizedStickerTitle(sticker, locale);
   if (locale === "en") return `Discover “${title},” an original LINE sticker set by stamp moke for everyday chats.`;
   if (locale === "zh-tw") return `探索stamp moke原創作品「${title}」，讓日常LINE對話更可愛、更有趣。`;
+  if (locale === "zh-cn") return `探索stamp moke原创LINE贴图「${title}」，让日常聊天更可爱、更有趣。`;
+  if (locale === "ko") return `stamp moke의 오리지널 LINE 스티커 “${title}”를 만나보세요. 일상 대화에 귀엽고 재미있게 사용할 수 있습니다.`;
   if (locale === "th") return `พบกับ “${title}” สติกเกอร์ LINE ต้นฉบับจาก stamp moke สำหรับแชตประจำวัน`;
   return `Temukan “${title},” set stiker LINE orisinal dari stamp moke untuk obrolan sehari-hari.`;
 }
@@ -187,5 +197,10 @@ export function localizedStickerDescription(sticker: { id: string; title?: strin
 export function localizedStickerPrice(price: string | undefined, locale: Locale) {
   if (!price) return "";
   if (locale === "ja") return price;
-  return locale === "en" ? "Check price on LINE STORE" : locale === "zh-tw" ? "請至LINE STORE確認目前價格" : locale === "th" ? "ตรวจสอบราคาปัจจุบันบน LINE STORE" : "Periksa harga terbaru di LINE STORE";
+  if (locale === "en") return "Check price on LINE STORE";
+  if (locale === "zh-tw") return "請至LINE STORE確認目前價格";
+  if (locale === "zh-cn") return "请在LINE STORE查看当前价格";
+  if (locale === "ko") return "LINE STORE에서 현재 가격을 확인하세요";
+  if (locale === "th") return "ตรวจสอบราคาปัจจุบันบน LINE STORE";
+  return "Periksa harga terbaru di LINE STORE";
 }
