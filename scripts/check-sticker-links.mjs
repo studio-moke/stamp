@@ -21,7 +21,12 @@ function targetExists(urlPath){
 for(const locale of locales){
   const prefix=locale==="ja"?"":`/${locale}`;
   const listPath=`${prefix}/stickers/`;
+  const homeFile=path.join(dist,prefix.replace(/^\//,""),"index.html");
   if(!targetExists(listPath)) failures.push(`missing collection page: ${listPath}`);
+  if(fs.existsSync(homeFile)){
+    const home=fs.readFileSync(homeFile,"utf8");
+    if(!home.includes(`href="${listPath}"`)) failures.push(`home does not link to localized collection: ${prefix||"/"} -> ${listPath}`);
+  }
 }
 
 if(fs.existsSync(dist)){
@@ -47,4 +52,4 @@ if(failures.length){
   if(failures.length>100) console.error(`...and ${failures.length-100} more`);
   process.exit(1);
 }
-console.log("Sticker link check passed for all locales; no double-slash sticker links found.");
+console.log("Sticker link check passed for all locales; localized home links are valid and no double-slash sticker links were found.");
