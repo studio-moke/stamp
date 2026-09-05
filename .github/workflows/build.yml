@@ -12,14 +12,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
+
       - name: Install dependencies
         timeout-minutes: 3
         run: npm ci --no-audit --no-fund --prefer-offline
+
       - name: Check sticker discovery scripts
         run: |
           node --check server/api/line-author.js
@@ -27,10 +30,15 @@ jobs:
           node --check scripts/discover-new-stickers-by-id.mjs
           node --check scripts/fetch-stickers.mjs
           node --check scripts/discover-new-stickers.mjs
+          node --check scripts/noindex-private-pages.mjs
+          node --check scripts/generate-sitemap.mjs
+
       - name: Fix tool routes
         run: node scripts/fix-tool-routes.mjs
+
       - name: Prepare incremental build
         run: node scripts/prepare-incremental-build.mjs
+
       - name: Astro build
         shell: bash
         run: |
@@ -42,6 +50,7 @@ jobs:
             echo "::error title=Astro build failed::$msg"
             exit "$status"
           fi
+
       - name: Upload Astro build log
         if: failure()
         uses: actions/upload-artifact@v4
@@ -50,9 +59,37 @@ jobs:
           path: astro-build.log
           if-no-files-found: ignore
           retention-days: 1
-      - name: Inject home news
-        run: node scripts/inject-home-news.mjs
-      - name: Inject SEO content
-        run: node scripts/inject-seo-content.mjs
-      - name: Ensure global favicon
-        run: node scripts/ensure-global-favicon.mjs
+
+      - name: Run post-build content and SEO pipeline
+        run: |
+          node scripts/inject-home-news.mjs
+          node scripts/inject-seo-content.mjs
+          node scripts/ensure-global-favicon.mjs
+          node scripts/normalize-trailing-slashes.mjs
+          node scripts/fix-sticker-list-links.mjs
+          node scripts/limit-home-stickers.mjs
+          node scripts/fix-sticker-navigation.mjs
+          node scripts/check-sticker-links.mjs
+          node scripts/noindex-private-pages.mjs
+          node scripts/generate-sitemap.mjs
+
+      - name: Validate SEO surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f dist/robots.txt
+          test -f dist/sitemap.xml
+          test -f dist/sitemap-pages.xml
+          grep -q '<sitemapindex' dist/sitemap.xml
+          grep -q 'https://stamp-moke.jp/sitemap-pages.xml' dist/sitemap.xml
+          grep -q 'https://stamp-moke.jp/' dist/sitemap-pages.xml
+          grep -q 'Sitemap: https://stamp-moke.jp/sitemap.xml' dist/robots.txt
+          if grep -q '/admin/' dist/sitemap-pages.xml; then
+            echo 'Admin URL leaked into sitemap' >&2
+            exit 1
+          fi
+          if grep -q '/free-admin/' dist/sitemap-pages.xml; then
+            echo 'Free-admin URL leaked into sitemap' >&2
+            exit 1
+          fi
+          echo 'Build and SEO validation passed'
