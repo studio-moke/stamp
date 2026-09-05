@@ -1,6 +1,6 @@
 (() => {
   const CONFIG={
-    ja:{brand:'LINEスタンプ・イラスト・グッズ・無料ツール',stickers:'LINEスタンプ',assets:'イラスト素材',goods:'グッズ',tools:'無料ツール',news:'お知らせ',search:'サイト内検索',searchPh:'サイト内を検索',menu:'メニュー',close:'閉じる',lang:'日本語'},
+    ja:{brand:'LINEスタンプ・イラスト・グッズ・無料ツール',stickers:'LINEスタンプ',assets:'無料フリー素材',goods:'グッズ',tools:'無料ツール',news:'お知らせ',search:'サイト内検索',searchPh:'サイト内を検索',menu:'メニュー',close:'閉じる',lang:'日本語'},
     en:{brand:'LINE stickers · illustrations · goods · free tools',stickers:'LINE Stickers',assets:'Illustrations',goods:'Goods',tools:'Free Tools',news:'News',search:'Search',searchPh:'Search this site',menu:'Menu',close:'Close',lang:'English'},
     'zh-tw':{brand:'LINE貼圖・插圖・商品・免費工具',stickers:'LINE貼圖',assets:'插圖素材',goods:'商品',tools:'免費工具',news:'最新消息',search:'站內搜尋',searchPh:'搜尋網站',menu:'選單',close:'關閉',lang:'繁體中文'},
     th:{brand:'สติกเกอร์ LINE · ภาพประกอบ · สินค้า · เครื่องมือฟรี',stickers:'สติกเกอร์ LINE',assets:'ภาพประกอบ',goods:'สินค้า',tools:'เครื่องมือฟรี',news:'ข่าวสาร',search:'ค้นหา',searchPh:'ค้นหาในเว็บไซต์',menu:'เมนู',close:'ปิด',lang:'ไทย'},
