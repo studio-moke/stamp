@@ -72,8 +72,8 @@ jobs:
           LINE_TOKYO_CATALOG_URL: "https://stamp-moke.jp/api/line-author"
           LINE_TOKYO_EXPECTED_REGION: "hnd1"
           LINE_TOKYO_MIN_CATALOG_COUNT: "37"
-          LINE_TOKYO_RETRIES: "12"
-          LINE_TOKYO_RETRY_DELAY_MS: "10000"
+          LINE_TOKYO_RETRIES: "3"
+          LINE_TOKYO_RETRY_DELAY_MS: "3000"
         run: node scripts/fetch-stickers-via-tokyo.mjs
 
       # Keep the ID scanner only as a fallback. It is intentionally not the
