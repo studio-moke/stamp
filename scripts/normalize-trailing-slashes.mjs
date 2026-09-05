@@ -6,8 +6,7 @@ const SITE = "https://stamp-moke.jp";
 const HOST = "stamp-moke.jp";
 const FILE_RE = /\/[^/?#]+\.[a-z0-9]{1,16}$/i;
 const RUNTIME_SCRIPTS = [
-  '<script src="/api-url-normalizer.js?v=20260905-3"></script>',
-  '<script src="/trailing-slash-links.js?v=20260905-3"></script>'
+  '<script src="/trailing-slash-links.js?v=20260905-4"></script>'
 ];
 
 function isPagePath(pathname) {
@@ -34,6 +33,7 @@ function normalizeUrl(value) {
 
 function injectRuntimeScripts(text) {
   let out = text;
+  out = out.replace(/<script src="\/api-url-normalizer\.js\?v=[^"]+"><\/script>/g, "");
   for (const tag of [...RUNTIME_SCRIPTS].reverse()) {
     const src = tag.match(/src="([^"]+)/)?.[1]?.split("?")[0];
     if (src && out.includes(src)) continue;
