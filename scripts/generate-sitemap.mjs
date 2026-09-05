@@ -180,6 +180,7 @@ const canonicalSources = new Map();
 const allUrls = new Set();
 let skippedNoindex = 0;
 let skippedExcluded = 0;
+let skippedNonCanonical = 0;
 
 for (const file of files) {
   if (!file.endsWith(".html")) continue;
@@ -194,16 +195,27 @@ for (const file of files) {
     continue;
   }
 
+  const actualValue = fallbackUrl(file);
+  if (!actualValue) {
+    throw new Error(`[sitemap] indexable HTML has no public route fallback URL: ${relativeFile(file)}`);
+  }
+  const actual = validateCanonical(actualValue, file);
+
   const explicitCanonical = canonicalHref(html);
-  const value = explicitCanonical || fallbackUrl(file);
-  if (!value) {
-    throw new Error(`[sitemap] indexable HTML has no canonical/fallback URL: ${relativeFile(file)}`);
+  const canonical = validateCanonical(explicitCanonical || actual, file);
+
+  // A sitemap must contain canonical URLs only. If this rendered page deliberately
+  // points to another canonical URL (for example, an untranslated locale mirror),
+  // do not submit the mirror URL and do not treat that legitimate relationship as
+  // a duplicate-canonical build error.
+  if (canonical !== actual) {
+    skippedNonCanonical += 1;
+    continue;
   }
 
-  const canonical = validateCanonical(value, file);
   const previous = canonicalSources.get(canonical);
   if (previous && previous !== relativeFile(file)) {
-    throw new Error(`[sitemap] duplicate canonical ${canonical}\n  ${previous}\n  ${relativeFile(file)}`);
+    throw new Error(`[sitemap] duplicate self-canonical URL ${canonical}\n  ${previous}\n  ${relativeFile(file)}`);
   }
   canonicalSources.set(canonical, relativeFile(file));
   allUrls.add(canonical);
@@ -233,7 +245,8 @@ await validateParentSitemap();
 
 console.log(`[sitemap] sitemap-pages.xml: ${orderedPages.length} URLs`);
 console.log(`[sitemap] free-sitemap.xml: ${orderedFree.length} URLs`);
-console.log(`[sitemap] total indexable public URLs: ${allUrls.size}`);
+console.log(`[sitemap] total canonical indexable public URLs: ${allUrls.size}`);
 console.log(`[sitemap] excluded private/admin HTML: ${skippedExcluded}`);
 console.log(`[sitemap] excluded noindex HTML: ${skippedNoindex}`);
-console.log("[sitemap] validation OK: canonical host/protocol, trailing slash, query/hash, double slash, duplicates, sticker coverage, parent index");
+console.log(`[sitemap] excluded non-self-canonical HTML: ${skippedNonCanonical}`);
+console.log("[sitemap] validation OK: canonical-only URLs, host/protocol, trailing slash, query/hash, double slash, sticker coverage, parent index");
