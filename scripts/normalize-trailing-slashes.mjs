@@ -5,6 +5,10 @@ const ROOT = path.resolve("dist");
 const SITE = "https://stamp-moke.jp";
 const HOST = "stamp-moke.jp";
 const FILE_RE = /\/[^/?#]+\.[a-z0-9]{1,16}$/i;
+const RUNTIME_SCRIPTS = [
+  '<script src="/api-url-normalizer.js?v=20260905-2"></script>',
+  '<script src="/trailing-slash-links.js?v=20260905-2"></script>'
+];
 
 function isPagePath(pathname) {
   if (!pathname || pathname === "/" || pathname.endsWith("/")) return false;
@@ -28,11 +32,23 @@ function normalizeUrl(value) {
   return rootRelative ? `${url.pathname}${url.search}${url.hash}` : url.toString();
 }
 
-function normalizeText(text) {
+function injectRuntimeScripts(text) {
+  let out = text;
+  for (const tag of RUNTIME_SCRIPTS) {
+    const src = tag.match(/src="([^"]+)/)?.[1]?.split("?")[0];
+    if (src && out.includes(src)) continue;
+    if (out.includes("</body>")) out = out.replace("</body>", `${tag}</body>`);
+    else out += tag;
+  }
+  return out;
+}
+
+function normalizeText(text, ext) {
   let out = text.replace(/https?:\/\/stamp-moke\.jp(?:\/[^\s\"'<>]*)?/gi, match => normalizeUrl(match));
   out = out.replace(/\b(href|action)=(['"])(\/[^'"<>]*)\2/gi, (all, attr, quote, raw) => {
     return `${attr}=${quote}${normalizeUrl(raw)}${quote}`;
   });
+  if (ext === ".html") out = injectRuntimeScripts(out);
   return out;
 }
 
@@ -68,10 +84,10 @@ try {
         const data = JSON.parse(before);
         after = `${JSON.stringify(normalizeJson(data), null, 2)}\n`;
       } catch {
-        after = normalizeText(before);
+        after = normalizeText(before, ext);
       }
     } else {
-      after = normalizeText(before);
+      after = normalizeText(before, ext);
     }
     if (after !== before) {
       await fs.writeFile(file, after);
