@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "node scripts/fix-tool-routes.mjs && astro dev",
-    "build": "node scripts/fix-tool-routes.mjs && node scripts/prepare-incremental-build.mjs && astro build && node scripts/inject-home-news.mjs && node scripts/inject-seo-content.mjs && node scripts/ensure-global-favicon.mjs && node scripts/normalize-trailing-slashes.mjs && node scripts/fix-sticker-list-links.mjs && node scripts/limit-home-stickers.mjs && node scripts/fix-sticker-navigation.mjs && node scripts/check-sticker-links.mjs && node scripts/noindex-private-pages.mjs && node scripts/generate-sitemap.mjs",
+    "build": "node scripts/fix-tool-routes.mjs && node scripts/prepare-incremental-build.mjs && astro build && node scripts/inject-home-news.mjs && node scripts/inject-seo-content.mjs && node scripts/ensure-zhko-output.mjs && node scripts/ensure-global-favicon.mjs && node scripts/normalize-trailing-slashes.mjs && node scripts/fix-sticker-list-links.mjs && node scripts/limit-home-stickers.mjs && node scripts/fix-sticker-navigation.mjs && node scripts/check-sticker-links.mjs && node scripts/noindex-private-pages.mjs && node scripts/generate-sitemap.mjs && node scripts/audit-zhko-i18n.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

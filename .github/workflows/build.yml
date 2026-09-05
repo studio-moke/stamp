@@ -23,7 +23,7 @@ jobs:
         timeout-minutes: 3
         run: npm ci --no-audit --no-fund --prefer-offline
 
-      - name: Check sticker discovery scripts
+      - name: Check sticker discovery and SEO scripts
         run: |
           node --check server/api/line-author.js
           node --check scripts/fetch-stickers-via-tokyo.mjs
@@ -32,6 +32,8 @@ jobs:
           node --check scripts/discover-new-stickers.mjs
           node --check scripts/noindex-private-pages.mjs
           node --check scripts/generate-sitemap.mjs
+          node --check scripts/ensure-zhko-output.mjs
+          node --check scripts/audit-zhko-i18n.mjs
 
       - name: Fix tool routes
         run: node scripts/fix-tool-routes.mjs
@@ -64,6 +66,7 @@ jobs:
         run: |
           node scripts/inject-home-news.mjs
           node scripts/inject-seo-content.mjs
+          node scripts/ensure-zhko-output.mjs
           node scripts/ensure-global-favicon.mjs
           node scripts/normalize-trailing-slashes.mjs
           node scripts/fix-sticker-list-links.mjs
@@ -72,6 +75,7 @@ jobs:
           node scripts/check-sticker-links.mjs
           node scripts/noindex-private-pages.mjs
           node scripts/generate-sitemap.mjs
+          node scripts/audit-zhko-i18n.mjs
 
       - name: Validate SEO surfaces
         shell: bash
@@ -83,6 +87,8 @@ jobs:
           grep -q '<sitemapindex' dist/sitemap.xml
           grep -q 'https://stamp-moke.jp/sitemap-pages.xml' dist/sitemap.xml
           grep -q 'https://stamp-moke.jp/' dist/sitemap-pages.xml
+          grep -q 'https://stamp-moke.jp/zh-cn/' dist/sitemap-pages.xml
+          grep -q 'https://stamp-moke.jp/ko/' dist/sitemap-pages.xml
           grep -q 'Sitemap: https://stamp-moke.jp/sitemap.xml' dist/robots.txt
           if grep -q '/admin/' dist/sitemap-pages.xml; then
             echo 'Admin URL leaked into sitemap' >&2
@@ -92,4 +98,4 @@ jobs:
             echo 'Free-admin URL leaked into sitemap' >&2
             exit 1
           fi
-          echo 'Build and SEO validation passed'
+          echo 'Build, seven-locale parity and SEO validation passed'
