@@ -52,7 +52,6 @@
     `;document.head.appendChild(s)
   }
   function run(){style();addHeader();addPromo()}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-  let n=0;const timer=setInterval(()=>{run();if(++n>=24)clearInterval(timer)},250);
-  new MutationObserver(()=>{addHeader();addPromo()}).observe(document.documentElement,{childList:true,subtree:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{run();if(isHome())setTimeout(addPromo,250)},{once:true});
+  else {run();if(isHome())setTimeout(addPromo,250)}
 })();
