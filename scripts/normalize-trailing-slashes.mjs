@@ -66,6 +66,12 @@ function normalizeJson(value) {
   return value;
 }
 
+function detectJsonIndent(text) {
+  if (!text.includes("\n")) return 0;
+  const match = text.match(/\n(\s+)\S/);
+  return match ? Math.min(match[1].length, 8) : 2;
+}
+
 async function files(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   const result = [];
@@ -87,7 +93,14 @@ try {
     if (ext === ".json") {
       try {
         const data = JSON.parse(before);
-        after = `${JSON.stringify(normalizeJson(data), null, 2)}\n`;
+        const beforeCanonical = JSON.stringify(data);
+        normalizeJson(data);
+        const afterCanonical = JSON.stringify(data);
+        if (afterCanonical !== beforeCanonical) {
+          const indent = detectJsonIndent(before);
+          after = JSON.stringify(data, null, indent || undefined);
+          if (before.endsWith("\n")) after += "\n";
+        }
       } catch {
         after = normalizeText(before, ext);
       }
