@@ -1,7 +1,6 @@
 ---
 import ZhKoGoodsPage from "../../../components/ZhKoGoodsPage.astro";
-const supported=["zh-cn","ko"];
-export function getStaticPaths(){return supported.map(locale=>({params:{locale},props:{locale}}));}
+export function getStaticPaths(){return ["zh-cn","ko"].map(locale=>({params:{locale},props:{locale}}));}
 const {locale}=Astro.props;
 ---
 <ZhKoGoodsPage locale={locale}/>

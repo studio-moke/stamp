@@ -2,9 +2,7 @@
 import stickers from "../../../data/stickers.json";
 import { getTagIdsForSticker, tagDefinitions } from "../../../lib/sticker-search-tags";
 import ZhKoTagPage from "../../../components/ZhKoTagPage.astro";
-const supported=["zh-cn","ko"];
-const visible=tagDefinitions.filter(tag=>stickers.filter(s=>getTagIdsForSticker(s).includes(tag.id)).length>=2).filter((tag,i,a)=>a.findIndex(x=>x.id===tag.id)===i);
-export function getStaticPaths(){return supported.flatMap(locale=>visible.map(tag=>({params:{locale,tag:tag.id},props:{locale,tag}})));}
+export function getStaticPaths(){const visible=tagDefinitions.filter(tag=>stickers.filter(s=>getTagIdsForSticker(s).includes(tag.id)).length>=2).filter((tag,i,a)=>a.findIndex(x=>x.id===tag.id)===i);return ["zh-cn","ko"].flatMap(locale=>visible.map(tag=>({params:{locale,tag:tag.id},props:{locale,tag}})));}
 const {locale,tag}=Astro.props;
 ---
 <ZhKoTagPage locale={locale} tag={tag}/>
