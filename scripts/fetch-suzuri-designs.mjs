@@ -1,7 +1,9 @@
 import fs from "node:fs/promises";
 
 const token = process.env.SUZURI_API_TOKEN;
+// API account ID; independent of the public shop URL.
 const userName = "bayasihimokei";
+const publicShopUrl = "https://suzuri.jp/stamp-moke";
 const outputPath = new URL("../src/data/suzuri-designs.json", import.meta.url);
 
 if (!token) {
@@ -96,7 +98,7 @@ for (const product of products) {
     id: String(product.id),
     title: product.title,
     image: product.sampleImageUrl,
-    url: product.sampleUrl,
+    url: product.sampleUrl.replace(/^https:\/\/suzuri\.jp\/[^/]+/, publicShopUrl),
     itemName: product.item?.humanizeName || "SUZURIグッズ",
     price: product.discountedPriceWithTax || product.priceWithTax || null,
     regularPrice: product.priceWithTax || null,
@@ -112,6 +114,10 @@ const designs = [...grouped.values()]
       .sort((a, b) => a.priority - b.priority || a.itemName.localeCompare(b.itemName, "ja"))
       .map(({ priority, ...product }) => product),
   }));
+
+if (designs.length === 0) {
+  throw new Error("SUZURI returned no published designs; preserving the existing product JSON.");
+}
 
 await fs.writeFile(outputPath, `${JSON.stringify(designs, null, 2)}\n`, "utf8");
 console.log(`Saved ${designs.length} SUZURI character designs and ${products.length} products.`);

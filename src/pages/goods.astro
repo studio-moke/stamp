@@ -1,4 +1,5 @@
 ---
+import designs from "../data/suzuri-designs.json";
 import Analytics from "../components/Analytics.astro";
 import SeoHead from "../components/SeoHead.astro";
 import LanguageSwitcher from "../components/LanguageSwitcher.astro";
@@ -8,7 +9,7 @@ import { absoluteUrl } from "../lib/seo";
 const locale = normalizeLocale(Astro.props.locale);
 const t = messages[locale];
 
-const shopUrl = "https://suzuri.jp/bayasihimokei/designs";
+const shopUrl = "https://suzuri.jp/stamp-moke/designs";
 const title = locale === "ja" ? "stamp mokeのオリジナルキャラグッズ｜Tシャツ・雑貨をSUZURIで販売" : locale === "en" ? "stamp moke Original Character Goods | T-Shirts & Items on SUZURI" : locale === "zh-tw" ? "stamp moke 原創角色周邊｜T恤與雜貨・SUZURI販售" : locale === "th" ? "สินค้าออริจินัล stamp moke | เสื้อและของใช้บน SUZURI" : "Produk Karakter Orisinal stamp moke | Kaos & Aksesori di SUZURI";
 const description = locale === "ja" ? "stamp moke / studio moke のオリジナルキャラクターやイラストを使ったSUZURIグッズを紹介。Tシャツ、雑貨、日用品など、LINEスタンプから広がったデザインを商品として楽しめます。" : t.goodsLead;
 const canonicalPath = "/goods/";
@@ -20,16 +21,7 @@ const goodsText = {
   th:{lead:"พบกับตัวละครและภาพประกอบต้นฉบับของ stamp moke ในรูปแบบสินค้าจาก SUZURI เช่น เสื้อยืด ของใช้ และของตกแต่งต่าง ๆ หลายดีไซน์ต่อยอดมาจากสติกเกอร์ LINE และงานวาดต้นฉบับ โปรดตรวจสอบสถานะและราคาล่าสุดที่หน้าสินค้า SUZURI",shop:"ไปที่ร้าน SUZURI ↗",empty:"ไม่สามารถโหลดรายการสินค้าได้ชั่วคราว แต่ยังดูดีไซน์ที่จำหน่ายได้จากร้าน SUZURI อย่างเป็นทางการ",view:"ดูดีไซน์ที่จำหน่ายบน SUZURI →",note:"ข้อมูลสินค้ามาจาก API อย่างเป็นทางการของ SUZURI"},
   id:{lead:"Nikmati karakter dan ilustrasi orisinal stamp moke dalam bentuk produk SUZURI seperti kaos, aksesori, dan barang sehari-hari. Banyak desain berkembang dari stiker LINE dan karya ilustrasi asli, sehingga karakter favorit dapat dinikmati di luar ruang chat. Periksa ketersediaan dan harga terbaru pada halaman produk SUZURI.",shop:"Kunjungi toko SUZURI ↗",empty:"Daftar produk untuk sementara tidak dapat dimuat. Anda tetap dapat melihat semua desain di toko resmi SUZURI.",view:"Lihat desain yang tersedia di SUZURI →",note:"Informasi produk disediakan oleh API resmi SUZURI."},
 }[locale];
-let products = [];
-try {
-  const response = await fetch("https://suzuri.jp/api/v1/products?userName=bayasihimokei&limit=50&offset=0");
-  if (response.ok) {
-    const data = await response.json();
-    products = (data.products || []).filter((product) => product.published !== false);
-  }
-} catch (error) {
-  console.warn("SUZURI products fetch failed", error);
-}
+const products = designs.flatMap((design) => design.products);
 ---
 <html lang={localeInfo[locale].htmlLang}>
 <head>
@@ -48,7 +40,7 @@ try {
 <main class="main">
   <section class="hero"><div class="eyebrow">ORIGINAL GOODS / SUZURI</div><h1>GOODS</h1><p class="lead">{goodsText.lead}</p><a class="shop-button" href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.shop}</a></section>
   <section class="section"><div class="section-head"><h2>{t.goodsProducts}</h2><div class="count">{products.length} ITEMS</div></div>
-  {products.length ? <div class="grid">{products.map((product) => <a class="card" href={`https://suzuri.jp/bayasihimokei/${product.id}`} target="_blank" rel="noopener noreferrer"><div class="media"><img src={product.sampleImageUrl} alt={product.title} loading="lazy" /></div><div class="body"><h3 class="title">{product.title}</h3>{product.priceWithTax && <div class="price">{locale === "id" ? "Periksa harga di SUZURI" : `¥${Number(product.priceWithTax).toLocaleString(locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "en" ? "en-US" : "ja-JP")} ${t.taxIncluded}`}</div>}</div></a>)}</div> : <div class="empty">{goodsText.empty}<br /><a href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.view}</a></div>}
+  {products.length ? <div class="grid">{products.map((product) => <a class="card" href={product.url} target="_blank" rel="noopener noreferrer"><div class="media"><img src={product.image} alt={product.title} loading="lazy" /></div><div class="body"><h3 class="title">{product.title}</h3>{product.price && <div class="price">{locale === "id" ? "Periksa harga di SUZURI" : `¥${Number(product.price).toLocaleString(locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "en" ? "en-US" : "ja-JP")} ${t.taxIncluded}`}</div>}</div></a>)}</div> : <div class="empty">{goodsText.empty}<br /><a href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.view}</a></div>}
   </section>
 </main>
 <footer class="footer"><div class="footer-inner"><strong>stamp moke</strong><div class="note">{goodsText.note}</div></div></footer>
