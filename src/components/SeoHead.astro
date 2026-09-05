@@ -2,14 +2,11 @@
 import { SITE_NAME, absoluteUrl } from "../lib/seo";
 import { LOCALES, alternateLinks, localeInfo, normalizeLocale } from "../lib/i18n";
 import { r2GetJson } from "../../server/api/_r2.js";
-
 const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname, alternatePaths = null } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const url = canonical || absoluteUrl(Astro.url.pathname);
 const socialImage = absoluteUrl(image || "/images/biglogo.png?v=20260904-1");
-const alternates = alternatePaths
-  ? LOCALES.map((item) => ({ locale: item, href: absoluteUrl(alternatePaths[item]) }))
-  : alternateLinks(path);
+const alternates = alternatePaths ? LOCALES.map((item) => ({ locale: item, href: absoluteUrl(alternatePaths[item]) })) : alternateLinks(path);
 const xDefault = alternatePaths ? absoluteUrl(alternatePaths.ja || path) : absoluteUrl(path);
 const stickerMatch=String(path||Astro.url.pathname).match(/\/stickers\/(\d+)/);
 let stickerSeo=null;
@@ -19,37 +16,10 @@ const finalDescription=seoLocale?.metaDescription||description;
 const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 ---
 <meta name="description" content={finalDescription} />
-<meta name="robots" content="index,follow,max-image-preview:large" />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
 {keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
 <link rel="icon" href="/favicon.svg?v=20260904-6" type="image/svg+xml" />
-<script is:inline>
-  (() => {
-    try {
-      const p = window.location.pathname || '/';
-      const localized = /^\/(en|zh-tw|zh-cn|ko|th|id)(\/|$)/.test(p);
-      if (!localized && !p.startsWith('/api/')) {
-        if (p === '/') {
-          const saved = localStorage.getItem('stamp-moke-locale');
-          if (!saved) {
-            const language = (navigator.languages?.[0] || navigator.language || 'ja').toLowerCase();
-            const preferred = language.startsWith('ko') ? 'ko'
-              : (language.startsWith('zh-cn') || language.startsWith('zh-sg') || language.startsWith('zh-hans')) ? 'zh-cn'
-              : language.startsWith('zh') ? 'zh-tw'
-              : language.startsWith('id') || language.startsWith('in') ? 'id'
-              : language.startsWith('th') ? 'th'
-              : language.startsWith('en') ? 'en'
-              : 'ja';
-            localStorage.setItem('stamp-moke-locale', preferred);
-          }
-        } else {
-          localStorage.setItem('stamp-moke-locale', 'ja');
-          document.documentElement.dataset.stampMokeLocale = 'ja';
-          window.__STAMP_MOKE_EXPLICIT_LOCALE__ = 'ja';
-        }
-      }
-    } catch (_) {}
-  })();
-</script>
 <link rel="stylesheet" href="/site-header.css?v=20260904-6" />
 <script is:inline src="/site-header.js?v=20260904-6"></script>
 <script is:inline src="/site-logo-sync.js?v=20260904-6"></script>
@@ -61,60 +31,13 @@ const keywords=Array.isArray(seoLocale?.keywords)?seoLocale.keywords:[];
 <script is:inline src="/site-breadcrumbs.js?v=20260903-1"></script>
 <script is:inline src="/site-pinterest-share.js?v=20260904-1"></script>
 <script is:inline>
-  (() => {
-    const normalizePath = (value) => {
-      if (!value || !value.startsWith('/')) return value;
-      const url = new URL(value, location.origin);
-      const pathname = url.pathname;
-      if (
-        pathname === '/' ||
-        pathname.startsWith('/api/') ||
-        pathname.endsWith('/') ||
-        /\/[^/]+\.[a-z0-9]+$/i.test(pathname)
-      ) return value;
-      return `${pathname}/${url.search}${url.hash}`;
-    };
-
-    const normalizeLinks = (root = document) => {
-      root.querySelectorAll?.('a[href^="/"],form[action^="/"]').forEach((el) => {
-        const attr = el.tagName === 'FORM' ? 'action' : 'href';
-        const current = el.getAttribute(attr);
-        const normalized = normalizePath(current);
-        if (normalized && normalized !== current) el.setAttribute(attr, normalized);
-      });
-    };
-
-    const start = () => {
-      normalizeLinks();
-      new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-          for (const node of mutation.addedNodes) {
-            if (node.nodeType === 1) normalizeLinks(node);
-          }
-        }
-      }).observe(document.documentElement, { childList: true, subtree: true });
-    };
-
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
-    else start();
-  })();
+(() => { const normalizePath=(value)=>{if(!value||!value.startsWith('/'))return value;const u=new URL(value,location.origin),p=u.pathname;if(p==='/'||p.startsWith('/api/')||p.endsWith('/')||/\/[^/]+\.[a-z0-9]+$/i.test(p))return value;return `${p}/${u.search}${u.hash}`};const normalizeLinks=(root=document)=>root.querySelectorAll?.('a[href^="/"],form[action^="/"]').forEach(el=>{const attr=el.tagName==='FORM'?'action':'href',current=el.getAttribute(attr),normalized=normalizePath(current);if(normalized&&normalized!==current)el.setAttribute(attr,normalized)});const start=()=>{normalizeLinks();new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)normalizeLinks(n)}))).observe(document.documentElement,{childList:true,subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();})();
 </script>
 <link rel="canonical" href={url} />
 {alternates.map((item) => <link rel="alternate" hreflang={localeInfo[item.locale].htmlLang} href={item.href} />)}
 <link rel="alternate" hreflang="x-default" href={xDefault} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={finalDescription} />
-<meta property="og:type" content={type} />
-<meta property="og:url" content={url} />
-<meta property="og:site_name" content={SITE_NAME} />
-<meta property="og:locale" content={localeInfo[locale].ogLocale} />
+<meta property="og:title" content={title} /><meta property="og:description" content={finalDescription} /><meta property="og:type" content={type} /><meta property="og:url" content={url} /><meta property="og:site_name" content={SITE_NAME} /><meta property="og:locale" content={localeInfo[locale].ogLocale} />
 {alternates.filter((item) => item.locale !== locale).map((item) => <meta property="og:locale:alternate" content={localeInfo[item.locale].ogLocale} />)}
-<meta property="og:image" content={socialImage} />
-<meta property="og:image:secure_url" content={socialImage} />
-<meta property="og:image:alt" content={title} />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={finalDescription} />
-<meta name="twitter:image" content={socialImage} />
-<meta name="twitter:image:alt" content={title} />
+<meta property="og:image" content={socialImage} /><meta property="og:image:secure_url" content={socialImage} /><meta property="og:image:alt" content={title} />
+<meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={finalDescription} /><meta name="twitter:image" content={socialImage} /><meta name="twitter:image:alt" content={title} />
 {seoLocale && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CreativeWork",name:title,url,description:seoLocale.overview||finalDescription,abstract:seoLocale.concept||undefined,audience:seoLocale.target?{"@type":"Audience",audienceType:seoLocale.target}:undefined,keywords,usageInfo:seoLocale.usageIntro||undefined,inLanguage:localeInfo[locale].htmlLang,image:socialImage})} />}
