@@ -1,5 +1,8 @@
 (() => {
-  const FILE_RE = /\/[^/?#]+\.[a-z0-9]{1,12}$/i;
+  if (window.__stampMokeTrailingSlashLinks) return;
+  window.__stampMokeTrailingSlashLinks = true;
+
+  const FILE_RE = /\/[^/?#]+\.[a-z0-9]{1,16}$/i;
 
   function shouldSkip(url) {
     if (url.origin !== location.origin) return true;
