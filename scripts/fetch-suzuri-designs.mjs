@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 const token = process.env.SUZURI_API_TOKEN;
 // API account ID; independent of the public shop URL.
 const userName = "stampmoke";
-const publicShopUrl = "https://suzuri.jp/stampmoke";
+const publicShopUrl = "https://suzuri.jp/stamp-moke";
 const outputPath = new URL("../src/data/suzuri-designs.json", import.meta.url);
 
 if (!token) {
