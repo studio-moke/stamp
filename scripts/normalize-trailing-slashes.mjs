@@ -34,11 +34,16 @@ function normalizeUrl(value) {
 
 function injectRuntimeScripts(text) {
   let out = text;
-  for (const tag of RUNTIME_SCRIPTS) {
+  for (const tag of [...RUNTIME_SCRIPTS].reverse()) {
     const src = tag.match(/src="([^"]+)/)?.[1]?.split("?")[0];
     if (src && out.includes(src)) continue;
-    if (out.includes("</body>")) out = out.replace("</body>", `${tag}</body>`);
-    else out += tag;
+    if (/<head(?:\s[^>]*)?>/i.test(out)) {
+      out = out.replace(/<head(\s[^>]*)?>/i, match => `${match}${tag}`);
+    } else if (out.includes("</body>")) {
+      out = out.replace("</body>", `${tag}</body>`);
+    } else {
+      out = tag + out;
+    }
   }
   return out;
 }
