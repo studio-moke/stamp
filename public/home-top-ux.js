@@ -11,6 +11,7 @@
     const style=document.createElement('style');
     style.id='sm-home-hero-fix';
     style.textContent=`
+      .free-card,.free-card:visited,.free-card strong,.free-card b{color:#171717!important;text-decoration:none!important}
       @media (min-width: 1101px){
         .hero{grid-template-columns:minmax(0,1.55fr) minmax(300px,.75fr);gap:34px}
         .hero-title{font-size:clamp(54px,5.6vw,82px);line-height:1.04;letter-spacing:-.055em;word-break:keep-all;overflow-wrap:normal}
@@ -21,9 +22,7 @@
         .hero-title{font-size:clamp(48px,5.7vw,64px);word-break:keep-all;overflow-wrap:normal}
         html[lang="ja"] .hero-title{white-space:nowrap}
       }
-      @media (max-width: 850px){
-        .hero-title{word-break:keep-all;overflow-wrap:normal}
-      }
+      @media (max-width: 850px){.hero-title{word-break:keep-all;overflow-wrap:normal}}
     `;
     document.head.appendChild(style);
   };
