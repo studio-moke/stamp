@@ -103,6 +103,7 @@ jobs:
         run: node scripts/extract-sticker-phrases.mjs
 
       - name: Fetch SUZURI character designs
+        continue-on-error: true
         env:
           SUZURI_API_TOKEN: ${{ secrets.SUZURI_API_TOKEN }}
         run: node scripts/fetch-suzuri-designs.mjs
