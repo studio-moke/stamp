@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
   "functions": {
     "api/free.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/tools.js": { "regions": ["hnd1"], "maxDuration": 60 },
