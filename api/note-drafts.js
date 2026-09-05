@@ -1,6 +1,9 @@
 import noteDrafts from "../server/api/note-drafts-v2.js";
+import { installInternalUrlNormalization } from "../server/api/_internal-url.js";
 
 export default async function handler(req, res) {
+  installInternalUrlNormalization(res);
+
   // Admin fallback: reuse the already-established analytics admin token only
   // when NOTE_DRAFT_ADMIN_KEY is not visible in this runtime.
   if (!process.env.NOTE_DRAFT_ADMIN_KEY && process.env.ANALYTICS_ADMIN_TOKEN) {
