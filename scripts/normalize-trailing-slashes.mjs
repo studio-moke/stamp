@@ -6,8 +6,8 @@ const SITE = "https://stamp-moke.jp";
 const HOST = "stamp-moke.jp";
 const FILE_RE = /\/[^/?#]+\.[a-z0-9]{1,16}$/i;
 const RUNTIME_SCRIPTS = [
-  '<script src="/api-url-normalizer.js?v=20260905-2"></script>',
-  '<script src="/trailing-slash-links.js?v=20260905-2"></script>'
+  '<script src="/api-url-normalizer.js?v=20260905-3"></script>',
+  '<script src="/trailing-slash-links.js?v=20260905-3"></script>'
 ];
 
 function isPagePath(pathname) {
