@@ -10,16 +10,6 @@
   },
   "redirects": [
     {
-      "source": "/stickers//",
-      "destination": "/stickers/",
-      "permanent": true
-    },
-    {
-      "source": "/stickers/",
-      "destination": "/#stickers",
-      "permanent": true
-    },
-    {
       "source": "/:path((?!api(?:/|$))(?!.*\\.[^/]+$).+[^/])",
       "destination": "/:path/",
       "permanent": true
