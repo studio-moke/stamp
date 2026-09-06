@@ -1,5 +1,5 @@
 (() => {
-  const LOGO_SRC = '/favicon.svg?v=20260904-6';
+  const LOGO_SRC = '/favicon.svg?v=20260906-2';
 
   function replaceLogo(node) {
     if (!(node instanceof Element)) return;
