@@ -25,7 +25,7 @@ function ensureJaTitle(html) {
 
 function buildJaDescription(rawDescription = "", rawTitle = "") {
   const base = String(rawDescription).trim().replace(/[。．\s]+$/, "");
-  const assetName = cleanJaTitle(rawTitle).replace(/&amp;/g, "&").trim();
+  const assetName = cleanJaTitle(rawTitle).trim();
   const searchText = assetName
     ? `${assetName}、無料アイコン、フリー素材、プロフィール画像、SNSアイコンなどを探している方におすすめです。`
     : "無料アイコン、フリー素材、プロフィール画像、SNSアイコンなどを探している方におすすめです。";
