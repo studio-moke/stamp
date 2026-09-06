@@ -1,19 +1,58 @@
 import page from "./free-page-v2.js";
 
 const SITE = "https://stamp-moke.jp";
-const REQUIRED_JA_TITLE = "無料フリー素材";
+const REQUIRED_JA_TITLE = "ダウンロードできる、無料アイコン & フリー素材";
+const LEGACY_JA_TITLE = "無料フリー素材";
 const FILE_RE = /\/[^/?#]+\.[a-z0-9]{1,12}$/i;
 
+function cleanJaTitle(rawTitle = "") {
+  return String(rawTitle)
+    .replace(/\s*\|\s*stamp moke\s*$/i, "")
+    .replace(new RegExp(`\\s*[｜|]\\s*${LEGACY_JA_TITLE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`), "")
+    .replace(new RegExp(`\\s*[｜|]\\s*${REQUIRED_JA_TITLE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`), "")
+    .trim();
+}
+
 function ensureJaTitle(html) {
-  return html.replace(/<title>(.*?)<\/title>/i, (all, rawTitle) => {
-    if (rawTitle.includes(REQUIRED_JA_TITLE)) return all;
-    const base = rawTitle.replace(/\s*\|\s*stamp moke\s*$/i, "").trim();
+  return html.replace(/<title>(.*?)<\/title>/i, (_all, rawTitle) => {
+    const base = cleanJaTitle(rawTitle);
     return `<title>${base}｜${REQUIRED_JA_TITLE} | stamp moke</title>`;
-  }).replace(/<meta property="og:title" content="([^"]*)">/i, (all, rawTitle) => {
-    if (rawTitle.includes(REQUIRED_JA_TITLE)) return all;
-    const base = rawTitle.replace(/\s*\|\s*stamp moke\s*$/i, "").trim();
+  }).replace(/<meta property="og:title" content="([^"]*)">/i, (_all, rawTitle) => {
+    const base = cleanJaTitle(rawTitle);
     return `<meta property="og:title" content="${base}｜${REQUIRED_JA_TITLE} | stamp moke">`;
   });
+}
+
+function buildJaDescription(rawDescription = "", rawTitle = "") {
+  const base = String(rawDescription).trim().replace(/[。．\s]+$/, "");
+  const assetName = cleanJaTitle(rawTitle).replace(/&amp;/g, "&").trim();
+  const searchText = assetName
+    ? `${assetName}、無料アイコン、フリー素材、プロフィール画像、SNSアイコンなどを探している方におすすめです。`
+    : "無料アイコン、フリー素材、プロフィール画像、SNSアイコンなどを探している方におすすめです。";
+  const chatText = "Discord、Microsoft Teams、Slackのプロフィール画像やチャット用アイコンとして、個人・非商用でダウンロードして使えます。";
+  return `${base ? `${base}。` : ""}${searchText}${chatText}`;
+}
+
+function ensureJaDescription(html) {
+  const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+  const rawTitle = titleMatch?.[1] || "";
+  let description = "";
+
+  let out = html.replace(/<meta name="description" content="([^"]*)">/i, (_all, rawDescription) => {
+    description = buildJaDescription(rawDescription, rawTitle);
+    return `<meta name="description" content="${description}">`;
+  });
+
+  out = out.replace(/<meta property="og:description" content="([^"]*)">/i, (_all, rawDescription) => {
+    const value = description || buildJaDescription(rawDescription, rawTitle);
+    return `<meta property="og:description" content="${value}">`;
+  });
+
+  return out;
+}
+
+function ensureJaSeo(html) {
+  return ensureJaDescription(ensureJaTitle(html));
 }
 
 function slashPath(path) {
@@ -58,7 +97,7 @@ export default async function handler(req, res) {
     if (typeof body !== "string") return originalSend(body);
     const locale = String(req.query?.locale || "ja");
     let html = normalizeFreeDetailUrls(body);
-    if (locale === "ja") html = ensureJaTitle(html);
+    if (locale === "ja") html = ensureJaSeo(html);
     html = html.replace("</body>", '<script src="/trailing-slash-links.js?v=20260905-1"></script></body>');
     return originalSend(html);
   };
