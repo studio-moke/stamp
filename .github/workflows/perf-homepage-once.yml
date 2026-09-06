@@ -1,0 +1,76 @@
+name: Homepage performance optimization once
+
+on:
+  push:
+    paths:
+      - ".github/workflows/perf-homepage-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Optimize homepage assets and loading
+        shell: bash
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          src = Path('public/images/stamp-moke-official-logo.png')
+          img = Image.open(src).convert('RGBA')
+
+          def save_variant(path, max_side, quality):
+              work = img.copy()
+              work.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
+              work.save(path, 'WEBP', quality=quality, method=6, exact=True)
+              print(f'{path}: {work.size}, {Path(path).stat().st_size} bytes')
+
+          save_variant('public/images/stamp-moke-official-logo-header.webp', 192, 88)
+          save_variant('public/images/stamp-moke-official-logo-hero.webp', 768, 90)
+
+          index = Path('src/pages/index.astro')
+          text = index.read_text(encoding='utf-8')
+          text = text.replace(
+              '<Analytics />\n  <style>',
+              '<Analytics />\n  <link rel="preload" as="image" href="/images/stamp-moke-official-logo-hero.webp?v=20260906-4" type="image/webp" />\n  <style>'
+          )
+          text = text.replace(
+              '/images/stamp-moke-official-logo.png?v=20260906-3',
+              '/images/stamp-moke-official-logo-header.webp?v=20260906-4',
+              1
+          )
+          text = text.replace(
+              '/images/stamp-moke-official-logo.png?v=20260906-3',
+              '/images/stamp-moke-official-logo-hero.webp?v=20260906-4',
+              1
+          )
+          text = text.replace(
+              'loading="eager" /><strong>{sticker.localizedTitle}</strong>',
+              'loading="lazy" decoding="async" fetchpriority="low" /><strong>{sticker.localizedTitle}</strong>'
+          )
+          index.write_text(text, encoding='utf-8')
+
+          js = Path('public/home-top-ux.js')
+          script = js.read_text(encoding='utf-8')
+          old = '/images/stamp-moke-official-logo.png?v=20260906-3'
+          script = script.replace(old, '/images/stamp-moke-official-logo-hero.webp?v=20260906-4', 1)
+          script = script.replace(old, '/images/stamp-moke-official-logo-header.webp?v=20260906-4', 1)
+          js.write_text(script, encoding='utf-8')
+          PY
+
+          rm .github/workflows/perf-homepage-once.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/pages/index.astro public/home-top-ux.js public/images/stamp-moke-official-logo-header.webp public/images/stamp-moke-official-logo-hero.webp .github/workflows/perf-homepage-once.yml
+          git commit -m "Optimize homepage logo delivery and lazy loading"
+          git pull --rebase origin main
+          git push origin HEAD:main
