@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "initializedAt": "2026-09-06T09:08:00+09:00",
+  "baselineInitialized": false,
+  "lastRunAt": null,
+  "postedIds": [],
+  "metricool": {
+    "brandId": "6852150",
+    "timezone": "Asia/Tokyo",
+    "networks": ["instagram", "threads", "bluesky"]
+  },
+  "pinterest": {
+    "accountId": "1654004",
+    "boards": {
+      "free": "716916903122886058",
+      "sticker": "716916903122886560",
+      "suzuri": "716916903122886561",
+      "tool": "716916903122886562"
+    }
+  }
+}
