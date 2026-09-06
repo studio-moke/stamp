@@ -16,7 +16,6 @@
     id:{title:'Berita terbaru',all:'Lihat semua →',loading:'Memuat berita…',empty:'Belum ada berita.',error:'Berita tidak dapat dimuat.'}
   }[loc];
   const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const CACHE_KEY=`stamp-moke-home-news-v3-${loc}`;
   const newsUrl=slug=>`${prefix}/news/?slug=${encodeURIComponent(slug)}`;
   function style(){
     if(document.getElementById('sm-home-news-style'))return;
@@ -51,8 +50,23 @@
     `;
     document.head.appendChild(s);
   }
+  function parseFeed(xmlText){
+    const xml=new DOMParser().parseFromString(xmlText,'application/xml');
+    if(xml.querySelector('parsererror'))throw new Error('invalid feed');
+    return [...xml.querySelectorAll('channel > item')].slice(0,5).map(item=>{
+      const text=name=>item.querySelector(name)?.textContent?.trim()||'';
+      const link=text('link');
+      let slug='';
+      try{slug=new URL(link,location.origin).searchParams.get('slug')||''}catch{}
+      if(!slug)slug=text('guid');
+      const rawDate=text('pubDate');
+      const dateObj=new Date(rawDate);
+      const date=Number.isNaN(dateObj.getTime())?'':`${dateObj.getFullYear()}/${String(dateObj.getMonth()+1).padStart(2,'0')}/${String(dateObj.getDate()).padStart(2,'0')}`;
+      return {slug,title:text('title'),date,label:text('category')||'NEWS'};
+    });
+  }
   function render(box,rows){
-    box.innerHTML=rows.length?rows.map(n=>`<a class="sm-news-row" href="${newsUrl(n.slug)}" title="${esc(n.title)}"><span class="sm-news-date">${esc((n.date||'').replaceAll('-','/'))}</span><span class="sm-news-label">${esc(n.label)}</span><span class="sm-news-text">${esc(n.title)}</span><span class="sm-news-arrow">→</span></a>`).join(''):`<div class="sm-news-empty">${esc(COPY.empty)}</div>`;
+    box.innerHTML=rows.length?rows.map(n=>`<a class="sm-news-row" href="${newsUrl(n.slug)}" title="${esc(n.title)}"><span class="sm-news-date">${esc(n.date)}</span><span class="sm-news-label">${esc(n.label)}</span><span class="sm-news-text">${esc(n.title)}</span><span class="sm-news-arrow">→</span></a>`).join(''):`<div class="sm-news-empty">${esc(COPY.empty)}</div>`;
   }
   async function build(){
     const anchor=document.querySelector('main .news-callout');
@@ -62,14 +76,11 @@
     sec.innerHTML=`<div class="sm-news-head"><div><span class="sm-news-k">NEWS / stamp moke</span><h2 class="sm-news-title">${esc(COPY.title)}</h2></div><div class="sm-news-actions"><a class="sm-news-rss" href="/feed.xml" type="application/rss+xml" aria-label="stamp moke NEWS RSS">RSS</a><a class="sm-news-all" href="${prefix}/news/">${esc(COPY.all)}</a></div></div><div class="sm-news-list"><div class="sm-news-empty">${esc(COPY.loading)}</div></div>`;
     anchor.replaceWith(sec);
     const box=sec.querySelector('.sm-news-list');
-    try{const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||'[]');if(Array.isArray(cached)&&cached.length)render(box,cached)}catch{}
     try{
-      const r=await fetch('/api/news?limit=5&sync=0',{cache:'force-cache'});
-      const d=await r.json();
-      const rows=d.items||[];
-      render(box,rows);
-      try{localStorage.setItem(CACHE_KEY,JSON.stringify(rows))}catch{}
-    }catch{if(!box.querySelector('.sm-news-row'))box.innerHTML=`<div class="sm-news-empty">${esc(COPY.error)}</div>`}
+      const r=await fetch('/feed.xml',{headers:{accept:'application/rss+xml, application/xml, text/xml'}});
+      if(!r.ok)throw new Error(`feed ${r.status}`);
+      render(box,parseFeed(await r.text()));
+    }catch{box.innerHTML=`<div class="sm-news-empty">${esc(COPY.error)}</div>`}
   }
   function run(){style();build()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
