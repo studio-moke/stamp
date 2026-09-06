@@ -11,7 +11,11 @@
     const style=document.createElement('style');
     style.id='sm-home-hero-fix';
     style.textContent=`
+      .main a:not(.btn):not(.more),.footer a{color:inherit!important}
+      .more,.more:visited{color:#26935b!important;text-decoration:none!important}
       .free-card,.free-card:visited,.free-card strong,.free-card b{color:#171717!important;text-decoration:none!important}
+      .sticker-card,.sticker-card:visited{background:#7696C4!important;border-color:#7696C4!important;color:#171717!important}
+      .sticker-card strong{color:#171717!important}
       .hero-art .clover{aspect-ratio:1/1!important;border-radius:50%!important;overflow:hidden!important;background:#fff!important;display:grid!important;place-items:center!important}
       .hero-art .clover::before,.hero-art .clover::after{content:none!important;display:none!important}
       .hero-art .clover .sm-hero-official-logo{display:block;width:72%;height:72%;object-fit:contain}
@@ -47,9 +51,16 @@
     clover.replaceChildren(img);
   };
 
+  const removeRequestedBlocks=()=>{
+    const pickup=document.querySelector('.pickup-card');
+    if(pickup)pickup.closest('section')?.remove();
+    document.querySelector('.main .about')?.remove();
+  };
+
   const run=()=>{
     addHeroStyle();
     installOfficialHeroLogo();
+    removeRequestedBlocks();
     const slugs=['shigoto','nichijo','doubutsu','omoshiro'];
     document.querySelectorAll('.category-grid .category-card').forEach((card,index)=>{
       if(slugs[index])card.setAttribute('href',`${prefix}/categories/${slugs[index]}/1`);
