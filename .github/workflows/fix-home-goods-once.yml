@@ -1,0 +1,43 @@
+name: Fix homepage goods cards once
+
+on:
+  push:
+    paths:
+      - ".github/workflows/fix-home-goods-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch homepage goods cards
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("src/pages/index.astro")
+          text = path.read_text(encoding="utf-8")
+
+          old = '''      <div class="goods-grid">{suzuriDesigns.slice(0,4).map(item => <a class="goods-card" href={item.url} rel="noopener noreferrer"><img class="goods-image" src={item.image} alt={item.title} loading="lazy"/><div class="goods-info"><div class="goods-title">{item.title}</div><div class="goods-price">{item.price}</div></div></a>)}</div>'''
+          new = '''      <div class="goods-grid">{suzuriDesigns.slice(0,4).map(item => <a class="goods-card" href={localizedPath(locale, `/goods/${item.id}`)}><img class="goods-image" src={item.image} alt={item.title} loading="lazy"/><div class="goods-info"><div class="goods-title">{item.title}</div><div class="goods-price">{item.products?.length ? `${item.products.length} items` : ""}</div></div></a>)}</div>'''
+
+          if old not in text:
+              raise SystemExit("Expected homepage goods markup was not found; refusing unsafe patch")
+
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+          rm .github/workflows/fix-home-goods-once.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/pages/index.astro .github/workflows/fix-home-goods-once.yml
+          git commit -m "Fix homepage goods cards for SUZURI design data"
+          git pull --rebase origin main
+          git push origin HEAD:main
