@@ -11,6 +11,11 @@
     document.querySelectorAll('.category-grid .category-card').forEach((card,index)=>{
       if(slugs[index])card.setAttribute('href',`${prefix}/categories/${slugs[index]}/1/`);
     });
+    /* Pickup is no longer part of the home page. One deterministic pass only. */
+    document.querySelectorAll('.section').forEach((section)=>{
+      const eyebrow=section.querySelector('.eyebrow');
+      if(eyebrow?.textContent?.trim()==='PICK UP') section.remove();
+    });
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 })();
