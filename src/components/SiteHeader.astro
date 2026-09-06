@@ -3,10 +3,11 @@ import { normalizeLocale, localeInfo } from "../lib/i18n";
 const locale = normalizeLocale(Astro.props.locale);
 const htmlLang = localeInfo[locale].htmlLang;
 const headerVersion = "20260906-1";
+const shareVersion = "20260906-2";
 ---
 <link rel="icon" href={`/favicon.svg?v=${headerVersion}`} type="image/svg+xml" />
 <link rel="stylesheet" href={`/site-header.css?v=${headerVersion}`} />
-<link rel="stylesheet" href="/share-buttons.css?v=20260902-1" />
+<link rel="stylesheet" href={`/share-buttons.css?v=${shareVersion}`} />
 <link rel="stylesheet" href="/image-compressor-mobile-fix.css" />
 <link rel="stylesheet" href="/free-tools-mobile-ux.css?v=20260903-1" />
 <link rel="stylesheet" href="/business-tools-pro.css?v=20260903-1" />
@@ -28,5 +29,5 @@ const headerVersion = "20260906-1";
 <script is:inline src={`/site-header.js?v=${headerVersion}`}></script>
 <script is:inline src={`/site-logo-sync.js?v=${headerVersion}`}></script>
 <script is:inline src={`/trailing-slash-links.js?v=${headerVersion}`}></script>
-<script is:inline src="/share-buttons.js?v=20260902-1"></script>
+<script is:inline src={`/share-buttons.js?v=${shareVersion}`}></script>
 <script is:inline src="/breadcrumb-global.js?v=20260906-1"></script>
