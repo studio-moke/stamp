@@ -14,8 +14,9 @@
       .main a:not(.btn):not(.more),.footer a{color:inherit!important}
       .more,.more:visited{color:#26935b!important;text-decoration:none!important}
       .free-card,.free-card:visited,.free-card strong,.free-card b{color:#171717!important;text-decoration:none!important}
-      .sticker-card,.sticker-card:visited{background:#7696C4!important;border-color:#7696C4!important;color:#171717!important}
-      .sticker-card strong{color:#171717!important}
+      .sticker-card,.sticker-card:visited{background:#faf9f6!important;border-color:#e7e4de!important;color:#171717!important}
+      .sticker-card img{background:#7696C4!important}
+      .sticker-card strong{background:#faf9f6!important;color:#171717!important}
       .hero-art .clover{aspect-ratio:1/1!important;border-radius:50%!important;overflow:hidden!important;background:#fff!important;display:grid!important;place-items:center!important}
       .hero-art .clover::before,.hero-art .clover::after{content:none!important;display:none!important}
       .hero-art .clover .sm-hero-official-logo{display:block;width:72%;height:72%;object-fit:contain}
