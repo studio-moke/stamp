@@ -63,6 +63,7 @@ const toolCards = [
   <SeoHead title={siteTitle} description={siteDescription} canonical={canonical} locale={locale} path="/" />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"stamp moke",alternateName:["スタンプもけ","スタンプモケ","スタンプもけぇ","studio moke","スタジオモケ","スタジオもけぇ"],url:canonical,description:siteDescription})} />
   <Analytics />
+  <link rel="preload" as="image" href="/images/stamp-moke-official-logo-hero.webp?v=20260906-4" type="image/webp" />
   <style>
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f6f3ed;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit}
     .site-header{position:sticky;top:0;z-index:30;height:92px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.96);border-bottom:1px solid #e6e3dd;backdrop-filter:blur(16px)}.brand{display:flex;align-items:center;gap:13px;text-decoration:none}.brand-mark{width:46px;height:46px;display:grid;place-items:center;overflow:hidden;flex:0 0 46px}.brand-mark img{display:block;width:100%;height:100%;object-fit:contain}.brand-name{font-size:22px;font-weight:950;letter-spacing:.07em;color:#15243a}.header-actions{display:flex;align-items:center;gap:10px}.menu{position:relative}.menu summary{list-style:none;width:52px;height:52px;border:1px solid #d9dee1;border-radius:50%;background:#fff;display:grid;place-items:center;cursor:pointer;font-size:0}.menu summary::-webkit-details-marker{display:none}.menu summary::before{content:"☰";font-size:25px}.menu[open] summary::before{content:"×"}.menu-panel{position:absolute;right:0;top:64px;width:min(330px,86vw);padding:18px;background:#fff;border:1px solid #dfded9;border-radius:22px;box-shadow:0 22px 60px rgba(0,0,0,.12)}.menu-panel a{display:block;text-decoration:none;padding:12px 10px;border-bottom:1px solid #efeee9;font-weight:800}.menu-language{padding-top:12px}
@@ -78,14 +79,14 @@ const toolCards = [
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href={localizedPath(locale,"/")} aria-label="stamp moke home"><span class="brand-mark"><img src="/images/stamp-moke-official-logo.png?v=20260906-3" alt="" width="64" height="64" decoding="async" fetchpriority="high" /></span><span class="brand-name">stamp moke</span></a>
+    <a class="brand" href={localizedPath(locale,"/")} aria-label="stamp moke home"><span class="brand-mark"><img src="/images/stamp-moke-official-logo-header.webp?v=20260906-4" alt="" width="64" height="64" decoding="async" fetchpriority="high" /></span><span class="brand-name">stamp moke</span></a>
     <div class="header-actions"><details class="menu"><summary aria-label="menu"></summary><div class="menu-panel"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/free/")}>{locale === "ja" ? "無料フリー素材" : copy.free}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><div class="menu-language"><LanguageSwitcher locale={locale}/></div></div></details></div>
   </header>
 
   <main class="main">
     <section class="hero">
       <div><h1 class="hero-title">{copy.hero}</h1><div class="hero-rule"></div><p class="hero-lead">{copy.lead}</p><div class="hero-actions"><a class="btn btn-primary" href={localizedPath(locale,"/stickers/")}>{copy.primary} →</a><a class="btn btn-secondary" href={localizedPath(locale,"/free/")}>{copy.secondary}</a></div></div>
-      <div class="hero-art"><div class="clover"><img class="sm-hero-official-logo" src="/images/stamp-moke-official-logo.png?v=20260906-3" alt="stamp moke" width="512" height="512" decoding="async" fetchpriority="high" /></div></div>
+      <div class="hero-art"><div class="clover"><img class="sm-hero-official-logo" src="/images/stamp-moke-official-logo-hero.webp?v=20260906-4" alt="stamp moke" width="512" height="512" decoding="async" fetchpriority="high" /></div></div>
     </section>
 
     <section class="section section-surface" aria-labelledby="find-heading">
@@ -95,7 +96,7 @@ const toolCards = [
 
     <section class="section section-surface">
       <div class="section-head"><div><span class="eyebrow">NEW</span><h2 class="section-title">{copy.new}</h2></div><a class="more" href={localizedPath(locale,"/stickers/")}>{copy.all} →</a></div>
-      <div class="sticker-grid">{latestStickers.map(sticker => <a class="sticker-card" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="eager" /><strong>{sticker.localizedTitle}</strong></a>)}</div>
+      <div class="sticker-grid">{latestStickers.map(sticker => <a class="sticker-card" href={localizedPath(locale,`/stickers/${sticker.id}/`)}><img src={sticker.image} alt={sticker.localizedTitle} loading="lazy" decoding="async" fetchpriority="low" /><strong>{sticker.localizedTitle}</strong></a>)}</div>
     </section>
 
     <section class="section section-surface">

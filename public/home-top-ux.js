@@ -111,7 +111,7 @@
       img.fetchPriority='high';
       clover.replaceChildren(img);
     }
-    img.src='/images/stamp-moke-official-logo.png?v=20260906-3';
+    img.src='/images/stamp-moke-official-logo-hero.webp?v=20260906-4';
   };
 
   const installHeaderLogo=()=>{
@@ -126,7 +126,7 @@
         img.decoding='async';
         mark.replaceChildren(img);
       }
-      img.src='/images/stamp-moke-official-logo.png?v=20260906-3';
+      img.src='/images/stamp-moke-official-logo-header.webp?v=20260906-4';
     }
     const name=document.querySelector('.brand-name');
     if(name&&!document.querySelector('.sm-brand-copy')){
