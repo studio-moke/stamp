@@ -38,6 +38,7 @@
     const s=document.createElement('section');s.className='sm-chat-icons-promo';
     s.innerHTML=`<a href="${localized(loc,'/chat-icons/')}" class="sm-chat-icons-promo-link"><span class="sm-chat-icons-k">${t.kicker}</span><strong class="sm-chat-icons-title">${t.title}</strong><strong class="sm-chat-icons-sub">${t.sub}</strong><p class="sm-chat-icons-desc">${t.desc}</p><span class="sm-chat-icons-promo-button">${t.button}</span><span class="sm-chat-icons-platforms"><span>Slack</span><span>Teams</span><span>Discord</span></span></a>`;
     wrap.appendChild(s);
+    document.dispatchEvent(new CustomEvent('sm:content-ready',{detail:{root:s}}));
   }
   function style(){
     if(document.getElementById('sm-chat-icons-nav-style'))return;
@@ -52,6 +53,7 @@
     `;document.head.appendChild(s)
   }
   function run(){style();addHeader();addPromo()}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{run();if(isHome())setTimeout(addPromo,250)},{once:true});
-  else {run();if(isHome())setTimeout(addPromo,250)}
+  document.addEventListener('sm:news-ready',addPromo);
+  document.addEventListener('sm:header-ready',addHeader);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 })();

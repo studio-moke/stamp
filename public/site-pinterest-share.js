@@ -1,30 +1,46 @@
 (() => {
-  const buildPinterestUrl = () => {
-    const canonical = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
-    const media = document.querySelector('meta[property="og:image"]')?.content || document.querySelector('meta[name="twitter:image"]')?.content || '';
-    const description = document.querySelector('meta[property="og:title"]')?.content || document.title || 'stamp moke';
-    const params = new URLSearchParams({ url: canonical, description });
-    if (media) params.set('media', media);
-    return `https://www.pinterest.com/pin/create/button/?${params.toString()}`;
+  const pageData = () => ({
+    canonical: document.querySelector('link[rel="canonical"]')?.href || window.location.href,
+    media: document.querySelector('meta[property="og:image"]')?.content || document.querySelector('meta[name="twitter:image"]')?.content || '',
+    title: document.querySelector('meta[property="og:title"]')?.content || document.title || 'stamp moke'
+  });
+
+  const shareUrl = (type) => {
+    const { canonical, media, title } = pageData();
+    if (type === 'pinterest') {
+      const params = new URLSearchParams({ url: canonical, description: title });
+      if (media) params.set('media', media);
+      return `https://www.pinterest.com/pin/create/button/?${params.toString()}`;
+    }
+    if (type === 'whatsapp') return `https://wa.me/?text=${encodeURIComponent(`${title} ${canonical}`)}`;
+    return `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${title}\n${canonical}`)}`;
   };
 
-  const addPinterestButton = (actions) => {
-    if (!actions || actions.querySelector('[data-share="pinterest"]')) return;
-    const link = document.createElement('a');
-    link.className = 'sm-share-button';
-    link.dataset.share = 'pinterest';
-    link.href = buildPinterestUrl();
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.setAttribute('aria-label', 'Pinterestで保存');
-    link.innerHTML = '<span class="sm-share-icon" aria-hidden="true">P</span><span>Pinterest</span>';
+  const defs = [
+    { type:'pinterest', label:'Pinterest', icon:'P', aria:'Pinterestで保存' },
+    { type:'whatsapp', label:'WhatsApp', icon:'W', aria:'WhatsAppで共有' },
+    { type:'email', label:'Email', icon:'@', aria:'メールで共有' }
+  ];
+
+  const addShareButtons = (actions) => {
+    if (!actions) return;
     const copyButton = actions.querySelector('[data-share="copy"]');
-    if (copyButton) actions.insertBefore(link, copyButton);
-    else actions.appendChild(link);
+    defs.forEach(({type,label,icon,aria}) => {
+      if (actions.querySelector(`[data-share="${type}"]`)) return;
+      const link = document.createElement('a');
+      link.className = 'sm-share-button';
+      link.dataset.share = type;
+      link.href = shareUrl(type);
+      link.setAttribute('aria-label', aria);
+      if (type !== 'email') { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+      link.innerHTML = `<span class="sm-share-icon" aria-hidden="true">${icon}</span><span>${label}</span>`;
+      if (copyButton) actions.insertBefore(link, copyButton); else actions.appendChild(link);
+    });
   };
 
   const init = (root = document) => {
-    root.querySelectorAll?.('.sm-share-actions').forEach(addPinterestButton);
+    if (root.matches?.('.sm-share-actions')) addShareButtons(root);
+    root.querySelectorAll?.('.sm-share-actions').forEach(addShareButtons);
   };
 
   const loadOnce = (src, key) => {
@@ -39,17 +55,13 @@
     init();
     loadOnce('/breadcrumb-global.js?v=20260905-2', 'breadcrumb');
     loadOnce('/sticker-promo-global.js?v=20260905-2', 'sticker-promo');
-    new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
-          if (node.nodeType !== 1) continue;
-          if (node.matches?.('.sm-share-actions')) addPinterestButton(node);
-          init(node);
-        }
-      }
-    }).observe(document.body, { childList: true, subtree: true });
   };
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  document.addEventListener('sm:content-ready', (event) => {
+    const root = event.detail?.root;
+    if (root) init(root);
+  });
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once:true });
   else start();
 })();
