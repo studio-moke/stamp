@@ -1,30 +1,24 @@
-/* stamp moke home v3: lightweight editorial layout */
+/* stamp moke home v4: lightweight editorial layout */
 body{background:#f7f5ef!important}
 .main{max-width:1320px!important;padding:0 clamp(24px,4vw,64px) 72px!important}
-.hero{min-height:430px!important;padding:72px 0 54px!important;grid-template-columns:1fr!important;gap:0!important}
+.hero{min-height:360px!important;padding:64px 0 48px!important;grid-template-columns:1fr!important;gap:0!important}
 .hero::before{inset:18px -3vw 0!important;background:radial-gradient(circle at 82% 42%,rgba(204,237,183,.48),transparent 32%),radial-gradient(circle at 25% 50%,rgba(255,255,255,.88),transparent 48%)!important}
 .hero-title{max-width:940px!important;font-size:clamp(58px,6.3vw,92px)!important;line-height:1.02!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:normal!important}
 .hero-lead{max-width:720px!important;font-size:15px!important;line-height:1.9!important}
-/* Decorative pseudo-logo removed: the official logo is used in the site header/favicon only. */
 .hero-art{display:none!important}
-.section{margin-top:78px!important}.section-surface{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.section{margin-top:72px!important}.section-surface{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 .section-head{margin-bottom:28px!important;padding-bottom:16px!important;border-bottom:1px solid #dedbd3!important}.section-title{font-size:clamp(30px,3.1vw,42px)!important}.section-lead{font-size:13px!important}.eyebrow{color:#5e5c56!important}.more{color:#216c45!important;font-size:12px!important}
-/* Keep internal card links neutral instead of browser-default blue. */
-.main .category-card,.main .sticker-card,.main .free-card,.main .goods-card{color:#171717!important}.main .free-card strong,.main .free-card b,.main .goods-title{color:#171717!important}
+/* No browser-default blue links inside the home content. */
+.main a:not(.btn):not(.more){color:#171717!important}.main .more{color:#216c45!important}.main a{text-decoration-color:currentColor}
 .category-grid{gap:10px!important}.category-card{min-height:72px!important;border:1px solid #e5e1d9!important;border-radius:14px!important;background:#fff!important;padding:14px 16px!important;box-shadow:none!important}.category-card strong{font-size:16px!important}.category-card span{width:30px!important;height:30px!important;font-size:12px!important}
-.sticker-grid{gap:14px!important}.sticker-card{border:0!important;border-radius:16px!important;background:#7696C4!important;overflow:hidden!important}.sticker-card img{border:0!important;border-radius:16px 16px 0 0!important;background:#7696C4!important}.sticker-card strong{padding:11px 12px 13px!important;font-size:12px!important;line-height:1.5!important;color:#fff!important}.pickup-card{background:#7696C4!important}
-/* Pickup is intentionally removed from the home experience. */
-.section:has(.eyebrow:first-child){ }
-.section:has(.eyebrow:first-child){}
-.section:has(.eyebrow){ }
-/* Current markup identifies this section with the PICK UP eyebrow. */
-.section:has(.eyebrow){ }
+/* All sticker introduction cards use the requested blue. */
+.sticker-grid{gap:14px!important}.sticker-card,.pickup-card{border:0!important;border-radius:16px!important;background:#7696C4!important;overflow:hidden!important}.sticker-card img{border:0!important;border-radius:16px 16px 0 0!important;background:#7696C4!important}.sticker-card strong{padding:11px 12px 13px!important;font-size:12px!important;line-height:1.5!important;color:#fff!important}
+/* Safety fallback; JS also removes these once on DOM ready. */
+.section:has(.pickup-card),.about,.hero-art{display:none!important}
 #stickers .sticker-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.preview-note{margin-top:30px!important}
 .free-grid{gap:10px!important}.free-card{min-height:72px!important;padding:14px 16px!important;border:1px solid #e6e2da!important;border-radius:14px!important;background:#fff!important}.free-icon{width:44px!important;height:44px!important;border-radius:12px!important}
 .goods-grid{gap:14px!important}.goods-card{border:0!important;background:transparent!important;overflow:visible!important}.goods-image{border:1px solid #e5e1d9!important;border-radius:16px!important;background:#fff!important}.goods-info{padding:10px 4px 0!important}
-.news-callout{border:0!important;border-radius:0!important;background:transparent!important;padding:0!important}
-/* The old dark about block near the footer is retired. */
-.about{display:none!important}.language-row{margin-top:44px!important}
-.sm-home-feature-grid{margin-top:78px!important;gap:16px!important}.sm-home-feature-grid>.sm-news-home,.sm-home-feature-grid>.sm-chat-icons-promo{border-radius:18px!important}.sm-news-home,.sm-chat-icons-promo-link{border-color:#e3dfd6!important;box-shadow:none!important}
-@media(max-width:980px){.hero{min-height:auto!important}.section{margin-top:64px!important}.sm-home-feature-grid{margin-top:64px!important}}
-@media(max-width:640px){.main{padding-left:18px!important;padding-right:18px!important}.hero{padding:46px 0 32px!important}.hero-title{font-size:clamp(42px,13vw,58px)!important}.hero-lead{font-size:13px!important}.section{margin-top:52px!important}.section-head{display:block!important;margin-bottom:20px!important}.section-title{font-size:29px!important}.category-grid,.sticker-grid,.free-grid,.goods-grid,#stickers .sticker-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.category-card{min-height:64px!important}.category-card strong{font-size:14px!important}.sticker-card strong{font-size:11px!important}.free-card{display:grid!important;grid-template-columns:40px 1fr!important;padding:12px!important}.free-icon{width:40px!important;height:40px!important}.sm-home-feature-grid{margin-top:52px!important}}
+.news-callout{border:0!important;border-radius:0!important;background:transparent!important;padding:0!important}.language-row{margin-top:40px!important}
+.sm-home-feature-grid{margin-top:72px!important;gap:16px!important}.sm-home-feature-grid>.sm-news-home,.sm-home-feature-grid>.sm-chat-icons-promo{border-radius:18px!important}.sm-news-home,.sm-chat-icons-promo-link{border-color:#e3dfd6!important;box-shadow:none!important}
+@media(max-width:980px){.hero{min-height:auto!important}.section{margin-top:60px!important}.sm-home-feature-grid{margin-top:60px!important}}
+@media(max-width:640px){.main{padding-left:18px!important;padding-right:18px!important}.hero{padding:44px 0 30px!important}.hero-title{font-size:clamp(42px,13vw,58px)!important}.hero-lead{font-size:13px!important}.section{margin-top:50px!important}.section-head{display:block!important;margin-bottom:20px!important}.section-title{font-size:29px!important}.category-grid,.sticker-grid,.free-grid,.goods-grid,#stickers .sticker-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.category-card{min-height:64px!important}.category-card strong{font-size:14px!important}.sticker-card strong{font-size:11px!important}.free-card{display:grid!important;grid-template-columns:40px 1fr!important;padding:12px!important}.free-icon{width:40px!important;height:40px!important}.sm-home-feature-grid{margin-top:50px!important}}
