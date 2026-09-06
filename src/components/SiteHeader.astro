@@ -2,7 +2,7 @@
 import { normalizeLocale, localeInfo } from "../lib/i18n";
 const locale = normalizeLocale(Astro.props.locale);
 const htmlLang = localeInfo[locale].htmlLang;
-const headerVersion = "20260906-1";
+const headerVersion = "20260906-2";
 const shareVersion = "20260906-2";
 ---
 <link rel="icon" href={`/favicon.svg?v=${headerVersion}`} type="image/svg+xml" />
