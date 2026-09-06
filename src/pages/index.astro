@@ -116,7 +116,7 @@ const toolCards = [
 
     <section class="section">
       <div class="section-head"><div><span class="eyebrow">CHARACTER GOODS</span><h2 class="section-title">{copy.goods}</h2><p class="section-lead">{t.goodsLead}</p></div><a class="more" href={localizedPath(locale,"/goods/")}>{t.goodsLink}</a></div>
-      <div class="goods-grid">{suzuriDesigns.slice(0,4).map(item => <a class="goods-card" href={item.url} rel="noopener noreferrer"><img class="goods-image" src={item.image} alt={item.title} loading="lazy"/><div class="goods-info"><div class="goods-title">{item.title}</div><div class="goods-price">{item.price}</div></div></a>)}</div>
+      <div class="goods-grid">{suzuriDesigns.slice(0,4).map(item => <a class="goods-card" href={localizedPath(locale, `/goods/${item.id}`)}><img class="goods-image" src={item.image} alt={item.title} loading="lazy"/><div class="goods-info"><div class="goods-title">{item.title}</div><div class="goods-price">{item.products?.length ? `${item.products.length} items` : ""}</div></div></a>)}</div>
     </section>
 
     <section class="section news-callout"><div><span class="eyebrow">NEWS</span><h2 class="section-title">{copy.news}</h2><p>{copy.newsLead}</p></div><a class="btn btn-secondary" href={localizedPath(locale,"/news/")}>{copy.newsLink} →</a></section>
