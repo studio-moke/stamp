@@ -41,6 +41,16 @@ const keywords = Array.isArray(seoLocale?.keywords) ? seoLocale.keywords : [];
 {isHomePath && <script is:inline src="/home-free-tools-placement.js"></script>}
 {isHomePath && <script is:inline src="/home-goods-preview.js?v=20260905-1"></script>}
 {isHomePath && <script is:inline src="/home-top-ux.js?v=20260906-2"></script>}
+{isHomePath && <script is:inline>
+(() => {
+  const applyOfficialHeroLogo = () => {
+    const img = document.querySelector('.hero-art .clover .sm-hero-official-logo');
+    if (img) img.setAttribute('src', '/images/stamp-moke-official-logo.png?v=20260906-1');
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyOfficialHeroLogo, { once: true });
+  else applyOfficialHeroLogo();
+})();
+</script>}
 <script is:inline src="/site-breadcrumbs.js?v=20260903-1"></script>
 <script is:inline src="/site-pinterest-share.js?v=20260904-1"></script>
 <script is:inline>
