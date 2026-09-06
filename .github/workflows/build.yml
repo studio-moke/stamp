@@ -30,6 +30,7 @@ jobs:
           node --check scripts/discover-new-stickers-by-id.mjs
           node --check scripts/fetch-stickers.mjs
           node --check scripts/discover-new-stickers.mjs
+          node --check scripts/unify-home-stickers.mjs
           node --check scripts/noindex-private-pages.mjs
           node --check scripts/generate-sitemap.mjs
 
@@ -67,7 +68,7 @@ jobs:
           node scripts/ensure-global-favicon.mjs
           node scripts/normalize-trailing-slashes.mjs
           node scripts/fix-sticker-list-links.mjs
-          node scripts/limit-home-stickers.mjs
+          node scripts/unify-home-stickers.mjs
           node scripts/fix-sticker-navigation.mjs
           node scripts/check-sticker-links.mjs
           node scripts/noindex-private-pages.mjs
