@@ -11,7 +11,90 @@ const pages = [
   path.join(process.cwd(), "dist", "id", "index.html"),
 ].filter((file) => fs.existsSync(file));
 
-const style = `<style id="home-sticker-unified">#stickers{display:none!important}</style>`;
+const style = `<style id="home-sticker-unified">
+  #stickers{display:none!important}
+  .pickup-unified-section .sticker-grid{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:18px!important;
+    overflow:visible!important;
+    scroll-snap-type:none!important;
+  }
+  .pickup-unified-section .sticker-card{
+    min-width:0!important;
+    width:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+    background:#fff!important;
+    border:1px solid #e6e1d8!important;
+    border-radius:18px!important;
+    overflow:hidden!important;
+    text-decoration:none!important;
+    box-shadow:0 8px 24px rgba(20,31,48,.06)!important;
+  }
+  .pickup-unified-section .sticker-card img{
+    display:block!important;
+    width:100%!important;
+    aspect-ratio:1/1!important;
+    height:auto!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    background:#7898c4!important;
+    border-radius:0!important;
+  }
+  .pickup-unified-section .sticker-card strong{
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    overflow:hidden!important;
+    min-height:3.2em!important;
+    padding:14px 14px 16px!important;
+    font-size:14px!important;
+    line-height:1.6!important;
+    font-weight:800!important;
+    color:#18263b!important;
+    text-decoration:none!important;
+  }
+  @media(max-width:720px){
+    .pickup-unified-section{
+      padding-left:18px!important;
+      padding-right:18px!important;
+    }
+    .pickup-unified-section .section-head{
+      align-items:center!important;
+      gap:14px!important;
+      margin-bottom:20px!important;
+    }
+    .pickup-unified-section .section-title{
+      font-size:clamp(34px,10vw,46px)!important;
+      line-height:1.05!important;
+    }
+    .pickup-unified-section .more{
+      flex:0 0 auto!important;
+      white-space:nowrap!important;
+      padding:11px 15px!important;
+      font-size:12px!important;
+    }
+    .pickup-unified-section .sticker-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr))!important;
+      gap:12px!important;
+    }
+    .pickup-unified-section .sticker-card{
+      border-radius:14px!important;
+      box-shadow:0 5px 16px rgba(20,31,48,.05)!important;
+    }
+    .pickup-unified-section .sticker-card strong{
+      min-height:3.15em!important;
+      padding:11px 11px 13px!important;
+      font-size:12.5px!important;
+      line-height:1.55!important;
+    }
+  }
+  @media(max-width:390px){
+    .pickup-unified-section .sticker-grid{gap:10px!important}
+    .pickup-unified-section .sticker-card strong{font-size:12px!important;padding:10px!important}
+  }
+</style>`;
 
 const script = `<script id="home-sticker-unified-script">
 (() => {
@@ -22,6 +105,7 @@ const script = `<script id="home-sticker-unified-script">
   const section = pickupCard?.closest('section');
   const grid = section?.querySelector('.sticker-grid');
   if (!section || !grid) return;
+  section.classList.add('pickup-unified-section');
 
   const listHref = section.querySelector('.more')?.getAttribute('href') || '/stickers/';
   const newestHrefs = new Set(
@@ -122,8 +206,6 @@ const script = `<script id="home-sticker-unified-script">
 for (const file of pages) {
   let html = fs.readFileSync(file, "utf8");
 
-  // Remove the old, separate home collection limiter/button so only one
-  // recommendation mechanism remains on the home page.
   html = html.replace(/<style id="home-sticker-limit">[\s\S]*?<\/style>/g, "");
   html = html.replace(/<div class="home-sticker-more">[\s\S]*?<\/div>/g, "");
 
