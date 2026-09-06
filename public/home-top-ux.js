@@ -19,7 +19,7 @@
       .sticker-card strong{background:#faf9f6!important;color:#171717!important}
       .hero-art .clover{aspect-ratio:1/1!important;border-radius:50%!important;overflow:hidden!important;background:#fff!important;display:grid!important;place-items:center!important}
       .hero-art .clover::before,.hero-art .clover::after{content:none!important;display:none!important}
-      .hero-art .clover .sm-hero-official-logo{display:block;width:72%;height:72%;object-fit:contain}
+      .hero-art .clover .sm-hero-official-logo{display:block;width:78%;height:78%;object-fit:contain}
       .sm-brand-copy,.sm-mobile-kicker,.sm-mobile-quick,.sm-mobile-lang{display:none}
 
       @media (min-width: 1101px){
@@ -34,10 +34,11 @@
       }
 
       @media (max-width: 850px){
+        html,body{max-width:100%;overflow-x:hidden!important}
         body{background:#fbfaf6!important}
         .site-header{height:88px!important;padding:0 18px!important;box-shadow:0 1px 0 rgba(20,35,30,.04)}
         .brand{gap:10px!important;min-width:0}
-        .brand-mark{width:48px!important;height:48px!important;border:0!important;background:transparent!important;border-radius:0!important;overflow:hidden;color:transparent!important;font-size:0!important}
+        .brand-mark{width:48px!important;height:48px!important;border:0!important;background:transparent!important;border-radius:0!important;overflow:hidden;color:transparent!important;font-size:0!important;flex:0 0 48px!important}
         .brand-mark img{width:100%;height:100%;object-fit:contain;display:block}
         .brand-name{font-size:22px!important;letter-spacing:.045em!important;line-height:1.05!important;white-space:nowrap}
         .sm-brand-copy{display:block;margin-top:5px;color:#24313e;font-size:10px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
@@ -47,28 +48,28 @@
         .menu summary{width:48px!important;height:48px!important}
         .menu summary::before{font-size:23px!important}
 
-        .main{padding:0 18px 72px!important;overflow:hidden}
-        .hero{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1.08fr) minmax(122px,.92fr)!important;gap:6px!important;align-items:center!important;padding:46px 0 28px!important;min-height:475px!important}
+        .main{padding:0 18px 72px!important;overflow:hidden!important;max-width:100%!important}
+        .hero{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1.12fr) minmax(108px,.88fr)!important;gap:8px!important;align-items:center!important;padding:38px 0 28px!important;min-height:455px!important;max-width:100%!important}
         .hero::before{inset:0 -18px -16px!important;background:radial-gradient(circle at 84% 35%,rgba(214,241,192,.88),transparent 29%),radial-gradient(circle at 18% 62%,rgba(255,255,255,.96),transparent 42%),linear-gradient(135deg,#fffdf8 0%,#f7f7ee 56%,#eaf6dd 100%)!important}
-        .hero>div:first-child{position:relative;z-index:2;min-width:0}
+        .hero>div:first-child{position:relative;z-index:2;min-width:0!important;max-width:100%!important}
         .sm-mobile-kicker{display:block;margin:0 0 14px;color:#279a59;font-size:10px;font-weight:950;letter-spacing:.25em;white-space:nowrap}
-        .hero-title{margin:0!important;font-size:clamp(40px,11.4vw,56px)!important;line-height:1.12!important;letter-spacing:-.055em!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:normal!important}
+        .hero-title{margin:0!important;font-size:clamp(38px,10.6vw,48px)!important;line-height:1.13!important;letter-spacing:-.055em!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:normal!important;max-width:100%!important;overflow:visible!important}
         .hero-title .sm-hero-accent{color:#28a35f}
-        .hero-rule{width:56px!important;height:4px!important;margin:20px 0 17px!important}
-        .hero-lead{font-size:13px!important;line-height:1.85!important;color:#565b59!important;max-width:310px!important}
-        .hero-actions{grid-column:1/-1;display:grid!important;gap:10px!important;margin-top:24px!important}
+        .hero-rule{width:56px!important;height:4px!important;margin:18px 0 16px!important}
+        .hero-lead{font-size:13px!important;line-height:1.8!important;color:#565b59!important;max-width:310px!important}
+        .hero-actions{grid-column:1/-1;display:grid!important;gap:10px!important;margin-top:22px!important}
         .btn{min-height:52px!important;font-size:14px!important;border-radius:999px!important}
         .btn-primary{background:linear-gradient(90deg,#20a259,#2fb267)!important;color:#fff!important;box-shadow:0 10px 26px rgba(39,160,92,.2)}
         .btn-secondary{background:rgba(255,255,255,.94)!important;border-color:#d9dbd3!important;color:#18283b!important}
 
-        .hero-art{position:relative;z-index:1;min-height:0!important;align-self:center!important;transform:translate(8px,6px)}
+        .hero-art{position:relative;z-index:1;min-height:0!important;align-self:center!important;transform:translate(2px,6px);min-width:0!important}
         .hero-art::before,.hero-art::after{content:'';position:absolute;z-index:-1;width:38px;height:20px;border-radius:100% 0 100% 0;background:linear-gradient(135deg,#d9f49d,#6cc63d);opacity:.85}
         .hero-art::before{right:0;top:8%;transform:rotate(-22deg)}
         .hero-art::after{left:0;bottom:6%;transform:rotate(32deg) scale(.8)}
-        .hero-art .clover{width:min(43vw,190px)!important;min-width:128px!important;box-shadow:0 22px 48px rgba(68,92,65,.14)!important}
-        .hero-art .clover .sm-hero-official-logo{width:73%!important;height:73%!important}
+        .hero-art .clover{width:min(39vw,176px)!important;min-width:118px!important;max-width:176px!important;box-shadow:0 22px 48px rgba(68,92,65,.14)!important}
+        .hero-art .clover .sm-hero-official-logo{width:82%!important;height:82%!important;image-rendering:auto!important}
 
-        .sm-mobile-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:20px 0 2px;position:relative;z-index:3}
+        .sm-mobile-quick{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:20px 0 2px;position:relative;z-index:3}
         .sm-mobile-quick a{min-width:0;min-height:92px;padding:12px 5px 10px;border:1px solid #ece9e1;border-radius:16px;background:rgba(255,255,255,.95);box-shadow:0 8px 22px rgba(29,42,37,.04);text-decoration:none!important;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#15243a!important}
         .sm-mobile-quick svg{width:27px;height:27px;margin-bottom:8px;stroke:#173351;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
         .sm-mobile-quick strong{font-size:10px;line-height:1.3;white-space:nowrap}
@@ -87,9 +88,9 @@
 
       @media (max-width: 390px){
         .brand-name{font-size:19px!important}.sm-brand-copy{font-size:9px}.sm-mobile-lang{display:none}
-        .hero{grid-template-columns:minmax(0,1.13fr) minmax(108px,.87fr)!important;min-height:455px!important}
-        .hero-title{font-size:clamp(37px,11.2vw,48px)!important}
-        .hero-art .clover{width:min(42vw,168px)!important}
+        .hero{grid-template-columns:minmax(0,1.17fr) minmax(96px,.83fr)!important;min-height:438px!important}
+        .hero-title{font-size:clamp(35px,10.2vw,43px)!important}
+        .hero-art .clover{width:min(36vw,150px)!important;min-width:106px!important}
         .sm-mobile-quick{gap:6px}.sm-mobile-quick a{padding-left:3px;padding-right:3px}.sm-mobile-quick strong{font-size:9px}.sm-mobile-quick small{font-size:7px}
       }
     `;
@@ -98,28 +99,34 @@
 
   const installOfficialHeroLogo=()=>{
     const clover=document.querySelector('.hero-art .clover');
-    if(!clover||clover.querySelector('.sm-hero-official-logo'))return;
-    const img=document.createElement('img');
-    img.className='sm-hero-official-logo';
-    img.src='/favicon.svg?v=20260904-6';
-    img.alt='stamp moke';
-    img.width=256;
-    img.height=256;
-    img.decoding='async';
-    img.fetchPriority='high';
-    clover.replaceChildren(img);
+    if(!clover)return;
+    let img=clover.querySelector('.sm-hero-official-logo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='sm-hero-official-logo';
+      img.alt='stamp moke';
+      img.width=512;
+      img.height=512;
+      img.decoding='async';
+      img.fetchPriority='high';
+      clover.replaceChildren(img);
+    }
+    img.src='/images/biglogo.png?v=20260906-2';
   };
 
   const installHeaderLogo=()=>{
     const mark=document.querySelector('.brand-mark');
-    if(mark&&!mark.querySelector('img')){
-      const img=document.createElement('img');
-      img.src='/favicon.svg?v=20260904-6';
-      img.alt='';
-      img.width=48;
-      img.height=48;
-      img.decoding='async';
-      mark.replaceChildren(img);
+    if(mark){
+      let img=mark.querySelector('img');
+      if(!img){
+        img=document.createElement('img');
+        img.alt='';
+        img.width=64;
+        img.height=64;
+        img.decoding='async';
+        mark.replaceChildren(img);
+      }
+      img.src='/images/biglogo.png?v=20260906-2';
     }
     const name=document.querySelector('.brand-name');
     if(name&&!document.querySelector('.sm-brand-copy')){
