@@ -14,16 +14,9 @@ const canonical = absoluteUrl("/news/");
   <title>{title}</title>
   <SeoHead title={title} description={description} canonical={canonical} locale="ja" path="/news/" />
   <Analytics />
-  <style is:global>
-    *{box-sizing:border-box}body{margin:0;background:#fbfcfb;color:#141820;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}a{color:inherit}
-    .hero{background:linear-gradient(105deg,#f2f8fa,#eef5f4 48%,#f8f7f0);border-bottom:1px solid #e9eeea}.hero-inner{max-width:1180px;margin:auto;padding:52px clamp(18px,4vw,56px)}.hero h1{margin:0;font-size:clamp(40px,6vw,64px);letter-spacing:-.05em}.hero p{margin:14px 0 0;color:#63706c;line-height:1.8}
-    .content{max-width:1180px;margin:auto;padding:32px clamp(18px,4vw,56px) 90px}.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}.filter{min-height:42px;padding:0 20px;border:1px solid #e3e7e4;background:#f8faf9;border-radius:16px;font-size:12px;font-weight:850;cursor:pointer}.filter.on{background:#16a361;color:#fff;border-color:#16a361}
-    .list{display:grid;gap:14px}.card{display:grid;grid-template-columns:225px 1fr 54px;gap:26px;align-items:center;padding:14px;background:#fff;border:1px solid #e1e7e3;border-radius:16px;text-decoration:none}.thumb{height:112px;border-radius:12px;overflow:hidden;background:linear-gradient(145deg,#f7fbf8,#eef4f0);display:flex;align-items:center;justify-content:center}.thumb img{width:100%;height:100%;object-fit:cover;display:block}.thumb img.fallback-logo{width:72%;height:72%;object-fit:contain;padding:12%;opacity:.96}.meta{display:flex;gap:10px;align-items:center;color:#7b8581;font-size:11px}.label{padding:6px 10px;border-radius:999px;background:#e4f2ff;font-size:10px;font-weight:900}.card h2{margin:8px 0 0;font-size:20px;line-height:1.45}.summary{margin:7px 0 0;color:#6f7a76;font-size:12px;line-height:1.75}.arrow{font-size:24px}
-    .article-shell{display:none;max-width:900px;margin:auto;padding:42px clamp(18px,4vw,56px) 90px}.article-shell.show{display:block}.article{background:#fff;border:1px solid #e1e7e3;border-radius:24px;padding:clamp(26px,5vw,54px)}.article h1{margin:16px 0 0;font-size:clamp(30px,5vw,48px);line-height:1.35}.article-image{margin-top:28px;border-radius:18px;overflow:hidden;background:#f4f5f4}.article-image img{display:block;width:100%;max-height:520px;object-fit:contain}.body{margin-top:24px;color:#59635f;font-size:15px;line-height:2.05;white-space:pre-line}.cta{display:inline-flex;margin-top:30px;padding:13px 19px;border-radius:999px;background:#16a361;color:#fff;text-decoration:none;font-size:12px;font-weight:900}.back{display:inline-flex;margin-bottom:18px;text-decoration:none;font-size:12px;font-weight:800;color:#5f6b66}.empty{padding:42px;text-align:center;color:#7b8581;background:#fff;border:1px solid #e1e7e3;border-radius:16px}.footer{padding:36px 5vw;background:#14201a;color:#aeb8b2;font-size:11px;text-align:center}
-    @media(max-width:680px){.content{padding:24px 14px 65px}.card{grid-template-columns:96px 1fr 30px;gap:12px;padding:10px}.thumb{height:92px}.thumb img.fallback-logo{width:76%;height:76%;padding:11%}.card h2{font-size:14px}.summary{font-size:10px}.article-shell{padding:28px 14px 65px}.article{padding:24px 20px}.hero-inner{padding:38px 18px}.hero h1{font-size:42px}}
-  </style>
+  <link rel="stylesheet" href="/news.css?v=20260907-1" />
 </head>
-<body>
+<body class="news-page">
   <SiteHeader locale="ja" path="/news/" />
   <section class="hero"><div class="hero-inner"><h1>お知らせ</h1><p>stamp moke の最新情報をお届けします。</p></div></section>
   <div id="index-view"><main class="content"><div class="filters" id="filters"></div><div class="list" id="news-list"><div class="empty">お知らせを読み込んでいます…</div></div></main></div>
