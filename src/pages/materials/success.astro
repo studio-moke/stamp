@@ -1,0 +1,58 @@
+---
+import Analytics from "../../components/Analytics.astro";
+---
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>ご購入ありがとうございます - stamp moke</title>
+  <Analytics />
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;min-height:100vh;display:grid;place-items:center;padding:24px}.box{width:min(620px,100%);background:#fff;border:1px solid #e3e0d9;border-radius:22px;padding:38px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#777}.box h1{font-size:34px;margin:12px 0 14px}.lead{color:#666;line-height:1.9;font-size:14px}.status{margin-top:22px;padding:15px;border-radius:12px;background:#f2f0eb;font-size:13px;line-height:1.7}.download{display:none;margin-top:18px;background:#168b52;color:#fff;text-decoration:none;border-radius:999px;padding:14px 20px;font-size:13px;font-weight:900;text-align:center}.back{display:inline-block;margin-top:20px;color:#666;font-size:12px}.small{margin-top:14px;color:#999;font-size:11px;line-height:1.7}
+  </style>
+</head>
+<body>
+<main class="box">
+  <div class="eyebrow">PAYMENT COMPLETE</div>
+  <h1>ありがとうございます。</h1>
+  <p class="lead">決済情報を確認し、購入したZIPのダウンロードリンクを発行します。</p>
+  <div class="status" id="status">決済情報を確認しています…</div>
+  <a class="download" id="download" href="#" rel="nofollow">ZIPをダウンロード</a>
+  <div class="small">ダウンロードURLは発行から10分間有効です。期限が切れた場合は、このページを再読み込みすると新しいURLを発行できます。</div>
+  <a class="back" href="/materials/">← 素材一覧へ戻る</a>
+</main>
+<script>
+  const status = document.getElementById('status');
+  const download = document.getElementById('download');
+  const sessionId = new URLSearchParams(location.search).get('session_id');
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  async function loadDownload() {
+    if (!sessionId || !status || !(download instanceof HTMLAnchorElement)) {
+      if (status) status.textContent = '購入情報が見つかりません。';
+      return;
+    }
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      try {
+        const response = await fetch(`/api/store?action=download&session_id=${encodeURIComponent(sessionId)}`, { cache: 'no-store' });
+        const data = await response.json();
+        if (response.ok && data.downloadUrl) {
+          status.textContent = `${data.title} のダウンロード準備ができました。`;
+          download.href = data.downloadUrl;
+          download.style.display = 'block';
+          return;
+        }
+        if (!data.pending) throw new Error(data.error || 'ダウンロード情報を確認できませんでした。');
+      } catch (error) {
+        if (attempt === 3) {
+          status.textContent = error instanceof Error ? error.message : 'ダウンロード情報を確認できませんでした。';
+          return;
+        }
+      }
+      await sleep(1200);
+    }
+    status.textContent = '決済確認に時間がかかっています。このページを再読み込みしてください。';
+  }
+  loadDownload();
+</script>
+</body></html>
