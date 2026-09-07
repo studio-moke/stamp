@@ -2,6 +2,7 @@ import { createStripeCheckoutSession, retrieveStripeCheckoutSession, stripeConfi
 import { presignR2Put, r2GetJson, r2Head, r2PutJson } from "./_r2.js";
 import { presignStoreDownload } from "./_store-r2.js";
 import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
+import { prepareLineMaterialZip } from "./_line-materials.js";
 
 const STORE_PRICE_YEN=100;
 function json(res,status,value){res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.setHeader("Cache-Control","no-store");res.end(JSON.stringify(value));}
@@ -20,6 +21,14 @@ export default async function handler(req,res){
   if(req.method==="GET"&&action==="status"){const products=await getRuntimeDigitalProducts();return json(res,200,{ok:true,paymentProvider:"stripe",paymentConfigured:stripeConfigured(),priceYen:STORE_PRICE_YEN,productCount:products.length,publishedCount:products.filter(p=>p?.published).length});}
   if(req.method==="GET"&&action==="catalog"){const products=await getRuntimeDigitalProducts();return json(res,200,{ok:true,products:products.filter(Boolean).map(p=>({id:p.id,published:p.published,assetCount:p.assetCount||0,preparedAt:p.preparedAt||""}))});}
   if(req.method==="POST"&&action==="admin-health"){if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});return json(res,200,{ok:true,tokenSource:process.env.STORE_ADMIN_TOKEN?"STORE_ADMIN_TOKEN":"FREE_ADMIN_TOKEN",stripeConfigured:stripeConfigured()});}
+  if(req.method==="POST"&&action==="admin-prepare-line"){
+   if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});
+   const b=await readBody(req),id=cleanId(b.productId),product=id?await getRuntimeDigitalProduct(id):null;
+   if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});
+   const prepared=await prepareLineMaterialZip(product);
+   const record=await writeRuntimeProductState(id,{zipKey:prepared.zipKey,assetCount:prepared.assetCount,published:false,preparedAt:prepared.preparedAt,source:"line-store",contentHash:prepared.contentHash,licenseVersion:"draft-2026-09-07"});
+   return json(res,200,{ok:true,product:{id,published:false,assetCount:record.assetCount,preparedAt:record.preparedAt}});
+  }
   if(req.method==="POST"&&action==="admin-upload-url"){
    if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req),id=cleanId(b.productId),count=Number(b.assetCount||0),hash=cleanHash(b.contentHash);const product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});if(!hash)return json(res,400,{ok:false,error:"ZIPハッシュが不正です。"});const key=zipKey(id,hash);return json(res,200,{ok:true,key,uploadUrl:presignR2Put(key,900)});
   }
