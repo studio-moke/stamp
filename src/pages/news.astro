@@ -1,6 +1,7 @@
 ---
 import Analytics from "../components/Analytics.astro";
 import SeoHead from "../components/SeoHead.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import { absoluteUrl } from "../lib/seo";
 const title = "お知らせ｜新作LINEスタンプ・SUZURI・無料ツール・フリー素材 | stamp moke";
 const description = "stamp mokeの新作LINEスタンプ、SUZURIグッズ、無料ツール、フリー素材の更新情報をお届けします。";
@@ -23,6 +24,7 @@ const canonical = absoluteUrl("/news/");
   </style>
 </head>
 <body>
+  <SiteHeader locale="ja" path="/news/" />
   <section class="hero"><div class="hero-inner"><h1>お知らせ</h1><p>stamp moke の最新情報をお届けします。</p></div></section>
   <div id="index-view"><main class="content"><div class="filters" id="filters"></div><div class="list" id="news-list"><div class="empty">お知らせを読み込んでいます…</div></div></main></div>
   <main class="article-shell" id="article-shell"><a class="back" href="/news/">← お知らせ一覧へ</a><article class="article" id="article"></article></main>
