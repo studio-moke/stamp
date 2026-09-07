@@ -6,7 +6,9 @@
     "api/insights.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/news.js": { "regions": ["hnd1"], "maxDuration": 60 },
     "api/note-drafts.js": { "regions": ["hnd1"], "maxDuration": 60 },
-    "api/feed.js": { "regions": ["hnd1"], "maxDuration": 60 }
+    "api/feed.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/store.js": { "regions": ["hnd1"], "maxDuration": 60 },
+    "api/store-webhook.js": { "regions": ["hnd1"], "maxDuration": 60 }
   },
   "redirects": [{"source":"/:path((?!api(?:/|$))(?!.*\\.[^/]+$).+[^/])","destination":"/:path/","permanent":true}],
   "crons": [
