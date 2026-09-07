@@ -2,11 +2,12 @@
 import { normalizeLocale, localeInfo } from "../lib/i18n";
 const locale = normalizeLocale(Astro.props.locale);
 const htmlLang = localeInfo[locale].htmlLang;
-const headerVersion = "20260906-2";
+const headerVersion = "20260907-1";
 const shareVersion = "20260906-2";
 ---
 <link rel="icon" href={`/favicon.svg?v=${headerVersion}`} type="image/svg+xml" />
 <link rel="stylesheet" href={`/site-header.css?v=${headerVersion}`} />
+<link rel="stylesheet" href="/news.css?v=20260907-1" />
 <link rel="stylesheet" href={`/share-buttons.css?v=${shareVersion}`} />
 <link rel="stylesheet" href="/image-compressor-mobile-fix.css" />
 <link rel="stylesheet" href="/free-tools-mobile-ux.css?v=20260903-1" />
