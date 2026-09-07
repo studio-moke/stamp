@@ -5,9 +5,97 @@ import SeoHead from "./SeoHead.astro";
 import Analytics from "./Analytics.astro";
 import { localeInfo, localizedPath, normalizeLocale } from "../lib/i18n";
 import { absoluteUrl } from "../lib/seo";
+
 const locale=normalizeLocale(Astro.props.locale),design=Astro.props.design;
 if((locale!=="zh-cn"&&locale!=="ko")||!design) throw new Error("Invalid goods page");
-const t={"zh-cn":{suffix:"角色周边",desc:`查看 stamp moke 原创角色「${design.title}」的 T 恤、贴纸与 SUZURI 周边商品。`,back:"返回周边列表",products:"在售周边",shop:"前往 SUZURI 查看 ↗",tax:"含税"},ko:{suffix:"캐릭터 굿즈",desc:`stamp moke 오리지널 캐릭터 「${design.title}」의 티셔츠, 스티커 및 SUZURI 굿즈를 확인해 보세요.`,back:"굿즈 목록으로",products:"판매 중인 굿즈",shop:"SUZURI에서 보기 ↗",tax:"세금 포함"}}[locale];
-const path=`/goods/${design.id}/`,canonical=absoluteUrl(localizedPath(locale,path)),title=`${design.title} ${t.suffix} | stamp moke`,products=Array.isArray(design.products)?design.products:[];
+
+const copy={
+  "zh-cn":{
+    characterPrefix:"stamp moke 原创角色",
+    suffix:"角色周边",
+    desc:"查看这款 stamp moke 原创角色的 T 恤、贴纸与 SUZURI 周边商品。",
+    back:"返回周边列表",
+    products:"在售周边",
+    shop:"前往 SUZURI 查看 ↗",
+    tax:"含税",
+    genericProduct:"周边商品"
+  },
+  ko:{
+    characterPrefix:"stamp moke 오리지널 캐릭터",
+    suffix:"캐릭터 굿즈",
+    desc:"이 stamp moke 오리지널 캐릭터의 티셔츠, 스티커 및 SUZURI 굿즈를 확인해 보세요.",
+    back:"굿즈 목록으로",
+    products:"판매 중인 굿즈",
+    shop:"SUZURI에서 보기 ↗",
+    tax:"세금 포함",
+    genericProduct:"굿즈"
+  }
+}[locale];
+
+const itemNames={
+  "zh-cn":{
+    "ステッカー":"贴纸",
+    "アクリルスタンド":"亚克力立牌",
+    "アクリルキーホルダー":"亚克力钥匙扣",
+    "缶バッジ":"徽章",
+    "Tシャツ":"T恤",
+    "スタンダードTシャツ":"标准T恤",
+    "ヘビーウェイトTシャツ":"重磅T恤",
+    "ロングスリーブTシャツ":"长袖T恤",
+    "ビッグシルエットTシャツ":"宽松T恤",
+    "パーカー":"连帽衫",
+    "スウェット":"卫衣",
+    "トートバッグ":"托特包",
+    "エコバッグ":"环保袋",
+    "サコッシュ":"斜挎小包",
+    "スマホケース":"手机壳",
+    "クリアスマホケース":"透明手机壳",
+    "マグカップ":"马克杯",
+    "グラス":"玻璃杯",
+    "タオルハンカチ":"方巾",
+    "タオル":"毛巾",
+    "クッション":"抱枕",
+    "サンダル":"凉鞋",
+    "ポスター":"海报",
+    "ノート":"笔记本",
+    "クリアファイル":"文件夹"
+  },
+  ko:{
+    "ステッカー":"스티커",
+    "アクリルスタンド":"아크릴 스탠드",
+    "アクリルキーホルダー":"아크릴 키링",
+    "缶バッジ":"캔 배지",
+    "Tシャツ":"티셔츠",
+    "スタンダードTシャツ":"스탠다드 티셔츠",
+    "ヘビーウェイトTシャツ":"헤비웨이트 티셔츠",
+    "ロングスリーブTシャツ":"긴팔 티셔츠",
+    "ビッグシルエットTシャツ":"빅 실루엣 티셔츠",
+    "パーカー":"후드티",
+    "スウェット":"스웨트셔츠",
+    "トートバッグ":"토트백",
+    "エコバッグ":"에코백",
+    "サコッシュ":"사코슈",
+    "スマホケース":"스마트폰 케이스",
+    "クリアスマホケース":"투명 스마트폰 케이스",
+    "マグカップ":"머그컵",
+    "グラス":"유리컵",
+    "タオルハンカチ":"타월 손수건",
+    "タオル":"타월",
+    "クッション":"쿠션",
+    "サンダル":"샌들",
+    "ポスター":"포스터",
+    "ノート":"노트",
+    "クリアファイル":"클리어 파일"
+  }
+}[locale] as Record<string,string>;
+
+const characterTitle=`${copy.characterPrefix} ${design.id}`;
+const path=`/goods/${design.id}/`;
+const canonical=absoluteUrl(localizedPath(locale,path));
+const title=`${characterTitle} ${copy.suffix} | stamp moke`;
+const description=`${copy.desc} 商品编号：${design.id}`;
+const localizedDescription=locale==="ko"?`${copy.desc} 상품 번호: ${design.id}`:description;
+const products=Array.isArray(design.products)?design.products:[];
+const productLabel=(p:any)=>itemNames[p?.itemName]||copy.genericProduct;
 ---
-<!doctype html><html lang={localeInfo[locale].htmlLang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title}</title><SeoHead title={title} description={t.desc} canonical={canonical} image={design.image} type="article" locale={locale} path={path}/><Analytics/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.main{max-width:1180px;margin:auto;padding:40px 5vw 100px}.crumb{font-size:12px;color:#777;margin-bottom:25px}.crumb a{color:inherit}.feature{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:center;padding:42px;background:#fff;border:1px solid #ddd;border-radius:26px}.feature img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:20px}.feature h1{font-size:clamp(34px,5vw,58px);margin:0 0 20px}.feature p{color:#666;line-height:2}.shop{display:inline-flex;margin-top:20px;padding:13px 18px;border-radius:999px;background:#161616;color:#fff;text-decoration:none}.products{margin-top:75px}.products h2{font-size:36px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid #ddd;border-radius:17px;overflow:hidden;text-decoration:none}.card img{width:100%;aspect-ratio:1;object-fit:cover}.body{padding:14px}.body h3{font-size:13px;margin:0}.price{margin-top:10px;font-size:11px;color:#777}@media(max-width:800px){.feature{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.main{padding:25px 18px 70px}.feature{padding:18px}}</style></head><body><SiteHeader locale={locale} path={path}/><main class="main"><nav class="crumb"><a href={localizedPath(locale,"/")}>stamp moke</a> / <a href={localizedPath(locale,"/goods/")}>{t.back}</a> / {design.title}</nav><article class="feature"><img src={design.image} alt={design.title}/><div><h1>{design.title}</h1><p>{t.desc}</p><a class="shop" href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.shop}</a></div></article><section class="products"><h2>{t.products}</h2><div class="grid">{products.map((p,i)=><a class="card" href={p.url} target="_blank" rel="noopener noreferrer"><img src={p.image} alt={p.title} loading={i<8?"eager":"lazy"}/><div class="body"><h3>{p.title}</h3>{p.price&&<div class="price">¥{Number(p.price).toLocaleString(locale==="ko"?"ko-KR":"zh-CN")} {t.tax}</div>}</div></a>)}</div></section></main></body></html>
+<!doctype html><html lang={localeInfo[locale].htmlLang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title}</title><SeoHead title={title} description={localizedDescription} canonical={canonical} image={design.image} type="article" locale={locale} path={path}/><Analytics/><style>*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Sans","Yu Gothic",sans-serif}.main{max-width:1180px;margin:auto;padding:40px 5vw 100px}.crumb{font-size:12px;color:#777;margin-bottom:25px}.crumb a{color:inherit}.feature{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:center;padding:42px;background:#fff;border:1px solid #ddd;border-radius:26px}.feature img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:20px}.feature h1{font-size:clamp(34px,5vw,58px);margin:0 0 20px}.feature p{color:#666;line-height:2}.shop{display:inline-flex;margin-top:20px;padding:13px 18px;border-radius:999px;background:#161616;color:#fff;text-decoration:none}.products{margin-top:75px}.products h2{font-size:36px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid #ddd;border-radius:17px;overflow:hidden;text-decoration:none}.card img{width:100%;aspect-ratio:1;object-fit:cover}.body{padding:14px}.body h3{font-size:13px;margin:0}.price{margin-top:10px;font-size:11px;color:#777}@media(max-width:800px){.feature{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.main{padding:25px 18px 70px}.feature{padding:18px}}</style></head><body><SiteHeader locale={locale} path={path}/><main class="main"><nav class="crumb"><a href={localizedPath(locale,"/")}>stamp moke</a> / <a href={localizedPath(locale,"/goods/")}>{copy.back}</a> / {characterTitle}</nav><article class="feature"><img src={design.image} alt={characterTitle}/><div><h1>{characterTitle}</h1><p>{localizedDescription}</p><a class="shop" href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{copy.shop}</a></div></article><section class="products"><h2>{copy.products}</h2><div class="grid">{products.map((p,i)=><a class="card" href={p.url} target="_blank" rel="noopener noreferrer"><img src={p.image} alt={`${characterTitle} ${productLabel(p)}`} loading={i<8?"eager":"lazy"}/><div class="body"><h3>{productLabel(p)}</h3>{p.price&&<div class="price">¥{Number(p.price).toLocaleString(locale==="ko"?"ko-KR":"zh-CN")} {copy.tax}</div>}</div></a>)}</div></section></main></body></html>
