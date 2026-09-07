@@ -1,45 +1,45 @@
 /* stamp moke NEWS page */
-*{box-sizing:border-box}
-body{margin:0;background:#fbfcfb;color:#141820;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
-a{color:inherit}
-.news-page .hero{background:linear-gradient(105deg,#f2f8fa,#eef5f4 48%,#f8f7f0);border-bottom:1px solid #e9eeea}
-.news-page .hero-inner{max-width:1180px;margin:auto;padding:52px clamp(18px,4vw,56px)}
-.news-page .hero h1{margin:0;font-size:clamp(40px,6vw,64px);letter-spacing:-.05em}
-.news-page .hero p{margin:14px 0 0;color:#63706c;line-height:1.8}
-.news-page .content{max-width:1180px;margin:auto;padding:32px clamp(18px,4vw,56px) 90px}
-.news-page .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
-.news-page .filter{min-height:42px;padding:0 20px;border:1px solid #e3e7e4;background:#f8faf9;border-radius:16px;font-size:12px;font-weight:850;cursor:pointer}
-.news-page .filter.on{background:#16a361;color:#fff;border-color:#16a361}
-.news-page .list{display:grid;gap:14px}
-.news-page .card{display:grid;grid-template-columns:225px 1fr 54px;gap:26px;align-items:center;padding:14px;background:#fff;border:1px solid #e1e7e3;border-radius:16px;text-decoration:none}
-.news-page .thumb{height:112px;border-radius:12px;overflow:hidden;background:linear-gradient(145deg,#f7fbf8,#eef4f0);display:flex;align-items:center;justify-content:center}
-.news-page .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.news-page .thumb img.fallback-logo{width:72%;height:72%;object-fit:contain;padding:12%;opacity:.96}
-.news-page .meta{display:flex;gap:10px;align-items:center;color:#7b8581;font-size:11px}
-.news-page .label{padding:6px 10px;border-radius:999px;background:#e4f2ff;font-size:10px;font-weight:900}
-.news-page .card h2{margin:8px 0 0;font-size:20px;line-height:1.45}
-.news-page .summary{margin:7px 0 0;color:#6f7a76;font-size:12px;line-height:1.75}
-.news-page .arrow{font-size:24px}
-.news-page .article-shell{display:none;max-width:900px;margin:auto;padding:42px clamp(18px,4vw,56px) 90px}
-.news-page .article-shell.show{display:block}
-.news-page .article{background:#fff;border:1px solid #e1e7e3;border-radius:24px;padding:clamp(26px,5vw,54px)}
-.news-page .article h1{margin:16px 0 0;font-size:clamp(30px,5vw,48px);line-height:1.35}
-.news-page .article-image{margin-top:28px;border-radius:18px;overflow:hidden;background:#f4f5f4}
-.news-page .article-image img{display:block;width:100%;max-height:520px;object-fit:contain}
-.news-page .body{margin-top:24px;color:#59635f;font-size:15px;line-height:2.05;white-space:pre-line}
-.news-page .cta{display:inline-flex;margin-top:30px;padding:13px 19px;border-radius:999px;background:#16a361;color:#fff;text-decoration:none;font-size:12px;font-weight:900}
-.news-page .back{display:inline-flex;margin-bottom:18px;text-decoration:none;font-size:12px;font-weight:800;color:#5f6b66}
-.news-page .empty{padding:42px;text-align:center;color:#7b8581;background:#fff;border:1px solid #e1e7e3;border-radius:16px}
-.news-page .footer{padding:36px 5vw;background:#14201a;color:#aeb8b2;font-size:11px;text-align:center}
+body:has(#news-list){margin:0;background:#fbfcfb;color:#141820;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
+body:has(#news-list) *{box-sizing:border-box}
+body:has(#news-list) a{color:inherit}
+body:has(#news-list) .hero{background:linear-gradient(105deg,#f2f8fa,#eef5f4 48%,#f8f7f0);border-bottom:1px solid #e9eeea}
+body:has(#news-list) .hero-inner{max-width:1180px;margin:auto;padding:52px clamp(18px,4vw,56px)}
+body:has(#news-list) .hero h1{margin:0;font-size:clamp(40px,6vw,64px);letter-spacing:-.05em}
+body:has(#news-list) .hero p{margin:14px 0 0;color:#63706c;line-height:1.8}
+body:has(#news-list) .content{max-width:1180px;margin:auto;padding:32px clamp(18px,4vw,56px) 90px}
+body:has(#news-list) .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+body:has(#news-list) .filter{min-height:42px;padding:0 20px;border:1px solid #e3e7e4;background:#f8faf9;border-radius:16px;font-size:12px;font-weight:850;cursor:pointer}
+body:has(#news-list) .filter.on{background:#16a361;color:#fff;border-color:#16a361}
+body:has(#news-list) .list{display:grid;gap:14px}
+body:has(#news-list) .card{display:grid;grid-template-columns:225px 1fr 54px;gap:26px;align-items:center;padding:14px;background:#fff;border:1px solid #e1e7e3;border-radius:16px;text-decoration:none}
+body:has(#news-list) .thumb{height:112px;border-radius:12px;overflow:hidden;background:linear-gradient(145deg,#f7fbf8,#eef4f0);display:flex;align-items:center;justify-content:center}
+body:has(#news-list) .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+body:has(#news-list) .thumb img.fallback-logo{width:72%;height:72%;object-fit:contain;padding:12%;opacity:.96}
+body:has(#news-list) .meta{display:flex;gap:10px;align-items:center;color:#7b8581;font-size:11px}
+body:has(#news-list) .label{padding:6px 10px;border-radius:999px;background:#e4f2ff;font-size:10px;font-weight:900}
+body:has(#news-list) .card h2{margin:8px 0 0;font-size:20px;line-height:1.45}
+body:has(#news-list) .summary{margin:7px 0 0;color:#6f7a76;font-size:12px;line-height:1.75}
+body:has(#news-list) .arrow{font-size:24px}
+body:has(#news-list) .article-shell{display:none;max-width:900px;margin:auto;padding:42px clamp(18px,4vw,56px) 90px}
+body:has(#news-list) .article-shell.show{display:block}
+body:has(#news-list) .article{background:#fff;border:1px solid #e1e7e3;border-radius:24px;padding:clamp(26px,5vw,54px)}
+body:has(#news-list) .article h1{margin:16px 0 0;font-size:clamp(30px,5vw,48px);line-height:1.35}
+body:has(#news-list) .article-image{margin-top:28px;border-radius:18px;overflow:hidden;background:#f4f5f4}
+body:has(#news-list) .article-image img{display:block;width:100%;max-height:520px;object-fit:contain}
+body:has(#news-list) .body{margin-top:24px;color:#59635f;font-size:15px;line-height:2.05;white-space:pre-line}
+body:has(#news-list) .cta{display:inline-flex;margin-top:30px;padding:13px 19px;border-radius:999px;background:#16a361;color:#fff;text-decoration:none;font-size:12px;font-weight:900}
+body:has(#news-list) .back{display:inline-flex;margin-bottom:18px;text-decoration:none;font-size:12px;font-weight:800;color:#5f6b66}
+body:has(#news-list) .empty{padding:42px;text-align:center;color:#7b8581;background:#fff;border:1px solid #e1e7e3;border-radius:16px}
+body:has(#news-list) .footer{padding:36px 5vw;background:#14201a;color:#aeb8b2;font-size:11px;text-align:center}
 @media(max-width:680px){
-.news-page .content{padding:24px 14px 65px}
-.news-page .card{grid-template-columns:96px 1fr 30px;gap:12px;padding:10px}
-.news-page .thumb{height:92px}
-.news-page .thumb img.fallback-logo{width:76%;height:76%;padding:11%}
-.news-page .card h2{font-size:14px}
-.news-page .summary{font-size:10px}
-.news-page .article-shell{padding:28px 14px 65px}
-.news-page .article{padding:24px 20px}
-.news-page .hero-inner{padding:38px 18px}
-.news-page .hero h1{font-size:42px}
+body:has(#news-list) .content{padding:24px 14px 65px}
+body:has(#news-list) .card{grid-template-columns:96px 1fr 30px;gap:12px;padding:10px}
+body:has(#news-list) .thumb{height:92px}
+body:has(#news-list) .thumb img.fallback-logo{width:76%;height:76%;padding:11%}
+body:has(#news-list) .card h2{font-size:14px}
+body:has(#news-list) .summary{font-size:10px}
+body:has(#news-list) .article-shell{padding:28px 14px 65px}
+body:has(#news-list) .article{padding:24px 20px}
+body:has(#news-list) .hero-inner{padding:38px 18px}
+body:has(#news-list) .hero h1{font-size:42px}
 }
