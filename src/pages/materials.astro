@@ -1,0 +1,80 @@
+---
+import stickers from "../data/stickers.json";
+import overrides from "../data/digital-product-overrides.json";
+import Analytics from "../components/Analytics.astro";
+import SeoHead from "../components/SeoHead.astro";
+import { absoluteUrl } from "../lib/seo";
+
+const cleanTitle = (value = "") => String(value).replace(/\s*-\s*LINE スタンプ\s*\|\s*LINE STORE\s*$/u, "").replace(/\s*\d+種類\s*$/u, "").trim();
+const productOverrides = overrides?.products || {};
+const products = stickers.map((sticker) => {
+  const override = productOverrides[String(sticker.id)] || {};
+  return {
+    id: String(sticker.id),
+    title: cleanTitle(sticker.title),
+    description: sticker.description || "",
+    image: sticker.image || "",
+    published: override.published === true && Boolean(override.zipKey),
+  };
+});
+const title = "商用利用OKのPNG素材｜全品500円 - stamp moke";
+const description = "stamp mokeのオリジナル素材を、商用利用可能な透過PNG素材セットとしてワンコイン500円で販売。購入後すぐにZIPでダウンロードできます。";
+const canonical = absoluteUrl("/materials/");
+---
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <SeoHead title={title} description={description} canonical={canonical} locale="ja" path="/materials/" />
+  <Analytics />
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif}.header{height:82px;background:rgba(255,255,255,.96);border-bottom:1px solid #e5e3dd;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:sticky;top:0;z-index:20}.brand{text-decoration:none;color:inherit;font-weight:900;letter-spacing:.08em}.back{text-decoration:none;border:1px solid #ddd9d1;border-radius:999px;padding:11px 16px;font-size:12px;font-weight:800}.main{max-width:1180px;margin:auto;padding:58px 5vw 100px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#777}.hero h1{font-size:clamp(42px,7vw,78px);line-height:.98;letter-spacing:-.05em;margin:14px 0}.lead{max-width:760px;color:#666;font-size:14px;line-height:2}.price-rule{display:inline-flex;align-items:center;gap:10px;margin-top:18px;background:#171717;color:#fff;border-radius:999px;padding:12px 18px;font-size:13px;font-weight:900}.section{margin-top:58px}.section-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid #ddd9d1;padding-bottom:16px;margin-bottom:20px}.section-head h2{font-size:30px;margin:0}.count{font-size:12px;color:#777}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid #e3e0d9;border-radius:18px;overflow:hidden;display:flex;flex-direction:column}.media{aspect-ratio:1;background:#fff}.media img{width:100%;height:100%;object-fit:contain;display:block}.body{padding:15px;display:flex;flex:1;flex-direction:column}.title{font-size:14px;line-height:1.5;margin:0;font-weight:900}.desc{font-size:11px;line-height:1.7;color:#777;margin:8px 0 14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.meta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}.price{font-size:20px;font-weight:900}.tax{font-size:10px;color:#888}.buy,.soon{border:0;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:900}.buy{background:#168b52;color:#fff;cursor:pointer}.buy:disabled{opacity:.55;cursor:wait}.soon{background:#efede7;color:#888}.notice{margin-top:24px;padding:18px;border-radius:14px;background:#fff;border:1px solid #e3e0d9;color:#666;font-size:12px;line-height:1.8}@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:640px){.header{height:70px;padding:0 18px}.main{padding:38px 18px 70px}.hero h1{font-size:46px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{border-radius:13px}.body{padding:12px}.title{font-size:12px}.desc{font-size:10px}.price{font-size:17px}}
+  </style>
+</head>
+<body>
+<header class="header"><a class="brand" href="/">stamp moke</a><a class="back" href="/">TOPへ</a></header>
+<main class="main">
+  <section class="hero">
+    <div class="eyebrow">COMMERCIAL PNG MATERIALS</div>
+    <h1>全部、500円。</h1>
+    <p class="lead">LINEスタンプから生まれたstamp mokeのオリジナル素材を、商用利用可能な透過PNG素材セットとして販売します。商品登録はスタンプ一覧から自動生成され、ZIPが準備できた商品だけ購入できます。</p>
+    <div class="price-rule">1セット 500円（税込）</div>
+  </section>
+  <section class="section">
+    <div class="section-head"><h2>素材一覧</h2><div class="count">{products.length} sets</div></div>
+    <div class="grid">
+      {products.map((product,index) => <article class="card">
+        <div class="media"><img src={product.image} alt={product.title} loading={index < 8 ? "eager" : "lazy"} /></div>
+        <div class="body">
+          <h3 class="title">{product.title}</h3>
+          <p class="desc">{product.description}</p>
+          <div class="meta"><div><div class="price">¥500</div><div class="tax">税込 / 商用利用OK</div></div>{product.published ? <button class="buy" data-product-id={product.id}>購入する</button> : <span class="soon">準備中</span>}</div>
+        </div>
+      </article>)}
+    </div>
+    <div class="notice">ZIPが登録されていない商品は自動的に「準備中」となり、決済できません。販売開始後は購入完了後に期限付きのダウンロードURLを発行します。</div>
+  </section>
+</main>
+<script>
+  document.querySelectorAll('.buy').forEach((button) => {
+    button.addEventListener('click', async () => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      const productId = button.dataset.productId;
+      button.disabled = true;
+      const original = button.textContent;
+      button.textContent = '決済へ…';
+      try {
+        const response = await fetch('/api/store?action=checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId }) });
+        const data = await response.json();
+        if (!response.ok || !data.checkoutUrl) throw new Error(data.error || '決済を開始できませんでした。');
+        location.href = data.checkoutUrl;
+      } catch (error) {
+        alert(error instanceof Error ? error.message : '決済を開始できませんでした。');
+        button.disabled = false;
+        button.textContent = original;
+      }
+    });
+  });
+</script>
+</body></html>
