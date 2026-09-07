@@ -15,7 +15,7 @@ export default async function handler(req,res){
    const session=event.data?.object;
    if(session?.payment_status==="paid"){
     const product=await getRuntimeDigitalProduct(session.metadata?.product_id);
-    if(product?.published&&product.zipKey){await r2PutJson(orderKey(session.id),{sessionId:session.id,productId:product.id,amountTotal:session.amount_total,currency:session.currency,customerEmail:session.customer_details?.email||session.customer_email||"",paidAt:new Date().toISOString(),eventId:event.id});}
+    if(product?.published&&product.zipKey){await r2PutJson(orderKey(session.id),{sessionId:session.id,productId:product.id,title:product.title,zipKey:product.zipKey,amountTotal:session.amount_total,currency:session.currency,customerEmail:session.customer_details?.email||session.customer_email||"",paidAt:new Date().toISOString(),eventId:event.id});}
    }
   }
   res.statusCode=200;res.setHeader("Content-Type","application/json; charset=utf-8");return res.end(JSON.stringify({received:true}));
