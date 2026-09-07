@@ -30,6 +30,10 @@ function extractStickerIds(html) {
   const patterns = [
     /stickershop\/v1\/sticker\/(\d+)\/(?:android|iphone|iPhone)\//gi,
     /sticker\/(\d+)\/android\/sticker\.png/gi,
+    /data-preview-sticker-id=["'](\d+)["']/gi,
+    /data-sticker-id=["'](\d+)["']/gi,
+    /["']stickerId["']\s*:\s*["']?(\d+)/gi,
+    /["']sticker_id["']\s*:\s*["']?(\d+)/gi,
   ];
   for (const pattern of patterns) {
     let match;
@@ -56,18 +60,34 @@ async function fetchStickerPng(stickerId) {
 }
 
 const pageUrl = `https://store.line.me/stickershop/product/${productId}/ja`;
+const outDir = path.resolve("tmp/line-material-test", productId);
+await fs.rm(outDir, { recursive: true, force: true });
+await fs.mkdir(outDir, { recursive: true });
+
 console.log(`Fetching LINE product page: ${pageUrl}`);
 const page = await fetch(pageUrl, { headers: PAGE_HEADERS, cache: "no-store", redirect: "follow" });
-if (!page.ok) throw new Error(`LINE product page failed: ${page.status}`);
 const html = await page.text();
+await fs.writeFile(path.join(outDir, "page.html"), html, "utf8");
+await fs.writeFile(path.join(outDir, "page-meta.json"), JSON.stringify({
+  requestedUrl: pageUrl,
+  finalUrl: page.url,
+  status: page.status,
+  contentType: page.headers.get("content-type"),
+  bytes: Buffer.byteLength(html),
+  title: html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.trim() || null,
+  hasLineScdn: /line-scdn\.net/i.test(html),
+  hasStickershopV1Sticker: /stickershop\/v1\/sticker\//i.test(html),
+  hasPreviewStickerId: /preview-sticker-id/i.test(html),
+  hasStickerIdText: /sticker.?id/i.test(html),
+}, null, 2));
+if (!page.ok) throw new Error(`LINE product page failed: ${page.status}`);
+
 const stickerIds = extractStickerIds(html);
+await fs.writeFile(path.join(outDir, "extracted-ids.json"), JSON.stringify(stickerIds, null, 2));
 console.log(`Found sticker ids: ${stickerIds.length}`);
 if (!ALLOWED_COUNTS.has(stickerIds.length)) throw new Error(`unexpected sticker count: ${stickerIds.length}`);
 
-const outDir = path.resolve("tmp/line-material-test", productId);
-await fs.rm(outDir, { recursive: true, force: true });
 await fs.mkdir(path.join(outDir, "png"), { recursive: true });
-
 const hashes = [];
 for (let i = 0; i < stickerIds.length; i++) {
   const stickerId = stickerIds[i];
@@ -79,12 +99,6 @@ for (let i = 0; i < stickerIds.length; i++) {
   console.log(`${filename}: ${stickerId} ${data.length} bytes`);
 }
 
-const manifest = {
-  productId,
-  pageUrl,
-  assetCount: hashes.length,
-  testedAt: new Date().toISOString(),
-  files: hashes,
-};
+const manifest = { productId, pageUrl, assetCount: hashes.length, testedAt: new Date().toISOString(), files: hashes };
 await fs.writeFile(path.join(outDir, "manifest.json"), JSON.stringify(manifest, null, 2));
 console.log(`Dry-run passed: ${hashes.length} PNG files written to ${outDir}`);
