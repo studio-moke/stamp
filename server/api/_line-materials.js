@@ -1,21 +1,21 @@
 import crypto from "node:crypto";
+import zlib from "node:zlib";
 import { r2Put } from "./_r2.js";
 
 const STORE_PRICE_YEN = 100;
 const ALLOWED_COUNTS = new Set([8, 16, 24, 32, 40]);
-const PAGE_HEADERS = {
+const HEADERS = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
-  "Accept-Language": "ja-JP,ja;q=0.9",
-  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-};
-const IMAGE_HEADERS = {
-  "User-Agent": PAGE_HEADERS["User-Agent"],
   Referer: "https://store.line.me/",
-  Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+  Accept: "*/*",
 };
 
 function isPng(buffer) {
   return Buffer.isBuffer(buffer) && buffer.length >= 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]));
+}
+
+function isZip(buffer) {
+  return Buffer.isBuffer(buffer) && buffer.length >= 4 && buffer.readUInt32LE(0) === 0x04034b50;
 }
 
 function crc32(buffer) {
@@ -93,58 +93,69 @@ function buildZip(entries) {
   return Buffer.concat([...locals, centralBuffer, end]);
 }
 
-function extractStickerIds(html) {
-  const normalized = String(html || "")
-    .replace(/\\\//g, "/")
-    .replace(/\\u002F/gi, "/")
-    .replace(/&amp;/g, "&");
-  const ids = new Set();
-  const patterns = [
-    /stickershop\/v1\/sticker\/(\d+)\/(?:android|iphone|iPhone)\//gi,
-    /sticker\/(\d+)\/android\/sticker\.png/gi,
-  ];
-  for (const pattern of patterns) {
-    let match;
-    while ((match = pattern.exec(normalized)) !== null) ids.add(match[1]);
+function findEocd(zip) {
+  const min = Math.max(0, zip.length - 0xffff - 22);
+  for (let i = zip.length - 22; i >= min; i--) {
+    if (zip.readUInt32LE(i) === 0x06054b50) return i;
   }
-  return [...ids];
+  throw new Error("LINE ZIPの終端情報が見つかりません。");
 }
 
-async function fetchProductPage(productId) {
-  const url = `https://store.line.me/stickershop/product/${productId}/ja`;
-  const response = await fetch(url, { headers: PAGE_HEADERS, cache: "no-store", redirect: "follow" });
-  if (!response.ok) throw new Error(`LINE商品ページ取得失敗: ${response.status}`);
-  return response.text();
+function unzipEntries(zip) {
+  const eocd = findEocd(zip);
+  const totalEntries = zip.readUInt16LE(eocd + 10);
+  const centralOffset = zip.readUInt32LE(eocd + 16);
+  const entries = [];
+  let ptr = centralOffset;
+
+  for (let i = 0; i < totalEntries; i++) {
+    if (zip.readUInt32LE(ptr) !== 0x02014b50) throw new Error("LINE ZIPの中央ディレクトリが不正です。");
+    const method = zip.readUInt16LE(ptr + 10);
+    const compressedSize = zip.readUInt32LE(ptr + 20);
+    const uncompressedSize = zip.readUInt32LE(ptr + 24);
+    const nameLength = zip.readUInt16LE(ptr + 28);
+    const extraLength = zip.readUInt16LE(ptr + 30);
+    const commentLength = zip.readUInt16LE(ptr + 32);
+    const localOffset = zip.readUInt32LE(ptr + 42);
+    const name = zip.subarray(ptr + 46, ptr + 46 + nameLength).toString("utf8");
+
+    if (zip.readUInt32LE(localOffset) !== 0x04034b50) throw new Error(`LINE ZIPのローカルヘッダーが不正です: ${name}`);
+    const localNameLength = zip.readUInt16LE(localOffset + 26);
+    const localExtraLength = zip.readUInt16LE(localOffset + 28);
+    const dataStart = localOffset + 30 + localNameLength + localExtraLength;
+    const compressed = zip.subarray(dataStart, dataStart + compressedSize);
+    let data;
+    if (method === 0) data = Buffer.from(compressed);
+    else if (method === 8) data = zlib.inflateRawSync(compressed);
+    else throw new Error(`未対応のLINE ZIP圧縮方式です: ${method}`);
+    if (data.length !== uncompressedSize) throw new Error(`LINE ZIP展開サイズが一致しません: ${name}`);
+    entries.push({ name, data });
+    ptr += 46 + nameLength + extraLength + commentLength;
+  }
+  return entries;
 }
 
-async function fetchStickerPng(stickerId) {
+async function fetchProductPackage(productId) {
   const candidates = [
-    `https://stickershop.line-scdn.net/stickershop/v1/sticker/${stickerId}/android/sticker.png`,
-    `https://stickershop.line-scdn.net/stickershop/v1/sticker/${stickerId}/iPhone/sticker@2x.png`,
-    `https://stickershop.line-scdn.net/stickershop/v1/sticker/${stickerId}/iPhone/sticker_key@2x.png`,
+    `https://stickershop.line-scdn.net/stickershop/v1/product/${productId}/android/stickers.zip`,
+    `https://stickershop.line-scdn.net/stickershop/v1/product/${productId}/iphone/stickers@2x.zip`,
+    `https://stickershop.line-scdn.net/stickershop/v1/product/${productId}/iPhone/stickers@2x.zip`,
   ];
   for (const url of candidates) {
     try {
-      const response = await fetch(url, { headers: IMAGE_HEADERS, redirect: "follow" });
+      const response = await fetch(url, { headers: HEADERS, cache: "no-store", redirect: "follow" });
       if (!response.ok) continue;
       const data = Buffer.from(await response.arrayBuffer());
-      if (isPng(data)) return data;
+      if (isZip(data)) return { data, url };
     } catch {}
   }
-  throw new Error(`スタンプ画像取得失敗: ${stickerId}`);
+  throw new Error("LINE商品パッケージZIPを取得できませんでした。");
 }
 
-async function downloadAll(stickerIds, concurrency = 8) {
-  const results = new Array(stickerIds.length);
-  let cursor = 0;
-  async function worker() {
-    while (cursor < stickerIds.length) {
-      const index = cursor++;
-      results[index] = await fetchStickerPng(stickerIds[index]);
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(concurrency, stickerIds.length) }, () => worker()));
-  return results;
+function extractMaterialPngs(zip) {
+  return unzipEntries(zip)
+    .filter(({ name, data }) => /\.png$/i.test(name) && !/key|tab|main|preview|thumbnail|product/i.test(name) && isPng(data))
+    .sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true }));
 }
 
 function licenseText(productId) {
@@ -154,22 +165,24 @@ function licenseText(productId) {
 export async function prepareLineMaterialZip(product) {
   const productId = String(product?.id || "").replace(/[^0-9]/g, "");
   if (!productId) throw new Error("商品IDが不正です。");
-  const html = await fetchProductPage(productId);
-  const stickerIds = extractStickerIds(html);
-  if (!ALLOWED_COUNTS.has(stickerIds.length)) {
-    throw new Error(`LINE商品ページから取得した画像数が想定外です: ${stickerIds.length}点`);
+
+  const source = await fetchProductPackage(productId);
+  const images = extractMaterialPngs(source.data);
+  if (!ALLOWED_COUNTS.has(images.length)) {
+    throw new Error(`LINE商品パッケージから取得した画像数が想定外です: ${images.length}点`);
   }
-  const images = await downloadAll(stickerIds);
+
   const title = String(product?.title || productId).trim();
   const preparedAt = new Date().toISOString();
-  const entries = images.map((data, index) => ({ name: `png/${String(index + 1).padStart(2, "0")}.png`, data }));
+  const entries = images.map(({ data }, index) => ({ name: `png/${String(index + 1).padStart(2, "0")}.png`, data }));
   const manifest = {
     productId,
     title,
     assetCount: images.length,
     format: "PNG",
     commercialUse: true,
-    source: "LINE STORE",
+    source: "LINE STORE product package",
+    sourcePackage: source.url,
     preparedAt,
     priceYen: STORE_PRICE_YEN,
   };
@@ -183,5 +196,5 @@ export async function prepareLineMaterialZip(product) {
   const hash = crypto.createHash("sha256").update(zip).digest("hex");
   const zipKey = `digital-products/${productId}/${hash}.zip`;
   await r2Put(zipKey, zip, "application/zip");
-  return { productId, zipKey, contentHash: hash, assetCount: images.length, preparedAt };
+  return { productId, zipKey, contentHash: hash, assetCount: images.length, preparedAt, sourcePackage: source.url };
 }
