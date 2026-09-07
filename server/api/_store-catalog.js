@@ -10,14 +10,21 @@ function cleanTitle(value = "") {
     .trim();
 }
 
+function safeZipKey(productId, value) {
+  const key = typeof value === "string" ? value.trim() : "";
+  return key.startsWith(`digital-products/${productId}/`) && key.endsWith(".zip") ? key : "";
+}
+
 export function getDigitalProducts() {
   const productOverrides = overrides?.products || {};
   return stickers.map((sticker) => {
-    const override = productOverrides[String(sticker.id)] || {};
-    const zipKey = typeof override.zipKey === "string" ? override.zipKey.trim() : "";
-    const published = override.published === true && Boolean(zipKey);
+    const id = String(sticker.id);
+    const override = productOverrides[id] || {};
+    const zipKey = safeZipKey(id, override.zipKey);
+    const assetCount = Number.isInteger(override.assetCount) && override.assetCount > 0 ? override.assetCount : null;
+    const published = override.published === true && Boolean(zipKey) && Boolean(assetCount);
     return {
-      id: String(sticker.id),
+      id,
       title: cleanTitle(sticker.title),
       description: sticker.description || "",
       image: sticker.image || "",
@@ -25,6 +32,8 @@ export function getDigitalProducts() {
       priceYen: DIGITAL_PRODUCT_PRICE_YEN,
       published,
       zipKey,
+      assetCount,
+      packagedAt: typeof override.packagedAt === "string" ? override.packagedAt : "",
     };
   });
 }
