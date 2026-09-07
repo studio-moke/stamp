@@ -1,4 +1,4 @@
-import storeWebhook from "../server/api/store-webhook.js";
+import storeWebhook from "../server/api/store-webhook-v2.js";
 
 export const config = {
   api: { bodyParser: false }
