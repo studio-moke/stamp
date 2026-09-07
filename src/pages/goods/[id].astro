@@ -2,165 +2,43 @@
 import designs from "../../data/suzuri-designs.json";
 import Analytics from "../../components/Analytics.astro";
 import SeoHead from "../../components/SeoHead.astro";
-import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
 import { localeInfo, localizedPath, messages, normalizeLocale } from "../../lib/i18n";
 import { absoluteUrl, makeTitle } from "../../lib/seo";
 
 export function getStaticPaths() {
-  return designs.map((design) => ({
-    params: { id: String(design.id) },
-    props: { design },
-  }));
+  return designs.map((design) => ({ params: { id: String(design.id) }, props: { design } }));
 }
-
 const { design, locale: localeProp = "ja" } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const t = messages[locale];
 const titleSuffix = locale === "ja" ? "のキャラクターグッズ" : locale === "en" ? " Character Goods" : locale === "zh-tw" ? "角色周邊商品" : locale === "th" ? " สินค้าคาแรกเตอร์" : " - Produk Karakter";
 const pageTitle = makeTitle([`${design.title}${titleSuffix}`]);
-const description = locale === "ja"
-  ? (design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`)
-  : locale === "en"
-    ? `Shop original ${design.title} character goods by stamp moke, including T-shirts, stickers and accessories available on SUZURI.`
-    : locale === "zh-tw"
-      ? `選購stamp moke原創角色「${design.title}」的T恤、貼紙與各式SUZURI周邊商品。`
-      : locale === "th"
-        ? `เลือกซื้อสินค้าคาแรกเตอร์ ${design.title} จาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI`
-        : `Temukan produk karakter ${design.title} dari stamp moke, termasuk kaus, stiker, dan aksesori yang tersedia di SUZURI.`;
+const description = locale === "ja" ? (design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`) : locale === "en" ? `Shop original ${design.title} character goods by stamp moke, including T-shirts, stickers and accessories available on SUZURI.` : locale === "zh-tw" ? `選購stamp moke原創角色「${design.title}」的T恤、貼紙與各式SUZURI周邊商品。` : locale === "th" ? `เลือกซื้อสินค้าคาแรกเตอร์ ${design.title} จาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI` : `Temukan produk karakter ${design.title} dari stamp moke, termasuk kaus, stiker, dan aksesori yang tersedia di SUZURI.`;
 const canonicalPath = `/goods/${design.id}`;
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
 const numberLocale = locale === "ja" ? "ja-JP" : locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "id" ? "id-ID" : "en-US";
 const formatPrice = (price) => !price ? "" : locale === "id" ? "Periksa harga di SUZURI" : `¥${Number(price).toLocaleString(numberLocale)} ${t.taxIncluded}`;
 const products = Array.isArray(design.products) ? design.products : [];
 ---
-
 <!doctype html>
 <html lang={localeInfo[locale].htmlLang}>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>{pageTitle}</title>
-  <SeoHead title={pageTitle} description={description} canonical={canonical} image={design.image} type="article" locale={locale} path={canonicalPath} />
-  <Analytics />
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: pageTitle,
-    description,
-    url: canonical,
-    isPartOf: { "@type": "WebSite", name: "stamp moke", url: absoluteUrl("/") },
-  })} />
-  <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: #f7f6f2; color: #161616; font-family: Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; }
-    .header { height: 86px; background: rgba(255,255,255,.96); border-bottom: 1px solid #e4e3df; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); }
-    .brand { text-decoration: none; }
-    .brand-title { font-size: 21px; font-weight: 900; letter-spacing: .1em; line-height: 1; }
-    .brand-sub { margin-top: 7px; font-size: 11px; color: #777; letter-spacing: .05em; }
-    .header-link { text-decoration: none; border: 1px solid #d9d8d4; background: #fff; padding: 13px 22px; border-radius: 999px; font-size: 13px; font-weight: 700; }
-    .header-actions { display: flex; align-items: center; gap: 9px; }
-    .main { max-width: 1180px; margin: 0 auto; padding: 40px 5vw 110px; }
-    .breadcrumb { margin-bottom: 28px; color: #888; font-size: 11px; }
-    .breadcrumb a { text-decoration: none; }
-    .feature { display: grid; grid-template-columns: minmax(280px,.85fr) minmax(0,1.15fr); gap: 55px; align-items: center; padding: 46px; border: 1px solid #e3e2de; border-radius: 28px; background: #fff; box-shadow: 0 24px 70px rgba(42,40,32,.07); }
-    .character-image-wrap { aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; border-radius: 22px; background: #fff; }
-    .character-image { display: block; width: 100%; height: 100%; object-fit: cover; background: #fff; filter: brightness(1.055) contrast(1.02); }
-    .eyebrow { margin-bottom: 15px; color: #888; font-size: 10px; font-weight: 800; letter-spacing: .18em; }
-    .title { margin: 0; font-size: clamp(34px,4.5vw,62px); line-height: 1.08; letter-spacing: -.045em; font-weight: 900; }
-    .description { margin: 25px 0 0; color: #666; font-size: 13px; line-height: 2; white-space: pre-line; }
-    .shop-link { display: inline-flex; margin-top: 28px; padding: 13px 19px; border-radius: 999px; background: #161616; color: #fff; font-size: 11px; font-weight: 800; text-decoration: none; }
-    .products { margin-top: 90px; }
-    .section-label { margin-bottom: 9px; color: #777; font-size: 10px; letter-spacing: .18em; }
-    .section-heading { margin: 0 0 30px; font-size: clamp(31px,4vw,48px); line-height: 1.1; letter-spacing: -.035em; font-weight: 900; }
-    .product-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 20px; }
-    .product-card { display: block; overflow: hidden; border: 1px solid #e3e2de; border-radius: 18px; background: #fff; text-decoration: none; transition: transform .25s ease, box-shadow .25s ease; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,.08); }
-    .product-image-wrap { aspect-ratio: 1; overflow: hidden; background: #efede7; }
-    .product-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
-    .product-card:hover .product-image { transform: scale(1.035); }
-    .product-content { padding: 17px; }
-    .product-type { margin-bottom: 8px; color: #999; font-size: 9px; font-weight: 800; letter-spacing: .12em; }
-    .product-title { margin: 0; font-size: 14px; line-height: 1.55; font-weight: 800; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .product-meta { display: flex; align-items: end; justify-content: space-between; gap: 10px; margin-top: 15px; padding-top: 13px; border-top: 1px solid #eeece7; }
-    .product-price { font-size: 13px; font-weight: 800; }
-    .product-link { color: #168b52; font-size: 10px; font-weight: 800; white-space: nowrap; }
-    .footer { padding: 36px 5vw; background: #181818; color: #777; font-size: 10px; }
-    .footer-inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; gap: 20px; }
-    .footer a { color: #bbb; text-decoration: none; }
-    @media (max-width: 900px) {
-      .feature { grid-template-columns: 1fr; gap: 32px; padding: 32px; }
-      .character-image-wrap { max-width: 580px; width: 100%; margin: 0 auto; }
-      .product-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
-    }
-    @media (max-width: 620px) {
-      .header { height: 72px; padding: 0 20px; }
-      .brand-title { font-size: 17px; }
-      .brand-sub { font-size: 9px; margin-top: 5px; }
-      .header-link { padding: 10px 14px; font-size: 11px; }
-      .header-actions { gap: 6px; }
-      .main { padding: 25px 18px 75px; }
-      .feature { padding: 18px; border-radius: 20px; }
-      .title { font-size: 34px; }
-      .description { font-size: 12px; }
-      .products { margin-top: 65px; }
-      .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
-      .product-content { padding: 13px; }
-      .footer-inner { flex-direction: column; }
-    }
-  </style>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>{pageTitle}</title>
+<SeoHead title={pageTitle} description={description} canonical={canonical} image={design.image} type="article" locale={locale} path={canonicalPath} />
+<Analytics />
+<script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:pageTitle,description,url:canonical,isPartOf:{"@type":"WebSite",name:"stamp moke",url:absoluteUrl("/")}})} />
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f7f6f2;color:#161616;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit}.main{max-width:1180px;margin:0 auto;padding:40px 5vw 110px}.breadcrumb{margin-bottom:28px;color:#888;font-size:11px}.breadcrumb a{text-decoration:none}.feature{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.15fr);gap:55px;align-items:center;padding:46px;border:1px solid #e3e2de;border-radius:28px;background:#fff;box-shadow:0 24px 70px rgba(42,40,32,.07)}.character-image-wrap{aspect-ratio:1;display:grid;place-items:center;overflow:hidden;border-radius:22px;background:#fff}.character-image{display:block;width:100%;height:100%;object-fit:cover;background:#fff;filter:brightness(1.055) contrast(1.02)}.eyebrow{margin-bottom:15px;color:#888;font-size:10px;font-weight:800;letter-spacing:.18em}.title{margin:0;font-size:clamp(34px,4.5vw,62px);line-height:1.08;letter-spacing:-.045em;font-weight:900}.description{margin:25px 0 0;color:#666;font-size:13px;line-height:2;white-space:pre-line}.shop-link{display:inline-flex;margin-top:28px;padding:13px 19px;border-radius:999px;background:#161616;color:#fff;font-size:11px;font-weight:800;text-decoration:none}.products{margin-top:90px}.section-label{margin-bottom:9px;color:#777;font-size:10px;letter-spacing:.18em}.section-heading{margin:0 0 30px;font-size:clamp(31px,4vw,48px);line-height:1.1;letter-spacing:-.035em;font-weight:900}.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.product-card{display:block;overflow:hidden;border:1px solid #e3e2de;border-radius:18px;background:#fff;text-decoration:none;transition:transform .25s ease,box-shadow .25s ease}.product-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08)}.product-image-wrap{aspect-ratio:1;overflow:hidden;background:#efede7}.product-image{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s ease}.product-card:hover .product-image{transform:scale(1.035)}.product-content{padding:17px}.product-type{margin-bottom:8px;color:#999;font-size:9px;font-weight:800;letter-spacing:.12em}.product-title{margin:0;font-size:14px;line-height:1.55;font-weight:800;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.product-meta{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-top:15px;padding-top:13px;border-top:1px solid #eeece7}.product-price{font-size:13px;font-weight:800}.product-link{color:#168b52;font-size:10px;font-weight:800;white-space:nowrap}.footer{padding:36px 5vw;background:#181818;color:#777;font-size:10px}.footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:20px}.footer a{color:#bbb;text-decoration:none}@media(max-width:900px){.feature{grid-template-columns:1fr;gap:32px;padding:32px}.character-image-wrap{max-width:580px;width:100%;margin:0 auto}.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.main{padding:25px 18px 75px}.feature{padding:18px;border-radius:20px}.title{font-size:34px}.description{font-size:12px}.products{margin-top:65px}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product-content{padding:13px}.footer-inner{flex-direction:column}}
+</style>
 </head>
 <body>
-  <header class="header">
-    <a href={localizedPath(locale, "/")} class="brand">
-      <div class="brand-title">stamp moke</div>
-      <div class="brand-sub">{t.brandSub}</div>
-    </a>
-    <div class="header-actions">
-      <LanguageSwitcher locale={locale} path={canonicalPath} />
-      <a href={localizedPath(locale, "/#character-goods")} class="header-link">{t.back}</a>
-    </div>
-  </header>
-
-  <main class="main">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href={localizedPath(locale, "/")}>stamp moke</a> / <a href={localizedPath(locale, "/#character-goods")}>{t.goodsTitle}</a> / {design.title}</nav>
-
-    <article class="feature">
-      <div class="character-image-wrap">
-        <img class="character-image" src={design.image} alt={design.title} width="500" height="500" />
-      </div>
-      <div>
-        <div class="eyebrow">CHARACTER GOODS / SUZURI</div>
-        <h1 class="title">{design.title}</h1>
-        <p class="description">{description}</p>
-        <a class="shop-link" href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.allGoods}</a>
-      </div>
-    </article>
-
-    <section class="products">
-      <div class="section-label">AVAILABLE GOODS</div>
-      <h2 class="section-heading">{t.goodsProducts}</h2>
-      <div class="product-grid">
-        {products.map((product, index) => (
-          <a class="product-card" href={product.url} target="_blank" rel="noopener noreferrer">
-            <div class="product-image-wrap">
-              <img class="product-image" src={product.image} alt={product.title} loading={index < 8 ? "eager" : "lazy"} />
-            </div>
-            <div class="product-content">
-              <div class="product-type">{product.itemName}</div>
-              <h3 class="product-title">{product.title}</h3>
-              <div class="product-meta">
-                <div class="product-price">{formatPrice(product.price)}</div>
-                <div class="product-link">{t.suzuriOpen}</div>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer"><div class="footer-inner"><span>© stamp moke</span><a href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.goodsTitle}（SUZURI）</a></div></footer>
-</body>
-</html>
+<SiteHeader locale={locale} path={canonicalPath} />
+<main class="main">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href={localizedPath(locale,"/")}>Home</a>　›　<a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a>　›　{design.title}</nav>
+<article class="feature"><div class="character-image-wrap"><img class="character-image" src={design.image} alt={design.title} width="500" height="500" /></div><div><div class="eyebrow">CHARACTER GOODS / SUZURI</div><h1 class="title">{design.title}</h1><p class="description">{description}</p><a class="shop-link" href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.allGoods}</a></div></article>
+<section class="products"><div class="section-label">AVAILABLE GOODS</div><h2 class="section-heading">{t.goodsProducts}</h2><div class="product-grid">{products.map((product,index)=><a class="product-card" href={product.url} target="_blank" rel="noopener noreferrer"><div class="product-image-wrap"><img class="product-image" src={product.image} alt={product.title} loading={index<8?"eager":"lazy"}/></div><div class="product-content"><div class="product-type">{product.itemName}</div><h3 class="product-title">{product.title}</h3><div class="product-meta"><div class="product-price">{formatPrice(product.price)}</div><div class="product-link">{t.suzuriOpen}</div></div></div></a>)}</div></section>
+</main>
+<footer class="footer"><div class="footer-inner"><span>© stamp moke</span><a href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.goodsTitle}（SUZURI）</a></div></footer>
+</body></html>
