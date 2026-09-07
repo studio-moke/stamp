@@ -7,7 +7,8 @@ function json(res,status,value){res.statusCode=status;res.setHeader("Content-Typ
 function readBody(req){if(req.body&&typeof req.body==="object")return Promise.resolve(req.body);return new Promise((resolve,reject)=>{let raw="";req.on("data",c=>{raw+=c;if(raw.length>200000)reject(new Error("Request too large"));});req.on("end",()=>{try{resolve(raw?JSON.parse(raw):{});}catch{reject(new Error("Invalid JSON"));}});req.on("error",reject);});}
 function isAdmin(req){const expected=process.env.STORE_ADMIN_TOKEN||process.env.FREE_ADMIN_TOKEN;return Boolean(expected&&req.headers["x-admin-token"]===expected);}
 function cleanId(v=""){const id=String(v).replace(/[^0-9]/g,"");return id.length>=6&&id.length<=20?id:"";}
-function zipKey(id){return `digital-products/${id}/product.zip`;}
+function cleanHash(v=""){const hash=String(v).toLowerCase();return /^[a-f0-9]{64}$/.test(hash)?hash:"";}
+function zipKey(id,hash){return `digital-products/${id}/${hash}.zip`;}
 function orderKey(id){return `store-orders/${String(id).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
 async function persistPaidOrder(session){if(session?.payment_status!=="paid")return null;const product=await getRuntimeDigitalProduct(session?.metadata?.product_id);if(!product?.published||!product.zipKey)return null;const order={sessionId:session.id,productId:product.id,title:product.title,zipKey:product.zipKey,amountTotal:session.amount_total,currency:session.currency,customerEmail:session.customer_details?.email||session.customer_email||"",paidAt:new Date().toISOString()};await r2PutJson(orderKey(session.id),order);return order;}
 
@@ -18,10 +19,26 @@ export default async function handler(req,res){
   if(req.method==="GET"&&action==="catalog"){const products=await getRuntimeDigitalProducts();return json(res,200,{ok:true,products:products.filter(Boolean).map(p=>({id:p.id,published:p.published,assetCount:p.assetCount||0,preparedAt:p.preparedAt||""}))});}
   if(req.method==="POST"&&action==="admin-health"){if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});return json(res,200,{ok:true,tokenSource:process.env.STORE_ADMIN_TOKEN?"STORE_ADMIN_TOKEN":"FREE_ADMIN_TOKEN",stripeConfigured:stripeConfigured()});}
   if(req.method==="POST"&&action==="admin-upload-url"){
-   if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req);const id=cleanId(b.productId),count=Number(b.assetCount||0);const product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});const key=zipKey(id);return json(res,200,{ok:true,key,uploadUrl:presignR2Put(key,900)});
+   if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});
+   const b=await readBody(req),id=cleanId(b.productId),count=Number(b.assetCount||0),hash=cleanHash(b.contentHash);
+   const product=id?await getRuntimeDigitalProduct(id):null;
+   if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});
+   if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});
+   if(!hash)return json(res,400,{ok:false,error:"ZIPハッシュが不正です。"});
+   const key=zipKey(id,hash);
+   return json(res,200,{ok:true,key,uploadUrl:presignR2Put(key,900)});
   }
   if(req.method==="POST"&&action==="admin-publish"){
-   if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req);const id=cleanId(b.productId),count=Number(b.assetCount||0);const product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});const key=zipKey(id);if(!(await r2Head(key)))return json(res,409,{ok:false,error:"ZIPのアップロードを確認できません。"});const record=await writeRuntimeProductState(id,{zipKey:key,assetCount:count,published:b.published!==false,preparedAt:new Date().toISOString(),licenseVersion:"2026-09-07"});return json(res,200,{ok:true,product:{id,published:record.published,assetCount:record.assetCount,preparedAt:record.preparedAt}});
+   if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});
+   const b=await readBody(req),id=cleanId(b.productId),count=Number(b.assetCount||0),hash=cleanHash(b.contentHash);
+   const product=id?await getRuntimeDigitalProduct(id):null;
+   if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});
+   if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});
+   if(!hash)return json(res,400,{ok:false,error:"ZIPハッシュが不正です。"});
+   const key=zipKey(id,hash);
+   if(!(await r2Head(key)))return json(res,409,{ok:false,error:"ZIPのアップロードを確認できません。"});
+   const record=await writeRuntimeProductState(id,{zipKey:key,assetCount:count,published:b.published!==false,preparedAt:new Date().toISOString(),licenseVersion:"draft-2026-09-07"});
+   return json(res,200,{ok:true,product:{id,published:record.published,assetCount:record.assetCount,preparedAt:record.preparedAt}});
   }
   if(req.method==="POST"&&action==="admin-unpublish"){
    if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req);const id=cleanId(b.productId),product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});await writeRuntimeProductState(id,{published:false,updatedAt:new Date().toISOString()});return json(res,200,{ok:true});
