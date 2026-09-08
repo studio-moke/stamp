@@ -21,6 +21,16 @@ const goodsText = {
   th:{lead:"เลือกดูสินค้าของ stamp moke ตามตัวละครและดีไซน์ เลือกตัวละครที่ชอบก่อน แล้วดูเสื้อยืด ของใช้ และอุปกรณ์ต่าง ๆ ที่วางจำหน่ายบน SUZURI",shop:"ไปที่ร้าน SUZURI ↗",collection:"เลือกตามตัวละคร",count:"ตัวละคร",view:"ดูสินค้าของตัวละครนี้ →",empty:"ขณะนี้ไม่มีสินค้าตัวละครให้แสดง โปรดไปที่ร้าน SUZURI อย่างเป็นทางการ",note:"โปรดตรวจสอบสถานะและราคาล่าสุดที่หน้าสินค้า SUZURI"},
   id:{lead:"Jelajahi produk stamp moke berdasarkan karakter dan desain. Pilih karakter yang disukai, lalu lihat kaos, aksesori, dan barang sehari-hari yang tersedia untuk desain tersebut di SUZURI.",shop:"Kunjungi toko SUZURI ↗",collection:"Cari berdasarkan karakter",count:"karakter",view:"Lihat produk karakter ini →",empty:"Saat ini tidak ada produk karakter yang dapat ditampilkan. Silakan kunjungi toko resmi SUZURI.",note:"Periksa ketersediaan dan harga terbaru di halaman produk SUZURI."},
 }[locale];
+const localizedDesignTitle = (design) => {
+  if (locale === "ja") return design.title;
+  const labels = {
+    en: "stamp moke Original Design",
+    "zh-tw": "stamp moke 原創設計",
+    th: "ดีไซน์ออริจินัล stamp moke",
+    id: "Desain Orisinal stamp moke",
+  };
+  return `${labels[locale] || "stamp moke Original Design"} #${design.id}`;
+};
 ---
 <html lang={localeInfo[locale].htmlLang}>
 <head>
@@ -39,7 +49,7 @@ const goodsText = {
   <section class="hero"><div class="eyebrow">ORIGINAL GOODS / SUZURI</div><h1>GOODS</h1><p class="lead">{goodsText.lead}</p><a class="shop-button" href={shopUrl} target="_blank" rel="noopener noreferrer">{goodsText.shop}</a></section>
   <section class="section">
     <div class="section-head"><h2>{goodsText.collection}</h2><div class="count">{designs.length} {goodsText.count}</div></div>
-    {designs.length ? <div class="grid">{designs.map((design,index) => <a class="card" href={localizedPath(locale, `/goods/${design.id}`)}><div class="media"><img src={design.image} alt={design.title} loading={index < 8 ? "eager" : "lazy"} /></div><div class="body"><div class="label">CHARACTER DESIGN / SUZURI</div><h3 class="title">{design.title}</h3><div class="detail">{goodsText.view}</div></div></a>)}</div> : <div class="empty">{goodsText.empty}</div>}
+    {designs.length ? <div class="grid">{designs.map((design,index) => <a class="card" href={localizedPath(locale, `/goods/${design.id}`)}><div class="media"><img src={design.image} alt={localizedDesignTitle(design)} loading={index < 8 ? "eager" : "lazy"} /></div><div class="body"><div class="label">CHARACTER DESIGN / SUZURI</div><h3 class="title">{localizedDesignTitle(design)}</h3><div class="detail">{goodsText.view}</div></div></a>)}</div> : <div class="empty">{goodsText.empty}</div>}
   </section>
 </main>
 <footer class="footer"><div class="footer-inner"><strong>stamp moke</strong><div class="note">{goodsText.note}</div></div></footer>
