@@ -5,6 +5,7 @@ on:
     # 毎日 18:13 UTC = 翌日 03:13 JST
     - cron: "13 18 * * *"
   workflow_dispatch:
+  # 自動更新処理・タグ判定を修正した時は、その場で最新作品も取り込む
   push:
     branches:
       - main
@@ -19,8 +20,6 @@ on:
       - "scripts/generate-chat-icons.mjs"
       - "scripts/extract-sticker-phrases.mjs"
       - "scripts/fetch-suzuri-designs.mjs"
-      - "scripts/queue-digital-materials.mjs"
-      - "scripts/process-digital-material-queue.mjs"
       - "src/lib/sticker-search-tags.ts"
       - ".github/workflows/update-stickers.yml"
 
@@ -35,11 +34,6 @@ jobs:
   update-stickers:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    env:
-      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
 
     steps:
       - name: Checkout
@@ -68,6 +62,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr tesseract-ocr-jpn
 
+      # GitHub hosted runners are in the US. LINE STORE filters the moke creator
+      # catalog by access region, so the primary catalog is fetched through a
+      # Vercel Function pinned to Tokyo (hnd1).
       - name: Discover stickers through Tokyo catalog
         id: tokyo_catalog
         continue-on-error: true
@@ -79,6 +76,8 @@ jobs:
           LINE_TOKYO_RETRY_DELAY_MS: "3000"
         run: node scripts/fetch-stickers-via-tokyo.mjs
 
+      # Keep the ID scanner only as a fallback. It is intentionally not the
+      # normal path because product IDs are global and sparse.
       - name: Discover new stickers by product ID fallback
         if: steps.tokyo_catalog.outcome != 'success'
         env:
@@ -93,14 +92,6 @@ jobs:
 
       - name: Backfill older works through creator product links
         run: node scripts/discover-new-stickers.mjs
-
-      - name: Queue new digital materials
-        run: node scripts/queue-digital-materials.mjs
-
-      - name: Prepare at most three pending materials in private R2
-        env:
-          DIGITAL_MATERIAL_MAX_PER_RUN: "3"
-        run: node scripts/process-digital-material-queue.mjs
 
       - name: Generate protected sticker preview sheets
         run: node scripts/generate-sticker-sheets.mjs
@@ -132,12 +123,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json src/data/digital-material-queue.json public/images/stickers public/images/sticker-sheets public/images/chat-icons
+          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json public/images/stickers public/images/sticker-sheets public/images/chat-icons
           if git diff --cached --quiet; then
             echo "No sticker changes detected."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update stickers, material queue, chat icons and phrase tags"
+            git commit -m "Update stickers, chat icons and phrase tags"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
