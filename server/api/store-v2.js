@@ -1,10 +1,9 @@
-import { createStripeCheckoutSession, retrieveStripeCheckoutSession, stripeConfigured } from "./_stripe.js";
+import { STORE_PRICE_YEN, createStripeCheckoutSession, retrieveStripeCheckoutSession, stripeConfigured } from "./_stripe.js";
 import { presignR2Put, r2GetJson, r2Head, r2PutJson } from "./_r2.js";
 import { presignStoreDownload } from "./_store-r2.js";
 import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
 import { prepareLineMaterialZip } from "./_line-materials.js";
 
-const STORE_PRICE_YEN=150;
 function json(res,status,value){res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.setHeader("Cache-Control","no-store");res.end(JSON.stringify(value));}
 function readBody(req){if(req.body&&typeof req.body==="object")return Promise.resolve(req.body);return new Promise((resolve,reject)=>{let raw="";req.on("data",c=>{raw+=c;if(raw.length>200000)reject(new Error("Request too large"));});req.on("end",()=>{try{resolve(raw?JSON.parse(raw):{});}catch{reject(new Error("Invalid JSON"));}});req.on("error",reject);});}
 function isAdmin(req){const expected=process.env.STORE_ADMIN_TOKEN||process.env.FREE_ADMIN_TOKEN;return Boolean(expected&&req.headers["x-admin-token"]===expected);}
@@ -39,7 +38,7 @@ export default async function handler(req,res){
    if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req);const id=cleanId(b.productId),product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});await writeRuntimeProductState(id,{published:false,updatedAt:new Date().toISOString()});return json(res,200,{ok:true});
   }
   if(req.method==="POST"&&action==="checkout"){
-   const b=await readBody(req),product=await getRuntimeDigitalProduct(b.productId);if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!product.published||!product.zipKey)return json(res,409,{ok:false,error:"この商品はまだ販売準備中です。"});if(Number(product.priceYen)!==STORE_PRICE_YEN)return json(res,409,{ok:false,error:"商品価格を確認できません。"});if(!stripeConfigured())return json(res,503,{ok:false,error:"決済はまだ有効化されていません。"});const origin=String(process.env.STORE_ORIGIN||"https://stamp-moke.jp").replace(/\/$/,"");const session=await createStripeCheckoutSession({product,origin});return json(res,200,{ok:true,checkoutUrl:session.url});
+   const b=await readBody(req),product=await getRuntimeDigitalProduct(b.productId);if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!product.published||!product.zipKey)return json(res,409,{ok:false,error:"この商品はまだ販売準備中です。"});if(Number(product.priceYen)!==STORE_PRICE_YEN)return json(res,409,{ok:false,error:"商品価格を確認できません。"});if(!stripeConfigured())return json(res,503,{ok:false,error:"決済はまだ有効化されていません。"});const origin=String(process.env.STORE_ORIGIN||"").replace(/\/$/,"");if(!/^https:\/\/[^/]+$/i.test(origin))return json(res,503,{ok:false,error:"決済の戻り先が設定されていません。"});const session=await createStripeCheckoutSession({product,origin});return json(res,200,{ok:true,checkoutUrl:session.url});
   }
   if(req.method==="GET"&&action==="download"){
    const sessionId=String(req.query?.session_id||"");if(!sessionId.startsWith("cs_"))return json(res,400,{ok:false,error:"購入情報が確認できません。"});let order=await r2GetJson(orderKey(sessionId),null);if(!order&&stripeConfigured()){const session=await retrieveStripeCheckoutSession(sessionId);order=await persistPaidOrder(session);}if(!order||order.amountTotal!==STORE_PRICE_YEN||order.currency!=="jpy")return json(res,409,{ok:false,pending:true,error:"決済確認中です。少ししてから再度お試しください。"});const key=safeZipKey(order.productId,order.zipKey);if(!key)return json(res,410,{ok:false,error:"ダウンロード商品を確認できません。"});return json(res,200,{ok:true,productId:order.productId,title:order.title||"stamp moke 商用素材",downloadUrl:presignStoreDownload(key,600),expiresIn:600});
