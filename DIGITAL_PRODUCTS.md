@@ -3,7 +3,7 @@
 ## 基本方針
 
 - 商品マスターは `src/data/stickers.json` を起点に自動生成する。
-- 価格はサーバー側で一律 500円（税込）に固定する。
+- 価格はサーバー側で一律 150円（税込）に固定する。
 - Stripe は決済だけを担当し、商品・ZIP・購入記録は stamp moke 側で管理する。
 - 販売ZIPは Cloudflare R2 の `digital-products/` 配下に保存する。
 - ZIPのない商品は決済できない。

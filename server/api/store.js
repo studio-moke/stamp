@@ -52,7 +52,7 @@ export default async function handler(req, res) {
         ok: true,
         paymentProvider: "stripe",
         paymentConfigured: stripeConfigured(),
-        priceYen: 500,
+        priceYen: 150,
         productCount: products.length,
         publishedCount: products.filter((product) => product.published).length,
       });
