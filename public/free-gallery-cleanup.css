@@ -1,3 +1,15 @@
 /* Free asset gallery: platform filtering is intentionally hidden.
    Search, category, tag and sort remain available. */
 #platforms.platforms{display:none!important}
+
+/* iOS/mobile scroll stability.
+   FreeGallery uses content-visibility:auto with an estimated intrinsic card height.
+   On narrow screens the real card height varies with wrapped titles/chips, so Safari
+   can re-anchor the page while cards enter the viewport and make scrolling jump.
+   Keep the optimization on desktop, but render the loaded mobile cards normally. */
+@media(max-width:640px){
+  #grid.grid .card{
+    content-visibility:visible!important;
+    contain-intrinsic-size:none!important;
+  }
+}
