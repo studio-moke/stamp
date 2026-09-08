@@ -4,7 +4,7 @@ import { presignStoreDownload } from "./_store-r2.js";
 import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
 import { prepareLineMaterialZip } from "./_line-materials.js";
 
-const STORE_PRICE_YEN=100;
+const STORE_PRICE_YEN=150;
 function json(res,status,value){res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.setHeader("Cache-Control","no-store");res.end(JSON.stringify(value));}
 function readBody(req){if(req.body&&typeof req.body==="object")return Promise.resolve(req.body);return new Promise((resolve,reject)=>{let raw="";req.on("data",c=>{raw+=c;if(raw.length>200000)reject(new Error("Request too large"));});req.on("end",()=>{try{resolve(raw?JSON.parse(raw):{});}catch{reject(new Error("Invalid JSON"));}});req.on("error",reject);});}
 function isAdmin(req){const expected=process.env.STORE_ADMIN_TOKEN||process.env.FREE_ADMIN_TOKEN;return Boolean(expected&&req.headers["x-admin-token"]===expected);}
