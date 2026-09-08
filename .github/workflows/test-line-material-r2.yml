@@ -15,10 +15,6 @@ on:
         description: "LINE product ID"
         required: false
         default: "36313683"
-      prepared_at:
-        description: "Fixed ISO timestamp used to reproduce the immutable ZIP"
-        required: false
-        default: "2026-09-08T20:15:00.000Z"
 
 permissions:
   contents: read
@@ -29,7 +25,7 @@ jobs:
     timeout-minutes: 10
     env:
       LINE_PRODUCT_ID: ${{ github.event.inputs.product_id || '36313683' }}
-      LINE_MATERIAL_PREPARED_AT: ${{ github.event.inputs.prepared_at || '2026-09-08T20:15:00.000Z' }}
+      LINE_MATERIAL_PREPARED_AT: "2026-09-08T20:15:00.000Z"
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
       R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
@@ -40,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node-v4
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
 
