@@ -7,6 +7,7 @@ const productId = String(process.env.LINE_PRODUCT_ID || "36313683").replace(/[^0
 if (!productId) throw new Error("LINE_PRODUCT_ID is invalid");
 const preparedAt = String(process.env.LINE_MATERIAL_PREPARED_AT || "").trim();
 if (Number.isNaN(new Date(preparedAt).getTime())) throw new Error("LINE_MATERIAL_PREPARED_AT must be a valid ISO timestamp");
+// This fixed timestamp makes a subsequent CI run reproduce the same immutable ZIP key.
 
 const required = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET_NAME"];
 for (const name of required) {
