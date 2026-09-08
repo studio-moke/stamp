@@ -1,7 +1,7 @@
 import stickers from "../../src/data/stickers.json" with { type: "json" };
 import overrides from "../../src/data/digital-product-overrides.json" with { type: "json" };
 
-export const DIGITAL_PRODUCT_PRICE_YEN = 100;
+export const DIGITAL_PRODUCT_PRICE_YEN = 150;
 
 function cleanTitle(value = "") {
   return String(value)
