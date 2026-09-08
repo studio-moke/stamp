@@ -20,6 +20,7 @@ on:
       - "scripts/generate-chat-icons.mjs"
       - "scripts/extract-sticker-phrases.mjs"
       - "scripts/fetch-suzuri-designs.mjs"
+      - "scripts/queue-digital-materials.mjs"
       - "src/lib/sticker-search-tags.ts"
       - ".github/workflows/update-stickers.yml"
 
@@ -93,6 +94,9 @@ jobs:
       - name: Backfill older works through creator product links
         run: node scripts/discover-new-stickers.mjs
 
+      - name: Queue digital materials without R2 writes
+        run: node scripts/queue-digital-materials.mjs
+
       - name: Generate protected sticker preview sheets
         run: node scripts/generate-sticker-sheets.mjs
 
@@ -123,12 +127,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json public/images/stickers public/images/sticker-sheets public/images/chat-icons
+          git add src/data/stickers.json src/data/sticker-phrases.json src/data/suzuri-designs.json src/data/digital-material-queue.json public/images/stickers public/images/sticker-sheets public/images/chat-icons
           if git diff --cached --quiet; then
             echo "No sticker changes detected."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update stickers, chat icons and phrase tags"
+            git commit -m "Update stickers, material queue, chat icons and phrase tags"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
