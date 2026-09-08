@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
 
+export const STORE_PRICE_YEN = 150;
+
 function secretKey() {
   const value = process.env.STRIPE_SECRET_KEY;
   if (!value) throw new Error("STRIPE_SECRET_KEY is not configured");
@@ -11,6 +13,8 @@ export function stripeConfigured() {
 }
 
 export async function createStripeCheckoutSession({ product, origin }) {
+  if (Number(product?.priceYen) !== STORE_PRICE_YEN) throw new Error("Store price must be exactly 150 JPY");
+  if (!/^[0-9]{6,20}$/.test(String(product?.id || ""))) throw new Error("Invalid store product id");
   const body = new URLSearchParams();
   body.set("mode", "payment");
   body.set("success_url", `${origin}/materials/success/?session_id={CHECKOUT_SESSION_ID}`);
@@ -18,7 +22,7 @@ export async function createStripeCheckoutSession({ product, origin }) {
   body.set("automatic_payment_methods[enabled]", "true");
   body.set("line_items[0][quantity]", "1");
   body.set("line_items[0][price_data][currency]", "jpy");
-  body.set("line_items[0][price_data][unit_amount]", String(product.priceYen));
+  body.set("line_items[0][price_data][unit_amount]", String(STORE_PRICE_YEN));
   body.set("line_items[0][price_data][product_data][name]", `${product.title}｜商用利用OK PNG素材`);
   body.set("metadata[product_id]", product.id);
 

@@ -2,8 +2,11 @@ import { verifyStripeWebhookSignature } from "./_stripe.js";
 import { r2PutJson } from "./_r2.js";
 import { getRuntimeDigitalProduct } from "./_store-products.js";
 
+const STORE_PRICE_YEN = 150;
+
 function orderKey(sessionId){return `store-orders/${String(sessionId).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
 function readRawBody(req){return new Promise((resolve,reject)=>{const chunks=[];let size=0;req.on("data",chunk=>{size+=chunk.length;if(size>1000000)return reject(new Error("Request too large"));chunks.push(chunk);});req.on("end",()=>resolve(Buffer.concat(chunks).toString("utf8")));req.on("error",reject);});}
+function validPaidSession(session){return session?.payment_status==="paid"&&session?.currency==="jpy"&&session?.amount_total===STORE_PRICE_YEN&&/^[0-9]{6,20}$/.test(String(session?.metadata?.product_id||""));}
 
 export default async function handler(req,res){
  if(req.method!=="POST"){res.statusCode=405;return res.end("Method not allowed");}
@@ -13,7 +16,7 @@ export default async function handler(req,res){
   const event=JSON.parse(rawBody);
   if(event.type==="checkout.session.completed"||event.type==="checkout.session.async_payment_succeeded"){
    const session=event.data?.object;
-   if(session?.payment_status==="paid"){
+   if(validPaidSession(session)){
     const product=await getRuntimeDigitalProduct(session.metadata?.product_id);
     if(product?.published&&product.zipKey){await r2PutJson(orderKey(session.id),{sessionId:session.id,productId:product.id,title:product.title,zipKey:product.zipKey,amountTotal:session.amount_total,currency:session.currency,customerEmail:session.customer_details?.email||session.customer_email||"",paidAt:new Date().toISOString(),eventId:event.id});}
    }
