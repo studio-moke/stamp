@@ -29,9 +29,10 @@ for (const item of candidates) {
   const product = stickerById.get(productId);
   item.lastAttemptAt = new Date().toISOString();
   item.attempts = Number(item.attempts || 0) + 1;
+  item.preparedAt = item.preparedAt || item.lastAttemptAt;
   try {
     if (!product) throw new Error("Sticker catalog entry not found");
-    const built = await buildLineMaterialZip(product);
+    const built = await buildLineMaterialZip(product, { preparedAt: item.preparedAt });
     const exists = await r2Head(built.zipKey);
     if (!exists) await r2Put(built.zipKey, built.zip, "application/zip");
     if (!(await r2Head(built.zipKey))) throw new Error("R2 verification failed after upload");
