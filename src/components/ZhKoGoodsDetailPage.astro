@@ -7,7 +7,7 @@ import { localeInfo, localizedPath, normalizeLocale } from "../lib/i18n";
 import { absoluteUrl } from "../lib/seo";
 
 const locale=normalizeLocale(Astro.props.locale),design=Astro.props.design;
-if((locale!=="zh-cn"&&locale!=="ko")||!design) throw new Error("Invalid goods page");
+if((locale!=="zh-cn"&&locale!=="zh-tw"&&locale!=="ko")||!design) throw new Error("Invalid goods page");
 
 const copy={
   "zh-cn":{
@@ -19,6 +19,16 @@ const copy={
     shop:"前往 SUZURI 查看 ↗",
     tax:"含税",
     genericProduct:"周边商品"
+  },
+  "zh-tw":{
+    characterPrefix:"stamp moke 原創設計",
+    suffix:"角色周邊商品",
+    desc:"探索這款 stamp moke 原創設計的 T 恤、貼紙與各式 SUZURI 周邊商品。",
+    back:"返回周邊商品列表",
+    products:"販售中的周邊商品",
+    shop:"前往 SUZURI 查看 ↗",
+    tax:"含稅",
+    genericProduct:"原創周邊商品"
   },
   ko:{
     characterPrefix:"stamp moke 오리지널 캐릭터",
@@ -60,6 +70,33 @@ const itemNames={
     "ノート":"笔记本",
     "クリアファイル":"文件夹"
   },
+  "zh-tw":{
+    "ステッカー":"貼紙",
+    "アクリルスタンド":"壓克力立牌",
+    "アクリルキーホルダー":"壓克力鑰匙圈",
+    "缶バッジ":"徽章",
+    "Tシャツ":"T 恤",
+    "スタンダードTシャツ":"標準 T 恤",
+    "ヘビーウェイトTシャツ":"重磅 T 恤",
+    "ロングスリーブTシャツ":"長袖 T 恤",
+    "ビッグシルエットTシャツ":"寬版 T 恤",
+    "パーカー":"連帽上衣",
+    "スウェット":"大學 T",
+    "トートバッグ":"托特包",
+    "エコバッグ":"環保購物袋",
+    "サコッシュ":"斜背小包",
+    "スマホケース":"手機殼",
+    "クリアスマホケース":"透明手機殼",
+    "マグカップ":"馬克杯",
+    "グラス":"玻璃杯",
+    "タオルハンカチ":"手帕巾",
+    "タオル":"毛巾",
+    "クッション":"抱枕",
+    "サンダル":"涼鞋",
+    "ポスター":"海報",
+    "ノート":"筆記本",
+    "クリアファイル":"透明資料夾"
+  },
   ko:{
     "ステッカー":"스티커",
     "アクリルスタンド":"아크릴 스탠드",
@@ -94,7 +131,7 @@ const path=`/goods/${design.id}/`;
 const canonical=absoluteUrl(localizedPath(locale,path));
 const title=`${characterTitle} ${copy.suffix} | stamp moke`;
 const description=`${copy.desc} 商品编号：${design.id}`;
-const localizedDescription=locale==="ko"?`${copy.desc} 상품 번호: ${design.id}`:description;
+const localizedDescription=locale==="ko"?`${copy.desc} 상품 번호: ${design.id}`:locale==="zh-tw"?`${copy.desc} 商品編號：${design.id}`:description;
 const products=Array.isArray(design.products)?design.products:[];
 const productLabel=(p:any)=>itemNames[p?.itemName]||copy.genericProduct;
 ---
