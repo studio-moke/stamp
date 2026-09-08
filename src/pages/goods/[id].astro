@@ -12,9 +12,22 @@ export function getStaticPaths() {
 const { design, locale: localeProp = "ja" } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const t = messages[locale];
+const localizedDesignName = locale === "ja" ? design.title : {
+  en: "stamp moke Original Design",
+  "zh-tw": "stamp moke 原創設計",
+  th: "ดีไซน์ออริจินัล stamp moke",
+  id: "Desain Orisinal stamp moke",
+}[locale] || "stamp moke Original Design";
+const designDisplayTitle = locale === "ja" ? localizedDesignName : `${localizedDesignName} #${design.id}`;
+const localizedProductName = locale === "ja" ? "" : {
+  en: "Official SUZURI product",
+  "zh-tw": "SUZURI 原創周邊商品",
+  th: "สินค้าออริจินัลจาก SUZURI",
+  id: "Produk orisinal SUZURI",
+}[locale] || "Official SUZURI product";
 const titleSuffix = locale === "ja" ? "のキャラクターグッズ" : locale === "en" ? " Character Goods" : locale === "zh-tw" ? "角色周邊商品" : locale === "th" ? " สินค้าคาแรกเตอร์" : " - Produk Karakter";
-const pageTitle = makeTitle([`${design.title}${titleSuffix}`]);
-const description = locale === "ja" ? (design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`) : locale === "en" ? `Shop original ${design.title} character goods by stamp moke, including T-shirts, stickers and accessories available on SUZURI.` : locale === "zh-tw" ? `選購stamp moke原創角色「${design.title}」的T恤、貼紙與各式SUZURI周邊商品。` : locale === "th" ? `เลือกซื้อสินค้าคาแรกเตอร์ ${design.title} จาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI` : `Temukan produk karakter ${design.title} dari stamp moke, termasuk kaus, stiker, dan aksesori yang tersedia di SUZURI.`;
+const pageTitle = makeTitle([`${designDisplayTitle}${titleSuffix}`]);
+const description = locale === "ja" ? (design.description || `${design.title}のTシャツやステッカーなど、SUZURIで販売中のキャラクターグッズを紹介します。`) : locale === "en" ? `Shop original stamp moke character goods, including T-shirts, stickers and accessories available on SUZURI.` : locale === "zh-tw" ? `選購 stamp moke 原創設計的 T 恤、貼紙與各式 SUZURI 周邊商品。` : locale === "th" ? `เลือกซื้อสินค้าออริจินัลจาก stamp moke ทั้งเสื้อยืด สติกเกอร์ และสินค้าอื่น ๆ บน SUZURI` : `Temukan produk orisinal stamp moke, termasuk kaus, stiker, dan aksesori yang tersedia di SUZURI.`;
 const canonicalPath = `/goods/${design.id}`;
 const canonical = absoluteUrl(localizedPath(locale, canonicalPath));
 const numberLocale = locale === "ja" ? "ja-JP" : locale === "zh-tw" ? "zh-TW" : locale === "th" ? "th-TH" : locale === "id" ? "id-ID" : "en-US";
@@ -36,9 +49,9 @@ const products = Array.isArray(design.products) ? design.products : [];
 <body>
 <SiteHeader locale={locale} path={canonicalPath} />
 <main class="main">
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href={localizedPath(locale,"/")}>Home</a>　›　<a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a>　›　{design.title}</nav>
-<article class="feature"><div class="character-image-wrap"><img class="character-image" src={design.image} alt={design.title} width="500" height="500" /></div><div><div class="eyebrow">CHARACTER GOODS / SUZURI</div><h1 class="title">{design.title}</h1><p class="description">{description}</p><a class="shop-link" href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.allGoods}</a></div></article>
-<section class="products"><div class="section-label">AVAILABLE GOODS</div><h2 class="section-heading">{t.goodsProducts}</h2><div class="product-grid">{products.map((product,index)=><a class="product-card" href={product.url} target="_blank" rel="noopener noreferrer"><div class="product-image-wrap"><img class="product-image" src={product.image} alt={product.title} loading={index<8?"eager":"lazy"}/></div><div class="product-content"><div class="product-type">{product.itemName}</div><h3 class="product-title">{product.title}</h3><div class="product-meta"><div class="product-price">{formatPrice(product.price)}</div><div class="product-link">{t.suzuriOpen}</div></div></div></a>)}</div></section>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href={localizedPath(locale,"/")}>Home</a>　›　<a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a>　›　{designDisplayTitle}</nav>
+<article class="feature"><div class="character-image-wrap"><img class="character-image" src={design.image} alt={designDisplayTitle} width="500" height="500" /></div><div><div class="eyebrow">CHARACTER GOODS / SUZURI</div><h1 class="title">{designDisplayTitle}</h1><p class="description">{description}</p><a class="shop-link" href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.allGoods}</a></div></article>
+<section class="products"><div class="section-label">AVAILABLE GOODS</div><h2 class="section-heading">{t.goodsProducts}</h2><div class="product-grid">{products.map((product,index)=><a class="product-card" href={product.url} target="_blank" rel="noopener noreferrer"><div class="product-image-wrap"><img class="product-image" src={product.image} alt={locale === "ja" ? product.title : localizedProductName} loading={index<8?"eager":"lazy"}/></div><div class="product-content"><div class="product-type">{locale === "ja" ? product.itemName : "SUZURI"}</div><h3 class="product-title">{locale === "ja" ? product.title : localizedProductName}</h3><div class="product-meta"><div class="product-price">{formatPrice(product.price)}</div><div class="product-link">{t.suzuriOpen}</div></div></div></a>)}</div></section>
 </main>
 <footer class="footer"><div class="footer-inner"><span>© stamp moke</span><a href="https://suzuri.jp/stamp-moke" target="_blank" rel="noopener noreferrer">{t.goodsTitle}（SUZURI）</a></div></footer>
 </body></html>
