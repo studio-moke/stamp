@@ -19,7 +19,7 @@ export async function createStripeCheckoutSession({ product, origin }) {
   body.set("mode", "payment");
   body.set("success_url", `${origin}/materials/success/?session_id={CHECKOUT_SESSION_ID}`);
   body.set("cancel_url", `${origin}/materials/`);
-  body.set("automatic_payment_methods[enabled]", "true");
+  body.set("payment_method_types[0]", "card");
   body.set("line_items[0][quantity]", "1");
   body.set("line_items[0][price_data][currency]", "jpy");
   body.set("line_items[0][price_data][unit_amount]", String(STORE_PRICE_YEN));
