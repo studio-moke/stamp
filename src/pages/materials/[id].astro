@@ -1,0 +1,102 @@
+---
+import stickers from "../../data/stickers.json";
+import Analytics from "../../components/Analytics.astro";
+import SeoHead from "../../components/SeoHead.astro";
+import { absoluteUrl } from "../../lib/seo";
+
+const cleanTitle=(value="")=>String(value).replace(/\s*-\s*LINE スタンプ\s*\|\s*LINE STORE\s*$/u,"").replace(/\s*\d+種類\s*$/u,"").trim();
+const cleanDescription=(value="")=>String(value).replace(/販売用(?:PNG|素材)(?:を)?準備中[。]?/gu,"").replace(/\s{2,}/g," ").trim();
+
+export function getStaticPaths(){
+  return stickers.map((sticker)=>({
+    params:{id:String(sticker.id)},
+    props:{product:{
+      id:String(sticker.id),
+      title:cleanTitle(sticker.title),
+      description:cleanDescription(sticker.description||""),
+      image:sticker.image||"",
+      lineUrl:sticker.url||""
+    }}
+  }));
+}
+
+const {product}=Astro.props;
+const title=`${product.title}｜商用利用OK PNG素材 - stamp moke`;
+const description=`${product.title}の商用利用可能なPNG素材セット。全品150円、ZIPでダウンロードできます。`;
+const canonical=absoluteUrl(`/materials/${product.id}/`);
+---
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{title}</title>
+  <SeoHead title={title} description={description} canonical={canonical} locale="ja" path={`/materials/${product.id}/`} />
+  <Analytics />
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
+    .header{height:76px;background:#fff;border-bottom:1px solid #e5e3dd;display:flex;align-items:center;justify-content:space-between;padding:0 5vw}
+    .brand,.back{text-decoration:none;color:inherit}.brand{font-weight:900;letter-spacing:.08em}.back{border:1px solid #ddd9d1;border-radius:999px;padding:10px 15px;font-size:12px;font-weight:800}
+    main{max-width:980px;margin:auto;padding:48px 5vw 90px}.crumb{color:#666;font-size:12px;text-decoration:none}.product{margin-top:22px;display:grid;grid-template-columns:minmax(280px,.9fr) minmax(320px,1.1fr);gap:44px;align-items:start;background:#fff;border:1px solid #e3e0d9;border-radius:24px;padding:28px}
+    .image{aspect-ratio:1;background:#faf9f6;border-radius:18px;display:grid;place-items:center;overflow:hidden}.image img{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain}
+    .eyebrow{font-size:11px;letter-spacing:.16em;color:#168b52;font-weight:900}.title{font-size:clamp(28px,4vw,44px);line-height:1.22;letter-spacing:-.04em;margin:12px 0}.description{color:#666;font-size:14px;line-height:1.9}.notice{margin:20px 0;padding:15px 16px;border:2px solid #168b52;border-radius:14px;background:#effaf3;color:#115d39;font-weight:900;font-size:13px;line-height:1.65}.line-link{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;padding:15px 16px;border-radius:15px;background:#fff7e6;border:1px solid #f0d292;text-decoration:none;color:#5c4210;font-size:13px;font-weight:900}.line-link span:last-child{white-space:nowrap}.line-link:hover{background:#fff0cc}
+    .purchase{margin-top:22px;padding-top:22px;border-top:1px solid #e5e3dd}.price{font-size:34px;font-weight:900;letter-spacing:-.04em}.tax{font-size:11px;color:#777;margin-top:3px}.assets{margin:15px 0;color:#168b52;font-size:12px;font-weight:900}.buy,.soon{border:0;border-radius:999px;padding:15px 20px;font:inherit;font-size:15px;font-weight:900}.buy{width:100%;position:relative;background:linear-gradient(135deg,#45c77c,#168b52);color:#fff;cursor:pointer;border:2px solid #d9f7e5;box-shadow:0 4px 0 #0d6639,0 8px 16px rgba(22,139,82,.2);transition:transform .16s ease,box-shadow .16s ease}.buy::before{content:"✦";margin-right:6px}.buy:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0d6639,0 11px 20px rgba(22,139,82,.24)}.buy:active{transform:translateY(2px);box-shadow:0 2px 0 #0d6639,0 4px 9px rgba(22,139,82,.18)}.buy:disabled{opacity:.55;cursor:wait;transform:none}.soon{display:block;width:100%;background:#efede7;color:#888;text-align:center}.terms{font-size:11px;line-height:1.8;color:#777;margin:16px 0 0}.terms a{color:#168b52;font-weight:800}
+    @media(max-width:720px){.header{height:68px;padding:0 18px}main{padding:28px 18px 60px}.product{grid-template-columns:1fr;gap:24px;padding:16px;border-radius:18px}.title{font-size:30px}.line-link{align-items:flex-start;flex-direction:column}.line-link span:last-child{align-self:flex-end}}
+  </style>
+</head>
+<body>
+  <header class="header"><a class="brand" href="/">stamp moke</a><a class="back" href="/materials/">素材一覧へ</a></header>
+  <main>
+    <a class="crumb" href="/materials/">← 素材一覧へ戻る</a>
+    <article class="product">
+      <div class="image"><img src={product.image} alt={product.title}></div>
+      <div>
+        <div class="eyebrow">COMMERCIAL PNG MATERIALS</div>
+        <h1 class="title">{product.title}</h1>
+        <p class="description">{product.description}</p>
+        <p class="notice">この販売素材はLINEスタンプではありません。<br>商用利用可能なPNG素材セット（ZIP形式）です。</p>
+        {product.lineUrl && <a class="line-link" href={product.lineUrl} target="_blank" rel="noopener noreferrer"><span>同じデザインのLINEスタンプもあります</span><span>LINEスタンプを見る ↗</span></a>}
+        <section class="purchase">
+          <div class="price">¥150</div>
+          <div class="tax">税込 / 商用利用OK</div>
+          <div id="assets" class="assets">販売状態を確認中…</div>
+          <button id="buy" class="buy" type="button" hidden>¥150で購入する</button>
+          <div id="soon" class="soon">販売用素材を準備中</div>
+          <p class="terms">購入後、ZIPをダウンロードできます。<br><a href="/materials/license/">商用素材の利用条件を見る →</a></p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <script define:vars={{productId:product.id}}>
+    const assets=document.getElementById("assets");
+    const buy=document.getElementById("buy");
+    const soon=document.getElementById("soon");
+    async function startCheckout(){
+      buy.disabled=true;
+      const previous=buy.textContent;
+      buy.textContent="決済へ…";
+      try{
+        const response=await fetch("/api/store?action=checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({productId})});
+        const data=await response.json();
+        if(!response.ok||!data.checkoutUrl)throw new Error(data.error||"決済を開始できませんでした。");
+        location.href=data.checkoutUrl;
+      }catch(error){
+        alert(error instanceof Error?error.message:"決済を開始できませんでした。");
+        buy.disabled=false;
+        buy.textContent=previous;
+      }
+    }
+    async function hydrate(){
+      try{
+        const response=await fetch("/api/store?action=catalog",{cache:"no-store"});
+        const data=await response.json();
+        const product=(data.products||[]).find((item)=>String(item.id)===String(productId));
+        if(product?.assetCount)assets.textContent=`PNG ${product.assetCount}点 / ZIP`;
+        else assets.textContent="販売用素材を準備中";
+        if(product?.published){buy.hidden=false;soon.hidden=true;buy.addEventListener("click",startCheckout);}
+      }catch{assets.textContent="販売状態を取得できませんでした";}
+    }
+    hydrate();
+  </script>
+</body>
+</html>
