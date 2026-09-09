@@ -20,10 +20,12 @@ export async function createStripeCheckoutSession({ product, origin }) {
   body.set("success_url", `${origin}/materials/success/?session_id={CHECKOUT_SESSION_ID}`);
   body.set("cancel_url", `${origin}/materials/`);
   body.set("payment_method_types[0]", "card");
+  body.set("payment_method_types[1]", "paypay");
   body.set("line_items[0][quantity]", "1");
   body.set("line_items[0][price_data][currency]", "jpy");
   body.set("line_items[0][price_data][unit_amount]", String(STORE_PRICE_YEN));
   body.set("line_items[0][price_data][product_data][name]", `${product.title}｜商用利用OK PNG素材`);
+  body.set("line_items[0][price_data][product_data][description]", "この販売素材はLINEスタンプではありません。商用利用可能なPNG素材セットです。");
   body.set("metadata[product_id]", product.id);
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
