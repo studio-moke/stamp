@@ -7,6 +7,12 @@ on:
     paths:
       - "scripts/seed-preview-store-test.mjs"
       - ".github/workflows/seed-preview-store-test.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/seed-preview-store-test.mjs"
+      - ".github/workflows/seed-preview-store-test.yml"
 
 permissions:
   contents: read
@@ -17,6 +23,9 @@ concurrency:
 
 jobs:
   seed-preview-test-product:
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/feature/digital-material-store') ||
+      (github.event_name == 'pull_request' && github.head_ref == 'feature/digital-material-store')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
@@ -30,6 +39,8 @@ jobs:
     steps:
       - name: Checkout feature branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
