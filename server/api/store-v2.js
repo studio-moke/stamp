@@ -1,7 +1,7 @@
 import { STORE_PRICE_YEN, createStripeCheckoutSession, retrieveStripeCheckoutSession, stripeConfigured } from "./_stripe.js";
 import { presignR2Put, r2GetJson, r2Head, r2PutJson } from "./_r2.js";
 import { presignStoreDownload } from "./_store-r2.js";
-import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
+import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, runtimeCatalogHealth, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
 import { prepareLineMaterialZip } from "./_line-materials.js";
 
 function json(res,status,value){res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.setHeader("Cache-Control","no-store");res.end(JSON.stringify(value));}
@@ -17,7 +17,7 @@ async function persistPaidOrder(session){if(!validPaidSession(session))return nu
 export default async function handler(req,res){
  try{
   const action=String(req.query?.action||"status");
-  if(req.method==="GET"&&action==="status"){const products=await getRuntimeDigitalProducts();return json(res,200,{ok:true,paymentProvider:"stripe",paymentConfigured:stripeConfigured(),priceYen:STORE_PRICE_YEN,productCount:products.length,publishedCount:products.filter(p=>p?.published).length});}
+  if(req.method==="GET"&&action==="status"){const [products,catalog]=await Promise.all([getRuntimeDigitalProducts(),runtimeCatalogHealth()]);return json(res,200,{ok:true,paymentProvider:"stripe",paymentConfigured:stripeConfigured(),priceYen:STORE_PRICE_YEN,productCount:products.length,publishedCount:products.filter(p=>p?.published).length,catalog});}
   if(req.method==="GET"&&action==="catalog"){const products=await getRuntimeDigitalProducts();return json(res,200,{ok:true,products:products.filter(Boolean).map(p=>({id:p.id,published:p.published,assetCount:p.assetCount||0,preparedAt:p.preparedAt||""}))});}
   if(req.method==="POST"&&action==="admin-health"){if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});return json(res,200,{ok:true,tokenSource:process.env.STORE_ADMIN_TOKEN?"STORE_ADMIN_TOKEN":"FREE_ADMIN_TOKEN",stripeConfigured:stripeConfigured()});}
   if(req.method==="POST"&&action==="admin-prepare-line"){

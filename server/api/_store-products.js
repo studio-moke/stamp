@@ -1,5 +1,5 @@
 import { getDigitalProduct, getDigitalProducts } from "./_store-catalog.js";
-import { r2GetJson, r2PutJson } from "./_r2.js";
+import { r2Configured, r2GetJson, r2PutJson } from "./_r2.js";
 
 // Preview deployments must never change the catalog used by production.  Vercel
 // supplies VERCEL_ENV=preview for every branch deployment, so this remains an
@@ -16,9 +16,24 @@ export function safeZipKey(productId, value = "") {
   return id && key.startsWith(`digital-products/${id}/`) && key.endsWith(".zip") ? key : "";
 }
 
+function asCatalog(value) {
+  return value && typeof value === "object" && value.products && typeof value.products === "object" ? value : { products: {} };
+}
+
+export async function runtimeCatalogHealth() {
+  const configured = r2Configured();
+  if (!Object.values(configured).every(Boolean)) return { ok: false, reason: "missing-r2-env", configured, key: runtimeCatalogKey() };
+  try {
+    const catalog = asCatalog(await r2GetJson(runtimeCatalogKey(), null));
+    return { ok: true, configured, key: runtimeCatalogKey(), productCount: Object.keys(catalog.products).length };
+  } catch {
+    return { ok: false, reason: "r2-read-failed", configured, key: runtimeCatalogKey() };
+  }
+}
+
 export async function readRuntimeCatalog() {
   const value = await r2GetJson(runtimeCatalogKey(), { products: {} }).catch(() => ({ products: {} }));
-  return value && typeof value === "object" && value.products && typeof value.products === "object" ? value : { products: {} };
+  return asCatalog(value);
 }
 
 function mergeProduct(base, runtime = {}) {
