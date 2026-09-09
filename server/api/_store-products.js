@@ -20,6 +20,7 @@ function asCatalog(value) {
   return value && typeof value === "object" && value.products && typeof value.products === "object" ? value : { products: {} };
 }
 
+// Status output intentionally exposes only non-secret R2 configuration state.
 export async function runtimeCatalogHealth() {
   const configured = r2Configured();
   if (!Object.values(configured).every(Boolean)) return { ok: false, reason: "missing-r2-env", configured, key: runtimeCatalogKey() };
