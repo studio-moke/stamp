@@ -13,7 +13,7 @@ const products=stickers.map(s=>({id:String(s.id),title:cleanTitle(s.title)}));
 <section class="panel">
 <div class="field"><label>管理トークン</label><input id="token" type="password" placeholder="STORE_ADMIN_TOKEN または FREE_ADMIN_TOKEN"></div>
 <div class="field"><label>商品</label><select id="product">{products.map(p=><option value={p.id}>{p.id}｜{p.title}</option>)}</select></div>
-<div class="summary"><div class="box"><span class="meta">状態</span><b id="liveState" class="state off">確認中</b></div><div class="box"><span class="meta">登録点数</span><b id="registeredCount">-</b></div><div class="box"><span class="meta">価格</span><b>¥500</b></div></div>
+<div class="summary"><div class="box"><span class="meta">状態</span><b id="liveState" class="state off">確認中</b></div><div class="box"><span class="meta">登録点数</span><b id="registeredCount">-</b></div><div class="box"><span class="meta">価格</span><b>¥150</b></div></div>
 </section>
 <section class="panel">
 <div class="field"><label>入力形式</label><select id="mode"><option value="sheet">4×2の8個入り画像（通常はこちら）</option><option value="individual">個別PNG</option></select></div>
