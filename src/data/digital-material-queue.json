@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-09T12:44:39.120Z",
+  "generatedAt": "2026-09-09T18:28:48.612Z",
   "r2WritesEnabled": true,
-  "pendingCount": 180,
+  "pendingCount": 177,
   "items": [
     {
       "productId": "36456730",
@@ -55,10 +55,18 @@
     {
       "productId": "36433087",
       "title": "今日はやめとこ。やんわり断る割り箸袋 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-09T12:44:34.721Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-09T18:28:42.541Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-09T18:28:42.541Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/36433087/532a7373b261d240c3787dca0591e5f35c3ab3866c769abe4994a9ba72c57194.zip",
+      "contentHash": "532a7373b261d240c3787dca0591e5f35c3ab3866c769abe4994a9ba72c57194",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36433087/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36425299",
@@ -111,18 +119,34 @@
     {
       "productId": "36417232",
       "title": "おせっかいテレビ｜勝手に心配してます - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-09T18:28:44.254Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-09T18:28:44.254Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36417232/154839d6825bcc7a09c187ee4737feb195a586cb584ea12f41ba87349f9a1e1a.zip",
+      "contentHash": "154839d6825bcc7a09c187ee4737feb195a586cb584ea12f41ba87349f9a1e1a",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36417232/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36413278",
       "title": "腐ったミルク｜毒舌な牛乳瓶スタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-09T18:28:46.882Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-09T18:28:46.882Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36413278/70d3314893d14eb51388b922b979ebc438a2ab49c2c96a584f0566c8ee193f95.zip",
+      "contentHash": "70d3314893d14eb51388b922b979ebc438a2ab49c2c96a584f0566c8ee193f95",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36413278/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36411208",
@@ -1541,6 +1565,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 6,
+  "readyCount": 9,
   "failedCount": 0
 }
