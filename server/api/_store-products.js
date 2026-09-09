@@ -21,6 +21,7 @@ function asCatalog(value) {
 }
 
 // Status output intentionally exposes only non-secret R2 configuration state.
+// The check runs per deployment so Preview configuration changes are visible.
 export async function runtimeCatalogHealth() {
   const configured = r2Configured();
   if (!Object.values(configured).every(Boolean)) return { ok: false, reason: "missing-r2-env", configured, key: runtimeCatalogKey() };
