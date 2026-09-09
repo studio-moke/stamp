@@ -1,7 +1,8 @@
 ---
 import SiteHeader from "../../components/SiteHeader.astro";
 
-const tools = [
+export function getStaticPaths(){
+  const tools = [
   {slug:"date-calculator",title:"日付計算ツール",desc:"日付の加減算と2つの日付の差をすばやく計算します。"},
   {slug:"gross-profit",title:"粗利計算ツール",desc:"売価・原価から粗利額、粗利率、原価率をリアルタイム計算します。"},
   {slug:"text-counter",title:"文字数・行数カウント",desc:"広告文・提案書・SNS原稿の文字数、行数、空白除外文字数をリアルタイム表示します。"},
@@ -21,7 +22,8 @@ const tools = [
   {slug:"roi",title:"ROI計算ツール",desc:"投資額と利益からROIを計算します。"},
   {slug:"marketing-kpi",title:"CPA・CVR・CTR計算ツール",desc:"広告運用でよく使うCPA・CVR・CTRをまとめて計算します。"}
 ];
-export function getStaticPaths(){ return tools.map((tool)=>({params:{slug:tool.slug},props:{tool}})); }
+  return tools.map((tool)=>({params:{slug:tool.slug},props:{tool}}));
+}
 const { tool } = Astro.props;
 ---
 <!doctype html>
