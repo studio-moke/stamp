@@ -16,7 +16,7 @@
   function toast(message){let el=document.querySelector('.sm-share-toast');if(!el){el=document.createElement('div');el.className='sm-share-toast';el.setAttribute('role','status');document.body.appendChild(el)}el.textContent=message;el.classList.add('show');clearTimeout(el._timer);el._timer=setTimeout(()=>el.classList.remove('show'),2200)}
   async function instagramShare(c){if(navigator.share){try{await navigator.share({title:pageTitle(),url:canonical()});return}catch(e){if(e?.name==='AbortError')return}}await copyUrl(c.copied)}
   function build(){
-    if(document.querySelector('.sm-share')||location.pathname.startsWith('/admin/')||location.pathname.startsWith('/free-admin/')||location.pathname.startsWith('/sticker-seo-admin/'))return;
+    if(document.querySelector('.sm-share')||location.pathname.startsWith('/admin/')||location.pathname.startsWith('/free-admin/')||location.pathname.startsWith('/sticker-seo-admin/')||location.pathname.startsWith('/materials/success/'))return;
     const c=COPY[locale()]||COPY.ja,url=canonical(),title=pageTitle(),media=ogImage(),encodedUrl=encodeURIComponent(url),encodedText=encodeURIComponent(title);
     const pinterestParams=new URLSearchParams({url,description:title});if(media)pinterestParams.set('media',media);
     const whatsappText=encodeURIComponent(`${title} ${url}`);
