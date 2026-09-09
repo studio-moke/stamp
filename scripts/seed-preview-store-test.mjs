@@ -4,10 +4,11 @@ import { r2GetJson, r2Head, r2PutJson } from "../server/api/_r2.js";
 
 const PREVIEW_CATALOG_KEY = "digital-products/preview/catalog.json";
 const productId = String(process.env.DIGITAL_MATERIAL_TEST_PRODUCT_ID || "").replace(/[^0-9]/g, "");
+const featureBranch = "feature/digital-material-store";
 
 // This script writes only the Preview catalog and is safe to run repeatedly.
 if (process.env.PREVIEW_STORE_TEST_SEED !== "1") throw new Error("Preview test seed was not explicitly enabled");
-if (process.env.GITHUB_REF !== "refs/heads/feature/digital-material-store") throw new Error("Preview test seed is restricted to the feature branch");
+if (process.env.GITHUB_REF !== `refs/heads/${featureBranch}` && process.env.GITHUB_HEAD_REF !== featureBranch) throw new Error("Preview test seed is restricted to the feature branch");
 if (!/^[0-9]{6,20}$/.test(productId)) throw new Error("Invalid test product ID");
 
 const queueFile = path.resolve("src/data/digital-material-queue.json");
