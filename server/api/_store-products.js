@@ -25,8 +25,15 @@ export async function runtimeCatalogHealth() {
   const configured = r2Configured();
   if (!Object.values(configured).every(Boolean)) return { ok: false, reason: "missing-r2-env", configured, key: runtimeCatalogKey() };
   try {
-    const catalog = asCatalog(await r2GetJson(runtimeCatalogKey(), null));
-    return { ok: true, configured, key: runtimeCatalogKey(), productCount: Object.keys(catalog.products).length };
+    const raw = await r2GetJson(runtimeCatalogKey(), null);
+    const catalog = asCatalog(raw);
+    return {
+      ok: true,
+      configured,
+      key: runtimeCatalogKey(),
+      exists: Boolean(raw),
+      productCount: Object.keys(catalog.products).length,
+    };
   } catch {
     return { ok: false, reason: "r2-read-failed", configured, key: runtimeCatalogKey() };
   }
