@@ -14,7 +14,7 @@ export function getStaticPaths(){
       title:cleanTitle(sticker.title),
       description:cleanDescription(sticker.description||""),
       image:sticker.image||"",
-      lineUrl:sticker.url||""
+      lineUrl:`/stickers/${String(sticker.id)}/`
     }}
   }));
 }
@@ -54,7 +54,7 @@ const canonical=absoluteUrl(`/materials/${product.id}/`);
         <h1 class="title">{product.title}</h1>
         <p class="description">{product.description}</p>
         <p class="notice">この販売素材はLINEスタンプではありません。<br>商用利用可能なPNG素材セット（ZIP形式）です。</p>
-        {product.lineUrl && <a class="line-link" href={product.lineUrl} target="_blank" rel="noopener noreferrer"><span>同じデザインのLINEスタンプもあります</span><span>LINEスタンプを見る ↗</span></a>}
+        {product.lineUrl && <a class="line-link" href={product.lineUrl}><span>同じデザインのLINEスタンプもあります</span><span>LINEスタンプを見る ↗</span></a>}
         <section class="purchase">
           <div class="price">¥150</div>
           <div class="tax">税込 / 商用利用OK</div>
