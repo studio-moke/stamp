@@ -1,7 +1,14 @@
 import { getDigitalProduct, getDigitalProducts } from "./_store-catalog.js";
 import { r2GetJson, r2PutJson } from "./_r2.js";
 
-export const RUNTIME_CATALOG_KEY = "digital-products/catalog.json";
+// Preview deployments must never change the catalog used by production.  Vercel
+// supplies VERCEL_ENV=preview for every branch deployment, so this remains an
+// automatic safety boundary rather than a manually maintained setting.
+export function runtimeCatalogKey() {
+  return process.env.VERCEL_ENV === "preview"
+    ? "digital-products/preview/catalog.json"
+    : "digital-products/catalog.json";
+}
 
 export function safeZipKey(productId, value = "") {
   const id = String(productId || "").replace(/[^0-9]/g, "");
@@ -10,7 +17,7 @@ export function safeZipKey(productId, value = "") {
 }
 
 export async function readRuntimeCatalog() {
-  const value = await r2GetJson(RUNTIME_CATALOG_KEY, { products: {} }).catch(() => ({ products: {} }));
+  const value = await r2GetJson(runtimeCatalogKey(), { products: {} }).catch(() => ({ products: {} }));
   return value && typeof value === "object" && value.products && typeof value.products === "object" ? value : { products: {} };
 }
 
@@ -47,6 +54,6 @@ export async function writeRuntimeProductState(productId, patch) {
     products: { ...(catalog.products || {}), [id]: { ...current, ...patch, productId: id } },
     updatedAt: new Date().toISOString(),
   };
-  await r2PutJson(RUNTIME_CATALOG_KEY, next);
+  await r2PutJson(runtimeCatalogKey(), next);
   return next.products[id];
 }

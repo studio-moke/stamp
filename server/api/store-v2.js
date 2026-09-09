@@ -10,7 +10,7 @@ function isAdmin(req){const expected=process.env.STORE_ADMIN_TOKEN||process.env.
 function cleanId(v=""){const id=String(v).replace(/[^0-9]/g,"");return id.length>=6&&id.length<=20?id:"";}
 function cleanHash(v=""){const hash=String(v).toLowerCase();return /^[a-f0-9]{64}$/.test(hash)?hash:"";}
 function zipKey(id,hash){return `digital-products/${id}/${hash}.zip`;}
-function orderKey(id){return `store-orders/${String(id).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
+function orderKey(id){const prefix=process.env.VERCEL_ENV==="preview"?"store-orders/preview":"store-orders";return `${prefix}/${String(id).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
 function validPaidSession(session){return session?.payment_status==="paid"&&session?.currency==="jpy"&&session?.amount_total===STORE_PRICE_YEN&&cleanId(session?.metadata?.product_id);}
 async function persistPaidOrder(session){if(!validPaidSession(session))return null;const product=await getRuntimeDigitalProduct(session.metadata.product_id);if(!product?.published||!product.zipKey)return null;const order={sessionId:session.id,productId:product.id,title:product.title,zipKey:product.zipKey,amountTotal:session.amount_total,currency:session.currency,customerEmail:session.customer_details?.email||session.customer_email||"",paidAt:new Date().toISOString()};await r2PutJson(orderKey(session.id),order);return order;}
 

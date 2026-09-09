@@ -4,7 +4,7 @@ import { getRuntimeDigitalProduct } from "./_store-products.js";
 
 const STORE_PRICE_YEN = 150;
 
-function orderKey(sessionId){return `store-orders/${String(sessionId).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
+function orderKey(sessionId){const prefix=process.env.VERCEL_ENV==="preview"?"store-orders/preview":"store-orders";return `${prefix}/${String(sessionId).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
 function readRawBody(req){return new Promise((resolve,reject)=>{const chunks=[];let size=0;req.on("data",chunk=>{size+=chunk.length;if(size>1000000)return reject(new Error("Request too large"));chunks.push(chunk);});req.on("end",()=>resolve(Buffer.concat(chunks).toString("utf8")));req.on("error",reject);});}
 function validPaidSession(session){return session?.payment_status==="paid"&&session?.currency==="jpy"&&session?.amount_total===STORE_PRICE_YEN&&/^[0-9]{6,20}$/.test(String(session?.metadata?.product_id||""));}
 
