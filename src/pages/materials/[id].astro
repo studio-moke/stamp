@@ -4,10 +4,9 @@ import Analytics from "../../components/Analytics.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import { absoluteUrl } from "../../lib/seo";
 
-const cleanTitle=(value="")=>String(value).replace(/\s*-\s*LINE スタンプ\s*\|\s*LINE STORE\s*$/u,"").replace(/\s*\d+種類\s*$/u,"").trim();
-const cleanDescription=(value="")=>String(value).replace(/販売用(?:PNG|素材)(?:を)?準備中[。]?/gu,"").replace(/\s{2,}/g," ").trim();
-
 export function getStaticPaths(){
+  const cleanTitle=(value="")=>String(value).replace(/\s*-\s*LINE スタンプ\s*\|\s*LINE STORE\s*$/u,"").replace(/\s*\d+種類\s*$/u,"").trim();
+  const cleanDescription=(value="")=>String(value).replace(/販売用(?:PNG|素材)(?:を)?準備中[。]?/gu,"").replace(/\s{2,}/g," ").trim();
   return stickers.map((sticker)=>({
     params:{id:String(sticker.id)},
     props:{product:{
