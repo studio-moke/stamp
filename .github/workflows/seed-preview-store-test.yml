@@ -1,0 +1,51 @@
+name: Seed Preview Store Test Product
+
+on:
+  push:
+    branches:
+      - feature/digital-material-store
+    paths:
+      - "scripts/seed-preview-store-test.mjs"
+      - ".github/workflows/seed-preview-store-test.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/seed-preview-store-test.mjs"
+      - ".github/workflows/seed-preview-store-test.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-store-test
+  cancel-in-progress: false
+
+jobs:
+  seed-preview-test-product:
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/feature/digital-material-store') ||
+      (github.event_name == 'pull_request' && github.head_ref == 'feature/digital-material-store')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+      PREVIEW_STORE_TEST_SEED: "1"
+      DIGITAL_MATERIAL_TEST_PRODUCT_ID: "36425299"
+
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Seed one verified test product into Preview-only catalog
+        run: node scripts/seed-preview-store-test.mjs
