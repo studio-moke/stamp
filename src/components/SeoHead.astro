@@ -6,7 +6,7 @@ import { r2GetJson } from "../../server/api/_r2.js";
 const { title, description, canonical, image, type = "website", locale: localeProp = "ja", path = Astro.url.pathname, alternatePaths = null } = Astro.props;
 const locale = normalizeLocale(localeProp);
 const url = canonical || absoluteUrl(Astro.url.pathname);
-const socialImage = absoluteUrl(image || "/images/biglogo.png?v=20260904-1");
+const socialImage = absoluteUrl(image || "/ogp/stamp-moke-ogp.png");
 const alternates = alternatePaths
   ? LOCALES.filter((item) => alternatePaths[item]).map((item) => ({ locale: item, href: absoluteUrl(alternatePaths[item]) }))
   : alternateLinks(path);
