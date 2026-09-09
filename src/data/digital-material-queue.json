@@ -1,9 +1,65 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-08T19:50:13.011Z",
+  "generatedAt": "2026-09-09T12:44:39.120Z",
   "r2WritesEnabled": true,
-  "pendingCount": 179,
+  "pendingCount": 180,
   "items": [
+    {
+      "productId": "36456730",
+      "title": "その話、長靴でも踏めます。｜毒舌長靴 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-09T12:44:34.721Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-09T12:44:34.776Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-09T12:44:34.776Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/36456730/5c141155cc57d7549de2c02299408477b65a32f6d231f8f4cc5c79ac092f21e8.zip",
+      "contentHash": "5c141155cc57d7549de2c02299408477b65a32f6d231f8f4cc5c79ac092f21e8",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36456730/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36447057",
+      "title": "落ち葉です。だいたい散ってます。 40種類 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-09T12:44:34.721Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-09T12:44:36.134Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-09T12:44:36.134Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36447057/3baab2d55e63a3bead5ebcf020f99de80bfe9815bcb1c8a7a743ba20dce3228a.zip",
+      "contentHash": "3baab2d55e63a3bead5ebcf020f99de80bfe9815bcb1c8a7a743ba20dce3228a",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36447057/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36442504",
+      "title": "照れ警報、発令中。｜気持ちの警報表示 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-09T12:44:34.721Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-09T12:44:37.900Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-09T12:44:37.900Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36442504/e58c65c5e0dc192445508970260b54ff5dba2ab88e017243f4b55097cace15be.zip",
+      "contentHash": "e58c65c5e0dc192445508970260b54ff5dba2ab88e017243f4b55097cace15be",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36442504/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36433087",
+      "title": "今日はやめとこ。やんわり断る割り箸袋 - LINE スタンプ | LINE STORE",
+      "status": "pending",
+      "discoveredAt": "2026-09-09T12:44:34.721Z",
+      "source": "sticker-catalog",
+      "note": "R2 write intentionally deferred"
+    },
     {
       "productId": "36425299",
       "title": "催促するの苦手うさぎ。仕事の敬語 40種類 - LINE スタンプ | LINE STORE",
@@ -1485,6 +1541,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 3,
+  "readyCount": 6,
   "failedCount": 0
 }
