@@ -20,11 +20,19 @@ function asCatalog(value) {
   return value && typeof value === "object" && value.products && typeof value.products === "object" ? value : { products: {} };
 }
 
+function r2TargetHint() {
+  const accountId = String(process.env.R2_ACCOUNT_ID || "");
+  return {
+    accountIdHint: accountId ? `${accountId.slice(0, 6)}…${accountId.slice(-4)}` : "",
+    bucketName: String(process.env.R2_BUCKET_NAME || ""),
+  };
+}
+
 // Status output intentionally exposes only non-secret R2 configuration state.
-// The check runs per deployment so Preview configuration changes are visible.
+// The target hint lets Preview configuration be compared without exposing keys.
 export async function runtimeCatalogHealth() {
   const configured = r2Configured();
-  if (!Object.values(configured).every(Boolean)) return { ok: false, reason: "missing-r2-env", configured, key: runtimeCatalogKey() };
+  if (!Object.values(configured).every(Boolean)) return { ok: false, reason: "missing-r2-env", configured, key: runtimeCatalogKey(), target: r2TargetHint() };
   try {
     const raw = await r2GetJson(runtimeCatalogKey(), null);
     const catalog = asCatalog(raw);
@@ -32,11 +40,12 @@ export async function runtimeCatalogHealth() {
       ok: true,
       configured,
       key: runtimeCatalogKey(),
+      target: r2TargetHint(),
       exists: Boolean(raw),
       productCount: Object.keys(catalog.products).length,
     };
   } catch {
-    return { ok: false, reason: "r2-read-failed", configured, key: runtimeCatalogKey() };
+    return { ok: false, reason: "r2-read-failed", configured, key: runtimeCatalogKey(), target: r2TargetHint() };
   }
 }
 
