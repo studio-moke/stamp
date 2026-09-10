@@ -1,9 +1,57 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-09T18:28:48.612Z",
+  "generatedAt": "2026-09-10T18:26:35.406Z",
   "r2WritesEnabled": true,
   "pendingCount": 177,
   "items": [
+    {
+      "productId": "36482410",
+      "title": "君のこと、検索中。｜恋人の検索窓 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-10T18:26:30.163Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-10T18:26:30.214Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-10T18:26:30.214Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36482410/e9ad5137e71156bc472b5516d7f529feb65206208baa1db3f66cecd4ff183849.zip",
+      "contentHash": "e9ad5137e71156bc472b5516d7f529feb65206208baa1db3f66cecd4ff183849",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36482410/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36471623",
+      "title": "声量だけは任せて。｜うるさい応援メガホン - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-10T18:26:30.163Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-10T18:26:32.209Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-10T18:26:32.209Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36471623/010c464b680ae35985c19a50881dd7c68175ce6a25d934b4a8c32c2eaf883988.zip",
+      "contentHash": "010c464b680ae35985c19a50881dd7c68175ce6a25d934b4a8c32c2eaf883988",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36471623/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36469135",
+      "title": "恋の笛、鳴ってます。｜恋人ホイッスル - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-10T18:26:30.163Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-10T18:26:33.847Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-10T18:26:33.847Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/36469135/6b8a1369187d743cd7658ab93877ed9507ba4ece924fd77e893c976e8a19b0a4.zip",
+      "contentHash": "6b8a1369187d743cd7658ab93877ed9507ba4ece924fd77e893c976e8a19b0a4",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36469135/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36456730",
       "title": "その話、長靴でも踏めます。｜毒舌長靴 - LINE スタンプ | LINE STORE",
@@ -1565,6 +1613,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 9,
+  "readyCount": 12,
   "failedCount": 0
 }
