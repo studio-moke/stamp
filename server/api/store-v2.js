@@ -1,8 +1,8 @@
 import { STORE_PRICE_YEN, createStripeCheckoutSession, retrieveStripeCheckoutSession, stripeConfigured } from "./_stripe.js";
-import { presignR2Put, r2GetJson, r2Head, r2PutJson } from "./_r2.js";
+import { presignR2Put, r2GetBuffer, r2GetJson, r2Head, r2PutJson } from "./_r2.js";
 import { presignStoreDownload } from "./_store-r2.js";
 import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, readPreviewProductState, runtimeCatalogHealth, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
-import { prepareLineMaterialZip } from "./_line-materials.js";
+import { prepareLineMaterialZip, unzipEntries } from "./_line-materials.js";
 
 function json(res,status,value){res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.setHeader("Cache-Control","no-store");res.end(JSON.stringify(value));}
 function readBody(req){if(req.body&&typeof req.body==="object")return Promise.resolve(req.body);return new Promise((resolve,reject)=>{let raw="";req.on("data",c=>{raw+=c;if(raw.length>200000)reject(new Error("Request too large"));});req.on("end",()=>{try{resolve(raw?JSON.parse(raw):{});}catch{reject(new Error("Invalid JSON"));}});req.on("error",reject);});}
@@ -13,12 +13,21 @@ function zipKey(id,hash){return `digital-products/${id}/${hash}.zip`;}
 function orderKey(id){const prefix=process.env.VERCEL_ENV==="preview"?"store-orders/preview":"store-orders";return `${prefix}/${String(id).replace(/[^a-zA-Z0-9_\-]/g,"")}.json`;}
 function validPaidSession(session){return session?.payment_status==="paid"&&session?.currency==="jpy"&&session?.amount_total===STORE_PRICE_YEN&&cleanId(session?.metadata?.product_id);}
 function escapeHtml(value=""){return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
+function sampleSvg(png,title){const encoded=png.toString("base64"),label=escapeHtml(title||"stamp moke sample");return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#fff"/><image href="data:image/png;base64,${encoded}" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/><g transform="rotate(-28 512 512)" fill="#168b52" fill-opacity=".72" font-family="Arial, sans-serif" font-weight="900" text-anchor="middle"><text x="512" y="485" font-size="76">SAMPLE</text><text x="512" y="560" font-size="34">stamp moke</text></g></svg>`;}
 async function sendPurchaseDownloadEmail(order){const apiKey=process.env.RESEND_API_KEY,from=process.env.STORE_EMAIL_FROM,origin=String(process.env.STORE_ORIGIN||"").replace(/\/$/,"");if(!apiKey||!from||!order.customerEmail||!/^https:\/\/[^/]+$/i.test(origin))return {attempted:false,status:"not-configured"};const downloadPageUrl=`${origin}/materials/success/?session_id=${encodeURIComponent(order.sessionId)}`;const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:`Bearer ${apiKey}`,"Content-Type":"application/json","Idempotency-Key":`stamp-moke-order-${order.sessionId}`},body:JSON.stringify({from,to:[order.customerEmail],subject:`【stamp moke】ご購入ありがとうございます：${order.title}`,html:`<p>ご購入ありがとうございます。</p><p><strong>${escapeHtml(order.title)}</strong> の再ダウンロード用ページです。</p><p><a href="${escapeHtml(downloadPageUrl)}">素材をダウンロードする</a></p><p>リンク先で発行するZIPダウンロードURLは30分間有効です。期限が切れた場合も、このページを開けば再発行できます。</p>`})});if(!response.ok){const data=await response.json().catch(()=>null);throw new Error(data?.message||`email send failed: ${response.status}`);}const data=await response.json().catch(()=>({}));return {attempted:true,status:"sent",sentAt:new Date().toISOString(),messageId:data?.id||""};}
 async function persistPaidOrder(session){if(!validPaidSession(session))return null;const product=await getRuntimeDigitalProduct(session.metadata.product_id);if(!product?.published||!product.zipKey)return null;let order={sessionId:session.id,productId:product.id,title:product.title,zipKey:product.zipKey,amountTotal:session.amount_total,currency:session.currency,customerEmail:session.customer_details?.email||session.customer_email||"",paidAt:new Date().toISOString(),emailDelivery:{attempted:false,status:"pending"}};await r2PutJson(orderKey(session.id),order);try{order={...order,emailDelivery:await sendPurchaseDownloadEmail(order)};}catch(error){console.error("purchase email error",error);order={...order,emailDelivery:{attempted:true,status:"failed"}};}await r2PutJson(orderKey(session.id),order);return order;}
 
 export default async function handler(req,res){
  try{
   const action=String(req.query?.action||"status");
+  if(req.method==="GET"&&action==="sample"){
+   const id=cleanId(req.query?.product_id),index=Math.max(1,Math.min(4,Number(req.query?.index||1)||1)),product=id?await getRuntimeDigitalProduct(id):null;
+   if(!product?.published||!product.zipKey){res.statusCode=404;return res.end("Not found");}
+   const zip=await r2GetBuffer(product.zipKey);
+   const images=zip?unzipEntries(zip.buffer).filter(entry=>/^png\/\d+\.png$/i.test(entry.name)):[];const image=images[index-1];
+   if(!image){res.statusCode=404;return res.end("Not found");}
+   const svg=sampleSvg(image.data,product.title);res.statusCode=200;res.setHeader("Content-Type","image/svg+xml; charset=utf-8");res.setHeader("Cache-Control","public, max-age=3600");res.setHeader("Content-Disposition","inline");res.setHeader("X-Content-Type-Options","nosniff");return res.end(svg);
+  }
   if(req.method==="GET"&&action==="status"){const [products,catalog]=await Promise.all([getRuntimeDigitalProducts(),runtimeCatalogHealth()]);return json(res,200,{ok:true,paymentProvider:"stripe",paymentConfigured:stripeConfigured(),priceYen:STORE_PRICE_YEN,productCount:products.length,publishedCount:products.filter(p=>p?.published).length,catalog});}
   if(req.method==="GET"&&action==="catalog"){const products=await getRuntimeDigitalProducts();return json(res,200,{ok:true,products:products.filter(Boolean).map(p=>({id:p.id,published:p.published,assetCount:p.assetCount||0,preparedAt:p.preparedAt||""}))});}
   if(req.method==="POST"&&action==="admin-health"){if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});return json(res,200,{ok:true,tokenSource:process.env.STORE_ADMIN_TOKEN?"STORE_ADMIN_TOKEN":"FREE_ADMIN_TOKEN",stripeConfigured:stripeConfigured()});}
@@ -27,8 +36,8 @@ export default async function handler(req,res){
    const b=await readBody(req),id=cleanId(b.productId),product=id?await getRuntimeDigitalProduct(id):null;
    if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});
    const prepared=await prepareLineMaterialZip(product);
-   const record=await writeRuntimeProductState(id,{zipKey:prepared.zipKey,assetCount:prepared.assetCount,published:false,preparedAt:prepared.preparedAt,source:"line-store",contentHash:prepared.contentHash,licenseVersion:"draft-2026-09-07"});
-   return json(res,200,{ok:true,product:{id,published:false,assetCount:record.assetCount,preparedAt:record.preparedAt}});
+   const record=await writeRuntimeProductState(id,{zipKey:prepared.zipKey,assetCount:prepared.assetCount,published:true,preparedAt:prepared.preparedAt,source:"line-store",contentHash:prepared.contentHash,licenseVersion:"draft-2026-09-07"});
+   return json(res,200,{ok:true,product:{id,published:true,assetCount:record.assetCount,preparedAt:record.preparedAt}});
   }
   if(req.method==="POST"&&action==="admin-upload-url"){
    if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req),id=cleanId(b.productId),count=Number(b.assetCount||0),hash=cleanHash(b.contentHash);const product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});if(!hash)return json(res,400,{ok:false,error:"ZIPハッシュが不正です。"});const key=zipKey(id,hash);return json(res,200,{ok:true,key,uploadUrl:presignR2Put(key,900)});
