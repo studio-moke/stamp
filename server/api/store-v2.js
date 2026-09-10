@@ -1,7 +1,7 @@
 import { STORE_PRICE_YEN, createStripeCheckoutSession, retrieveStripeCheckoutSession, stripeConfigured } from "./_stripe.js";
 import { presignR2Put, r2GetJson, r2Head, r2PutJson } from "./_r2.js";
 import { presignStoreDownload } from "./_store-r2.js";
-import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, runtimeCatalogHealth, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
+import { getRuntimeDigitalProduct, getRuntimeDigitalProducts, readPreviewProductState, runtimeCatalogHealth, safeZipKey, writeRuntimeProductState } from "./_store-products.js";
 import { prepareLineMaterialZip } from "./_line-materials.js";
 
 function json(res,status,value){res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.setHeader("Cache-Control","no-store");res.end(JSON.stringify(value));}
@@ -35,6 +35,17 @@ export default async function handler(req,res){
   }
   if(req.method==="POST"&&action==="admin-publish"){
    if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req),id=cleanId(b.productId),count=Number(b.assetCount||0),hash=cleanHash(b.contentHash);const product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});if(!Number.isInteger(count)||count<1||count>80)return json(res,400,{ok:false,error:"画像点数が不正です。"});if(!hash)return json(res,400,{ok:false,error:"ZIPハッシュが不正です。"});const key=zipKey(id,hash);if(!(await r2Head(key)))return json(res,409,{ok:false,error:"ZIPのアップロードを確認できません。"});const record=await writeRuntimeProductState(id,{zipKey:key,assetCount:count,published:b.published!==false,preparedAt:new Date().toISOString(),licenseVersion:"draft-2026-09-07"});return json(res,200,{ok:true,product:{id,published:record.published,assetCount:record.assetCount,preparedAt:record.preparedAt}});
+  }
+  if(req.method==="POST"&&action==="admin-promote-preview"){
+   if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});
+   if(process.env.VERCEL_ENV==="preview")return json(res,409,{ok:false,error:"公開サイトの管理画面から実行してください。"});
+   const b=await readBody(req),id=cleanId(b.productId),product=id?await getRuntimeDigitalProduct(id):null;
+   if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});
+   const preview=await readPreviewProductState(id),key=safeZipKey(id,preview?.zipKey),count=Number(preview?.assetCount||0);
+   if(!preview?.published||!key||!Number.isInteger(count)||count<1)return json(res,409,{ok:false,error:"Preview側に公開済みの素材が見つかりません。"});
+   if(!(await r2Head(key)))return json(res,409,{ok:false,error:"Preview側のZIPを確認できません。"});
+   const record=await writeRuntimeProductState(id,{...preview,zipKey:key,assetCount:count,published:true,preparedAt:preview.preparedAt||new Date().toISOString(),promotedAt:new Date().toISOString()});
+   return json(res,200,{ok:true,product:{id,published:record.published,assetCount:record.assetCount,preparedAt:record.preparedAt}});
   }
   if(req.method==="POST"&&action==="admin-unpublish"){
    if(!isAdmin(req))return json(res,401,{ok:false,error:"管理トークンが一致しません。"});const b=await readBody(req);const id=cleanId(b.productId),product=id?await getRuntimeDigitalProduct(id):null;if(!product)return json(res,404,{ok:false,error:"商品が見つかりません。"});await writeRuntimeProductState(id,{published:false,updatedAt:new Date().toISOString()});return json(res,200,{ok:true});
