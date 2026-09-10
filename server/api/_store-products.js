@@ -54,6 +54,18 @@ export async function readRuntimeCatalog() {
   return asCatalog(value);
 }
 
+// Explicit promotion is used only from a Production deployment. It lets an
+// administrator publish a ZIP that was already tested in Preview without
+// rebuilding or re-uploading it.
+export async function readPreviewProductState(productId) {
+  const id = String(productId || "").replace(/[^0-9]/g, "");
+  if (!id) return null;
+  const value = await r2GetJson("digital-products/preview/catalog.json", { products: {} }).catch(() => ({ products: {} }));
+  const catalog = asCatalog(value);
+  const record = catalog.products?.[id];
+  return record && typeof record === "object" ? record : null;
+}
+
 function mergeProduct(base, runtime = {}) {
   if (!base) return null;
   const runtimeZipKey = safeZipKey(base.id, runtime?.zipKey);
