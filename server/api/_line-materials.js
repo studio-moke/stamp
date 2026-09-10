@@ -3,7 +3,7 @@ import zlib from "node:zlib";
 import { r2Put } from "./_r2.js";
 
 const STORE_PRICE_YEN = 150;
-const ALLOWED_COUNTS = new Set([8, 16, 24, 32, 40]);
+const ALLOWED_COUNTS = new Set([8, 24, 32, 40]);
 const HEADERS = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
   Referer: "https://store.line.me/",
