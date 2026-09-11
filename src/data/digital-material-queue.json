@@ -1,9 +1,57 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-10T18:26:35.406Z",
+  "generatedAt": "2026-09-11T18:27:23.890Z",
   "r2WritesEnabled": true,
   "pendingCount": 177,
   "items": [
+    {
+      "productId": "36517765",
+      "title": "家族の発車標｜やさしい 電光掲示板 40種類 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-11T18:27:18.627Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-11T18:27:18.681Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-11T18:27:18.681Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36517765/87cb324f4a9425c00dc7a64bf15a7c9135c18fd42bfd6ad0085755fea4f299de.zip",
+      "contentHash": "87cb324f4a9425c00dc7a64bf15a7c9135c18fd42bfd6ad0085755fea4f299de",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36517765/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36506718",
+      "title": "ガテン系ロボ 現場一号！ご安全にご苦労様 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-11T18:27:18.627Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-11T18:27:20.692Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-11T18:27:20.692Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36506718/9554fa691f6b3da7a774bd97285c77d1847a732ca05117d987dad0bcb8f9ee01.zip",
+      "contentHash": "9554fa691f6b3da7a774bd97285c77d1847a732ca05117d987dad0bcb8f9ee01",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36506718/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36499122",
+      "title": "拝見しました。｜丁寧すぎる既読チェック - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-11T18:27:18.627Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-11T18:27:22.166Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-11T18:27:22.166Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36499122/f4d68c5f7e3c3ecd54537d4cb07b5323b25e7b309c4ec7ac70f8c62a2d0bc13d.zip",
+      "contentHash": "f4d68c5f7e3c3ecd54537d4cb07b5323b25e7b309c4ec7ac70f8c62a2d0bc13d",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36499122/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36482410",
       "title": "君のこと、検索中。｜恋人の検索窓 - LINE スタンプ | LINE STORE",
@@ -1613,6 +1661,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 12,
+  "readyCount": 15,
   "failedCount": 0
 }
