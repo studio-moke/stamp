@@ -1,9 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-11T18:27:23.890Z",
+  "generatedAt": "2026-09-12T18:25:01.709Z",
   "r2WritesEnabled": true,
-  "pendingCount": 177,
+  "pendingCount": 175,
   "items": [
+    {
+      "productId": "36522707",
+      "title": "ただのアイコン。なんか見たことあるような - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-12T18:24:54.031Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-12T18:24:54.083Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-12T18:24:54.083Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36522707/02a20c24a9d56928e9218144b0d8e6b8a8ddb02165a21a1d2a0d8da9acb0839f.zip",
+      "contentHash": "02a20c24a9d56928e9218144b0d8e6b8a8ddb02165a21a1d2a0d8da9acb0839f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36522707/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36517765",
       "title": "家族の発車標｜やさしい 電光掲示板 40種類 - LINE スタンプ | LINE STORE",
@@ -247,18 +263,34 @@
     {
       "productId": "36411208",
       "title": "その話、積んどきます。｜働く倉庫パレット - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-12T18:24:56.453Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-12T18:24:56.453Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36411208/26c2d9dcbe15aedc08f249759ab22a1ba53b44544ced3b035edae998760e19a1.zip",
+      "contentHash": "26c2d9dcbe15aedc08f249759ab22a1ba53b44544ced3b035edae998760e19a1",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36411208/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36410171",
       "title": "新米です。まだ慣れてません。｜お米の日常 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-12T18:24:59.991Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-12T18:24:59.991Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36410171/d465aadc2b16cd9875498c3a9a2fb9d78844d2379d4edad3b9197f29179f108e.zip",
+      "contentHash": "d465aadc2b16cd9875498c3a9a2fb9d78844d2379d4edad3b9197f29179f108e",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36410171/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36398428",
@@ -1661,6 +1693,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 15,
+  "readyCount": 18,
   "failedCount": 0
 }
