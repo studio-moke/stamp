@@ -1,9 +1,41 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-12T18:25:01.709Z",
+  "generatedAt": "2026-09-13T18:26:11.474Z",
   "r2WritesEnabled": true,
-  "pendingCount": 175,
+  "pendingCount": 174,
   "items": [
+    {
+      "productId": "36545814",
+      "title": "ただいま処理できません。丁寧なエラー敬語 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-13T18:26:06.468Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-13T18:26:06.515Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-13T18:26:06.515Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36545814/84bfa54549fcb1b084638dcc7cf16d45e89fba00d87750186037e86811059db8.zip",
+      "contentHash": "84bfa54549fcb1b084638dcc7cf16d45e89fba00d87750186037e86811059db8",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36545814/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36541561",
+      "title": "ゆらゆらハロウィン｜かわいい飾りの日常 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-13T18:26:06.468Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-13T18:26:07.998Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-13T18:26:07.998Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36541561/cbf8466751bf96b5a98cc22b4fee24919c19db7b2cfaabd7c2c7575517cde036.zip",
+      "contentHash": "cbf8466751bf96b5a98cc22b4fee24919c19db7b2cfaabd7c2c7575517cde036",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36541561/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36522707",
       "title": "ただのアイコン。なんか見たことあるような - LINE スタンプ | LINE STORE",
@@ -295,10 +327,18 @@
     {
       "productId": "36398428",
       "title": "ため息、出ときます。｜本音代弁スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-13T18:26:09.509Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-13T18:26:09.509Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36398428/4e0793457770d28545759fd22f42733902b1868e5f182f30331eda908af20cc3.zip",
+      "contentHash": "4e0793457770d28545759fd22f42733902b1868e5f182f30331eda908af20cc3",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36398428/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36391729",
@@ -1693,6 +1733,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 18,
+  "readyCount": 21,
   "failedCount": 0
 }
