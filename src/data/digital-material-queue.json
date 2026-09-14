@@ -1,9 +1,41 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-13T18:26:11.474Z",
+  "generatedAt": "2026-09-14T18:28:36.248Z",
   "r2WritesEnabled": true,
-  "pendingCount": 174,
+  "pendingCount": 173,
   "items": [
+    {
+      "productId": "36555876",
+      "title": "置いとくね。家族・夫婦のリアルな置き手紙 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-14T18:28:30.325Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-14T18:28:30.382Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-14T18:28:30.382Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36555876/ed62169a18f404f57c236505d0017ebfd81da62fcf559e6ec7e88b9bd8ddecd2.zip",
+      "contentHash": "ed62169a18f404f57c236505d0017ebfd81da62fcf559e6ec7e88b9bd8ddecd2",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36555876/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36550522",
+      "title": "雨粒さん気にしてます。家族 夫婦 日常会話 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-14T18:28:30.325Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-14T18:28:32.727Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-14T18:28:32.727Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36550522/86e21cde4fe2cfa8e8772f78902537c844d32253a3f7bdcb25ffcd1a954ecdd8.zip",
+      "contentHash": "86e21cde4fe2cfa8e8772f78902537c844d32253a3f7bdcb25ffcd1a954ecdd8",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36550522/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36545814",
       "title": "ただいま処理できません。丁寧なエラー敬語 - LINE スタンプ | LINE STORE",
@@ -343,10 +375,18 @@
     {
       "productId": "36391729",
       "title": "もしもし、そろそろ。｜催促する黒電話 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-14T18:28:34.508Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-14T18:28:34.508Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36391729/4ab40b225a4aa80e3cd6f4de6191c7bf183e7a73d3f34ef34a9c16c742301d9f.zip",
+      "contentHash": "4ab40b225a4aa80e3cd6f4de6191c7bf183e7a73d3f34ef34a9c16c742301d9f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36391729/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36381842",
@@ -1733,6 +1773,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 21,
+  "readyCount": 24,
   "failedCount": 0
 }
