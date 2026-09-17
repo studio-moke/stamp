@@ -1,9 +1,41 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-16T18:27:18.987Z",
+  "generatedAt": "2026-09-17T18:28:17.374Z",
   "r2WritesEnabled": true,
-  "pendingCount": 171,
+  "pendingCount": 170,
   "items": [
+    {
+      "productId": "36651485",
+      "title": "タメ息夫婦｜家族にゆる～くひとこと - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-17T18:28:12.030Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-17T18:28:12.073Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-17T18:28:12.073Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36651485/547982a7d25b14484dcc8ba2d313e95d79f09e4b113faa1697f76d283813a07c.zip",
+      "contentHash": "547982a7d25b14484dcc8ba2d313e95d79f09e4b113faa1697f76d283813a07c",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36651485/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36650897",
+      "title": "角を立てないつり革｜やんわり返事 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-17T18:28:12.030Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-17T18:28:14.029Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-17T18:28:14.029Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36650897/a906c18d40e6b9a95220484269e7eab76768c90d7747bd16d16ebeb310d5bbc9.zip",
+      "contentHash": "a906c18d40e6b9a95220484269e7eab76768c90d7747bd16d16ebeb310d5bbc9",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36650897/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36602717",
       "title": "昭和親父の長崎弁。文字だけ方言スタンプ - LINE スタンプ | LINE STORE",
@@ -439,10 +471,18 @@
     {
       "productId": "36368405",
       "title": "半額・値引き・セール！お買い得スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-17T18:28:15.683Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-17T18:28:15.683Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36368405/3f71ed1dfe54b91c83752d2df631cbedf9774b9338391195c0a78d7b957a8fb8.zip",
+      "contentHash": "3f71ed1dfe54b91c83752d2df631cbedf9774b9338391195c0a78d7b957a8fb8",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36368405/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36362259",
@@ -1805,6 +1845,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 27,
+  "readyCount": 30,
   "failedCount": 0
 }
