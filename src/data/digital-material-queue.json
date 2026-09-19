@@ -1,9 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-18T18:26:41.788Z",
+  "generatedAt": "2026-09-19T18:25:33.841Z",
   "r2WritesEnabled": true,
-  "pendingCount": 171,
+  "pendingCount": 169,
   "items": [
+    {
+      "productId": "36697716",
+      "title": "見つめる犬たち｜リアルな無言わんこ - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-19T18:25:29.798Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-19T18:25:29.854Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-19T18:25:29.854Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36697716/ee9182f9c5e9d5c707893fc99a2f6ec6596dd63bb36ad96588b462c45378e4d0.zip",
+      "contentHash": "ee9182f9c5e9d5c707893fc99a2f6ec6596dd63bb36ad96588b462c45378e4d0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36697716/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36686004",
       "title": "犬、収納されてます。かわいい日常スタンプ - LINE スタンプ | LINE STORE",
@@ -55,10 +71,18 @@
     {
       "productId": "36672343",
       "title": "やる気のない犬たち。40種類 犬の脱力日常 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-18T18:26:35.912Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-19T18:25:31.329Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-19T18:25:31.329Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36672343/eb837839c01721d5a89970304b42551cc1339d5ccf2f0a57135687d9ef2f364a.zip",
+      "contentHash": "eb837839c01721d5a89970304b42551cc1339d5ccf2f0a57135687d9ef2f364a",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36672343/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36651485",
@@ -543,10 +567,18 @@
     {
       "productId": "36362259",
       "title": "本音、板に出てます。｜ホワイトボード - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-19T18:25:32.502Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-19T18:25:32.502Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36362259/a63a39d89f49a375ada21548f88a1b88790d1b246697cad5d28cd1719d1d8ced.zip",
+      "contentHash": "a63a39d89f49a375ada21548f88a1b88790d1b246697cad5d28cd1719d1d8ced",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36362259/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36361558",
@@ -1901,6 +1933,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 33,
+  "readyCount": 36,
   "failedCount": 0
 }
