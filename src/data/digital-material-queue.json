@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-19T18:25:33.841Z",
+  "generatedAt": "2026-09-20T18:25:24.662Z",
   "r2WritesEnabled": true,
-  "pendingCount": 169,
+  "pendingCount": 166,
   "items": [
     {
       "productId": "36697716",
@@ -583,26 +583,50 @@
     {
       "productId": "36361558",
       "title": "既読のおせっかいさん｜気づかい・見守り - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-20T18:25:20.439Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-20T18:25:20.439Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36361558/89ebe4d5e324ea0852bc200272498441f94010eaf06109ff348552a9a3098bff.zip",
+      "contentHash": "89ebe4d5e324ea0852bc200272498441f94010eaf06109ff348552a9a3098bff",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36361558/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36349606",
       "title": "食べた分だけ計算する電卓｜食事とお金 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-20T18:25:22.008Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-20T18:25:22.008Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36349606/d25aa726e0aec651d4cdae0186606ce431612b3eec6707cfca29c32a5677aabc.zip",
+      "contentHash": "d25aa726e0aec651d4cdae0186606ce431612b3eec6707cfca29c32a5677aabc",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36349606/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36348846",
       "title": "お断り検針票｜やんわり拒否します - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-20T18:25:23.294Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-20T18:25:23.294Z",
+      "assetCount": 24,
+      "zipKey": "digital-products/36348846/d8ad8540e86644cf4acc2186c18ff8ac93414d76b2a5ce2d2cb521d65f7dae27.zip",
+      "contentHash": "d8ad8540e86644cf4acc2186c18ff8ac93414d76b2a5ce2d2cb521d65f7dae27",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36348846/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36346861",
@@ -1933,6 +1957,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 36,
+  "readyCount": 39,
   "failedCount": 0
 }
