@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-20T18:25:24.662Z",
+  "generatedAt": "2026-09-21T18:27:03.316Z",
   "r2WritesEnabled": true,
-  "pendingCount": 166,
+  "pendingCount": 163,
   "items": [
     {
       "productId": "36697716",
@@ -631,26 +631,50 @@
     {
       "productId": "36346861",
       "title": "火消しくん。｜だいたい鎮めます 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-21T18:26:57.795Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-21T18:26:57.795Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36346861/a623574524c644d5ac5f117e59c83debb0eda48eda132b078771b3db1c7095ed.zip",
+      "contentHash": "a623574524c644d5ac5f117e59c83debb0eda48eda132b078771b3db1c7095ed",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36346861/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36344599",
       "title": "だいたい通します。やさしい改札 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-21T18:26:59.911Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-21T18:26:59.911Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36344599/8aad69a4ed004a3b6b6e5e6696bd410e7d2816162d59ba70a12551d59592f4e1.zip",
+      "contentHash": "8aad69a4ed004a3b6b6e5e6696bd410e7d2816162d59ba70a12551d59592f4e1",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36344599/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36342944",
       "title": "ぶっきらぼうな群馬弁の昭和親父｜上州弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-21T18:27:01.428Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-21T18:27:01.428Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36342944/c98191e629fb52cc99ed59f8a0973e957c129b778f7c578fb97159ebc80e8dc1.zip",
+      "contentHash": "c98191e629fb52cc99ed59f8a0973e957c129b778f7c578fb97159ebc80e8dc1",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36342944/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36341195",
@@ -1957,6 +1981,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 39,
+  "readyCount": 42,
   "failedCount": 0
 }
