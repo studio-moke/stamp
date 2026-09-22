@@ -34,6 +34,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Wait for Vercel production deployment
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 80); do
+            state=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/status" --jq '.statuses[] | select(.context=="Vercel") | .state' | head -n1)
+            echo "Vercel status: ${state:-not-found}"
+            if [ "$state" = "success" ]; then
+              exit 0
+            fi
+            if [ "$state" = "failure" ] || [ "$state" = "error" ]; then
+              echo "::error::Vercel deployment failed"
+              exit 1
+            fi
+            sleep 15
+          done
+          echo "::error::Timed out waiting for Vercel production deployment"
+          exit 1
+
       - name: Verify admin secret
         shell: bash
         run: |
