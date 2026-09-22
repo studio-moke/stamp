@@ -1,20 +1,51 @@
+import crypto from "node:crypto";
 import { r2GetJson, r2PutJson } from "./_r2.js";
 
 const LOCALES=["ja","en","zh-tw","th","id"];
 const key=id=>`sticker-seo/${String(id).replace(/[^0-9]/g,"")}.json`;
 const INDEX_KEY="sticker-seo/index.json";
 const json=(res,status,payload)=>res.status(status).json(payload);
-async function isBatchToken(req){
-  const token=String(req.headers["x-sticker-seo-batch-token"]||"");
-  if(!token) return false;
-  const auth=await r2GetJson("sticker-seo/batch-auth.json",null).catch(()=>null);
-  if(!auth||String(auth.token||"")!==token) return false;
-  const expiresAt=Number(auth.expiresAt||0);
-  return Number.isFinite(expiresAt)&&expiresAt>Date.now();
+let githubOidcKeysCache={at:0,keys:[]};
+function decodeJwtPart(value=""){try{return JSON.parse(Buffer.from(String(value),"base64url").toString("utf8"))}catch{return null}}
+async function githubOidcKeys(){
+  if(githubOidcKeysCache.keys.length&&Date.now()-githubOidcKeysCache.at<10*60*1000)return githubOidcKeysCache.keys;
+  const response=await fetch("https://token.actions.githubusercontent.com/.well-known/jwks",{headers:{"user-agent":"stamp-moke-sticker-seo"}});
+  if(!response.ok)throw new Error(`GitHub OIDC JWKS ${response.status}`);
+  const data=await response.json();
+  const keys=Array.isArray(data?.keys)?data.keys:[];
+  githubOidcKeysCache={at:Date.now(),keys};
+  return keys;
+}
+async function isGitHubActionsOidc(req){
+  try{
+    const authorization=String(req.headers.authorization||"");
+    if(!authorization.startsWith("Bearer "))return false;
+    const token=authorization.slice(7).trim();
+    const parts=token.split(".");
+    if(parts.length!==3)return false;
+    const header=decodeJwtPart(parts[0]),claims=decodeJwtPart(parts[1]);
+    if(!header||!claims||header.alg!=="RS256"||!header.kid)return false;
+    const audience=Array.isArray(claims.aud)?claims.aud:[claims.aud];
+    const now=Math.floor(Date.now()/1000);
+    if(claims.iss!=="https://token.actions.githubusercontent.com")return false;
+    if(!audience.includes("stamp-moke-sticker-seo"))return false;
+    if(claims.repository!=="studio-moke/stamp")return false;
+    if(claims.ref!=="refs/heads/main")return false;
+    if(String(claims.workflow_ref||"")!=="studio-moke/stamp/.github/workflows/generate-sticker-seo.yml@refs/heads/main")return false;
+    if(!Number.isFinite(Number(claims.exp))||Number(claims.exp)<=now)return false;
+    if(Number.isFinite(Number(claims.nbf))&&Number(claims.nbf)>now+30)return false;
+    const jwk=(await githubOidcKeys()).find(item=>item?.kid===header.kid);
+    if(!jwk)return false;
+    const key=crypto.createPublicKey({key:jwk,format:"jwk"});
+    return crypto.verify("RSA-SHA256",Buffer.from(`${parts[0]}.${parts[1]}`),key,Buffer.from(parts[2],"base64url"));
+  }catch(error){
+    console.warn("GitHub OIDC verification failed:",error?.message||error);
+    return false;
+  }
 }
 async function isAdmin(req){
-  if(process.env.FREE_ADMIN_TOKEN&&req.headers["x-admin-token"]===process.env.FREE_ADMIN_TOKEN) return true;
-  return isBatchToken(req);
+  if(process.env.FREE_ADMIN_TOKEN&&req.headers["x-admin-token"]===process.env.FREE_ADMIN_TOKEN)return true;
+  return isGitHubActionsOidc(req);
 }
 function stripFence(v=""){return String(v).trim().replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/i,"")}
 function parseJson(v=""){const raw=stripFence(v);try{return JSON.parse(raw)}catch{}const a=raw.indexOf("{"),b=raw.lastIndexOf("}");if(a>=0&&b>a){try{return JSON.parse(raw.slice(a,b+1).replace(/,\s*([}\]])/g,"$1"))}catch{}}return null}
