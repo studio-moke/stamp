@@ -1,6 +1,10 @@
 name: Generate Sticker SEO Descriptions
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/generate-sticker-seo.yml"
   workflow_dispatch:
     inputs:
       force:
