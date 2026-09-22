@@ -1,9 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-21T18:27:03.316Z",
+  "generatedAt": "2026-09-22T14:12:27.288Z",
   "r2WritesEnabled": true,
-  "pendingCount": 163,
+  "pendingCount": 161,
   "items": [
+    {
+      "productId": "36751029",
+      "title": "40匹の笑顔犬｜パステル色鉛筆風 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-22T14:12:19.400Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-22T14:12:19.451Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-22T14:12:19.451Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36751029/3df50c4c54972d1a6f8e7bbc13faa3ba4df0138164bd037f6a6066f004d45161.zip",
+      "contentHash": "3df50c4c54972d1a6f8e7bbc13faa3ba4df0138164bd037f6a6066f004d45161",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36751029/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36697716",
       "title": "見つめる犬たち｜リアルな無言わんこ - LINE スタンプ | LINE STORE",
@@ -679,18 +695,34 @@
     {
       "productId": "36341195",
       "title": "ぶっきらぼう親父の新潟弁 越後弁 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-22T14:12:23.768Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-22T14:12:23.768Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36341195/655bc8de564dddc3d0cd8e79eecdd2ba9e1df5df61936997f9cfc7289b7a79ce.zip",
+      "contentHash": "655bc8de564dddc3d0cd8e79eecdd2ba9e1df5df61936997f9cfc7289b7a79ce",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36341195/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36320191",
       "title": "くっつきたい！接着剤くんの気持ち 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-22T14:12:25.300Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-22T14:12:25.300Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36320191/3e2c2d1468a43ddd53487cf8a6c958718ce3d1dfc6673143fa05aec48bd4bafc.zip",
+      "contentHash": "3e2c2d1468a43ddd53487cf8a6c958718ce3d1dfc6673143fa05aec48bd4bafc",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36320191/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36317098",
@@ -1981,6 +2013,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 42,
+  "readyCount": 45,
   "failedCount": 0
 }
