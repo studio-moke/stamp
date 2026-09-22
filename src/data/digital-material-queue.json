@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-22T14:12:27.288Z",
+  "generatedAt": "2026-09-22T18:28:33.841Z",
   "r2WritesEnabled": true,
   "pendingCount": 161,
   "items": [
@@ -18,6 +18,54 @@
       "zipKey": "digital-products/36751029/3df50c4c54972d1a6f8e7bbc13faa3ba4df0138164bd037f6a6066f004d45161.zip",
       "contentHash": "3df50c4c54972d1a6f8e7bbc13faa3ba4df0138164bd037f6a6066f004d45161",
       "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36751029/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36749099",
+      "title": "トイプードル犬 家庭内アナウンス 家族連絡 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-22T18:28:27.583Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-22T18:28:27.631Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-22T18:28:27.631Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36749099/2b1fd0624a198833b89a417018a1168eeb619d2703c45c5b4658a68017a271b0.zip",
+      "contentHash": "2b1fd0624a198833b89a417018a1168eeb619d2703c45c5b4658a68017a271b0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36749099/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36748080",
+      "title": "犬の家事進捗バー｜家族の日常 40種類 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-22T18:28:27.583Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-22T18:28:30.357Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-22T18:28:30.357Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36748080/b1092bd3f02a136c056abf0fad56be9c3fd227154e19e339dcd9bd6903ceb75c.zip",
+      "contentHash": "b1092bd3f02a136c056abf0fad56be9c3fd227154e19e339dcd9bd6903ceb75c",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36748080/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36748033",
+      "title": "やんわり断るフレブル｜かわいく拒否する犬 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-22T18:28:27.583Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-22T18:28:32.222Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-22T18:28:32.222Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36748033/b5b4ab193299602ee49c9752ef9256fba3d620f6002ea7d23a0a84842a660ee6.zip",
+      "contentHash": "b5b4ab193299602ee49c9752ef9256fba3d620f6002ea7d23a0a84842a660ee6",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36748033/android/stickers.zip",
       "r2UploadSkipped": false
     },
     {
@@ -2013,6 +2061,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 45,
+  "readyCount": 48,
   "failedCount": 0
 }
