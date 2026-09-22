@@ -12,7 +12,6 @@
   },
   "redirects": [{"source":"/:path((?!api(?:/|$))(?!.*\\.[^/]+$).+[^/])","destination":"/:path/","permanent":true}],
   "crons": [
-    { "path": "/api/news?sync=1", "schedule": "5 22 * * *" },
     { "path": "/api/note-drafts?action=generate", "schedule": "15 22 * * *" }
   ],
   "rewrites": [
