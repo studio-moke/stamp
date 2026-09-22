@@ -1,13 +1,21 @@
-import crypto from "node:crypto";
 import { r2GetJson, r2PutJson } from "./_r2.js";
 
 const LOCALES=["ja","en","zh-tw","th","id"];
 const key=id=>`sticker-seo/${String(id).replace(/[^0-9]/g,"")}.json`;
 const INDEX_KEY="sticker-seo/index.json";
 const json=(res,status,payload)=>res.status(status).json(payload);
-function safeHexEqual(a="",b=""){if(!/^[a-f0-9]{64}$/i.test(a)||!/^[a-f0-9]{64}$/i.test(b))return false;const aa=Buffer.from(a,"hex"),bb=Buffer.from(b,"hex");return aa.length===bb.length&&crypto.timingSafeEqual(aa,bb)}
-function isSignedBatch(req,id){const secret=process.env.R2_SECRET_ACCESS_KEY;const ts=String(req.headers["x-sticker-seo-timestamp"]||"");const sig=String(req.headers["x-sticker-seo-signature"]||"");const n=Number(ts);if(!secret||!Number.isFinite(n)||Math.abs(Date.now()-n)>300000)return false;const expected=crypto.createHmac("sha256",secret).update(`sticker-seo:${id}:${ts}`).digest("hex");return safeHexEqual(sig,expected)}
-const isAdmin=(req,id)=>Boolean(process.env.FREE_ADMIN_TOKEN&&req.headers["x-admin-token"]===process.env.FREE_ADMIN_TOKEN)||isSignedBatch(req,id);
+async function isBatchToken(req){
+  const token=String(req.headers["x-sticker-seo-batch-token"]||"");
+  if(!token) return false;
+  const auth=await r2GetJson("sticker-seo/batch-auth.json",null).catch(()=>null);
+  if(!auth||String(auth.token||"")!==token) return false;
+  const expiresAt=Number(auth.expiresAt||0);
+  return Number.isFinite(expiresAt)&&expiresAt>Date.now();
+}
+async function isAdmin(req){
+  if(process.env.FREE_ADMIN_TOKEN&&req.headers["x-admin-token"]===process.env.FREE_ADMIN_TOKEN) return true;
+  return isBatchToken(req);
+}
 function stripFence(v=""){return String(v).trim().replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/i,"")}
 function parseJson(v=""){const raw=stripFence(v);try{return JSON.parse(raw)}catch{}const a=raw.indexOf("{"),b=raw.lastIndexOf("}");if(a>=0&&b>a){try{return JSON.parse(raw.slice(a,b+1).replace(/,\s*([}\]])/g,"$1"))}catch{}}return null}
 function cleanLocale(v={}){return{seoTitle:String(v.seoTitle||"").slice(0,90),pageDescription:String(v.pageDescription||"").slice(0,420),overview:String(v.overview||"").slice(0,3200),target:String(v.target||"").slice(0,1000),concept:String(v.concept||"").slice(0,1000),usageIntro:String(v.usageIntro||"").slice(0,900),uses:[...new Set((Array.isArray(v.uses)?v.uses:[]).map(String).map(x=>x.trim()).filter(Boolean))].slice(0,14),relationships:[...new Set((Array.isArray(v.relationships)?v.relationships:[]).map(String).map(x=>x.trim()).filter(Boolean))].slice(0,12),keywords:[...new Set((Array.isArray(v.keywords)?v.keywords:[]).map(String).map(x=>x.trim()).filter(Boolean))].slice(0,55),metaDescription:String(v.metaDescription||"").slice(0,180)}}
@@ -34,7 +42,7 @@ async function generate(input){let raw=await callOpenAI(input);if(!raw)raw=await
 export default async function handler(req,res){try{
  const id=String(req.query.id||req.body?.id||"").replace(/[^0-9]/g,"");if(!id)return json(res,400,{error:"Sticker ID is required"});
  if(req.method==="GET"){const record=await r2GetJson(key(id),null);if(!record)return json(res,404,{error:"Not generated"});res.setHeader("Cache-Control","public, s-maxage=300, stale-while-revalidate=1800");return json(res,200,{record})}
- if(req.method!=="POST")return json(res,405,{error:"Method not allowed"});if(!isAdmin(req,id))return json(res,401,{error:"管理トークンが一致しません。"});if(!process.env.OPENAI_API_KEY)return json(res,500,{error:"OPENAI_API_KEY is not configured"});
+ if(req.method!=="POST")return json(res,405,{error:"Method not allowed"});if(!(await isAdmin(req)))return json(res,401,{error:"管理トークンが一致しません。"});if(!process.env.OPENAI_API_KEY)return json(res,500,{error:"OPENAI_API_KEY is not configured"});
  const force=Boolean(req.body?.force),existing=await r2GetJson(key(id),null);if(existing&&!force&&Number(existing.version||0)>=3){await updateIndex(existing).catch(()=>{});return json(res,200,{record:existing,skipped:true});}
  const record=await generate({...req.body,id});await r2PutJson(key(id),record);await updateIndex(record);return json(res,200,{record,skipped:false});
 }catch(error){console.error("sticker-seo",error);return json(res,500,{error:error instanceof Error?error.message:String(error)})}}
