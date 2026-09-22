@@ -29,7 +29,7 @@ const canonical=absoluteUrl(`/materials/${product.id}/`);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{title}</title>
-  <SeoHead title={title} description={description} canonical={canonical} locale="ja" path={`/materials/${product.id}/`} />
+  <SeoHead title={title} description={description} canonical={canonical} locale="ja" path={`/materials/${product.id}/`} alternatePaths={{ ja: `/materials/${product.id}/` }} />
   <Analytics />
   <style>
     *{box-sizing:border-box}

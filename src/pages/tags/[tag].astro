@@ -23,7 +23,7 @@ const canonicalPath = `/tags/${tag.slugs[locale]}`;
 const canonical = absoluteUrl(getTagPath(locale, tag));
 const localePaths = Object.fromEntries(LOCALES.map((item) => [item, getTagPath(item, tag)]));
 const titleLabel = locale === "ja" ? `${label}のLINEスタンプ` : locale === "en" ? `${label} LINE Stickers` : locale === "zh-tw" ? `${label} LINE貼圖` : locale === "th" ? `สติกเกอร์ LINE: ${label}` : `Stiker LINE: ${label}`;
-const pageTitle = makeTitle([titleLabel, "stamp moke"]);
+const pageTitle = makeTitle([titleLabel]);
 const description = makeDescription(tag.description[locale]);
 const ui = {
   ja:{back:"スタンプ一覧",eyebrow:"言葉・用途から探す",count:"該当するスタンプ",footer:"かわいい、おもしろい、毎日使えるLINEスタンプを紹介するメディア。"},
