@@ -48,6 +48,11 @@ function replaceProperty(html, property, value) {
   const tag = `<meta property="${property}" content="${metaEsc(value)}">`;
   return re.test(html) ? html.replace(re, tag) : html.replace("</head>", `${tag}</head>`);
 }
+function replaceVisibleStickerDescription(html, value) {
+  if (!value) return html;
+  const re = /<p\s+class=["']description["'][^>]*>[\s\S]*?<\/p>/i;
+  return re.test(html) ? html.replace(re, `<p class="description">${esc(value)}</p>`) : html;
+}
 
 function stickerSection(local, locale) {
   const copy = {
@@ -79,19 +84,14 @@ async function injectStickerSeo(files) {
     const locale = localeFromPath(file);
     const local = record.locales?.[locale] || record.locales?.ja || {};
     let html = await fs.readFile(file, "utf8");
-    if (local.seoTitle) {
-      html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(local.seoTitle)}</title>`);
-      html = replaceProperty(html, "og:title", local.seoTitle);
-      html = replaceMeta(html, "twitter:title", local.seoTitle);
+    if (local.pageDescription) {
+      html = replaceVisibleStickerDescription(html, local.pageDescription);
     }
     if (local.metaDescription) {
       html = replaceMeta(html, "description", local.metaDescription);
       html = replaceProperty(html, "og:description", local.metaDescription);
       html = replaceMeta(html, "twitter:description", local.metaDescription);
     }
-    if ((local.keywords || []).length) html = replaceMeta(html, "keywords", local.keywords.join(", "));
-    const section = stickerSection(local, locale);
-    if (section && !html.includes("sticker-seo-editorial")) html = html.replace("</main>", `${section}</main>`);
     await fs.writeFile(file, html);
     changed++;
   }
