@@ -1,9 +1,57 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-22T18:28:33.841Z",
+  "generatedAt": "2026-09-23T18:28:27.393Z",
   "r2WritesEnabled": true,
   "pendingCount": 161,
   "items": [
+    {
+      "productId": "36806384",
+      "title": "パグ 犬 バイト 接客 仕事スタンプ - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-23T18:28:21.444Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-23T18:28:21.499Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-23T18:28:21.499Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/36806384/0370c721e670dbe66eaedbe2cee3dba6a8a3617ace61f7c802759a43136f36d1.zip",
+      "contentHash": "0370c721e670dbe66eaedbe2cee3dba6a8a3617ace61f7c802759a43136f36d1",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36806384/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36780017",
+      "title": "飼い主に命令するパグ 家族連絡 向け40種類 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-23T18:28:21.444Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-23T18:28:24.129Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-23T18:28:24.129Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36780017/cf4f87d2e91c9bcefcf20cc9aa488eb2f126f33df0a6c32ba33cd615df755d2e.zip",
+      "contentHash": "cf4f87d2e91c9bcefcf20cc9aa488eb2f126f33df0a6c32ba33cd615df755d2e",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36780017/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
+    {
+      "productId": "36780005",
+      "title": "EC担当パグ 通販・運営マーケ仕事犬40種類 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-23T18:28:21.444Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-23T18:28:25.830Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-23T18:28:25.830Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36780005/de2749d783d253916578e2224f753da4ac782988fad76eda537d114b46ef1e54.zip",
+      "contentHash": "de2749d783d253916578e2224f753da4ac782988fad76eda537d114b46ef1e54",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36780005/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36751029",
       "title": "40匹の笑顔犬｜パステル色鉛筆風 - LINE スタンプ | LINE STORE",
@@ -2061,6 +2109,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 48,
+  "readyCount": 51,
   "failedCount": 0
 }
