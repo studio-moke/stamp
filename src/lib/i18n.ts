@@ -13,7 +13,7 @@ export const localeInfo: Record<Locale, { label: string; htmlLang: string; ogLoc
 
 export const messages = {
   ja: {
-    siteTitle: "stamp moke｜LINEスタンプ専門メディア",
+    siteTitle: "LINEスタンプを探す｜仕事・日常・動物・おもしろ｜stamp moke",
     siteDescription: "stamp moke（スタンプもけ・スタンプモケ）は、かわいい、おもしろい、毎日使えるLINEスタンプを紹介するstudio mokeの公式サイトです。",
     brandSub: "LINEスタンプ専門メディア",
     shop: "キャラグッズ店 ↗",
