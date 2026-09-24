@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-23T18:28:27.393Z",
+  "generatedAt": "2026-09-24T18:28:12.307Z",
   "r2WritesEnabled": true,
-  "pendingCount": 161,
+  "pendingCount": 158,
   "items": [
     {
       "productId": "36806384",
@@ -823,26 +823,50 @@
     {
       "productId": "36317098",
       "title": "もう一文字でいい。かわいい一文字スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-24T18:28:05.603Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-24T18:28:05.603Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36317098/31fda55b06129caf7778b942f7a2c5f3b3ea5b07dca544ba6aacaff3c0b4d916.zip",
+      "contentHash": "31fda55b06129caf7778b942f7a2c5f3b3ea5b07dca544ba6aacaff3c0b4d916",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36317098/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36316939",
       "title": "もう一文字でいい。｜究極シンプルスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-24T18:28:07.695Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-24T18:28:07.695Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36316939/ca41bc83cdf785530f8487f514b2a8735440ff52276c497f71ffcf3bec3c5000.zip",
+      "contentHash": "ca41bc83cdf785530f8487f514b2a8735440ff52276c497f71ffcf3bec3c5000",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36316939/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36313683",
       "title": "台湾語｜ぶっきらぼうな台湾の昔かたぎ親父 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-24T18:28:10.797Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-24T18:28:10.797Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36313683/e2f9d8201a7b0bbe80a76b045508882a2abcbccbd88ce8eefefc0f3c94136fdd.zip",
+      "contentHash": "e2f9d8201a7b0bbe80a76b045508882a2abcbccbd88ce8eefefc0f3c94136fdd",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36313683/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36312379",
@@ -2109,6 +2133,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 51,
+  "readyCount": 54,
   "failedCount": 0
 }
