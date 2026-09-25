@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-24T18:28:12.307Z",
+  "generatedAt": "2026-09-25T21:32:56.178Z",
   "r2WritesEnabled": true,
-  "pendingCount": 158,
+  "pendingCount": 155,
   "items": [
     {
       "productId": "36806384",
@@ -871,26 +871,50 @@
     {
       "productId": "36312379",
       "title": "今日はもうやめよ。おつかれ茶トラ猫40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-25T21:32:51.951Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-25T21:32:51.951Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36312379/47dbcd90ccd67cbcb28f2e1126e870298db43dc981f1151cc69345ab0b213450.zip",
+      "contentHash": "47dbcd90ccd67cbcb28f2e1126e870298db43dc981f1151cc69345ab0b213450",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36312379/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36309519",
       "title": "それは自分でやってね犬。｜家族の甘い拒否 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-25T21:32:53.210Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-25T21:32:53.210Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36309519/0dffde5db8120d573c0f27c7e3f9285d2cb06ccd8f9cd62262f33626e6ec6dac.zip",
+      "contentHash": "0dffde5db8120d573c0f27c7e3f9285d2cb06ccd8f9cd62262f33626e6ec6dac",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36309519/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36305545",
       "title": "これでいいんだよ。超シンプル日常スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-25T21:32:54.942Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-25T21:32:54.942Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36305545/59df2ec6c49753753a6facec9143dc296a83c53b9f957608927ab902afb0970e.zip",
+      "contentHash": "59df2ec6c49753753a6facec9143dc296a83c53b9f957608927ab902afb0970e",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36305545/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36303581",
@@ -2133,6 +2157,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 54,
+  "readyCount": 57,
   "failedCount": 0
 }
