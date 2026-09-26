@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T21:32:56.178Z",
+  "generatedAt": "2026-09-26T21:07:01.319Z",
   "r2WritesEnabled": true,
-  "pendingCount": 155,
+  "pendingCount": 152,
   "items": [
     {
       "productId": "36806384",
@@ -919,26 +919,50 @@
     {
       "productId": "36303581",
       "title": "おせっかいですみません。仕事ねこ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-26T21:06:55.406Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-26T21:06:55.406Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36303581/f0473357a9ae47583fe1ba430b25e59341150828752e309308a84320266f2d66.zip",
+      "contentHash": "f0473357a9ae47583fe1ba430b25e59341150828752e309308a84320266f2d66",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36303581/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36299445",
       "title": "ぶっきらぼうな栃木弁の昭和親父 宇都宮弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-26T21:06:57.827Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-26T21:06:57.827Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36299445/83fef939638a4fbc82885db3fe31b461ef24ab146c1e47ff524aa1bf9765da5c.zip",
+      "contentHash": "83fef939638a4fbc82885db3fe31b461ef24ab146c1e47ff524aa1bf9765da5c",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36299445/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36290330",
       "title": "ぶっきらぼうな岡山弁の昭和親父 中国地方 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-26T21:06:59.615Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-26T21:06:59.615Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36290330/c1ca95ea098f869b438e5d17ba9ab0aa9c4346a87ef45b84808197a69eb364f9.zip",
+      "contentHash": "c1ca95ea098f869b438e5d17ba9ab0aa9c4346a87ef45b84808197a69eb364f9",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36290330/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36279330",
@@ -2157,6 +2181,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 57,
+  "readyCount": 60,
   "failedCount": 0
 }
