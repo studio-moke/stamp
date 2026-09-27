@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-26T21:07:01.319Z",
+  "generatedAt": "2026-09-27T21:19:34.681Z",
   "r2WritesEnabled": true,
-  "pendingCount": 152,
+  "pendingCount": 149,
   "items": [
     {
       "productId": "36806384",
@@ -967,26 +967,50 @@
     {
       "productId": "36279330",
       "title": "ぶっきらぼうな津軽弁の昭和親父｜青森 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-27T21:19:30.966Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-27T21:19:30.966Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36279330/9ab533c70eea1efd86a671cb6050a02e4b62df7379754cc8039023e885aa197f.zip",
+      "contentHash": "9ab533c70eea1efd86a671cb6050a02e4b62df7379754cc8039023e885aa197f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36279330/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36276821",
       "title": "ぶっきらぼうな仙台弁の昭和親父｜宮城 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-27T21:19:32.163Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-27T21:19:32.163Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36276821/874b4e016d475c37ea129be350fafa6bec85b389412f0c56d51bf17c047b165d.zip",
+      "contentHash": "874b4e016d475c37ea129be350fafa6bec85b389412f0c56d51bf17c047b165d",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36276821/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36276537",
       "title": "ぶっきらぼうな茨城弁の昭和親父｜方言 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-27T21:19:33.574Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-27T21:19:33.574Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36276537/4ab43eeabf6f94ac47801e14eb86dd9ae3500f8aff758bf677ffd24a97c2ebac.zip",
+      "contentHash": "4ab43eeabf6f94ac47801e14eb86dd9ae3500f8aff758bf677ffd24a97c2ebac",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36276537/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36275126",
@@ -2181,6 +2205,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 60,
+  "readyCount": 63,
   "failedCount": 0
 }
