@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-27T21:19:34.681Z",
+  "generatedAt": "2026-09-28T23:14:49.615Z",
   "r2WritesEnabled": true,
-  "pendingCount": 149,
+  "pendingCount": 146,
   "items": [
     {
       "productId": "36806384",
@@ -1015,26 +1015,50 @@
     {
       "productId": "36275126",
       "title": "心配しすぎる世話焼き犬。心配わんこ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-28T23:14:44.241Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-28T23:14:44.241Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36275126/1de1edb4ad3569577441107543a8cc0fdde89b272730affe1adc576b32594c83.zip",
+      "contentHash": "1de1edb4ad3569577441107543a8cc0fdde89b272730affe1adc576b32594c83",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36275126/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36271553",
       "title": "素直に言えない、あまえ犬。子犬のわんこ。 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-28T23:14:46.390Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-28T23:14:46.390Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36271553/c21b6169cdfb4b44a8e435efd35cd0147d8b21360489662973492d82a1d4014d.zip",
+      "contentHash": "c21b6169cdfb4b44a8e435efd35cd0147d8b21360489662973492d82a1d4014d",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36271553/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36271020",
       "title": "ぶっきらぼうな昭和親父｜熊本弁 肥後弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-28T23:14:48.004Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-28T23:14:48.004Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36271020/fd0f511206e3eae6374191a2a552f32631b7800ba891c15c222f453639003065.zip",
+      "contentHash": "fd0f511206e3eae6374191a2a552f32631b7800ba891c15c222f453639003065",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36271020/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36251730",
@@ -2205,6 +2229,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 63,
+  "readyCount": 66,
   "failedCount": 0
 }
