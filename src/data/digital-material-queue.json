@@ -1,9 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-28T23:14:49.615Z",
+  "generatedAt": "2026-09-29T22:13:08.599Z",
   "r2WritesEnabled": true,
-  "pendingCount": 146,
+  "pendingCount": 144,
   "items": [
+    {
+      "productId": "36903835",
+      "title": "コピー用紙ですが、丁寧です。｜仕事の敬語 - LINE スタンプ | LINE STORE",
+      "status": "ready",
+      "discoveredAt": "2026-09-29T22:13:03.138Z",
+      "source": "sticker-catalog",
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-29T22:13:03.196Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-29T22:13:03.196Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/36903835/e4e198a1b1023c809a013c47bca86d5ed143162a687aa51c92944de72ca77e9d.zip",
+      "contentHash": "e4e198a1b1023c809a013c47bca86d5ed143162a687aa51c92944de72ca77e9d",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36903835/android/stickers.zip",
+      "r2UploadSkipped": false
+    },
     {
       "productId": "36806384",
       "title": "パグ 犬 バイト 接客 仕事スタンプ - LINE スタンプ | LINE STORE",
@@ -1063,18 +1079,34 @@
     {
       "productId": "36251730",
       "title": "それくらい自分でして♡｜家族の甘い毒舌 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-29T22:13:05.455Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-29T22:13:05.455Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36251730/ac5e5931699ffd5f4d801a6e5424cedf9d7da145fe3180f4155cb134c575d140.zip",
+      "contentHash": "ac5e5931699ffd5f4d801a6e5424cedf9d7da145fe3180f4155cb134c575d140",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36251730/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36242720",
       "title": "お母さん、本日閉店です。｜家族に甘い毒舌 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-09-29T22:13:06.931Z",
+      "attempts": 1,
+      "preparedAt": "2026-09-29T22:13:06.931Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36242720/d89ef627f4033aa7bb71d7309cd8cd4354de7027d15a34f57e5f506d9d808cad.zip",
+      "contentHash": "d89ef627f4033aa7bb71d7309cd8cd4354de7027d15a34f57e5f506d9d808cad",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36242720/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36236847",
@@ -2229,6 +2261,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 66,
+  "readyCount": 69,
   "failedCount": 0
 }
