@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-30T22:13:00.348Z",
+  "generatedAt": "2026-10-01T22:39:28.766Z",
   "r2WritesEnabled": true,
-  "pendingCount": 141,
+  "pendingCount": 138,
   "items": [
     {
       "productId": "36903835",
@@ -1159,26 +1159,50 @@
     {
       "productId": "36227614",
       "title": "世話焼きアンテナひよこ｜食事と飲み会 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-01T22:39:25.008Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-01T22:39:25.008Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36227614/8dc4568eef8167471fe0dc82dd69aa319dac496ccb06c04f2fd90eac6dfba118.zip",
+      "contentHash": "8dc4568eef8167471fe0dc82dd69aa319dac496ccb06c04f2fd90eac6dfba118",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36227614/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36226953",
       "title": "もう頑張らんでよし。家族を労うハムスター - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-01T22:39:26.442Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-01T22:39:26.442Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36226953/a4dcbdfc654873878b63beb626144976344dc17c91c68cc180095189801ce7d6.zip",
+      "contentHash": "a4dcbdfc654873878b63beb626144976344dc17c91c68cc180095189801ce7d6",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36226953/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36220211",
       "title": "仕事で使える！朱肉ハンコ・ビジネス印鑑 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-01T22:39:27.564Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-01T22:39:27.564Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36220211/0ad9605e822765721f642581b1bca5b56a5f79c00e087fc22f5e00bdc9c3cc5d.zip",
+      "contentHash": "0ad9605e822765721f642581b1bca5b56a5f79c00e087fc22f5e00bdc9c3cc5d",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36220211/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36218749",
@@ -2285,6 +2309,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 72,
+  "readyCount": 75,
   "failedCount": 0
 }
