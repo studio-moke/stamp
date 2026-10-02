@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-01T22:39:28.766Z",
+  "generatedAt": "2026-10-02T22:11:27.352Z",
   "r2WritesEnabled": true,
-  "pendingCount": 138,
+  "pendingCount": 135,
   "items": [
     {
       "productId": "36903835",
@@ -1207,26 +1207,50 @@
     {
       "productId": "36218749",
       "title": "仕事みたいに返すハチワレねこ｜敬語返信 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-02T22:11:23.220Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-02T22:11:23.220Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36218749/474af7738e1c9165c6df5a61c1a36e6d27512938b6215daf9f56823d3a8530dc.zip",
+      "contentHash": "474af7738e1c9165c6df5a61c1a36e6d27512938b6215daf9f56823d3a8530dc",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36218749/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36217676",
       "title": "友だちなのに、おかん。世話焼き柴犬40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-02T22:11:24.704Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-02T22:11:24.704Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36217676/35af02345ac479136ef52265e3b38b33d7b97e3574372f321e73d21ff98e72de.zip",
+      "contentHash": "35af02345ac479136ef52265e3b38b33d7b97e3574372f321e73d21ff98e72de",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36217676/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36217110",
       "title": "ぶっきらぼうな土佐弁の昭和親父｜高知弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-02T22:11:25.831Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-02T22:11:25.831Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36217110/85ac633f18ac8dde60834bcbaa89e223636d54ee04528c98f83acb73cdf12760.zip",
+      "contentHash": "85ac633f18ac8dde60834bcbaa89e223636d54ee04528c98f83acb73cdf12760",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36217110/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36211497",
@@ -2309,6 +2333,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 75,
+  "readyCount": 78,
   "failedCount": 0
 }
