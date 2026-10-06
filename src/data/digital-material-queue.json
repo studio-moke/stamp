@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-04T21:21:15.976Z",
+  "generatedAt": "2026-10-06T00:01:55.979Z",
   "r2WritesEnabled": true,
-  "pendingCount": 129,
+  "pendingCount": 126,
   "items": [
     {
       "productId": "36903835",
@@ -1351,26 +1351,50 @@
     {
       "productId": "36200283",
       "title": "今日なに食べる？かわいい食べ物スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-06T00:01:50.316Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-06T00:01:50.316Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36200283/ed50116191f99eebfd2941d19fbcb80b0ed10485b3f816e9e7687ba0830834b0.zip",
+      "contentHash": "ed50116191f99eebfd2941d19fbcb80b0ed10485b3f816e9e7687ba0830834b0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36200283/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36199293",
       "title": "手描きわんこの毎日・文字なしスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-06T00:01:52.794Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-06T00:01:52.794Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36199293/2c24bd39e1cf9a5bb55b2f3e42f2bc5f35d85162d7e6140ef4c65b260e7535e6.zip",
+      "contentHash": "2c24bd39e1cf9a5bb55b2f3e42f2bc5f35d85162d7e6140ef4c65b260e7535e6",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36199293/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36197922",
       "title": "ぶっきらぼうな名古屋弁の昭和親父｜愛知 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-06T00:01:54.449Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-06T00:01:54.449Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36197922/ceb9c59e88bb62f34bfd16212a3644caa08628650df373ee2cba0af8faead707.zip",
+      "contentHash": "ceb9c59e88bb62f34bfd16212a3644caa08628650df373ee2cba0af8faead707",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36197922/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36197820",
@@ -2381,6 +2405,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 84,
+  "readyCount": 87,
   "failedCount": 0
 }
