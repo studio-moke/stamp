@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-06T00:01:55.979Z",
+  "generatedAt": "2026-10-06T22:39:35.379Z",
   "r2WritesEnabled": true,
-  "pendingCount": 126,
+  "pendingCount": 123,
   "items": [
     {
       "productId": "36903835",
@@ -1399,26 +1399,50 @@
     {
       "productId": "36197820",
       "title": "ぶっきらぼうな大阪弁の昭和親父｜関西弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-06T22:39:31.625Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-06T22:39:31.625Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36197820/17bc697f1e01ca27494ef36652912899944129260b714d2ebfc1ced9f6c4ba1e.zip",
+      "contentHash": "17bc697f1e01ca27494ef36652912899944129260b714d2ebfc1ced9f6c4ba1e",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36197820/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36197228",
       "title": "ぶっきらぼうな博多弁の昭和親父｜福岡弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-06T22:39:32.959Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-06T22:39:32.959Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36197228/35a1924e64101e5c46a404f8fa2088dc3090e888f2cc24a49bd6fe5c9d6941d2.zip",
+      "contentHash": "35a1924e64101e5c46a404f8fa2088dc3090e888f2cc24a49bd6fe5c9d6941d2",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36197228/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36189329",
       "title": "ねむりウサギ。まだやってないだけ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-06T22:39:34.095Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-06T22:39:34.095Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36189329/c84a8cdcb3a4fb7a120d7a552d976673e307a3e6d15fdef0a061850b840f93f6.zip",
+      "contentHash": "c84a8cdcb3a4fb7a120d7a552d976673e307a3e6d15fdef0a061850b840f93f6",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36189329/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36179882",
@@ -2405,6 +2429,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 87,
+  "readyCount": 90,
   "failedCount": 0
 }
