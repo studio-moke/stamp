@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-06T22:39:35.379Z",
+  "generatedAt": "2026-10-07T23:03:59.024Z",
   "r2WritesEnabled": true,
-  "pendingCount": 123,
+  "pendingCount": 120,
   "items": [
     {
       "productId": "36903835",
@@ -1447,26 +1447,46 @@
     {
       "productId": "36179882",
       "title": "大きな文字で見やすい！毎日の家族連絡 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-07T23:03:53.459Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-07T23:03:53.459Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36179882/fcf98a95198479fa2d68bdb192ff7cabd2c5c4039609a55d6fd02b5009888f04.zip",
+      "contentHash": "fcf98a95198479fa2d68bdb192ff7cabd2c5c4039609a55d6fd02b5009888f04",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36179882/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36177180",
       "title": "武士の「〜狩りじゃー！」おもしろスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "failed",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Preparation failed; product remains unpublished",
+      "lastAttemptAt": "2026-10-07T23:03:55.665Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-07T23:03:55.665Z",
+      "error": "LINE商品パッケージから取得した画像数が想定外です: 16点"
     },
     {
       "productId": "36172499",
       "title": "ふんわりくま｜毎日使える日常スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-07T23:03:55.931Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-07T23:03:55.931Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36172499/585d6cfc35d76d5f702f287cfaa08618505bde498d730494702e8bf3240fa4b2.zip",
+      "contentHash": "585d6cfc35d76d5f702f287cfaa08618505bde498d730494702e8bf3240fa4b2",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36172499/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36171011",
@@ -2429,6 +2449,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 90,
-  "failedCount": 0
+  "readyCount": 92,
+  "failedCount": 1
 }
