@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-07T23:03:59.024Z",
+  "generatedAt": "2026-10-08T23:19:19.483Z",
   "r2WritesEnabled": true,
-  "pendingCount": 120,
+  "pendingCount": 117,
   "items": [
     {
       "productId": "36903835",
@@ -1491,26 +1491,50 @@
     {
       "productId": "36171011",
       "title": "博多弁の中洲 艶子 劇画スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-08T23:19:15.275Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-08T23:19:15.275Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/36171011/2f27935ec6d2212c81b654e07a5a86621d8613e4cd64c36edf14469dd7021752.zip",
+      "contentHash": "2f27935ec6d2212c81b654e07a5a86621d8613e4cd64c36edf14469dd7021752",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36171011/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36170943",
       "title": "肉まんの ほかまるくん 気づかい スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-08T23:19:16.672Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-08T23:19:16.672Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36170943/68a65800126ef43fbc1d2b4e93656f0e135784eb9121dca18d6c196826881c2c.zip",
+      "contentHash": "68a65800126ef43fbc1d2b4e93656f0e135784eb9121dca18d6c196826881c2c",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36170943/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36170365",
       "title": "ほかまるくん毎日使えるシンプル返事40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-08T23:19:18.049Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-08T23:19:18.049Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36170365/ae8194adc98f9d665eeb0db5974f3f17e345c6dab658dbfcf43770e063e3c53b.zip",
+      "contentHash": "ae8194adc98f9d665eeb0db5974f3f17e345c6dab658dbfcf43770e063e3c53b",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36170365/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36168893",
@@ -2449,6 +2473,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 92,
+  "readyCount": 95,
   "failedCount": 1
 }
