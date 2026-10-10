@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-09T22:36:11.300Z",
+  "generatedAt": "2026-10-10T21:39:30.821Z",
   "r2WritesEnabled": true,
-  "pendingCount": 114,
+  "pendingCount": 111,
   "items": [
     {
       "productId": "36903835",
@@ -1587,26 +1587,50 @@
     {
       "productId": "36156647",
       "title": "アンテナひよこ夫婦の気遣いスタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-10T21:39:26.804Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-10T21:39:26.804Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36156647/70906ae66a3c42d51e1fd7990d103375b6c8976a803aebd8e4e9af3fe781a6bd.zip",
+      "contentHash": "70906ae66a3c42d51e1fd7990d103375b6c8976a803aebd8e4e9af3fe781a6bd",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36156647/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36149581",
       "title": "シンプルすぎる！大人女子の無骨なスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-10T21:39:28.253Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-10T21:39:28.253Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36149581/a1daf10a207448761360594a9ce66b8428c35513d0bbdd701420c8f4ff902eb4.zip",
+      "contentHash": "a1daf10a207448761360594a9ce66b8428c35513d0bbdd701420c8f4ff902eb4",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36149581/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36143733",
       "title": "大人の敬語仕事で使える返信スタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-10T21:39:29.544Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-10T21:39:29.544Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36143733/35da335cec65b0bd6c650fd44ee50740d2f1327a8708e6c3581a2929a3b1778e.zip",
+      "contentHash": "35da335cec65b0bd6c650fd44ee50740d2f1327a8708e6c3581a2929a3b1778e",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36143733/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36142235",
@@ -2497,6 +2521,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 98,
+  "readyCount": 101,
   "failedCount": 1
 }
