@@ -1,0 +1,55 @@
+---
+import Analytics from "../components/Analytics.astro";
+import SeoHead from "../components/SeoHead.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { absoluteUrl } from "../lib/seo";
+const title="運営者情報 | stamp moke";
+const description="stamp mokeの運営者、サイトの目的、掲載方針についてご案内します。";
+const canonical=absoluteUrl("/about/");
+---
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<SeoHead title={title} description={description} canonical={canonical} locale="ja" path="/about/" />
+<Analytics />
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}a{color:#176b46}.shell{max-width:920px;margin:0 auto;padding:64px 24px 96px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#777;font-weight:800}.hero{margin-bottom:34px}.hero h1{font-size:clamp(40px,7vw,70px);line-height:1.05;letter-spacing:-.04em;margin:10px 0 18px}.lead{max-width:760px;color:#666;line-height:1.9}.card{background:#fff;border:1px solid #e2dfd8;border-radius:22px;padding:30px;margin-top:18px}.card h2{font-size:24px;margin:0 0 14px}.card h3{font-size:17px;margin:24px 0 8px}.card p,.card li{font-size:14px;line-height:1.95;color:#4f4f4b}.card ul{padding-left:1.25em}.meta{display:grid;grid-template-columns:160px 1fr;gap:0;border-top:1px solid #eee}.meta div{padding:13px 0;border-bottom:1px solid #eee;font-size:14px}.meta div:nth-child(odd){color:#777;font-weight:700}.notice{padding:16px 18px;border-radius:14px;background:#f1f7f2;color:#31523c;font-size:13px;line-height:1.8}.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:999px;background:#171717;color:#fff;text-decoration:none;font-size:13px;font-weight:800}.button.secondary{background:#fff;color:#171717;border:1px solid #d8d6d0}@media(max-width:640px){.shell{padding:42px 18px 72px}.card{padding:22px}.meta{grid-template-columns:1fr}.meta div:nth-child(odd){padding-bottom:3px;border-bottom:0}.meta div:nth-child(even){padding-top:3px}}
+</style>
+</head>
+<body>
+<SiteHeader locale="ja" path="/about/" />
+<main class="shell">
+<section class="hero"><div class="eyebrow">ABOUT</div><h1>stamp mokeについて</h1><p class="lead">stamp mokeは、オリジナルLINEスタンプを中心に、無料フリー素材、ブラウザで使える便利ツール、キャラクターグッズ等を紹介・提供する個人運営のWebサイトです。</p></section>
+<section class="card">
+<h2>運営者情報</h2>
+<div class="meta">
+<div>サイト名</div><div>stamp moke</div>
+<div>運営名</div><div>stamp moke / studio moke</div>
+<div>URL</div><div><a href="https://stamp-moke.jp/">https://stamp-moke.jp/</a></div>
+<div>主な内容</div><div>LINEスタンプ、無料フリー素材、画像・業務支援ツール、オリジナルグッズ</div>
+</div>
+
+<h2>このサイトの目的</h2>
+<p>自作したLINEスタンプやキャラクターを、作品名だけでなく、用途・雰囲気・使う場面から探しやすくすることを目的に運営しています。また、制作やWeb・EC業務の中で「毎回探すのが面倒」と感じた小さな作業を解決する無料ツールや、制作物から派生したフリー素材も公開しています。</p>
+
+<h2>掲載方針</h2>
+<ul>
+<li>自ら制作・整理したコンテンツを中心に掲載します。</li>
+<li>外部サービスの商品・作品ページへ案内する場合も、当サイト内で用途、特徴、探し方等の独自情報を付加します。</li>
+<li>誤りを確認した場合は、可能な限り修正します。</li>
+<li>広告・提携・外部リンクの有無にかかわらず、利用者にとって分かりやすい情報提供を優先します。</li>
+</ul>
+
+<h2>公式発信</h2>
+<p>制作の背景や更新内容は、公式SNS・noteでも発信しています。</p>
+<div class="links">
+<a class="button" href="https://x.com/stampmoke" target="_blank" rel="noopener noreferrer">X @stampmoke</a>
+<a class="button secondary" href="https://note.com/stampmoke" target="_blank" rel="noopener noreferrer">note / stamp moke</a>
+</div>
+</section>
+</main>
+</body>
+</html>
