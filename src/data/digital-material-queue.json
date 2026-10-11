@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-10T21:39:30.821Z",
+  "generatedAt": "2026-10-11T21:55:17.791Z",
   "r2WritesEnabled": true,
-  "pendingCount": 111,
+  "pendingCount": 108,
   "items": [
     {
       "productId": "36903835",
@@ -1635,26 +1635,50 @@
     {
       "productId": "36142235",
       "title": "家族に送る 無骨な男の一言スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-11T21:55:11.592Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-11T21:55:11.592Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36142235/cf1a84da287741ab58c7532d5ed136e07907059c035634d46d16e3f3becf54a0.zip",
+      "contentHash": "cf1a84da287741ab58c7532d5ed136e07907059c035634d46d16e3f3becf54a0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36142235/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36137158",
       "title": "昭和親父の無骨なひと言スタンプ シンプル - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-11T21:55:14.583Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-11T21:55:14.583Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36137158/6acb0ba27ce389b2bbee60f64bb8a3d7087da14e4d7a4f285426ae7abbbc72f0.zip",
+      "contentHash": "6acb0ba27ce389b2bbee60f64bb8a3d7087da14e4d7a4f285426ae7abbbc72f0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36137158/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36136531",
       "title": "大人の男の一言心に響く名言スタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-11T21:55:16.123Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-11T21:55:16.123Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36136531/b14a2e095cc93fba19d483624d10713773226da67c94ec618f838e39acac9a1f.zip",
+      "contentHash": "b14a2e095cc93fba19d483624d10713773226da67c94ec618f838e39acac9a1f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36136531/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36136296",
@@ -2521,6 +2545,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 101,
+  "readyCount": 104,
   "failedCount": 1
 }
