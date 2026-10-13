@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-11T21:55:17.791Z",
+  "generatedAt": "2026-10-13T00:36:44.185Z",
   "r2WritesEnabled": true,
-  "pendingCount": 108,
+  "pendingCount": 105,
   "items": [
     {
       "productId": "36903835",
@@ -1683,26 +1683,50 @@
     {
       "productId": "36136296",
       "title": "仕事ができる男超シンプルビジネススタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-13T00:36:38.287Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-13T00:36:38.287Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36136296/921a35a582feabb6626063b7426b71836b4e4d543eec334276d51f0c5fa67ec6.zip",
+      "contentHash": "921a35a582feabb6626063b7426b71836b4e4d543eec334276d51f0c5fa67ec6",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36136296/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36135034",
       "title": "男友達に送るぶっきらぼうな友情スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-13T00:36:40.285Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-13T00:36:40.285Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36135034/8302327b159b0a1375095905d85c2bc7e405d2604fe225264a12a46516ceea17.zip",
+      "contentHash": "8302327b159b0a1375095905d85c2bc7e405d2604fe225264a12a46516ceea17",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36135034/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36130275",
       "title": "昭和男子の無骨な男気スタンプ文字のみ40種 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-13T00:36:42.446Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-13T00:36:42.446Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36130275/a3d31f3416e5dd7802a3c0fcf4dfeb47869583092bfaa94dad4ea36811d301ce.zip",
+      "contentHash": "a3d31f3416e5dd7802a3c0fcf4dfeb47869583092bfaa94dad4ea36811d301ce",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36130275/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36129011",
@@ -2545,6 +2569,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 104,
+  "readyCount": 107,
   "failedCount": 1
 }
