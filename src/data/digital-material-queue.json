@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-13T00:36:44.185Z",
+  "generatedAt": "2026-10-13T22:41:10.183Z",
   "r2WritesEnabled": true,
-  "pendingCount": 105,
+  "pendingCount": 102,
   "items": [
     {
       "productId": "36903835",
@@ -1731,26 +1731,50 @@
     {
       "productId": "36129011",
       "title": "彼女にだけ甘い彼氏 恋愛スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-13T22:41:05.963Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-13T22:41:05.963Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36129011/ea4d33da523c5df1b07f488176de99cbcd3cd221fe0563708344a084dd642b67.zip",
+      "contentHash": "ea4d33da523c5df1b07f488176de99cbcd3cd221fe0563708344a084dd642b67",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36129011/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36125569",
       "title": "彼氏から、彼女へ。不器用な連絡 な40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-13T22:41:07.484Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-13T22:41:07.484Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36125569/d21981571a39e53d8021eb0c7e0ef37f14dee139f2c19b4ae8236c8cf1141f00.zip",
+      "contentHash": "d21981571a39e53d8021eb0c7e0ef37f14dee139f2c19b4ae8236c8cf1141f00",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36125569/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36119361",
       "title": "【独占欲強め】 彼氏から、彼女へ。 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-13T22:41:08.809Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-13T22:41:08.809Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36119361/8dcb01a290db3446efe0e6de4dd5644127f4907125f7798e09dfcdcbe9294d14.zip",
+      "contentHash": "8dcb01a290db3446efe0e6de4dd5644127f4907125f7798e09dfcdcbe9294d14",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36119361/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36106671",
@@ -2569,6 +2593,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 107,
+  "readyCount": 110,
   "failedCount": 1
 }
