@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-13T22:41:10.183Z",
+  "generatedAt": "2026-10-14T21:39:02.403Z",
   "r2WritesEnabled": true,
-  "pendingCount": 102,
+  "pendingCount": 99,
   "items": [
     {
       "productId": "36903835",
@@ -1779,26 +1779,50 @@
     {
       "productId": "36106671",
       "title": "めんどくさがり卵丸子 共感ワード 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-14T21:38:55.923Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-14T21:38:55.923Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36106671/c4db8608b14dee5ee739885fb2036008bbbd81461919061e472aa9d0e1a98c5a.zip",
+      "contentHash": "c4db8608b14dee5ee739885fb2036008bbbd81461919061e472aa9d0e1a98c5a",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36106671/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36098831",
       "title": "くろねこの返事だけ。黒猫 スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-14T21:38:57.612Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-14T21:38:57.612Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36098831/307ef781007b5fa287966d6dc970959b25f03897ac75dabc688c7c8f9ea43a3d.zip",
+      "contentHash": "307ef781007b5fa287966d6dc970959b25f03897ac75dabc688c7c8f9ea43a3d",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36098831/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36094677",
       "title": "それ、心の中で言ってます。くろねこ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-14T21:38:58.902Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-14T21:38:58.902Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36094677/571853be311b5d0875090b71a9fbe5a7b7f03eb3237bfa5c1981bff50784dc12.zip",
+      "contentHash": "571853be311b5d0875090b71a9fbe5a7b7f03eb3237bfa5c1981bff50784dc12",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36094677/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36093971",
@@ -2593,6 +2617,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 110,
+  "readyCount": 113,
   "failedCount": 1
 }
