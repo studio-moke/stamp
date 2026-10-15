@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-14T21:39:02.403Z",
+  "generatedAt": "2026-10-15T21:20:06.667Z",
   "r2WritesEnabled": true,
-  "pendingCount": 99,
+  "pendingCount": 96,
   "items": [
     {
       "productId": "36903835",
@@ -1827,26 +1827,50 @@
     {
       "productId": "36093971",
       "title": "やさしいハート♡ふんわりパステルスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-15T21:20:00.239Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-15T21:20:00.239Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36093971/0097ab4b7cffc5f5c63761cb391184dff451367329d2e18298093e07a8bb36bb.zip",
+      "contentHash": "0097ab4b7cffc5f5c63761cb391184dff451367329d2e18298093e07a8bb36bb",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36093971/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36089520",
       "title": "卵丸子ちゃんの中学生女子スタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-15T21:20:02.340Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-15T21:20:02.340Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36089520/6625cbb35f1d347866d416619c8a59a290f6278c0e1cd5114c6d5e739fc5a584.zip",
+      "contentHash": "6625cbb35f1d347866d416619c8a59a290f6278c0e1cd5114c6d5e739fc5a584",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36089520/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36086508",
       "title": "福岡 博多 久留米のおっちゃん劇画スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-15T21:20:05.100Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-15T21:20:05.100Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36086508/04ce51f53a848419f8150668745bd7082096728483540a0cfc4bc7ec5555e6b2.zip",
+      "contentHash": "04ce51f53a848419f8150668745bd7082096728483540a0cfc4bc7ec5555e6b2",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36086508/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36086327",
@@ -2617,6 +2641,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 113,
+  "readyCount": 116,
   "failedCount": 1
 }
