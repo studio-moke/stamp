@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-16T21:04:11.636Z",
+  "generatedAt": "2026-10-17T20:33:57.760Z",
   "r2WritesEnabled": true,
-  "pendingCount": 93,
+  "pendingCount": 90,
   "items": [
     {
       "productId": "36903835",
@@ -1923,26 +1923,50 @@
     {
       "productId": "36081734",
       "title": "仕事できない会社員 卵丸の本音スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-17T20:33:52.045Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-17T20:33:52.045Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36081734/f16adfe0e767331f93844533efd002207ddcaa11f061d510892464d46747dba0.zip",
+      "contentHash": "f16adfe0e767331f93844533efd002207ddcaa11f061d510892464d46747dba0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36081734/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36081623",
       "title": "それ、私です。20代女子の日常会話スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-17T20:33:54.198Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-17T20:33:54.198Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36081623/444e0429ec8718314bb6306a6e7ae79c5dbbd29de62dfe87abbdf765eafa3c25.zip",
+      "contentHash": "444e0429ec8718314bb6306a6e7ae79c5dbbd29de62dfe87abbdf765eafa3c25",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36081623/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36081595",
       "title": "送迎ママうさぎ 習い事連絡スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-17T20:33:55.630Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-17T20:33:55.630Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36081595/d2f2ced90500548fa180021b9d2437f235053ea78bfe22edd5eb07e095eea2ad.zip",
+      "contentHash": "d2f2ced90500548fa180021b9d2437f235053ea78bfe22edd5eb07e095eea2ad",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36081595/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36080025",
@@ -2665,6 +2689,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 119,
+  "readyCount": 122,
   "failedCount": 1
 }
