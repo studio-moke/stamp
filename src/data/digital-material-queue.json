@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-17T20:33:57.760Z",
+  "generatedAt": "2026-10-18T20:38:02.847Z",
   "r2WritesEnabled": true,
-  "pendingCount": 90,
+  "pendingCount": 87,
   "items": [
     {
       "productId": "36903835",
@@ -1971,26 +1971,50 @@
     {
       "productId": "36080025",
       "title": "毒舌本音！かわいい吹き出しスタンプ24種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-18T20:37:57.400Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-18T20:37:57.400Z",
+      "assetCount": 24,
+      "zipKey": "digital-products/36080025/905c6d34d7f78c001f52290185c13ae15b2f3dbf6bf7622de0808d4c26ae599b.zip",
+      "contentHash": "905c6d34d7f78c001f52290185c13ae15b2f3dbf6bf7622de0808d4c26ae599b",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36080025/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36079686",
       "title": "もふもふ！うさぎ女子 リアクション 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-18T20:37:59.561Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-18T20:37:59.561Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36079686/d0e6b9c561c0e38b288f66b94a2129e88d1edf60100693c2395226c28c231768.zip",
+      "contentHash": "d0e6b9c561c0e38b288f66b94a2129e88d1edf60100693c2395226c28c231768",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36079686/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36079210",
       "title": "かわいいじいじと孫【なかよし日常編】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-18T20:38:01.249Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-18T20:38:01.249Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36079210/2f195e9a6ac86efbd65a52d220aee99512130819d4af3a6fb1e4ed80a5ab6987.zip",
+      "contentHash": "2f195e9a6ac86efbd65a52d220aee99512130819d4af3a6fb1e4ed80a5ab6987",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36079210/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36078573",
@@ -2689,6 +2713,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 122,
+  "readyCount": 125,
   "failedCount": 1
 }
