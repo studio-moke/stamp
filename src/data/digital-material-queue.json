@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-18T20:38:02.847Z",
+  "generatedAt": "2026-10-19T22:19:58.266Z",
   "r2WritesEnabled": true,
-  "pendingCount": 87,
+  "pendingCount": 84,
   "items": [
     {
       "productId": "36903835",
@@ -2019,26 +2019,50 @@
     {
       "productId": "36078573",
       "title": "ゆるかわ黒猫 毎日使える猫スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-19T22:19:52.992Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-19T22:19:52.992Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36078573/3f97b5e376fa1f87784aa8e3660b04892c543a5fae651cd3d6119811c4a6b520.zip",
+      "contentHash": "3f97b5e376fa1f87784aa8e3660b04892c543a5fae651cd3d6119811c4a6b520",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36078573/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36077622",
       "title": "中学生の返信、これで9割いける 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-19T22:19:55.021Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-19T22:19:55.021Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36077622/3f0524d11e8dab84657da6253f348f38b6d99922f8bece73ded5208f2bd74fee.zip",
+      "contentHash": "3f0524d11e8dab84657da6253f348f38b6d99922f8bece73ded5208f2bd74fee",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36077622/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36068290",
       "title": "ほかまる ほかほか肉まんスタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-19T22:19:56.553Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-19T22:19:56.553Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36068290/7ef6dafaf959a8f5adc2c03d388b94739d75c137b69d2695c02ee888dd0a3bb1.zip",
+      "contentHash": "7ef6dafaf959a8f5adc2c03d388b94739d75c137b69d2695c02ee888dd0a3bb1",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36068290/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36064596",
@@ -2713,6 +2737,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 125,
+  "readyCount": 128,
   "failedCount": 1
 }
