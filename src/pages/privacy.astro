@@ -2,6 +2,7 @@
 import Analytics from "../components/Analytics.astro";
 import SeoHead from "../components/SeoHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import LegalFooter from "../components/LegalFooter.astro";
 import { absoluteUrl } from "../lib/seo";
 const title="プライバシーポリシー | stamp moke";
 const description="stamp mokeにおける個人情報、Cookie、Google AdSense、Google Analytics等の取り扱いについてご案内します。";
@@ -55,5 +56,6 @@ const canonical=absoluteUrl("/privacy/");
 <p class="notice">制定日：2026年10月10日<br />運営：stamp moke / studio moke</p>
 </section>
 </main>
+<LegalFooter />
 </body>
 </html>
