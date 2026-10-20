@@ -2,6 +2,7 @@
 import Analytics from "../components/Analytics.astro";
 import SeoHead from "../components/SeoHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import LegalFooter from "../components/LegalFooter.astro";
 import { absoluteUrl } from "../lib/seo";
 const title="運営者情報 | stamp moke";
 const description="stamp mokeの運営者、サイトの目的、掲載方針についてご案内します。";
@@ -51,5 +52,6 @@ const canonical=absoluteUrl("/about/");
 </div>
 </section>
 </main>
+<LegalFooter />
 </body>
 </html>

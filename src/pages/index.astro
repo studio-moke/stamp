@@ -129,7 +129,7 @@ const toolCards = [
     <section class="section about"><h2>{t.aboutTitle}</h2><p>{t.aboutText}</p></section>
   </main>
 
-  <footer class="footer"><div class="footer-inner"><div><strong>stamp moke</strong><p>{t.footerCopy}</p></div><nav class="footer-links"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><a href={localizedPath(locale,"/news/")}>{copy.news}</a></nav></div></footer>
+  <footer class="footer"><div class="footer-inner"><div><strong>stamp moke</strong><p>{t.footerCopy}</p></div><nav class="footer-links"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><a href={localizedPath(locale,"/news/")}>{copy.news}</a><a href="/about/">運営者情報</a><a href="/terms/">利用規約</a><a href="/privacy/">プライバシー</a></nav></div></footer>
   <script is:inline>
     (() => {
       const root = document.querySelector('[data-news-feed]');
