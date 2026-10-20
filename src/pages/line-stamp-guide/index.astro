@@ -1,0 +1,49 @@
+---
+import Analytics from "../../components/Analytics.astro";
+import SeoHead from "../../components/SeoHead.astro";
+const title = "LINEスタンプの作り方｜初めての制作・申請と便利な本・ツール｜stamp moke";
+const description = "自作LINEスタンプを8個から制作する手順、画像サイズ、透過PNG、審査、販売まで。スマホ・PCの制作ツールや参考書を、公式ガイドラインに沿って紹介します。";
+const canonical = "https://stamp-moke.jp/line-stamp-guide/";
+---
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{title}</title>
+<SeoHead title={title} description={description} canonical={canonical} locale="ja" path="/line-stamp-guide/" />
+<Analytics />
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f6f3ed;color:#17251d;font-family:Arial,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.85;font-size:17px}a{color:#1d7243}a:focus-visible{outline:3px solid #27995d;outline-offset:3px}header,footer{padding:20px max(20px,calc((100% - 1100px)/2));background:#fff}header{border-bottom:1px solid #e5e3dc}footer{border-top:1px solid #e2dfd8;color:#667067;font-size:14px}.brand{font-weight:900;font-size:23px;text-decoration:none;color:#182a1e}nav{margin-top:6px;display:flex;gap:16px;flex-wrap:wrap}nav a{font-size:14px}main{max-width:1100px;margin:auto;padding:0 22px 90px}.hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;align-items:center;gap:36px;padding:72px 0 42px}.eyebrow{font-size:12px;color:#35764c;font-weight:900;letter-spacing:.15em}.hero h1{font-size:clamp(32px,4.7vw,55px);line-height:1.35;margin:16px 0 18px;letter-spacing:-.03em}.lead{font-size:19px;color:#526158;max-width:740px}.art{border-radius:32px;aspect-ratio:1;background:linear-gradient(145deg,#def3df,#fff);display:grid;place-items:center;box-shadow:0 18px 40px #334f3420;border:1px solid #d6e8d4}.art span{font-size:105px}.content{max-width:850px;margin:auto}.section{padding:34px 0 24px;border-top:1px solid #dddcd5}.section h2{font-size:clamp(26px,3.1vw,34px);line-height:1.35}.section h3{font-size:21px;margin-top:30px}.section p,.section li{line-height:1.9}.table-scroll{overflow-x:auto}.table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.table-scroll th,.table-scroll td{padding:14px;text-align:left;border-bottom:1px solid #d8dbd3;vertical-align:top}.table-scroll th{background:#e9efe9}.steps{padding-left:28px}.steps li{padding:5px 0 8px}.resource-list{display:grid;gap:20px}.resource{background:#fff;border-radius:18px;padding:23px 25px;border:1px solid #e0e4da}.resource strong{font-size:19px}.resource p{margin:7px 0}.resource .tag{font-size:13px;color:#346646;font-weight:800}.note{font-size:14px;color:#5a6259}.cta{display:inline-block;background:#153a25;color:white;text-decoration:none;font-weight:800;padding:13px 23px;border-radius:50px;margin:12px 0;min-height:48px}.cta:hover{background:#235a3a}@media(max-width:700px){body{font-size:17px}.hero{grid-template-columns:1fr;padding:42px 0 30px}.art{display:none}.section{padding:24px 0}.resource{padding:20px}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">stamp moke</a><nav aria-label="サイト内ナビ"><a href="/stickers/">LINEスタンプを探す</a><a href="/tools/">無料ツール</a><a href="/free/">無料素材</a></nav></header>
+<main>
+<section class="hero"><div><div class="eyebrow">CREATE YOUR OWN STICKERS</div><h1>LINEスタンプを、<br />自分の手で作ってみよう。</h1><p class="lead">絵が得意でも、写真を加工するだけでも。最初の8個を作るところから、公開までの順序をまとめました。制作に役立つ本や道具も紹介します。</p><a class="cta" href="#steps">制作手順から始める →</a></div><div class="art" aria-hidden="true"><span>✍</span></div></section>
+<div class="content">
+<section class="section" id="steps"><h2>最初のスタンプを公開するまでの5ステップ</h2>
+<ol class="steps"><li><strong>場面を先に決める。</strong>「ありがとう」「了解」「おつかれ」など、使う会話の場面を8個書き出します。絵柄の統一より、まず使い道を考えると続けやすくなります。</li>
+<li><strong>絵・写真を用意する。</strong>背景透過PNGで制作し、文字が小さすぎないかスマホ実寸で確認します。作画アプリは無料・有料を問わず、透過PNG出力ができるものから選べます。</li>
+<li><strong>規定に沿って書き出す。</strong>静止画の通常スタンプは8/16/24/32/40個から選択し、最大370×320px。別途メイン画像240×240pxとタブ画像96×74pxも必要です。最新仕様はLINE公式で確認してください。</li>
+<li><strong>LINE Creators Marketで登録・申請する。</strong>タイトル、説明文、画像などを登録し、審査を申請。文字の誤りや著作権、既存スタンプとの重複にも気を付けます。</li>
+<li><strong>承認後に公開し、使われ方を見直す。</strong>発売して終わりではなく、どの表情や短い言葉が普段の会話に入りやすいかを考えて次の作品につなげます。</li></ol>
+<p class="note">仕様・審査条件の正本：<a href="https://creator.line.me/ja/guideline/sticker/" target="_blank" rel="noopener noreferrer">LINE公式 スタンプ制作ガイドライン</a> ／ <a href="https://creator.line.me/ja/review_guideline/" target="_blank" rel="noopener noreferrer">LINE公式 審査ガイドライン</a></p>
+</section>
+<section class="section"><h2>必要な画像は何枚？</h2><div class="table-scroll"><table><thead><tr><th>画像の種類</th><th>枚数</th><th>基本サイズ</th></tr></thead><tbody><tr><td>スタンプ画像</td><td>8・16・24・32・40枚から選択</td><td>最大370×320px</td></tr><tr><td>メイン画像</td><td>1枚</td><td>240×240px</td></tr><tr><td>トークルームタブ</td><td>1枚</td><td>96×74px</td></tr></tbody></table></div>
+<p>上記は静止画の通常スタンプについての説明です。アニメーション、カスタム、絵文字などは形式や必要数が異なります。登録直前にも公式規定を確認しましょう。</p></section>
+<section class="section" id="resources"><h2>LINEスタンプ制作に役立つ本・アプリ・道具</h2>
+<p>最初の一歩で迷いやすい「どう描くか」「何を作るか」「どこで申請するか」の違いに合わせて選びました。必要なものだけ利用してください。</p>
+<div class="resource-list">
+<div class="resource"><span class="tag">参考書｜スマホから始めたい人</span><p><strong>『スマホ1つでかんたん作成！ LINEスタンプ作り方手帖』</strong>（primary inc.／インプレス）</p><p>スタンプのアイデア、キャラクター、写真活用、申請の流れを学ぶ入門書。2017年刊のため、現在の管理画面や審査仕様は公式ガイドラインで確認する必要があります。</p><a href="https://book.impress.co.jp/books/1116101121" target="_blank" rel="noopener noreferrer">出版社で本の内容を確認する →</a></div>
+<div class="resource"><span class="tag">制作アプリ｜線画や文字を重ねたい人</span><p><strong>ibisPaint（アイビスペイント）</strong></p><p>スマホでもレイヤーを使った編集ができ、透過PNGとして画像を保存できます。スタンプの背景が白く残る場合は、透明背景設定を見直します。</p><a href="https://ibispaint.com/" target="_blank" rel="noopener noreferrer">公式アプリ情報を確認する →</a></div>
+<div class="resource"><span class="tag">制作ソフト｜イラストや動きを作りたい人</span><p><strong>CLIP STUDIO PAINT</strong></p><p>キャラクターの線画・着色に使える制作ツール。LINEスタンプを題材にした公式のイラスト制作解説もあります。利用料金や契約形態は公式案内で確認してください。</p><a href="https://www.clipstudio.net/oekaki/archives/153299" target="_blank" rel="noopener noreferrer">公式のLINEスタンプ制作ガイドを見る →</a></div>
+<div class="resource"><span class="tag">公式サービス｜作成・審査・販売</span><p><strong>LINE Creators Market</strong></p><p>最終的に必ず通る申請・販売の窓口です。ガイドライン確認からクリエイター登録、審査依頼までまとめて確認できます。</p><a href="https://creator.line.me/ja/howto/" target="_blank" rel="noopener noreferrer">LINE公式の申請手順を確認する →</a></div>
+</div><p class="note">現在の紹介は公式サイト・出版社への通常リンクです。広告契約や対象サイトの登録が未確認のため、ASPリンクは追加していません。紹介料の有無ではなく、制作との関連性を優先しています。</p></section>
+<section class="section"><h2>作り始める前に、3つだけ気を付けたいこと</h2>
+<h3>1. 他の人の作品をそのまま使わない</h3><p>有名キャラクター、商標、写真、AI生成画像などは、利用できる範囲や権利関係を確認しましょう。素材配布サイトの「商用可」はLINEスタンプとして再販売してよい意味とは限りません。</p>
+<h3>2. 字の読みやすさを優先する</h3><p>PCの大画面で文字が読めても、トーク画面では小さく表示されます。文字数を減らし、背景とのコントラストと文字の余白を確かめます。</p>
+<h3>3. 画像数を増やす前に、8個を完成させる</h3><p>40個を一度に作るのは大変です。まず8個を同じキャラクター・同じ線の太さで揃えると、制作の流れをつかめます。</p></section>
+<section class="section"><h2>スタンプの表現を探すなら</h2><p>制作のヒントがほしいときは、stamp mokeのオリジナルスタンプも参考にしてください。表情の違い、セリフの長さ、文字の位置など、日常のトークでどう使われるかを眺めるのも勉強になります。</p><a class="cta" href="/stickers/">オリジナルLINEスタンプを見る →</a></section>
+</div></main>
+<footer>© stamp moke · <a href="/">トップページ</a> · <a href="/stickers/">スタンプ一覧</a></footer>
+</body></html>
