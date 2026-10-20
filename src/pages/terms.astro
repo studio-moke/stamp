@@ -1,0 +1,74 @@
+---
+import Analytics from "../components/Analytics.astro";
+import SeoHead from "../components/SeoHead.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import LegalFooter from "../components/LegalFooter.astro";
+import { absoluteUrl } from "../lib/seo";
+const title = "利用規約 | stamp moke";
+const description = "stamp mokeの利用条件、無料ツール・素材の利用、禁止事項、免責事項、外部サービスについてご案内します。";
+const canonical = absoluteUrl("/terms/");
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <SeoHead title={title} description={description} canonical={canonical} locale="ja" path="/terms/" />
+  <Analytics />
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f7f6f2;color:#171717;font-family:Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
+    .shell{max-width:920px;margin:0 auto;padding:64px 24px 84px}
+    .eyebrow{font-size:12px;letter-spacing:.18em;color:#777;font-weight:800}
+    h1{font-size:clamp(36px,7vw,64px);line-height:1.15;letter-spacing:-.04em;margin:12px 0 18px}
+    .lead{font-size:17px;color:#595955;line-height:1.9;margin-bottom:32px}
+    .card{background:#fff;border:1px solid #e2dfd8;border-radius:22px;padding:34px}
+    h2{font-size:clamp(19px,3vw,23px);margin:34px 0 12px}h2:first-child{margin-top:0}
+    p,li{font-size:16px;line-height:2;color:#4f4f4b}ul{padding-left:1.4em}
+    a{color:#176b46;text-underline-offset:3px}a:focus-visible{outline:2px solid #176b46;outline-offset:3px}
+    .note{font-size:13px;margin-top:32px;padding-top:20px;border-top:1px solid #eee;color:#75736d}
+    @media(max-width:640px){.shell{padding:42px 18px 56px}.card{padding:23px}p,li{font-size:16px}}
+  </style>
+</head>
+<body>
+  <SiteHeader locale="ja" path="/terms/" />
+  <main class="shell">
+    <div class="eyebrow">TERMS OF USE</div>
+    <h1>利用規約</h1>
+    <p class="lead">stamp mokeをご利用いただく際の基本的なルールをまとめました。</p>
+    <article class="card">
+      <h2>1. 適用範囲</h2>
+      <p>本規約は、studio mokeが運営する「stamp moke」（以下「当サイト」）における記事・作品紹介・無料ツール・素材その他のコンテンツの利用について適用されます。外部サービスへの遷移後は、各提供元の規約が適用されます。</p>
+
+      <h2>2. 掲載内容と知的財産権</h2>
+      <p>当サイトが独自に制作した文章・画像・デザイン・プログラム等の権利は、当サイトの運営者または適法な権利者に帰属します。LINEその他の第三者の名称、商標および著作物は各権利者に帰属します。法令上認められた引用等を除き、無断転載・再配布・販売をお控えください。</p>
+
+      <h2>3. 無料素材・無料ツール</h2>
+      <p>無料素材の利用条件は、各素材ページに表示された許諾範囲が優先されます。「無料」という表記だけで、著作権の放棄や無条件の再配布許諾を意味するものではありません。</p>
+      <p>画像加工等のツールを利用する場合、ご自身が利用権限を持つ画像・データを使用してください。利用者が作成・加工した成果物の権利は、法令および元データの権利関係に従います。ツールの出力が第三者の権利を侵害しないことを運営者が保証するものではありません。</p>
+
+      <h2>4. 禁止事項</h2>
+      <ul>
+        <li>法令または第三者の権利を侵害する行為</li>
+        <li>不正アクセス、サービス妨害、脆弱性の悪用その他運営に支障を与える行為</li>
+        <li>許可なく当サイトのコンテンツを大量取得し、複製・再販売・再配信する行為</li>
+        <li>当サイトや運営者を詐称する行為</li>
+      </ul>
+
+      <h2>5. 外部サイト・広告・商品紹介</h2>
+      <p>LINE STORE、SUZURI等の外部サイト上での商品購入・決済・配送・返品等は、各提供事業者が定める条件に従います。当サイトでは広告やアフィリエイトリンクを掲載する場合があり、リンク経由の購入等により運営者が報酬を受け取ることがあります。</p>
+
+      <h2>6. 提供内容の変更・免責</h2>
+      <p>当サイトは情報の正確性やツールの安定動作に努めますが、すべての内容・機能について完全性、最新性、特定目的への適合性を保証するものではありません。保守等により予告なく掲載内容や機能を変更・停止する場合があります。運営者の責任は、適用法令に従うものとします。</p>
+
+      <h2>7. 規約の変更・準拠法</h2>
+      <p>サービスや法令の変更に応じ、本規約を改定することがあります。改定内容は本ページでお知らせします。本規約は日本法に準拠します。</p>
+
+      <h2>8. お問い合わせ</h2>
+      <p>規約についてのご質問や権利に関するご連絡は、<a href="/contact/">お問い合わせページ</a>をご利用ください。個人情報の取り扱いは<a href="/privacy/">プライバシーポリシー</a>をご確認ください。</p>
+      <p class="note">制定日：2026年10月20日　運営：stamp moke / studio moke</p>
+    </article>
+  </main>
+  <LegalFooter />
+</body>
+</html>
