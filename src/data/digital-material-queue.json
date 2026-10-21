@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-20T21:35:05.064Z",
+  "generatedAt": "2026-10-21T21:38:43.891Z",
   "r2WritesEnabled": true,
-  "pendingCount": 81,
+  "pendingCount": 78,
   "items": [
     {
       "productId": "36903835",
@@ -2115,26 +2115,50 @@
     {
       "productId": "36062692",
       "title": "寿司×乗り物！シュールで笑えるスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-21T21:38:38.332Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-21T21:38:38.332Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36062692/e37b60fd395135d88d6f3676cfd7509ae1526e8f49a0d4bfbf6f756d86740259.zip",
+      "contentHash": "e37b60fd395135d88d6f3676cfd7509ae1526e8f49a0d4bfbf6f756d86740259",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36062692/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36059387",
       "title": "強いのに気弱な動物！豆腐メンタルスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-21T21:38:40.541Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-21T21:38:40.541Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36059387/730cc19ad1af85605c885637b27dd97cf1e9243ff071e560e9230cb5715438c8.zip",
+      "contentHash": "730cc19ad1af85605c885637b27dd97cf1e9243ff071e560e9230cb5715438c8",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36059387/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36058653",
       "title": "使いやすさ重視！大人かわいい主婦スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-21T21:38:42.217Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-21T21:38:42.217Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36058653/4a0149fc0f6d010d9ddefa4b55d5ab9d905a18bd5941691ed08297aff92de256.zip",
+      "contentHash": "4a0149fc0f6d010d9ddefa4b55d5ab9d905a18bd5941691ed08297aff92de256",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36058653/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36056177",
@@ -2761,6 +2785,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 131,
+  "readyCount": 134,
   "failedCount": 1
 }
