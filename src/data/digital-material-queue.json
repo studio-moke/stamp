@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-21T21:38:43.891Z",
+  "generatedAt": "2026-10-22T21:38:19.074Z",
   "r2WritesEnabled": true,
-  "pendingCount": 78,
+  "pendingCount": 75,
   "items": [
     {
       "productId": "36903835",
@@ -2163,26 +2163,50 @@
     {
       "productId": "36056177",
       "title": "シンプルならこれ！かわいい LINEスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-22T21:38:14.438Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-22T21:38:14.438Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36056177/7dea0f78cb0e92f520978c7c849b66ffc458588d432a628c96a7496ae6a96547.zip",
+      "contentHash": "7dea0f78cb0e92f520978c7c849b66ffc458588d432a628c96a7496ae6a96547",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36056177/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36054209",
       "title": "ぽてぴよ 癒しの本音と建前スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-22T21:38:16.170Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-22T21:38:16.170Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36054209/2eb2d15409e7b341145438bcf919c83ada89bee5fbb452005765ec6654df7bc7.zip",
+      "contentHash": "2eb2d15409e7b341145438bcf919c83ada89bee5fbb452005765ec6654df7bc7",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36054209/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36052990",
       "title": "アンテナひよこ 敬語ビジネススタンプ 40種 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-22T21:38:17.526Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-22T21:38:17.526Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36052990/762cb077b3fdde5de583cbb2b00e07b915b022a24b49a74de0a21195b8e26197.zip",
+      "contentHash": "762cb077b3fdde5de583cbb2b00e07b915b022a24b49a74de0a21195b8e26197",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36052990/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36052650",
@@ -2785,6 +2809,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 134,
+  "readyCount": 137,
   "failedCount": 1
 }
