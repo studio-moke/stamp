@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T21:38:19.074Z",
+  "generatedAt": "2026-10-23T21:27:32.105Z",
   "r2WritesEnabled": true,
-  "pendingCount": 75,
+  "pendingCount": 72,
   "items": [
     {
       "productId": "36903835",
@@ -2211,26 +2211,50 @@
     {
       "productId": "36052650",
       "title": "ママのための保育園 幼稚園 連絡用スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-23T21:27:27.430Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-23T21:27:27.430Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36052650/b34947a422b66b405512c2832cf931a007273bc6abc834b086e14c807e452dd5.zip",
+      "contentHash": "b34947a422b66b405512c2832cf931a007273bc6abc834b086e14c807e452dd5",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36052650/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36051910",
       "title": "家族だけの日常連絡スタンプ！厳選40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-23T21:27:29.198Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-23T21:27:29.198Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36051910/9284c6c65201f8d74d5b836d6d42d69f3d3f8f51a0cd33f4fc64c69859e13117.zip",
+      "contentHash": "9284c6c65201f8d74d5b836d6d42d69f3d3f8f51a0cd33f4fc64c69859e13117",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36051910/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36050825",
       "title": "乾杯! 飲もう大人女子のお酒スタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-23T21:27:30.753Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-23T21:27:30.753Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36050825/8cbe2135b850107f37edaeb50bf74f5fe6f955f1df06ce3a28b5829d8b576535.zip",
+      "contentHash": "8cbe2135b850107f37edaeb50bf74f5fe6f955f1df06ce3a28b5829d8b576535",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36050825/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36050697",
@@ -2809,6 +2833,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 137,
+  "readyCount": 140,
   "failedCount": 1
 }
