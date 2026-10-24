@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-23T21:27:32.105Z",
+  "generatedAt": "2026-10-24T20:44:32.898Z",
   "r2WritesEnabled": true,
-  "pendingCount": 72,
+  "pendingCount": 69,
   "items": [
     {
       "productId": "36903835",
@@ -2259,26 +2259,50 @@
     {
       "productId": "36050697",
       "title": "たまごくん ゆるっと無気力な日常スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-24T20:44:28.852Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-24T20:44:28.852Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36050697/1d1a545797ff6cd260804d0d49d70a4ca37f779b311f08b36aac13b3aca5ce70.zip",
+      "contentHash": "1d1a545797ff6cd260804d0d49d70a4ca37f779b311f08b36aac13b3aca5ce70",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36050697/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36050370",
       "title": "メモでデコ挨拶♪主婦とわんこのクレヨン - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-24T20:44:30.420Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-24T20:44:30.420Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36050370/33ccffad1b6f25179af17d75b1da71c0c92e545d8b663eb4c479b657a28beefa.zip",
+      "contentHash": "33ccffad1b6f25179af17d75b1da71c0c92e545d8b663eb4c479b657a28beefa",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36050370/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36046487",
       "title": "親への見守りアンテナひよこ 大きい文字 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-24T20:44:31.632Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-24T20:44:31.632Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36046487/d96ca3d10b6e4c0476f2ac6f80db3d9db30bbd06f172b38bd532e3ba52434516.zip",
+      "contentHash": "d96ca3d10b6e4c0476f2ac6f80db3d9db30bbd06f172b38bd532e3ba52434516",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36046487/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36046443",
@@ -2833,6 +2857,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 140,
+  "readyCount": 143,
   "failedCount": 1
 }
