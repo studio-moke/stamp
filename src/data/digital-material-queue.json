@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-24T20:44:32.898Z",
+  "generatedAt": "2026-10-25T20:47:53.373Z",
   "r2WritesEnabled": true,
-  "pendingCount": 69,
+  "pendingCount": 66,
   "items": [
     {
       "productId": "36903835",
@@ -2307,26 +2307,50 @@
     {
       "productId": "36046443",
       "title": "ふきだし丸顔アンテナ 毎日使えるスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-25T20:47:47.120Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-25T20:47:47.120Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36046443/9be22f3e219ddb7a5265197dca749d2107deef75a95d44dfabffedd6643b93c8.zip",
+      "contentHash": "9be22f3e219ddb7a5265197dca749d2107deef75a95d44dfabffedd6643b93c8",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36046443/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36037821",
       "title": "たまご力士、卵丸！どすこい応援スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-25T20:47:49.269Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-25T20:47:49.269Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36037821/ad01b8e4461514e14f2c4d4332bebf5a23a0940fd434d6a32544a1c3c59d6fc0.zip",
+      "contentHash": "ad01b8e4461514e14f2c4d4332bebf5a23a0940fd434d6a32544a1c3c59d6fc0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36037821/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36035945",
       "title": "犬の被り物女子♡時間・待ち合わせスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-25T20:47:51.434Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-25T20:47:51.434Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36035945/6f1ce18aadb4262cbc1a05294d3f33515619e100e4bfc5284d7c60dc23405455.zip",
+      "contentHash": "6f1ce18aadb4262cbc1a05294d3f33515619e100e4bfc5284d7c60dc23405455",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36035945/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36033035",
@@ -2857,6 +2881,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 143,
+  "readyCount": 146,
   "failedCount": 1
 }
