@@ -80,7 +80,7 @@ const toolCards = [
 <body>
   <header class="site-header">
     <a class="brand" href={localizedPath(locale,"/")} aria-label="stamp moke home"><span class="brand-mark"><img src="/images/stamp-moke-official-logo-header.webp?v=20260906-4" alt="" width="64" height="64" decoding="async" fetchpriority="high" /></span><span class="brand-name">stamp moke</span></a>
-    <div class="header-actions"><details class="menu"><summary aria-label="menu"></summary><div class="menu-panel"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/free/")}>{locale === "ja" ? "無料フリー素材" : copy.free}</a><a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><div class="menu-language"><LanguageSwitcher locale={locale}/></div></div></details></div>
+    <div class="header-actions"><details class="menu"><summary aria-label="menu"></summary><div class="menu-panel"><a href={localizedPath(locale,"/stickers/")}>{t.stickers}</a><a href={localizedPath(locale,"/categories/")}>{t.categories}</a><a href={localizedPath(locale,"/free/")}>{locale === "ja" ? "無料フリー素材" : copy.free}</a>{locale === "ja" && <a href="/line-stamp-guide/">LINEスタンプを作る</a>}<a href={localizedPath(locale,"/goods/")}>{t.goodsTitle}</a><div class="menu-language"><LanguageSwitcher locale={locale}/></div></div></details></div>
   </header>
 
   <main class="main">
