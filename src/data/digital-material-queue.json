@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-25T20:47:53.373Z",
+  "generatedAt": "2026-10-26T22:38:10.066Z",
   "r2WritesEnabled": true,
-  "pendingCount": 66,
+  "pendingCount": 63,
   "items": [
     {
       "productId": "36903835",
@@ -2355,26 +2355,46 @@
     {
       "productId": "36033035",
       "title": "ゆるっと信号くん シンプルな挨拶スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-26T22:38:03.680Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-26T22:38:03.680Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36033035/0ff0a5baf3f4e1ad99a36be5e7588b057f10c6e8fccb084a092ed331886db1ba.zip",
+      "contentHash": "0ff0a5baf3f4e1ad99a36be5e7588b057f10c6e8fccb084a092ed331886db1ba",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36033035/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36031741",
       "title": "いないいない〜…からの強烈な「ばぁ！」 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "failed",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Preparation failed; product remains unpublished",
+      "lastAttemptAt": "2026-10-26T22:38:07.714Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-26T22:38:07.714Z",
+      "error": "LINE商品パッケージから取得した画像数が想定外です: 16点"
     },
     {
       "productId": "36031221",
       "title": "激しいハムスター！全力リアクション - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-26T22:38:08.016Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-26T22:38:08.016Z",
+      "assetCount": 24,
+      "zipKey": "digital-products/36031221/545d717d64f55a30d9cf1251e9dee5264fc4958927ae9eb937e7864929776b92.zip",
+      "contentHash": "545d717d64f55a30d9cf1251e9dee5264fc4958927ae9eb937e7864929776b92",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36031221/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36029615",
@@ -2881,6 +2901,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 146,
-  "failedCount": 1
+  "readyCount": 148,
+  "failedCount": 2
 }
