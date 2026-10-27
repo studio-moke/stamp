@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-26T22:38:10.066Z",
+  "generatedAt": "2026-10-27T22:10:06.259Z",
   "r2WritesEnabled": true,
-  "pendingCount": 63,
+  "pendingCount": 60,
   "items": [
     {
       "productId": "36903835",
@@ -2399,26 +2399,50 @@
     {
       "productId": "36029615",
       "title": "理科の先生が怖すぎる！中学生向けスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-27T22:10:01.120Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-27T22:10:01.120Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36029615/1fb93134d67bcbae76a2ed496afcf5410429e704c25cb82570745d725c431b09.zip",
+      "contentHash": "1fb93134d67bcbae76a2ed496afcf5410429e704c25cb82570745d725c431b09",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36029615/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36021937",
       "title": "ぽてぴよのゆるっと日常スタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-27T22:10:02.950Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-27T22:10:02.950Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36021937/97488f00cae5d7f3a0319b678489dc17a7455e388784e337f10861a12c3238e3.zip",
+      "contentHash": "97488f00cae5d7f3a0319b678489dc17a7455e388784e337f10861a12c3238e3",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36021937/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36015374",
       "title": "やさしいばぁばと孫【なかよし日常編】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-27T22:10:04.636Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-27T22:10:04.636Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36015374/f5c6eb405039fdcaa35aa4fed63678bddfa197f2ada5e88272e4f602f0fc9094.zip",
+      "contentHash": "f5c6eb405039fdcaa35aa4fed63678bddfa197f2ada5e88272e4f602f0fc9094",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36015374/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36010363",
@@ -2901,6 +2925,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 148,
+  "readyCount": 151,
   "failedCount": 2
 }
