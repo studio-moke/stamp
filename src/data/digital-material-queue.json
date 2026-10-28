@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-27T22:10:06.259Z",
+  "generatedAt": "2026-10-28T22:32:21.073Z",
   "r2WritesEnabled": true,
-  "pendingCount": 60,
+  "pendingCount": 57,
   "items": [
     {
       "productId": "36903835",
@@ -2447,26 +2447,50 @@
     {
       "productId": "36010363",
       "title": "個性派にゃんこの日常 LINEスタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-28T22:32:15.687Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-28T22:32:15.687Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36010363/8558408251007c9d68e342215de441ba38c746b0ee2c146761e1b48ed7a5c219.zip",
+      "contentHash": "8558408251007c9d68e342215de441ba38c746b0ee2c146761e1b48ed7a5c219",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36010363/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36010241",
       "title": "赤ちゃんの日常うんちもれたスタンプ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-28T22:32:18.479Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-28T22:32:18.479Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36010241/d7ba68d2698c666a6842958c2f390c5a7e9e46aac87a7824a9fedae2278127b1.zip",
+      "contentHash": "d7ba68d2698c666a6842958c2f390c5a7e9e46aac87a7824a9fedae2278127b1",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36010241/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36005311",
       "title": "ビーグル探偵くん｜毎日使える推理スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-28T22:32:19.783Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-28T22:32:19.783Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/36005311/c1cbb2ae1fb94a4ae2b2e81d8c232ac7eada1e2079800b5aa2034267dfdd6608.zip",
+      "contentHash": "c1cbb2ae1fb94a4ae2b2e81d8c232ac7eada1e2079800b5aa2034267dfdd6608",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/36005311/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "36005258",
@@ -2925,6 +2949,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 151,
+  "readyCount": 154,
   "failedCount": 2
 }
