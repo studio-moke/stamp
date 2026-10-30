@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-29T22:43:26.890Z",
+  "generatedAt": "2026-10-30T22:16:21.049Z",
   "r2WritesEnabled": true,
-  "pendingCount": 54,
+  "pendingCount": 51,
   "items": [
     {
       "productId": "36903835",
@@ -2543,26 +2543,50 @@
     {
       "productId": "35990307",
       "title": "漢のケツ意！フンドシ ダジャレ スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-30T22:16:16.900Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-30T22:16:16.900Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35990307/ad1b0fb9f6768a1c7384695cb5cc2263d7d9dac1dbec1e8724810ec50eaba970.zip",
+      "contentHash": "ad1b0fb9f6768a1c7384695cb5cc2263d7d9dac1dbec1e8724810ec50eaba970",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35990307/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35989858",
       "title": "原チャリギャル 爆走テンションMAX 日常編 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-30T22:16:18.168Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-30T22:16:18.168Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35989858/f59fe73df8abbe8a0a7314bd61282b32686ed8e92e3f926a4d0eb5f6276a873f.zip",
+      "contentHash": "f59fe73df8abbe8a0a7314bd61282b32686ed8e92e3f926a4d0eb5f6276a873f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35989858/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35986013",
       "title": "寂しがりや かまってコアラちゃん 全40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-30T22:16:19.477Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-30T22:16:19.477Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35986013/90213cab6f590e19e3971f3d3aabc20ba040df97dc9a54933ab9e845eb0bcc10.zip",
+      "contentHash": "90213cab6f590e19e3971f3d3aabc20ba040df97dc9a54933ab9e845eb0bcc10",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35986013/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35985127",
@@ -2973,6 +2997,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 157,
+  "readyCount": 160,
   "failedCount": 2
 }
