@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-30T22:16:21.049Z",
+  "generatedAt": "2026-10-31T21:30:26.333Z",
   "r2WritesEnabled": true,
-  "pendingCount": 51,
+  "pendingCount": 48,
   "items": [
     {
       "productId": "36903835",
@@ -2591,26 +2591,46 @@
     {
       "productId": "35985127",
       "title": "ハリネズミツンデレ 日常会話 LINEスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-31T21:30:22.215Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-31T21:30:22.215Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35985127/63d498c3a8224e20c19ee94691401c01cb9dd38428f3a5fc2df02033f47efbf2.zip",
+      "contentHash": "63d498c3a8224e20c19ee94691401c01cb9dd38428f3a5fc2df02033f47efbf2",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35985127/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35973975",
       "title": "もこもこシール風小学生こねこちゃん16種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "failed",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Preparation failed; product remains unpublished",
+      "lastAttemptAt": "2026-10-31T21:30:24.453Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-31T21:30:24.453Z",
+      "error": "LINE商品パッケージから取得した画像数が想定外です: 16点"
     },
     {
       "productId": "35972158",
       "title": "地獄のお友達スタンプ 日常会話 挨拶40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-10-31T21:30:24.707Z",
+      "attempts": 1,
+      "preparedAt": "2026-10-31T21:30:24.707Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35972158/cd629be79e2740e5c37cbc67135dd295860b54b3175e3b1474b5b83cc3f9bb1a.zip",
+      "contentHash": "cd629be79e2740e5c37cbc67135dd295860b54b3175e3b1474b5b83cc3f9bb1a",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35972158/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35971208",
@@ -2997,6 +3017,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 160,
-  "failedCount": 2
+  "readyCount": 162,
+  "failedCount": 3
 }
