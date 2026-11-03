@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-03T00:55:59.404Z",
+  "generatedAt": "2026-11-03T23:17:20.946Z",
   "r2WritesEnabled": true,
-  "pendingCount": 42,
+  "pendingCount": 39,
   "items": [
     {
       "productId": "36903835",
@@ -2731,26 +2731,50 @@
     {
       "productId": "35948037",
       "title": "毎日使える 読みやすい やさしいスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-03T23:17:15.321Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-03T23:17:15.321Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35948037/f8fded464d34d716aad8426f74b8add7d285e89a15df64143969496609f79689.zip",
+      "contentHash": "f8fded464d34d716aad8426f74b8add7d285e89a15df64143969496609f79689",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35948037/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35942219",
       "title": "女友達との日常LINE 女子会 かわいい40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-03T23:17:17.341Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-03T23:17:17.341Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35942219/44ba9737ad5577f66d5de71a6df653a0d45d43c6317e861731ebd31ecd6f357f.zip",
+      "contentHash": "44ba9737ad5577f66d5de71a6df653a0d45d43c6317e861731ebd31ecd6f357f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35942219/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35917093",
       "title": "彼氏へ… 彼女のキュンキュンLINEスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-03T23:17:19.103Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-03T23:17:19.103Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35917093/c07b3d345aab9bd59957aaf33785460dd6de00194da7df8a33935cb7550c3cff.zip",
+      "contentHash": "c07b3d345aab9bd59957aaf33785460dd6de00194da7df8a33935cb7550c3cff",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35917093/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35915360",
@@ -3065,6 +3089,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 168,
+  "readyCount": 171,
   "failedCount": 3
 }
