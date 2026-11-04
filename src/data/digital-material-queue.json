@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-03T23:17:20.946Z",
+  "generatedAt": "2026-11-04T23:38:25.319Z",
   "r2WritesEnabled": true,
-  "pendingCount": 39,
+  "pendingCount": 36,
   "items": [
     {
       "productId": "36903835",
@@ -2779,26 +2779,50 @@
     {
       "productId": "35915360",
       "title": "ゴーグル少女！小麦肌ギャルの日焼け事件簿 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-04T23:38:19.813Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-04T23:38:19.813Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35915360/a9f6cde4df57af546e3899505f2813cab17e5603bbacc7a183036d86fbc1ff17.zip",
+      "contentHash": "a9f6cde4df57af546e3899505f2813cab17e5603bbacc7a183036d86fbc1ff17",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35915360/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35912888",
       "title": "【密告者のビジネス返信集】丁寧語 真面目 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-04T23:38:21.529Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-04T23:38:21.529Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35912888/a72f14ec431547d9eb66453cd165de5867b622346c7d2b37e5fea1c13cc9da2f.zip",
+      "contentHash": "a72f14ec431547d9eb66453cd165de5867b622346c7d2b37e5fea1c13cc9da2f",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35912888/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35911207",
       "title": "映画のような、囚人服の密告者ネタ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-04T23:38:23.777Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-04T23:38:23.777Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35911207/655d02b4abfa90c484e31a6ab10305f772b06315791b876b2a90f13ba8a8ac57.zip",
+      "contentHash": "655d02b4abfa90c484e31a6ab10305f772b06315791b876b2a90f13ba8a8ac57",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35911207/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35910876",
@@ -3089,6 +3113,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 171,
+  "readyCount": 174,
   "failedCount": 3
 }
