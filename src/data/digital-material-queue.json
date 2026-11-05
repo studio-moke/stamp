@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-04T23:38:25.319Z",
+  "generatedAt": "2026-11-05T23:37:31.381Z",
   "r2WritesEnabled": true,
-  "pendingCount": 36,
+  "pendingCount": 33,
   "items": [
     {
       "productId": "36903835",
@@ -2827,26 +2827,50 @@
     {
       "productId": "35910876",
       "title": "くま女子の日常 癒しもふもふ被り物 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-05T23:37:26.094Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-05T23:37:26.094Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35910876/7924ca8d9fdb77638b8a69aaff822cb4dabb0daeefcca86ada94cdaf7476b521.zip",
+      "contentHash": "7924ca8d9fdb77638b8a69aaff822cb4dabb0daeefcca86ada94cdaf7476b521",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35910876/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35910600",
       "title": "すずめ女子 ちょこまか日常 もふもふ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-05T23:37:27.938Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-05T23:37:27.938Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35910600/3ea935602cb3b4900cc1ebbc2403c47dc9d3a29ef942465c6a83539ad2644cba.zip",
+      "contentHash": "3ea935602cb3b4900cc1ebbc2403c47dc9d3a29ef942465c6a83539ad2644cba",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35910600/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35909858",
       "title": "アザラシ女子 ぐでぐで日常 もふもふ40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-05T23:37:29.454Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-05T23:37:29.454Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35909858/6521a8d3736bf24368fc98e906614c29a20b42df7c56f3fab9c767d7b5f2dfd3.zip",
+      "contentHash": "6521a8d3736bf24368fc98e906614c29a20b42df7c56f3fab9c767d7b5f2dfd3",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35909858/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35909603",
@@ -3113,6 +3137,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 174,
+  "readyCount": 177,
   "failedCount": 3
 }
