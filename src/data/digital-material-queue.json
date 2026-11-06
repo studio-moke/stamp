@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-05T23:37:31.381Z",
+  "generatedAt": "2026-11-06T23:05:45.179Z",
   "r2WritesEnabled": true,
-  "pendingCount": 33,
+  "pendingCount": 30,
   "items": [
     {
       "productId": "36903835",
@@ -2875,26 +2875,50 @@
     {
       "productId": "35909603",
       "title": "もふもふ！うさぎ女子 どきどき日常 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-06T23:05:37.679Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-06T23:05:37.679Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35909603/81b8352779a485d46062a3d6f68063d7b259b07945de00c2a3869c320794b02c.zip",
+      "contentHash": "81b8352779a485d46062a3d6f68063d7b259b07945de00c2a3869c320794b02c",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35909603/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35908718",
       "title": "もふもふ！いぬ女子のすなおな日常 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-06T23:05:40.769Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-06T23:05:40.769Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35908718/d939360f975c175331f9527117f8eefef6f8b4471c70bd186874ffccff953a56.zip",
+      "contentHash": "d939360f975c175331f9527117f8eefef6f8b4471c70bd186874ffccff953a56",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35908718/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35908469",
       "title": "被り物 ねこ女子のきまぐれ日常 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-06T23:05:43.192Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-06T23:05:43.192Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35908469/e6e9845b9ca06c20d66edb58256686b6e1cf0c60d20e51c046f06c0d0453a374.zip",
+      "contentHash": "e6e9845b9ca06c20d66edb58256686b6e1cf0c60d20e51c046f06c0d0453a374",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35908469/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35907869",
@@ -3137,6 +3161,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 177,
+  "readyCount": 180,
   "failedCount": 3
 }
