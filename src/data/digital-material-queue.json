@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-06T23:05:45.179Z",
+  "generatedAt": "2026-11-07T21:46:05.621Z",
   "r2WritesEnabled": true,
-  "pendingCount": 30,
+  "pendingCount": 27,
   "items": [
     {
       "productId": "36903835",
@@ -2923,26 +2923,50 @@
     {
       "productId": "35907869",
       "title": "パンダ女子のもふもふ日常〜被り物の女の子 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-07T21:46:00.520Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-07T21:46:00.520Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35907869/bad9aec6d52b8333a0026a9e017de79108da4e72b3b07d5d9fe3a03fbf002d45.zip",
+      "contentHash": "bad9aec6d52b8333a0026a9e017de79108da4e72b3b07d5d9fe3a03fbf002d45",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35907869/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35907512",
       "title": "消したい言葉ゴミ袋 LINEスタンプ 40種類 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-07T21:46:02.595Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-07T21:46:02.595Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35907512/f85460a51ab50526a25c15d65913859629c25c6c525303d8a463d21cf99d721b.zip",
+      "contentHash": "f85460a51ab50526a25c15d65913859629c25c6c525303d8a463d21cf99d721b",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35907512/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35905563",
       "title": "でかビールジョッキ！働く女子晩酌スタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-07T21:46:04.034Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-07T21:46:04.034Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35905563/4f68318ec68373177ec7f32507eda276920b01ea844a421a7cfec2d0504e96a4.zip",
+      "contentHash": "4f68318ec68373177ec7f32507eda276920b01ea844a421a7cfec2d0504e96a4",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35905563/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35904975",
@@ -3161,6 +3185,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 180,
+  "readyCount": 183,
   "failedCount": 3
 }
