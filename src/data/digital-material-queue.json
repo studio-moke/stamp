@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-07T21:46:05.621Z",
+  "generatedAt": "2026-11-08T21:59:49.283Z",
   "r2WritesEnabled": true,
-  "pendingCount": 27,
+  "pendingCount": 24,
   "items": [
     {
       "productId": "36903835",
@@ -2971,26 +2971,50 @@
     {
       "productId": "35904975",
       "title": "マラカスおばあちゃん 40種類 LINEスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-08T21:59:43.239Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-08T21:59:43.239Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35904975/ede78a6c1e9499bdaf60c3b71a335fc918e2815049f2cc872382e80bd744dd6b.zip",
+      "contentHash": "ede78a6c1e9499bdaf60c3b71a335fc918e2815049f2cc872382e80bd744dd6b",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35904975/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35900046",
       "title": "【笑顔で本音】毒舌 じいちゃん ばあちゃん - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-08T21:59:46.209Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-08T21:59:46.209Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35900046/cb065d28d93291ad198b3cb125c67203dff447e92f68801c7e0fa233c7d870ac.zip",
+      "contentHash": "cb065d28d93291ad198b3cb125c67203dff447e92f68801c7e0fa233c7d870ac",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35900046/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35898720",
       "title": "ウザい解説少年いがぐり君の見解【40種類】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-08T21:59:48.042Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-08T21:59:48.042Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35898720/659bcdd9eab9cc5ce6ea607178de56583e71b5da363f5371296d3ccf7b8bf052.zip",
+      "contentHash": "659bcdd9eab9cc5ce6ea607178de56583e71b5da363f5371296d3ccf7b8bf052",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35898720/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35897590",
@@ -3185,6 +3209,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 183,
+  "readyCount": 186,
   "failedCount": 3
 }
