@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-08T21:59:49.283Z",
+  "generatedAt": "2026-11-10T01:30:17.204Z",
   "r2WritesEnabled": true,
-  "pendingCount": 24,
+  "pendingCount": 21,
   "items": [
     {
       "productId": "36903835",
@@ -3019,26 +3019,50 @@
     {
       "productId": "35897590",
       "title": "【40種類】べつに、ツンデレ猫じゃないにゃ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-10T01:30:12.647Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-10T01:30:12.647Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35897590/20d80f0183a5268939c76d223afb5de79fe492a93d32191af980addb5e9dd706.zip",
+      "contentHash": "20d80f0183a5268939c76d223afb5de79fe492a93d32191af980addb5e9dd706",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35897590/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35896604",
       "title": "顔で語る。ズレてますよ、カツラおっちゃん - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-10T01:30:14.461Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-10T01:30:14.461Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35896604/ccf4366095022b8151680eae40827848bbcb4e0348dd72298d146736b909f8bd.zip",
+      "contentHash": "ccf4366095022b8151680eae40827848bbcb4e0348dd72298d146736b909f8bd",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35896604/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35896119",
       "title": "【バイト戦隊 バイターズ】連絡手段 全40種 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-10T01:30:15.895Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-10T01:30:15.895Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35896119/46f0483db488cb3da716ab0d228b0dfd401f14e00ccc7ae756d64193f6b3758e.zip",
+      "contentHash": "46f0483db488cb3da716ab0d228b0dfd401f14e00ccc7ae756d64193f6b3758e",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35896119/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35896078",
@@ -3209,6 +3233,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 186,
+  "readyCount": 189,
   "failedCount": 3
 }
