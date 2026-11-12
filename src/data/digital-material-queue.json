@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-10T23:16:34.049Z",
+  "generatedAt": "2026-11-12T00:38:01.558Z",
   "r2WritesEnabled": true,
-  "pendingCount": 18,
+  "pendingCount": 15,
   "items": [
     {
       "productId": "36903835",
@@ -3115,26 +3115,50 @@
     {
       "productId": "35895960",
       "title": "EC戦隊マーケジャー｜マーケターあるある - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-12T00:37:54.890Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-12T00:37:54.890Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35895960/abd223c53b4d9458b15361164badc7bb5d9e8ae78a504ddf7240335c48198bcf.zip",
+      "contentHash": "abd223c53b4d9458b15361164badc7bb5d9e8ae78a504ddf7240335c48198bcf",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35895960/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35868815",
       "title": "逆パンダ少年の正論。 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-12T00:37:56.865Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-12T00:37:56.865Z",
+      "assetCount": 24,
+      "zipKey": "digital-products/35868815/8df9b7b5b11eb838871a92fbccaaa5f9943dee9c6c510672037e99c3df6bec30.zip",
+      "contentHash": "8df9b7b5b11eb838871a92fbccaaa5f9943dee9c6c510672037e99c3df6bec30",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35868815/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35866552",
       "title": "【全40種類】茶トラねこの毎日スタンプにゃ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-12T00:37:58.953Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-12T00:37:58.953Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35866552/19ce7099cc3a1238ce924d95e233c2f27f53c5c3228d1e1ed1407297fe63a2a0.zip",
+      "contentHash": "19ce7099cc3a1238ce924d95e233c2f27f53c5c3228d1e1ed1407297fe63a2a0",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35866552/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35853766",
@@ -3257,6 +3281,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 192,
+  "readyCount": 195,
   "failedCount": 3
 }
