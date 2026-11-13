@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-12T23:34:22.806Z",
+  "generatedAt": "2026-11-13T23:31:25.750Z",
   "r2WritesEnabled": true,
-  "pendingCount": 12,
+  "pendingCount": 9,
   "items": [
     {
       "productId": "36903835",
@@ -3211,26 +3211,50 @@
     {
       "productId": "35827556",
       "title": "かわいい！ツンデレ 柴犬 日常会話40種 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-13T23:31:18.629Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-13T23:31:18.629Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35827556/ff1d6854ffa62b8c37df31c49531ada0eee12400ed5153c4f07e02e7e876baf9.zip",
+      "contentHash": "ff1d6854ffa62b8c37df31c49531ada0eee12400ed5153c4f07e02e7e876baf9",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35827556/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35824996",
       "title": "【40種】コーギー犬 お尻かわいいスタンプ - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-13T23:31:22.135Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-13T23:31:22.135Z",
+      "assetCount": 40,
+      "zipKey": "digital-products/35824996/facf7c2c0278829aad0494a2c7a13ba7fcbdc92c92e4e32a15bb4fe4fb71c388.zip",
+      "contentHash": "facf7c2c0278829aad0494a2c7a13ba7fcbdc92c92e4e32a15bb4fe4fb71c388",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35824996/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35824678",
       "title": "【でっぷりタヌキ】太々しい！日常シュール - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-13T23:31:24.266Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-13T23:31:24.266Z",
+      "assetCount": 24,
+      "zipKey": "digital-products/35824678/10d989d7251ddb1f01555f0401f3d418809bc15ff43c69a1dc5317dfdf4abbf6.zip",
+      "contentHash": "10d989d7251ddb1f01555f0401f3d418809bc15ff43c69a1dc5317dfdf4abbf6",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35824678/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35824014",
@@ -3305,6 +3329,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 198,
+  "readyCount": 201,
   "failedCount": 3
 }
