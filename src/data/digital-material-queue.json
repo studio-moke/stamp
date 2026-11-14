@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-13T23:31:25.750Z",
+  "generatedAt": "2026-11-14T22:19:56.060Z",
   "r2WritesEnabled": true,
-  "pendingCount": 9,
+  "pendingCount": 6,
   "items": [
     {
       "productId": "36903835",
@@ -3259,26 +3259,46 @@
     {
       "productId": "35824014",
       "title": "【でっぷりイヌ】太々しい！日常シュール犬 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "failed",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Preparation failed; product remains unpublished",
+      "lastAttemptAt": "2026-11-14T22:19:51.178Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-14T22:19:51.178Z",
+      "error": "LINE商品パッケージから取得した画像数が想定外です: 16点"
     },
     {
       "productId": "35819929",
       "title": "【でっぷりねずみ】太々しい！日常シュール - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-14T22:19:51.531Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-14T22:19:51.531Z",
+      "assetCount": 24,
+      "zipKey": "digital-products/35819929/cf9559fd23ec7feb5b6c70e8445f5d5db04cce094dc86a2c0256537db7698283.zip",
+      "contentHash": "cf9559fd23ec7feb5b6c70e8445f5d5db04cce094dc86a2c0256537db7698283",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35819929/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35819099",
       "title": "【でっぷりねこ】太々しい！日常シュール猫 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-14T22:19:53.377Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-14T22:19:53.377Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/35819099/005ecb97389df3b8033ee71ae3c84e476fbd1b9eb379db79051497ab2fa86608.zip",
+      "contentHash": "005ecb97389df3b8033ee71ae3c84e476fbd1b9eb379db79051497ab2fa86608",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35819099/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35818703",
@@ -3329,6 +3349,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 201,
-  "failedCount": 3
+  "readyCount": 203,
+  "failedCount": 4
 }
