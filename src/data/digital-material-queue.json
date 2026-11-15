@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-14T22:19:56.060Z",
+  "generatedAt": "2026-11-15T22:47:01.023Z",
   "r2WritesEnabled": true,
-  "pendingCount": 6,
+  "pendingCount": 3,
   "items": [
     {
       "productId": "36903835",
@@ -3303,26 +3303,50 @@
     {
       "productId": "35818703",
       "title": "【福岡方言のおっちゃん】博多弁、筑後弁 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-15T22:46:53.610Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-15T22:46:53.610Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/35818703/a2f1e57c8fa5cbcada2c7c9f0cb635dc732b50bfff3da2507baddf977cfa5431.zip",
+      "contentHash": "a2f1e57c8fa5cbcada2c7c9f0cb635dc732b50bfff3da2507baddf977cfa5431",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35818703/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35817849",
       "title": "【朱肉ハンコ】仕事で使える敬語・ビジネス - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-15T22:46:57.241Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-15T22:46:57.241Z",
+      "assetCount": 32,
+      "zipKey": "digital-products/35817849/f771654ee61bc9978e4d023746c023dcd5e6b032afa5c097d8044c861ff2b112.zip",
+      "contentHash": "f771654ee61bc9978e4d023746c023dcd5e6b032afa5c097d8044c861ff2b112",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35817849/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35776429",
       "title": "もけぇスタンプミニ【日常編】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-15T22:46:59.427Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-15T22:46:59.427Z",
+      "assetCount": 8,
+      "zipKey": "digital-products/35776429/41e465f8c8cbc17280e11ea995a3f409b4c5bf457982bfe41efcbd86abd9e749.zip",
+      "contentHash": "41e465f8c8cbc17280e11ea995a3f409b4c5bf457982bfe41efcbd86abd9e749",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35776429/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35770799",
@@ -3349,6 +3373,6 @@
       "note": "R2 write intentionally deferred"
     }
   ],
-  "readyCount": 203,
+  "readyCount": 206,
   "failedCount": 4
 }
