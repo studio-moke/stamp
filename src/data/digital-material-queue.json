@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-15T22:47:01.023Z",
+  "generatedAt": "2026-11-17T01:52:59.418Z",
   "r2WritesEnabled": true,
-  "pendingCount": 3,
+  "pendingCount": 0,
   "items": [
     {
       "productId": "36903835",
@@ -3351,28 +3351,48 @@
     {
       "productId": "35770799",
       "title": "もけぇスタンプ【日常編】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "failed",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Preparation failed; product remains unpublished",
+      "lastAttemptAt": "2026-11-17T01:52:56.809Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-17T01:52:56.809Z",
+      "error": "LINE商品パッケージから取得した画像数が想定外です: 16点"
     },
     {
       "productId": "35770498",
       "title": "かわいいマイベビー【日常編】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-17T01:52:57.075Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-17T01:52:57.075Z",
+      "assetCount": 8,
+      "zipKey": "digital-products/35770498/37c269a1b09af4c22f2eb7d235d25a30c7e0945329fccefb0ec5ed7e50966d55.zip",
+      "contentHash": "37c269a1b09af4c22f2eb7d235d25a30c7e0945329fccefb0ec5ed7e50966d55",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35770498/android/stickers.zip",
+      "r2UploadSkipped": false
     },
     {
       "productId": "35770137",
       "title": "ハイウェストうさぎ【日常編】 - LINE スタンプ | LINE STORE",
-      "status": "pending",
+      "status": "ready",
       "discoveredAt": "2026-09-08T19:50:08.189Z",
       "source": "sticker-catalog",
-      "note": "R2 write intentionally deferred"
+      "note": "Private R2 ZIP uploaded and verified",
+      "lastAttemptAt": "2026-11-17T01:52:58.318Z",
+      "attempts": 1,
+      "preparedAt": "2026-11-17T01:52:58.318Z",
+      "assetCount": 8,
+      "zipKey": "digital-products/35770137/0402566420278a07aabcf8889dd1046d57e4783d839fb2d5db66ce0c11bc7e57.zip",
+      "contentHash": "0402566420278a07aabcf8889dd1046d57e4783d839fb2d5db66ce0c11bc7e57",
+      "sourcePackage": "https://stickershop.line-scdn.net/stickershop/v1/product/35770137/android/stickers.zip",
+      "r2UploadSkipped": false
     }
   ],
-  "readyCount": 206,
-  "failedCount": 4
+  "readyCount": 208,
+  "failedCount": 5
 }
